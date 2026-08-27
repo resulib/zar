@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zarafat Notariat Palatası — qeyri-rəsmi sənədlər reyestri</title>
+<meta name="description" content="Cütlüklər, dostlar və iş yeri üçün rəsmi görünüşlü, tamamilə əyləncə məqsədli sənədlər. Möhürlü, QR kodlu, reyestrdə yoxlanıla bilən.">
+<meta name="theme-color" content="#0e2340">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<!-- ═══════════ üst zolaq ═══════════ -->
+<div class="gov-bar">
+  <div class="wrap">
+    <span><b>ZNP</b><span class="long"> · Qeyri-rəsmi sənədlər vahid reyestri</span></span>
+    <span class="right">
+      <span id="modeBadge"><span class="dot"></span>Yoxlanılır</span>
+    </span>
+  </div>
+</div>
+
+<!-- ═══════════ masthead ═══════════ -->
+<header class="masthead">
+  <div class="wrap">
+    <svg class="crest" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="#17355d"/>
+      <circle cx="32" cy="32" r="25.5" fill="none" stroke="#8fa8c6" stroke-width="1"/>
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#c9d6e6" stroke-width="1.6"/>
+      <path d="M32 13 L34.6 19.6 L41.6 19.9 L36.1 24.2 L38.1 30.9 L32 26.9 L25.9 30.9 L27.9 24.2 L22.4 19.9 L29.4 19.6 Z" fill="#c9a94a" opacity=".9"/>
+      <text x="32" y="47" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="1">ZNP</text>
+    </svg>
+    <div class="mast-name">
+      <div class="n1">Zarafat Notariat Palatası</div>
+      <div class="n2">Uydurma qurum · qeyri-rəsmi sənədlər reyestri · zarafat.az</div>
+    </div>
+    <div class="mast-tools">
+      <button id="balanceBtn" class="chip" type="button">Balans: <b id="creditCount">0</b> sənəd</button>
+      <a class="chip" href="/kabinet" id="mastAccount" hidden>Kabinet</a>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#yarat">Sənəd yarat</a>
+    <a href="#reyestr">Reyestr</a>
+    <a href="#menim">Mənim sənədlərim</a>
+    <a href="#nece">Qaydalar</a>
+  </div>
+</nav>
+
+<!-- ═══════════ hero ═══════════ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Xidmət 01 — sənədin hazırlanması</div>
+      <h1>Rəsmi görünüşlü sənədlər.<br><em>Heç bir hüquqi qüvvəsi yoxdur.</em></h1>
+      <p class="lede">
+        Möhürlü, imzalı, ştrix-kodlu sənəd hazırlayın; 1 AZN ödəyib reyestrə yazdırın.
+        Sənədin üzərindəki QR kod istənilən şəxsin onu yoxlamasına imkan verir —
+        yoxlama nəticəsi də eyni dərəcədə ciddi görünür.
+      </p>
+      <div class="actions">
+        <a class="btn" href="#yarat">Sənəd hazırla</a>
+        <a class="btn btn-ghost" href="#reyestr">Nömrə ilə yoxla</a>
+      </div>
+      <dl class="specs">
+        <div><dt>Sənəd növləri</dt><dd>36 şablon — cütlüklər, dostlar, iş yeri</dd></div>
+        <div><dt>Blank formaları</dt><dd>Notarial akt, rəsmi blank, diplom, sertifikat, lisenziya</dd></div>
+        <div><dt>Rəsmiləşdirmə</dt><dd>1 AZN — reyestr qeydi, QR kod, HD yükləmə</dd></div>
+        <div><dt>Hüquqi qüvvə</dt><dd>Yoxdur və heç vaxt olmayacaq</dd></div>
+      </dl>
+    </div>
+    <div class="specimen">
+      <div class="sheet-shadow" id="heroSpecimen"></div>
+      <div class="tag">Nümunə blank · ZNP</div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- ═══════════ BÖLMƏ I ═══════════ -->
+<section class="section" id="yarat">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-no">BÖLMƏ I</span>
+      <h2>Sənədin növünü seçin</h2>
+      <span class="fill"></span>
+    </div>
+    <p class="sec-note">
+      Hər şablon müəyyən blank formasına bağlanıb, lakin bu seçim məcburi deyil —
+      II bölmədə istənilən forma və rəngi tətbiq edə bilərsiniz.
+    </p>
+
+    <div class="toolbar">
+      <div class="segmented" id="tabs"></div>
+      <div class="search">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M11 11l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input id="fSearch" class="input" type="search" placeholder="Şablon adı və ya açar söz" aria-label="Şablon axtar">
+      </div>
+    </div>
+    <p class="micro" id="catBlurb" style="margin:-8px 0 16px"></p>
+
+    <div class="tmpl-grid" id="cards"></div>
+    <div class="empty" id="cardsEmpty" hidden>Bu sorğuya uyğun şablon tapılmadı.</div>
+  </div>
+</section>
+
+<!-- ═══════════ BÖLMƏ II ═══════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-no">BÖLMƏ II</span>
+      <h2>Məlumatların doldurulması</h2>
+      <span class="fill"></span>
+    </div>
+
+    <div class="editor">
+      <!-- forma sütunu -->
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-head">
+            <span class="label">Blank forması</span>
+            <button id="btnResetDesign" class="right chip btn-sm" type="button" style="padding:4px 8px">Şablonun öz forması</button>
+          </div>
+          <div class="panel-body">
+            <div class="layouts" id="layoutPicker"></div>
+            <div class="label" style="margin:16px 0 8px">Rəng sxemi</div>
+            <div class="palettes" id="palettePicker"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><span class="label">Ərizə məlumatları</span></div>
+          <div class="panel-body">
+            <div class="field">
+              <label class="label" for="fTitle">Sənədin adı</label>
+              <input id="fTitle" class="input" maxlength="70" placeholder="Həftəsonu Çölə Çıxma Etibarnaməsi">
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label class="label" for="fTo">Kimə verilir</label>
+                <input id="fTo" class="input" maxlength="42" placeholder="Ad Soyad">
+              </div>
+              <div class="field">
+                <label class="label" for="fFrom">Kimdən verilir</label>
+                <input id="fFrom" class="input" maxlength="42" placeholder="Ad Soyad">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="fPowers">Səlahiyyətlər və şərtlər</label>
+              <textarea id="fPowers" class="textarea" rows="5" maxlength="600" placeholder="Hər bəndi yeni sətirdən yazın"></textarea>
+              <span class="hint">Sənədə ilk 6 bənd düşür.</span>
+            </div>
+            <div class="field" style="margin-bottom:18px">
+              <label class="label" for="fPenalty">Cəza bəndi</label>
+              <textarea id="fPenalty" class="textarea" rows="3" maxlength="300" placeholder="Şərtlər pozulduqda nə baş verir?"></textarea>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button id="btnCreate" class="btn" type="button">Sənədi rəsmiləşdir</button>
+              <button id="btnRandom" class="btn btn-ghost" type="button">Təsadüfi doldur</button>
+            </div>
+            <p class="micro" style="margin-top:12px;line-height:1.55">
+              Real şəxslərin adından təhqiredici sənəd hazırlamayın. Hər sənədin yanında şikayət və silinmə düyməsi var.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- vərəq sütunu -->
+      <div>
+        <div class="panel-head" style="border:1px solid var(--rule);border-bottom:0">
+          <span class="label">Önizləmə</span>
+          <span class="right label mono" id="regBadge"></span>
+        </div>
+        <div class="sheet-wrap">
+          <div class="paper" id="preview"></div>
+        </div>
+        <div class="act-grid" id="actions"></div>
+        <p class="act-note" id="actionsNote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════ BÖLMƏ III — reyestr ═══════════ -->
+<section class="registry" id="reyestr">
+  <div class="wrap section" style="border:0">
+    <div class="sec-head">
+      <span class="sec-no">BÖLMƏ III</span>
+      <h2>Reyestrdə yoxlama</h2>
+      <span class="fill"></span>
+    </div>
+    <div class="lookup">
+      <p class="sec-note" style="margin-top:0">
+        Qeydiyyat nömrəsini daxil edin. Sənəd bazada varsa, təsdiq ştampı ilə birlikdə göstəriləcək.
+      </p>
+      <div class="lookup-row">
+        <input id="qReg" class="input" placeholder="ZRF-2026-9482" aria-label="Qeydiyyat nömrəsi">
+        <button id="btnSearch" class="btn" type="button">Yoxla</button>
+      </div>
+      <div id="searchMsg"></div>
+    </div>
+    <div class="result" id="searchResult"></div>
+  </div>
+</section>
+
+<!-- ═══════════ BÖLMƏ IV — mənim sənədlərim ═══════════ -->
+<section class="section" id="menim">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-no">BÖLMƏ IV</span>
+      <h2>Mənim sənədlərim</h2>
+      <span class="fill"></span>
+    </div>
+    <div class="doc-list" id="myDocs"></div>
+  </div>
+</section>
+
+<!-- ═══════════ qaydalar ═══════════ -->
+<section class="section" id="nece">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-no">QAYDALAR</span>
+      <h2>Xidmətdən istifadə qaydası</h2>
+      <span class="fill"></span>
+    </div>
+    <div class="steps">
+      <div>
+        <div class="n">ADDIM 01</div>
+        <h3>Şablonu seçin və doldurun</h3>
+        <p>36 hazır şablondan birini seçin, adları və şərtləri yazın. Önizləmə hər hərfdən sonra yenilənir.</p>
+      </div>
+      <div>
+        <div class="n">ADDIM 02</div>
+        <h3>Pulsuz paylaşın</h3>
+        <p>Su nişanlı variantı ödənişsiz yükləyib göndərin. Sənəd hazırdır, sadəcə reyestrdə qeydiyyatı yoxdur.</p>
+      </div>
+      <div>
+        <div class="n">ADDIM 03</div>
+        <h3>1 AZN — rəsmiləşdirmə</h3>
+        <p>Ödənişdən sonra sənəd reyestrə düşür, QR kod yaranır və HD keyfiyyətdə yüklənir.</p>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:22px">
+      <div class="t">Məsuliyyət bildirişi</div>
+      <p>
+        Bu sayt tamamilə əyləncə məqsədi daşıyır. Yaranan sənədlər heç bir hüquqi qüvvəyə malik deyil.
+        «Zarafat Notariat Palatası» uydurma qurumdur; sənədlərdəki möhür, imza, notarius adı və reyestr
+        nömrələri bədii uydurmadır və heç bir dövlət orqanı, notariat idarəsi və ya rəsmi reyestrlə əlaqəsi yoxdur.
+        Sənədlərdən şantaj, saxtakarlıq və ya üçüncü şəxsi aldatmaq məqsədilə istifadə qadağandır.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ footer ═══════════ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Qurum haqqında</h4>
+        <p>
+          Zarafat Notariat Palatası mövcud deyil. Bu sayt satirik məhsuldur və rəsmi sənəd
+          estetikasını əyləncə məqsədilə təqlid edir.
+        </p>
+      </div>
+      <div>
+        <h4>Bölmələr</h4>
+        <ul>
+          <li><a href="#yarat">Sənəd hazırla</a></li>
+          <li><a href="#reyestr">Reyestrdə yoxla</a></li>
+          <li><a href="#menim">Mənim sənədlərim</a></li>
+          <li><a href="#nece">Qaydalar</a></li>
+          <li><a href="/kabinet" id="footAccount" hidden>Kabinet</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Müraciət</h4>
+        <ul>
+          <li><button id="reportOpen" class="btn btn-sm btn-ghost" type="button">Şikayət et / sil</button></li>
+          <li style="margin-top:10px">Qəbul saatları: heç vaxt</li>
+          <li>Növbə: yoxdur</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-rule"></div>
+    <div class="foot-legal">
+      © 2026 ZARAFAT NOTARİAT PALATASI (UYDURMA QURUM) · BÜTÜN SƏNƏDLƏR HÜQUQİ QÜVVƏDƏN MƏHRUMDUR
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ modallar ═══════════ -->
+<div class="modal" id="payModal">
+  <div class="box">
+    <div class="box-head">
+      <h3>Balansın artırılması</h3>
+      <button class="x" data-close type="button" aria-label="Bağla">×</button>
+    </div>
+    <div class="box-body">
+      <p class="small" style="margin-bottom:14px">
+        Sənədin reyestrdə saxlanması və HD yüklənməsi 1 kredit tələb edir.
+      </p>
+      <div id="packs"></div>
+      <p class="micro" style="margin-top:14px;line-height:1.55">
+        Bu versiyada ödəniş simulyasiya olunur — real kart əməliyyatı aparılmır.
+        Backend qatında Epoint.az adapteri hazırdır.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="box">
+    <div class="box-head">
+      <h3>Şikayət və silinmə</h3>
+      <button class="x" data-close type="button" aria-label="Bağla">×</button>
+    </div>
+    <div class="box-body">
+      <p class="small" style="margin-bottom:14px">Sənəd nömrəsi: <b class="mono" id="repReg">—</b></p>
+      <div class="field">
+        <label class="label" for="repReason">Səbəb</label>
+        <select id="repReason" class="input">
+          <option>Mənim adımdan icazəsiz yaradılıb</option>
+          <option>Təhqiredici məzmun</option>
+          <option>Şəxsi məlumat var</option>
+          <option>Digər</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="label" for="repNote">Əlavə qeyd</label>
+        <textarea id="repNote" class="textarea" rows="3" placeholder="İstəyə bağlı"></textarea>
+      </div>
+      <p class="micro" style="margin-top:12px">Öz yaratdığınız sənəd dərhal silinir. Digər sənədlər moderasiyaya düşür.</p>
+    </div>
+    <div class="box-foot">
+      <button class="btn btn-ghost" data-close type="button">İmtina</button>
+      <button id="repSend" class="btn btn-danger" type="button">Göndər</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"><div class="msg"></div></div>
+
+<script src="/qr.js"></script>
+<script src="/templates.js"></script>
+<script src="/doc.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "zarafat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js",
+    "fonts": "node tools/subset-fonts.js",
+    "test:qr": "node tools/verify-qr.js",
+    "test:api": "node backend-node/test-api.js",
+    "test:e2e": "node tools/e2e.js",
+    "test:dist": "node tools/dist-check.js",
+    "shots": "node tools/shots.js",
+    "render": "node tools/render-all.js",
+    "build:laravel": "node tools/build-laravel.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/ibm-plex-serif": "^5.3.0",
+    "jsqr": "^1.4.0",
+    "playwright": "^1.62.1",
+    "pngjs": "^7.0.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.4"
+  },
+  "private": true
+}

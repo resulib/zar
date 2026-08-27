@@ -1,0 +1,358 @@
+/* ==========================================================================
+   Zarafat Notariat Palatası — sayt üslubu
+   Konsepsiya: rəsmi qurum portalı. Kağız fon, nazik cədvəl xətləri,
+   institusional göy, ştamp qırmızısı. Dekorativ effekt yoxdur.
+   ========================================================================== */
+
+:root {
+  --paper:      #f1efe8;
+  --sheet:      #ffffff;
+  --tint:       #e9e6db;
+  --rule:       #d6d1c3;
+  --rule-hard:  #b6af9c;
+  --ink:        #1a1c20;
+  --ink-2:      #565a61;
+  --ink-3:      #8a8c93;
+  --blue:       #17355d;
+  --blue-2:     #0e2340;
+  --blue-soft:  #e8edf4;
+  --red:        #a3232c;
+  --red-soft:   #f8ecec;
+  --green:      #1c6640;
+  --green-soft: #e9f2ec;
+
+  --sans:  'Plex Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --serif: 'Plex Serif', Georgia, 'Times New Roman', serif;
+  --mono:  'Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --gut: 28px;
+  --max: 1180px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 15px/1.62 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+input, textarea, select { font: inherit; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
+
+/* ---------- köməkçi tipoqrafiya ---------- */
+.label { font: 500 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.mono  { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.lede  { font-size: 16.5px; line-height: 1.65; color: var(--ink-2); }
+.small { font-size: 13px; color: var(--ink-2); }
+.micro { font-size: 12px; color: var(--ink-3); }
+
+/* ==========================================================================
+   Üst zolaq və masthead
+   ========================================================================== */
+.gov-bar {
+  background: var(--blue-2); color: #b9c8dc;
+  font: 500 10.5px/34px var(--mono); letter-spacing: .09em; text-transform: uppercase;
+}
+.gov-bar .wrap { display: flex; align-items: center; gap: 16px; }
+.gov-bar .sep { color: #3d5a80; }
+.gov-bar b { color: #e6edf6; font-weight: 500; }
+.gov-bar .right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #6f8bb0; display: inline-block; margin-right: 6px; }
+.dot.live { background: #4fbf7f; }
+
+.masthead { background: var(--sheet); border-bottom: 1px solid var(--rule); }
+.masthead .wrap { display: flex; align-items: center; gap: 18px; min-height: 88px; padding-top: 14px; padding-bottom: 14px; }
+.crest { width: 46px; height: 46px; flex: none; }
+.mast-name { line-height: 1.25; }
+.mast-name .n1 { font: 600 17px/1.2 var(--serif); letter-spacing: .01em; }
+.mast-name .n2 { font: 400 11.5px/1.4 var(--sans); color: var(--ink-2); }
+.mast-tools { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+.nav { background: var(--sheet); border-bottom: 2px solid var(--blue); }
+.nav .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.nav .wrap::-webkit-scrollbar { display: none; }
+.nav a {
+  padding: 11px 15px; text-decoration: none; white-space: nowrap;
+  font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+}
+.nav a:hover { color: var(--blue); background: var(--blue-soft); }
+
+/* ==========================================================================
+   Düymələr və sahələr
+   ========================================================================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none;
+  padding: 11px 20px; border: 1px solid var(--blue); border-radius: 2px;
+  background: var(--blue); color: #fff; cursor: pointer;
+  font: 600 13.5px/1 var(--sans); letter-spacing: .01em;
+}
+.btn:hover { background: var(--blue-2); border-color: var(--blue-2); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .5; cursor: default; }
+.btn-ghost { background: var(--sheet); color: var(--blue); border-color: var(--rule-hard); }
+.btn-ghost:hover { background: var(--blue-soft); border-color: var(--blue); }
+.btn-danger { background: var(--sheet); color: var(--red); border-color: #d9b7b7; }
+.btn-danger:hover { background: var(--red-soft); border-color: var(--red); }
+.btn-sm { padding: 8px 13px; font-size: 12.5px; }
+.btn-block { width: 100%; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px;
+  text-decoration: none;
+  border: 1px solid var(--rule-hard); border-radius: 2px; background: var(--sheet);
+  font: 500 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); }
+.chip b { font-weight: 600; color: var(--ink); }
+
+.field { margin-bottom: 16px; }
+.field > label { display: block; margin-bottom: 6px; }
+.field .hint { display: block; margin-top: 5px; font-size: 11.5px; color: var(--ink-3); }
+.input, .textarea, select.input {
+  width: 100%; padding: 10px 12px; background: var(--sheet);
+  border: 1px solid var(--rule-hard); border-radius: 2px; color: var(--ink);
+  font-size: 14.5px; line-height: 1.5;
+}
+.textarea { resize: vertical; }
+.input:focus, .textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue); }
+.input::placeholder, .textarea::placeholder { color: #a9aab0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ==========================================================================
+   Bölmə başlıqları
+   ========================================================================== */
+.section { padding: 46px 0; }
+.section + .section { border-top: 1px solid var(--rule); }
+.sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; }
+.sec-no { font: 500 10.5px/1 var(--mono); letter-spacing: .12em; color: var(--red); white-space: nowrap; }
+.sec-head h2 { font: 600 21px/1.25 var(--serif); }
+.sec-head .fill { flex: 1; height: 1px; background: var(--rule); }
+.sec-note { margin: -12px 0 22px; font-size: 13.5px; color: var(--ink-2); max-width: 62ch; }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero { background: var(--sheet); border-bottom: 1px solid var(--rule); }
+.hero .wrap { display: grid; grid-template-columns: 1.12fr .88fr; gap: 54px; padding-top: 52px; padding-bottom: 52px; align-items: start; }
+.eyebrow { font: 500 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
+.hero h1 { margin: 18px 0 18px; font: 600 42px/1.1 var(--serif); letter-spacing: -.01em; }
+.hero h1 em { font-style: normal; color: var(--blue); }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+.specs { margin-top: 34px; border-top: 1px solid var(--rule); }
+.specs div { display: grid; grid-template-columns: 148px 1fr; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+.specs dt { font: 500 10.5px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.specs dd { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+
+.specimen { position: relative; }
+.specimen .sheet-shadow {
+  transform: rotate(-1.4deg);
+  box-shadow: 0 1px 2px rgba(20,25,35,.10), 0 14px 34px -14px rgba(20,25,35,.30);
+  border: 1px solid var(--rule);
+  background: #fff;
+}
+.specimen svg { display: block; width: 100%; height: auto; }
+.specimen .tag {
+  display: flex; align-items: center; gap: 8px; margin-top: 16px;
+  font: 500 10px/1.5 var(--mono); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.specimen .tag::before { content: ""; width: 22px; height: 1px; background: var(--rule-hard); flex: none; }
+
+/* ==========================================================================
+   Kateqoriyalar və şablon şbakası
+   ========================================================================== */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 20px; }
+.segmented { display: flex; border: 1px solid var(--rule-hard); border-radius: 2px; overflow: hidden; background: var(--sheet); }
+.segmented button {
+  padding: 9px 15px; background: none; border: 0; cursor: pointer;
+  font: 500 12px/1 var(--sans); color: var(--ink-2); white-space: nowrap;
+}
+.segmented button + button { border-left: 1px solid var(--rule); }
+.segmented button:hover { background: var(--tint); }
+.segmented button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+
+.search { position: relative; margin-left: auto; width: 264px; max-width: 100%; }
+.search .input { padding-left: 32px; font-size: 13.5px; }
+.search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--ink-3); }
+
+.tmpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); gap: 10px; }
+.tmpl {
+  position: relative; text-align: left; cursor: pointer; background: var(--sheet);
+  border: 1px solid var(--rule); border-left-width: 3px; border-radius: 2px;
+  padding: 13px 14px 12px; display: flex; flex-direction: column; gap: 7px;
+}
+.tmpl:hover { border-color: var(--rule-hard); border-left-color: inherit; background: #fffefb; }
+.tmpl[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-soft); }
+.tmpl .code { font: 500 10px/1 var(--mono); letter-spacing: .08em; color: var(--ink-3); }
+.tmpl h3 { font: 600 14.5px/1.32 var(--serif); }
+.tmpl .desc { font-size: 12px; line-height: 1.5; color: var(--ink-2); }
+.tmpl .foot { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--rule); display: flex; gap: 8px; align-items: center; }
+.tmpl .foot span { font: 500 9.5px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.empty { border: 1px dashed var(--rule-hard); padding: 34px; text-align: center; color: var(--ink-3); font-size: 13.5px; }
+
+/* ==========================================================================
+   Redaktor: forma + vərəq
+   ========================================================================== */
+.editor { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 34px; align-items: start; }
+
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 2px; }
+.panel-head {
+  display: flex; align-items: center; gap: 10px; padding: 11px 15px;
+  border-bottom: 1px solid var(--rule); background: var(--tint);
+}
+.panel-head .label { color: var(--ink-2); }
+.panel-head .right { margin-left: auto; }
+.panel-body { padding: 17px 15px; }
+
+.layouts { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.layouts button {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 2px;
+  padding: 7px 4px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.layouts button:hover { border-color: var(--rule-hard); }
+.layouts button[aria-pressed="true"] { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.layouts svg { display: block; }
+.layouts span { font: 500 8.5px/1.25 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); text-align: center; }
+
+.palettes { display: flex; flex-wrap: wrap; gap: 6px; }
+.palettes button {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px 5px 6px;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 2px; cursor: pointer;
+  font: 500 10.5px/1 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2);
+}
+.palettes button:hover { border-color: var(--rule-hard); }
+.palettes button[aria-pressed="true"] { border-color: var(--blue); color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.swatch { width: 11px; height: 11px; border: 1px solid rgba(0,0,0,.22); }
+
+.sheet-wrap { background: var(--sheet); border: 1px solid var(--rule); padding: 18px; }
+.sheet-wrap .paper { box-shadow: 0 1px 2px rgba(20,25,35,.09), 0 10px 26px -14px rgba(20,25,35,.28); border: 1px solid var(--rule); }
+#preview svg, #searchResult svg { display: block; width: 100%; height: auto; }
+
+.act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.act-grid .span2 { grid-column: 1 / -1; }
+.act-note { margin-top: 10px; font-size: 12px; line-height: 1.55; color: var(--ink-3); }
+.act-note b { color: var(--blue); font-weight: 600; }
+
+/* ==========================================================================
+   Reyestr
+   ========================================================================== */
+.registry { background: var(--sheet); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.lookup { max-width: 560px; }
+.lookup-row { display: flex; gap: 8px; }
+.lookup-row .input { font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.verdict { margin-top: 18px; padding: 13px 15px; border: 1px solid var(--rule); border-left-width: 3px; border-radius: 2px; font-size: 13.5px; }
+.verdict.ok   { border-left-color: var(--green); background: var(--green-soft); color: var(--green); }
+.verdict.no   { border-left-color: var(--red);   background: var(--red-soft);   color: var(--red); }
+.verdict.wait { border-left-color: var(--rule-hard); background: var(--tint); color: var(--ink-2); }
+.verdict strong { display: block; font: 600 13.5px/1.4 var(--sans); }
+.verdict .meta { margin-top: 3px; font: 500 11.5px/1.5 var(--mono); color: var(--ink-2); }
+.result { margin-top: 22px; max-width: 640px; }
+
+/* ==========================================================================
+   Sənəd siyahısı
+   ========================================================================== */
+.doc-list { border-top: 1px solid var(--rule); }
+.doc-row {
+  display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+  padding: 13px 2px; border-bottom: 1px solid var(--rule);
+}
+.doc-row h4 { font: 600 14.5px/1.3 var(--serif); }
+.doc-row .meta { margin-top: 3px; font: 500 11px/1.5 var(--mono); color: var(--ink-3); letter-spacing: .04em; }
+.doc-row .acts { display: flex; gap: 6px; }
+.state { display: inline-block; padding: 3px 7px; border: 1px solid; border-radius: 2px; font: 500 9.5px/1.4 var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+.state.pub { color: var(--green); border-color: #b6d3c1; background: var(--green-soft); }
+.state.dra { color: var(--ink-2); border-color: var(--rule-hard); background: var(--tint); }
+
+/* ==========================================================================
+   Addımlar / izah
+   ========================================================================== */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--rule); background: var(--sheet); }
+.steps > div { padding: 22px 20px; }
+.steps > div + div { border-left: 1px solid var(--rule); }
+.steps .n { font: 500 10.5px/1 var(--mono); letter-spacing: .1em; color: var(--red); }
+.steps h3 { margin: 12px 0 7px; font: 600 16px/1.3 var(--serif); }
+.steps p { font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+
+/* ==========================================================================
+   Bildiriş qutusu, footer
+   ========================================================================== */
+.notice { border: 1px solid #ddc9c9; border-left: 3px solid var(--red); background: var(--red-soft); padding: 15px 17px; }
+.notice .t { font: 500 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
+.notice p { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: #5c2b2b; }
+
+.site-foot { background: var(--blue-2); color: #b9c8dc; margin-top: 0; }
+.site-foot .wrap { padding-top: 34px; padding-bottom: 30px; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 34px; }
+.site-foot h4 { font: 500 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #7f97b6; margin-bottom: 12px; }
+.site-foot p, .site-foot li { font-size: 13px; line-height: 1.65; color: #b9c8dc; }
+.site-foot ul { margin: 0; padding: 0; list-style: none; }
+.site-foot li + li { margin-top: 5px; }
+.site-foot a { text-decoration: none; }
+.site-foot a:hover { color: #fff; text-decoration: underline; }
+.foot-rule { margin: 26px 0 16px; height: 1px; background: #23405f; }
+.foot-legal { font: 500 11px/1.7 var(--mono); letter-spacing: .03em; color: #7f97b6; }
+
+/* ==========================================================================
+   Modal, toast
+   ========================================================================== */
+.modal { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(12,18,28,.55); }
+.modal.open { display: flex; }
+.modal .box { width: 100%; max-width: 430px; background: var(--sheet); border: 1px solid var(--rule-hard); border-radius: 2px; }
+.modal .box-head { padding: 13px 17px; border-bottom: 1px solid var(--rule); background: var(--tint); display: flex; align-items: center; }
+.modal .box-head h3 { font: 600 15px/1.3 var(--serif); }
+.modal .box-body { padding: 17px; }
+.modal .box-foot { padding: 13px 17px; border-top: 1px solid var(--rule); display: flex; gap: 8px; justify-content: flex-end; }
+.x { margin-left: auto; background: none; border: 0; cursor: pointer; color: var(--ink-3); font-size: 18px; line-height: 1; padding: 2px 4px; }
+.x:hover { color: var(--ink); }
+
+.pack { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 2px; cursor: pointer; text-align: left; }
+.pack + .pack { margin-top: 7px; }
+.pack:hover { border-color: var(--blue); background: var(--blue-soft); }
+.pack .n { font: 600 14px/1.3 var(--sans); }
+.pack .d { font-size: 11.5px; color: var(--ink-3); }
+.pack .p { margin-left: auto; font: 500 16px/1 var(--mono); color: var(--blue); }
+.pack.best { border-color: var(--blue); }
+
+#toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 70; display: none; }
+#toast.show { display: block; }
+#toast .msg { background: var(--blue-2); color: #eaf0f8; border-left: 3px solid #4fbf7f; padding: 11px 16px; font-size: 13.5px; box-shadow: 0 8px 26px -10px rgba(0,0,0,.5); }
+#toast .msg.err { border-left-color: #e06a6a; }
+
+/* ==========================================================================
+   Uyğunlaşma
+   ========================================================================== */
+@media (max-width: 980px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 36px; }
+  .hero h1 { font-size: 34px; }
+  .specimen { max-width: 420px; }
+  .editor { grid-template-columns: 1fr; gap: 26px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  :root { --gut: 18px; }
+  .gov-bar { font-size: 9.5px; line-height: 30px; }
+  .gov-bar .wrap { white-space: nowrap; overflow: hidden; }
+  .gov-bar .long { display: none; }
+  .masthead .wrap { min-height: 72px; }
+  .mast-name .n1 { font-size: 15px; }
+  .specs div { grid-template-columns: 1fr; gap: 1px; padding: 10px 0; }
+  .specs dt { font-size: 9.5px; }
+  .mast-name .n2 { display: none; }
+  .hero h1 { font-size: 29px; }
+  .steps { grid-template-columns: 1fr; }
+  .steps > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+  .search { margin-left: 0; width: 100%; }
+  .row2 { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; gap: 24px; }
+  .layouts { grid-template-columns: repeat(3, 1fr); }
+  .doc-row { grid-template-columns: 1fr; }
+}

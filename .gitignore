@@ -1,0 +1,12 @@
+node_modules/
+dist/
+tools/shots/
+tools/render/
+tools/panel-preview/
+backend-node/data/
+backend-node/node_modules/
+backend-php/vendor/
+backend-php/.env
+backend-php/database/*.sqlite
+*.log
+.DS_Store
