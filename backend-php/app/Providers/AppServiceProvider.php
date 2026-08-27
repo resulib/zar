@@ -31,8 +31,16 @@ class AppServiceProvider extends ServiceProvider
             return $visitor;
         });
 
-        RateLimiter::for('documents', fn (Request $r) => Limit::perMinute(20)->by($r->visitor()->id));
-        RateLimiter::for('payments',  fn (Request $r) => Limit::perMinute(12)->by($r->visitor()->id));
-        RateLimiter::for('reports',   fn (Request $r) => Limit::perMinute(10)->by($r->visitor()->id));
+        // Limit açarı: ziyarətçi tanınıbsa onun id-si, yoxdursa IP.
+        // (Middleware sırası pozulsa belə limit 500 vermir.)
+        $key = function (Request $r): string {
+            $visitor = $r->attributes->get('visitor');
+
+            return $visitor instanceof User ? 'u:' . $visitor->id : 'ip:' . $r->ip();
+        };
+
+        RateLimiter::for('documents', fn (Request $r) => Limit::perMinute(20)->by($key($r)));
+        RateLimiter::for('payments',  fn (Request $r) => Limit::perMinute(12)->by($key($r)));
+        RateLimiter::for('reports',   fn (Request $r) => Limit::perMinute(10)->by($key($r)));
     }
 }

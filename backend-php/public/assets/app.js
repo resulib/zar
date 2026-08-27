@@ -40,7 +40,15 @@
       return fetch(url, {
         method: 'POST', headers: headers, credentials: 'same-origin',
         body: JSON.stringify(body || {})
-      }).then(function (r) { return r.json().then(function (j) { return r.ok ? j : Promise.reject(j); }); });
+      }).then(function (r) {
+        // Xəta cavabı həmişə JSON olmur (419 CSRF, 500 səhifəsi, proxy) — mətn kimi oxuyuruq.
+        return r.text().then(function (t) {
+          var j = null;
+          try { j = t ? JSON.parse(t) : null; } catch (e) {}
+          if (r.ok) return j;
+          return Promise.reject(j && typeof j === 'object' ? j : { error: 'http_' + r.status, status: r.status });
+        });
+      });
     },
 
     credits: function () {
@@ -149,6 +157,17 @@
   }
 
   var toastT;
+  // Server göndərdiyi izahı göstərir, yoxdursa ümumi mətnə düşür.
+  function apiError(e, fallback) {
+    if (e && typeof e.message === 'string' && e.message) return e.message;
+    if (e && e.errors && typeof e.errors === 'object') {
+      var first = Object.keys(e.errors)[0];
+      if (first && e.errors[first] && e.errors[first][0]) return e.errors[first][0];
+    }
+    if (e && e.status === 419) return 'Sessiya bitib — səhifəni yeniləyin.';
+    return fallback;
+  }
+
   function toast(msg, kind) {
     var el = $('#toast'), box = el.firstElementChild;
     box.textContent = msg;
@@ -189,7 +208,9 @@
 
   var LAYOUT_EDGE = {
     notarial: '#b0882a', blank: '#2f5d8a', diplom: '#8d1d33',
-    sertifikat: '#1f7a52', lisenziya: '#3b4b6b'
+    sertifikat: '#1f7a52', lisenziya: '#3b4b6b',
+    arayis: '#2f6d7a', qerar: '#5d2b4a', muqavile: '#6b5539',
+    teleqram: '#6f7a2f', vesiqe: '#8a5a2b'
   };
   var PAL_LABEL = { gold: 'Qızılı', steel: 'Polad', burgundy: 'Bordo', forest: 'Zümrüd', ink: 'Qrafit' };
   var PAL_SWATCH = { gold: '#b0882a', steel: '#2f5d8a', burgundy: '#8d1d33', forest: '#1f7a52', ink: '#3b4b6b' };
@@ -200,7 +221,12 @@
     blank:    '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><path d="M2.5 8h31" stroke="currentColor"/><rect x="22" y="4" width="9" height="3" fill="currentColor" opacity=".35"/><path d="M6 12h24M6 15h24M6 18h24M18 10.5v9" stroke="currentColor" stroke-width=".7"/>',
     diplom:   '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="18" cy="8.5" r="3" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M9 14h18M12 17.5h12M13 20.5h10" stroke="currentColor" stroke-width=".9"/>',
     sertifikat:'<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><rect x="2.5" y="2.5" width="6" height="21" fill="currentColor" opacity=".35"/><path d="M12 8h17M12 12h17M12 15.5h11M12 19h14" stroke="currentColor" stroke-width=".9"/>',
-    lisenziya:'<rect x="2.5" y="4.5" width="31" height="17" rx="2" fill="none" stroke="currentColor"/><rect x="5.5" y="8" width="8" height="10" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M16 9h14M16 12.5h14M16 16h9" stroke="currentColor" stroke-width=".8"/>'
+    lisenziya:'<rect x="2.5" y="4.5" width="31" height="17" rx="2" fill="none" stroke="currentColor"/><rect x="5.5" y="8" width="8" height="10" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M16 9h14M16 12.5h14M16 16h9" stroke="currentColor" stroke-width=".8"/>',
+    arayis:   '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><circle cx="18" cy="6.5" r="2.4" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M6 10.5h24M6 14h24M6 17h18M22 20.5h8" stroke="currentColor" stroke-width=".7"/>',
+    qerar:    '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><path d="M12 7h12" stroke="currentColor" stroke-width="1.4"/><path d="M6 11.5h9M21 11.5h9" stroke="currentColor" stroke-width=".9"/><path d="M6 15h24M6 18h24M6 21h14" stroke="currentColor" stroke-width=".6"/>',
+    muqavile: '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><rect x="6" y="5.5" width="10" height="6" fill="none" stroke="currentColor" stroke-width=".7"/><rect x="20" y="5.5" width="10" height="6" fill="none" stroke="currentColor" stroke-width=".7"/><path d="M6 15h24M6 17.5h24" stroke="currentColor" stroke-width=".6"/><path d="M6 21h10M20 21h10" stroke="currentColor" stroke-width=".9"/>',
+    teleqram: '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><path d="M2.5 5.5h31M2.5 20.5h31" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2"/><path d="M7 10h22M7 13h22M7 16h14" stroke="currentColor" stroke-width=".8"/>',
+    vesiqe:   '<rect x="2.5" y="4.5" width="31" height="17" rx="2" fill="none" stroke="currentColor"/><rect x="5.5" y="7.5" width="7" height="8" fill="none" stroke="currentColor" stroke-width=".7"/><path d="M15 8.5h15M15 11.5h15M15 14.5h9" stroke="currentColor" stroke-width=".7"/><path d="M5.5 18h25M5.5 19.8h25" stroke="currentColor" stroke-width=".9" stroke-dasharray="1 1"/>'
   };
 
   function curLayout()  { return state.layout  || (state.tpl && state.tpl.layout)  || 'notarial'; }
@@ -209,7 +235,9 @@
   /* ---------------- kateqoriya / şablon ---------------- */
   function renderTabs() {
     $('#tabs').innerHTML = CATEGORIES.map(function (c) {
-      return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (state.cat === c.id) + '">' + esc(c.name) + '</button>';
+      var n = TEMPLATES.filter(function (t) { return t.cat === c.id; }).length;
+      return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (state.cat === c.id) + '">' +
+        esc(c.name) + '<span class="n">' + n + '</span></button>';
     }).join('');
     var cat = CATEGORIES.filter(function (c) { return c.id === state.cat; })[0];
     $('#catBlurb').textContent = cat ? cat.blurb : '';
@@ -241,7 +269,7 @@
       return '<button type="button" class="tmpl" data-tpl="' + t.id + '"' +
         ' aria-pressed="' + (!!state.tpl && state.tpl.id === t.id) + '"' +
         ' style="border-left-color:' + LAYOUT_EDGE[t.layout] + '">' +
-        '<span class="code">ZNP-' + String(idx).padStart(2, '0') + ' · ' + esc(t.tag) + '</span>' +
+        '<span class="code">ZNP-' + String(idx).padStart(3, '0') + ' · ' + esc(t.tag) + '</span>' +
         '<h3>' + esc(t.title) + '</h3>' +
         '<span class="desc">' + esc(t.powers.split('\n')[0]) + '</span>' +
         '<span class="foot"><span>' + esc(DOCGEN.LAYOUT_NAMES[t.layout]) + '</span></span>' +
@@ -397,7 +425,7 @@
       });
     }).catch(function (e) {
       if (e && e.error === 'no_credits') { renderPacks(); openModal('#payModal'); }
-      else toast('Reyestrə yazmaq alınmadı', 'err');
+      else toast(apiError(e, 'Reyestrə yazmaq alınmadı'), 'err');
     });
   }
 
@@ -528,7 +556,7 @@
         state.doc = d; updatePreview(); renderMine();
         toast('Sənəd hazırlandı: ' + d.regNo);
         $('#preview').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }).catch(function () { toast('Sənəd yaradıla bilmədi', 'err'); })
+      }).catch(function (e) { toast(apiError(e, 'Sənəd yaradıla bilmədi'), 'err'); })
         .then(function () { $('#btnCreate').disabled = false; });
     };
 
@@ -566,7 +594,7 @@
         toast(r && r.deleted ? 'Sənəd silindi' : 'Şikayət qeydə alındı');
         if (r && r.deleted && state.doc && state.doc.regNo === repTarget) { state.doc = null; updatePreview(); }
         renderMine();
-      }).catch(function () { toast('Göndərilə bilmədi', 'err'); });
+      }).catch(function (e) { toast(apiError(e, 'Göndərilə bilmədi'), 'err'); });
     };
 
     var m = location.pathname.match(/\/r\/(ZRF-\d{4}-\d{4})/i) || location.hash.match(/#r\/(ZRF-\d{4}-\d{4})/i);

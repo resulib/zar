@@ -171,6 +171,19 @@ input, textarea, select { font: inherit; }
    Kateqoriyalar və şablon şbakası
    ========================================================================== */
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 20px; }
+/* Kateqoriya zolağı: 11 kateqoriya tək sətrə sığmır, ona görə sarınan çiplər.
+   `.segmented` tək sətirlik idi və kəsilirdi. */
+.catbar { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 420px; }
+.catbar button {
+  padding: 8px 12px; background: var(--sheet); cursor: pointer;
+  border: 1px solid var(--rule-hard); border-radius: 2px;
+  font: 500 12px/1 var(--sans); color: var(--ink-2); white-space: nowrap;
+  display: inline-flex; align-items: baseline; gap: 6px;
+}
+.catbar button:hover { background: var(--tint); border-color: var(--ink-3); }
+.catbar button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+.catbar .n { font: 500 10px/1 var(--mono); opacity: .55; }
+
 .segmented { display: flex; border: 1px solid var(--rule-hard); border-radius: 2px; overflow: hidden; background: var(--sheet); }
 .segmented button {
   padding: 9px 15px; background: none; border: 0; cursor: pointer;
@@ -353,6 +366,7 @@ input, textarea, select { font: inherit; }
   .search { margin-left: 0; width: 100%; }
   .row2 { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; gap: 24px; }
-  .layouts { grid-template-columns: repeat(3, 1fr); }
+  .layouts { grid-template-columns: repeat(4, 1fr); }
+  .catbar { flex: 1 1 100%; }
   .doc-row { grid-template-columns: 1fr; }
 }

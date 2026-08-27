@@ -1,7 +1,8 @@
 /* Bütün şablonları render edir: 5 tam ölçülü nümunə + 36-lıq kontakt vərəqi */
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const ROOT = '/root/zarafat/frontend';
+const ROOT_DIR = path.join(__dirname, '..');
+const ROOT = path.join(ROOT_DIR, 'frontend');
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
 const server = http.createServer((req, res) => {
@@ -15,18 +16,18 @@ const server = http.createServer((req, res) => {
 
 (async () => {
   await new Promise(r => server.listen(4199, r));
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+  const b = await chromium.launch();
   const page = await b.newPage({ viewport: { width: 900, height: 1300 }, deviceScaleFactor: 1.6 });
   const errs = [];
   page.on('pageerror', e => errs.push(e.message));
   await page.goto('http://localhost:4199/', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(700);
 
-  const mk = (tplId, paid, verified) => page.evaluate(([id, paid, verified]) => {
+  const mk = (tplId, paid, verified, layoutOverride) => page.evaluate(([id, paid, verified, layoutOverride]) => {
     const t = TEMPLATES.find(x => x.id === id);
     const to = 'Günel Şəkərova', from = 'Elvin Məmmədov';
     const doc = {
-      templateId: t.id, layout: t.layout, palette: t.palette,
+      templateId: t.id, layout: layoutOverride || t.layout, palette: t.palette,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
       title: t.title, to, from, powers: t.powers, penalty: t.penalty,
@@ -36,24 +37,24 @@ const server = http.createServer((req, res) => {
       verifyUrl: 'https://zarafat.az/r/ZRF-2026-' + (1000 + (t.title.length * 137) % 9000)
     };
     return DOCGEN.a4(doc, { idPrefix: 'x' + id.replace(/[^a-z0-9]/gi, ''), verified: verified });
-  }, [tplId, paid, verified]);
+  }, [tplId, paid, verified, layoutOverride]);
 
-  const outDir = '/root/zarafat/tools/render';
+  const outDir = path.join(ROOT_DIR, 'tools', 'render');
   fs.rmSync(outDir, { recursive: true, force: true }); fs.mkdirSync(outDir, { recursive: true });
 
-  const layouts = ['notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya'];
+  const layouts = await page.evaluate(() => DOCGEN.LAYOUTS);
   const tpls = await page.evaluate(() => TEMPLATES.map(t => ({ id: t.id, layout: t.layout, palette: t.palette, title: t.title })));
 
   // 1) hər layout üçün bir tam ölçülü nümunə (ödənişli)
   for (const L of layouts) {
-    const t = tpls.find(x => x.layout === L);
-    const svg = await mk(t.id, true, false);
+    const t = tpls.find(x => x.layout === L) || tpls[0];   // hələ şablonu olmayan yeni dizayn
+    const svg = await mk(t.id, true, false, L);
     await page.setContent('<body style="margin:0;width:794px">' + svg + '</body>');
     await page.setViewportSize({ width: 794, height: 1123 });
     await page.screenshot({ path: `${outDir}/full-${L}.png` });
   }
 
-  // 2) kontakt vərəqi: bütün 36 şablon kiçik ölçüdə
+  // 2) kontakt vərəqi: bütün şablonlar kiçik ölçüdə
   const all = [];
   for (const t of tpls) all.push(await mk(t.id, true, false));
   const grid = all.map((svg, i) =>

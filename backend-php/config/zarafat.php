@@ -58,7 +58,10 @@ return [
         'power_lines' => 8,
     ],
 
-    'layouts'  => ['notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya'],
+    'layouts'  => [
+        'notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya',
+        'arayis', 'qerar', 'muqavile', 'teleqram', 'vesiqe',
+    ],
     'palettes' => ['gold', 'steel', 'burgundy', 'forest', 'ink'],
 
     // Vergüllə ayrılmış ilkin qadağan siyahısı; admin paneldən genişləndirilir.

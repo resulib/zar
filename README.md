@@ -3,7 +3,7 @@
 Rəsmi görünüşlü, tamamilə əyləncə məqsədli sənəd generatoru. Cütlüklər, dostlar və iş yeri
 üçün möhürlü, imzalı, QR kodlu sənədlər; 1 AZN ödənişlə reyestrdə qeydiyyat.
 
-**36 şablon · 3 kateqoriya · 5 fərqli sənəd dizaynı · 5 rəng palitrası.**
+**132 şablon · 11 kateqoriya · 10 fərqli sənəd dizaynı · 5 rəng palitrası.**
 İstifadəçi istənilən şablona istənilən dizaynı və rəngi tətbiq edə bilər.
 
 ---
@@ -58,9 +58,9 @@ frontend/
   site.css        # əl ilə yazılmış üslub sistemi (CSS framework yoxdur)
   fonts.css       # @font-face — lokal IBM Plex
   fonts/          # 8 woff2 faylı, Azərbaycan əlifbasına görə kəsilmiş (cəmi 27 KB)
-  templates.js    # 36 sənəd şablonu (3 kateqoriya, hər birinə dizayn təyin olunub)
+  templates.js    # 132 sənəd şablonu (11 kateqoriya, hər birinə dizayn təyin olunub)
   qr.js           # sıfırdan yazılmış QR kodlayıcı (byte mode, ECC M, v1–6)
-  doc.js          # SVG sənəd generatoru: 5 layout + 5 palitra (A4 + Story 1080×1920)
+  doc.js          # SVG sənəd generatoru: 10 layout + 5 palitra + təhlükəsizlik çapı (A4 + Story)
   app.js          # tətbiq məntiqi, API qatı, localStorage fallback
 backend-php/        # ƏSAS BACKEND — Laravel 13 / PHP 8.4
   app/Support/      # framework-siz məntiq (paketlər, imza, moderasiya, reyestr nömrəsi)
@@ -103,19 +103,49 @@ qurulub — zarafat məhz bu ciddi üzlə məzmun arasındakı ziddiyyətdən do
 
 | Dizayn | Görünüş | Nə üçün uyğundur |
 |---|---|---|
-| `notarial` | Pergament kağız, qızılı ikiqat haşiyə, künc ornamentləri, guilloche fon | Etibarnamə, müqavilə, səlahiyyətnamə |
-| `blank` | Dövlət blankı üslubu: sol qrif, sağda qeydiyyat qutusu, «TƏSDİQ EDİRƏM» bloku, sahə cədvəli, nömrələnmiş bəndlər | Fərman, protokol, akt, vədnamə |
-| `diplom` | Qalın ornamental haşiyə, lentli medalyon, iri kalliqrafik ad, iki imza bloku | Diplom, təltif, barışıq sazişi |
+| `notarial` | Pergament kağız, qızılı ikiqat haşiyə, künc ornamentləri, guilloche fon | Etibarnamə, akt, səlahiyyətnamə |
+| `blank` | Dövlət blankı üslubu: sol qrif, sağda qeydiyyat qutusu, «TƏSDİQ EDİRƏM» bloku, sahə cədvəli | Fərman, protokol, vədnamə |
+| `diplom` | Qalın ornamental haşiyə, lentli medalyon, iri kalliqrafik ad, iki imza bloku | Diplom, təltif, fəxri ad |
 | `sertifikat` | Müasir: sol tərəfdə tünd rəngli şaquli zolaq, iki sütunlu məzmun | Sertifikat, nəzarət səlahiyyəti |
-| `lisenziya` | Vəsiqə kartı: foto yeri, holoqram, punktir sahə cədvəli | Lisenziya, vəsiqə, icazə |
+| `lisenziya` | Vəsiqə kartı: foto yeri, holoqram, punktir sahə cədvəli | Lisenziya, icazə |
+| `arayis` | Klassik dövlət blankı: doldurulmuş gerb diski, ikiqat xətt, sol «Çıxış №» qrifi, sağ ünvan bloku, seyrək nöqtəli cədvəl | Arayış, təsdiq, icazə |
+| `qerar` | Bilərəkdən bəzəksiz məhkəmə qərarı: iş nömrəsi, xətlə əhatələnmiş «MÜƏYYƏN ETDİ» / «QƏRARA ALDI» blokları, hakim + katib imzaları | Qərar, hökm, intizam işi |
+| `muqavile` | Tərəflər qutusu, `1.1.` / `2.1.` maddə nömrələmə, altda ikili imza şəbəkəsi, ortada möhür | Müqavilə, saziş, protokol |
+| `teleqram` | Teletayp lenti: zolaqlı kənarlar, tam böyük hərflər, monospace mətn, cümlə sonu « TCK » | Bildiriş, xəbərdarlıq, təbrik |
+| `vesiqe` | Pasport məlumat səhifəsi: ikidilli sahələr, foto + kölgə portret + holoqram, ICAO TD3 MRZ zolağı | Vəsiqə, şəxsiyyət sənədi |
 
 Palitralar: `gold` (qızılı), `steel` (polad mavi), `burgundy` (bordo), `forest` (zümrüd), `ink` (qrafit).
 
-Hər dizayn məcburi elementləri saxlayır: qırmızı dairəvi möhür («ƏYLƏNCƏ MƏQSƏDLİDİR» + «PARODİYA»),
-saxta notarius imzası, ştrix-kod, QR kod (ödənişdən sonra), diaqonal su nişanı və alt disclaimer zolağı.
+### Təhlükəsizlik çapı
 
-Yeni dizayn əlavə etmək üçün `doc.js`-də bir `L_ad(doc, C)` funksiyası yazıb `LAYOUTS` obyektinə
-qeyd etmək kifayətdir — ortaq elementlər (möhür, QR, su nişanı, disclaimer) hazır funksiyalardır.
+Hər dizayn eyni «blank avadanlığını» daşıyır: heraldik gerb (halqa, ulduz, dəfnə çələngi, lent),
+haşiyə boyunca **mikromətn**, təhlükəsizlik **lifləri**, solğun **kölgə təsvir**, **quru (relyef) möhür**,
+qırmızı dairəvi möhür, saxta notarius imzası, notarial təsdiq düsturu, **real oxunan Code-39 barkod**,
+QR kod (ödənişdən sonra), qatlama izləri, `Forma № ZNP-…` blank nömrəsi, `Səh. 1 / 1`,
+diaqonal su nişanı və alt disclaimer zolağı. `arayis`, `qerar` və `teleqram` əlavə olaraq mavi
+«DAXİL OLDU» kargüzarlıq ştampı alır; `vesiqe` isə format baxımından düzgün ICAO TD3 MRZ daşıyır.
+
+**Parodiya nişanları güclənir, zəifləmir.** Sənəd nə qədər inandırıcı görünürsə, saxta olduğu bir o
+qədər aydın yazılır:
+
+- Mikromətnin özü disclaimer-dir: `ZARAFAT • HÜQUQİ QÜVVƏSİ YOXDUR • PARODİYA •` təkrarı.
+- Kölgə təsvirin lenti «HÜQUQİ QÜVVƏSİ YOXDUR» yazır.
+- MRZ-in «optional data» sahəsində (29–42 mövqe) hərfi mənada `PARODIYA` yazılır — PNG-ni oxuyan
+  istənilən OCR tətbiqi sahibin şəxsi nömrəsini belə göstərəcək.
+- Gerb uydurmadır: alov yoxdur, palıd-sünbül çələngi yoxdur, ulduz palitranın rəngini götürür.
+- `qerar` uydurma məhkəmə adı (`ZARAFAT MƏHKƏMƏSİ`), `arayis` isə uydurma qurum adı işlədir.
+- `inner()` funksiyası qapı rolunu oynayır: su nişanı və disclaimer olmadan heç bir layout çıxa bilmir —
+  yeni dizayn yazan onları unutsa belə avtomatik əlavə olunur.
+
+### Yeni dizayn əlavə etmək
+
+`doc.js`-də bir `L_ad(doc, C)` funksiyası yazıb `LAYOUTS` və `LAYOUT_NAMES`-ə qeyd etmək kifayətdir —
+substrat üçün `paperBase()`, avadanlıq üçün `pageFurniture()` hazır köməkçilərdir. Sonra `app.js`-də
+`LAYOUT_EDGE` və `LAYOUT_ICON`, backend-də isə `config/zarafat.php` ağ siyahısı genişləndirilir.
+
+> **Üç qat qaydası.** `paperBase()` `var bs = out.length` sətrindən **əvvəl**, `pageFurniture()` isə
+> `centerBody(...)` çağırışından **sonra** gəlir. `bs` ilə `centerBody` arasına salınan hər şey
+> sürüşən gövdə qrupuna qoşulur və 130px-ə qədər yerini dəyişir.
 
 ---
 
@@ -123,15 +153,18 @@ qeyd etmək kifayətdir — ortaq elementlər (möhür, QR, su nişanı, disclai
 
 | Test | Nə yoxlayır | Nəticə |
 |---|---|---|
-| `node tools/verify-qr.js` | QR matrisinin `qrcode` kitabxanası ilə bit-bit uyğunluğu | 6/6 |
+| `npm run test:qr` | QR matrisinin `qrcode` kitabxanası ilə bit-bit uyğunluğu | 6/6 |
+| `npm run test:barcode` | Code-39 cədvəlinin invariantları + kodlayıcının geri oxunması | 19/19 |
+| `npm run test:doc` | 10 layout × 5 palitra: `<g>` balansı, parodiya nişanları, element sayı, MRZ | 66/66 |
+| `npm run test:templates` | 132 şablon: unikal id, kateqoriya uyğunluğu, mətn büdcəsi, dizayn paylanması | 22/22 |
 | `node tools/decode-test.js` | Yaradılan QR-ın `jsQR` ilə real skan olunması | 4/4 |
 | `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, reyestr nömrəsi, moderasiya, mətn təmizləmə | 51/51 |
 | `php backend-php/tests/audit.php` | PHP sintaksisi, Blade balansı, route adları, view yolları, PSR-4 | 6/6 |
 | `node backend-node/test-api.js` | Köhnə Node API-si: kredit, publish, reyestr, icazələr | 30/30 |
 | `node tools/e2e.js` | Brauzer + backend: dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 14/14 |
-| `node tools/dist-check.js` | Tək fayllıq bundle `file://` rejimində, 5 dizaynın hamısı | 10/10 |
+| `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 10 dizaynın hamısı | — |
 | `node tools/shots.js` | Masaüstü + mobil ekran görüntüləri, şrift yoxlaması (`tools/shots/`) | xətasız |
-| `node tools/render-all.js` | 36 şablonun hamısını render edir (`tools/render/`) | xətasız |
+| `npm run render` | 10 dizaynın tam ölçülü nümunəsi + 132 şablonluq kontakt vərəqi | xətasız |
 
 Eksport edilən PNG-dəki QR kod real decoder ilə oxunur və reyestr linkinə aparır.
 

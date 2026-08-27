@@ -54,7 +54,8 @@ function flagged(text) {
   return bannedWords().some(w => t.includes(w));
 }
 
-const LAYOUTS  = ['notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya'];
+const LAYOUTS  = ['notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya',
+                  'arayis', 'qerar', 'muqavile', 'teleqram', 'vesiqe'];
 const PALETTES = ['gold', 'steel', 'burgundy', 'forest', 'ink'];
 
 function serialize(doc, { includeOwner = false } = {}) {

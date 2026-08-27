@@ -1,15 +1,17 @@
 /* Uçdan-uca: real backend + brauzer */
 const { chromium } = require('playwright');
+const path = require('path');
+const ROOT_DIR = path.join(__dirname, '..');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
 const DB = '/tmp/zarafat-e2e-' + Date.now() + '.db';
 const env = Object.assign({}, process.env, {
   PORT: '3111', DB_PATH: DB, PUBLIC_URL: 'http://localhost:3111',
-  FRONTEND_DIR: '/root/zarafat/frontend', LOG_LEVEL: 'warn'
+  FRONTEND_DIR: path.join(ROOT_DIR, 'frontend'), LOG_LEVEL: 'warn'
 });
 
-const srv = spawn('node', ['/root/zarafat/backend-node/server.js'], { env, stdio: ['ignore', 'pipe', 'pipe'] });
+const srv = spawn('node', [path.join(ROOT_DIR, 'backend-node', 'server.js')], { env, stdio: ['ignore', 'pipe', 'pipe'] });
 srv.stderr.on('data', d => process.stderr.write('[server] ' + d));
 
 let pass = 0, fail = 0;
@@ -24,7 +26,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     await wait(250);
   }
 
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
+  const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 2 });
   const p = await ctx.newPage();
   const errs = [];
@@ -87,7 +89,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   await wait(1600);
   const msg = await p2.$eval('#searchMsg', e => e.innerText);
   check('QR linki avtomatik təsdiq göstərir', (/rəsmi/i.test(msg) && /olunub/i.test(msg)), msg.split('\n')[0]);
-  await p2.screenshot({ path: '/root/zarafat/tools/out-qr-landing.png' });
+  await p2.screenshot({ path: path.join(ROOT_DIR, 'tools', 'out-qr-landing.png') });
   await p2.close();
 
   // PNG eksportu (server rejimində)
@@ -102,10 +104,10 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     cx.drawImage(img, 0, 0, c.width, c.height);
     return c.toDataURL('image/png').split(',')[1];
   }, reg);
-  fs.writeFileSync('/root/zarafat/tools/out-e2e.png', Buffer.from(b64, 'base64'));
+  fs.writeFileSync(path.join(ROOT_DIR, 'tools', 'out-e2e.png'), Buffer.from(b64, 'base64'));
 
   const { PNG } = require('pngjs'); const jsQR = require('jsqr');
-  const png = PNG.sync.read(fs.readFileSync('/root/zarafat/tools/out-e2e.png'));
+  const png = PNG.sync.read(fs.readFileSync(path.join(ROOT_DIR, 'tools', 'out-e2e.png')));
   const q = jsQR(new Uint8ClampedArray(png.data), png.width, png.height);
   check('eksport PNG-dəki QR reyestr linkinə aparır', q && q.data === 'http://localhost:3111/r/' + reg, q && q.data);
 

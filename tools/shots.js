@@ -1,7 +1,8 @@
 /* Sayt ekran görüntüləri: masaüstü (tam səhifə), mobil, və bir neçə fraqment */
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const ROOT = '/root/zarafat/frontend';
+const ROOT_DIR = path.join(__dirname, '..');
+const ROOT = path.join(ROOT_DIR, 'frontend');
 const MIME = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.woff2':'font/woff2' };
 
 const server = http.createServer((req, res) => {
@@ -16,8 +17,8 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 
 (async () => {
   await new Promise(r => server.listen(4188, r));
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
-  const out = '/root/zarafat/tools/shots';
+  const b = await chromium.launch();
+  const out = path.join(ROOT_DIR, 'tools', 'shots');
   fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out, { recursive: true });
 
   const errs = [];

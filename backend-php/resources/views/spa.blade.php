@@ -98,7 +98,7 @@
     </p>
 
     <div class="toolbar">
-      <div class="segmented" id="tabs"></div>
+      <div class="catbar" id="tabs"></div>
       <div class="search">
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>

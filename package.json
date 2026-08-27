@@ -12,7 +12,10 @@
     "test:dist": "node tools/dist-check.js",
     "shots": "node tools/shots.js",
     "render": "node tools/render-all.js",
-    "build:laravel": "node tools/build-laravel.js"
+    "build:laravel": "node tools/build-laravel.js",
+    "test:barcode": "node tools/verify-barcode.js",
+    "test:templates": "node tools/check-templates.js",
+    "test:doc": "node tools/check-doc.js"
   },
   "keywords": [],
   "author": "",
