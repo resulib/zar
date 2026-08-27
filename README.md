@@ -18,17 +18,16 @@ saxlanılır və başlıqda «Demo rejimi» yazısı görünür.
 
 ### Variant B — Laravel backend ilə (tam məhsul)
 
+Layihənin kökündə tək əmr:
+
 ```bash
-cd backend-php
-composer install
-cp .env.example .env
-php artisan key:generate
-touch database/database.sqlite
-php artisan migrate --seed
-php artisan serve            # http://localhost:8000
+bash setup.sh                # Windows: .\setup.ps1
 ```
 
-Addım-addım təlimat: **[QURASDIRMA.md](QURASDIRMA.md)**
+Skript mühiti yoxlayır, paketləri quraşdırır, `.env` və bazanı hazırlayır, admin hesabı
+açır və serveri başladır. Problem olarsa: `php backend-php/doctor.php`
+
+Addımları əl ilə etmək üçün: **[QURASDIRMA.md](QURASDIRMA.md)**
 
 | Ünvan | Nədir |
 |---|---|
@@ -75,6 +74,8 @@ tools/
   verify-qr.js    # QR kodlayıcının referans kitabxana ilə müqayisəsi
   e2e.js          # brauzer + backend uçdan-uca testi
 build.js          # tək fayllıq bundle
+setup.sh · setup.ps1  # tək əmrlə lokal quraşdırma
+backend-php/doctor.php # mühit diaqnostikası
 ```
 
 ---

@@ -12,6 +12,37 @@ Backend **Laravel 13 / PHP 8.4**, frontend isə adi HTML/CSS/JS-dir (build təl�
 
 ---
 
+## Ən sürətli yol — tək əmr
+
+Faylları açandan sonra layihənin kökündə:
+
+**macOS / Linux / WSL / Git Bash**
+
+```bash
+bash setup.sh
+```
+
+**Windows PowerShell**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
+```
+
+Skript hər şeyi özü edir: mühiti yoxlayır, `composer install` işlədir, `.env` yaradır,
+`APP_KEY` generasiya edir, SQLite faylını qurur, cədvəlləri yaradır, admin hesabı açır,
+icazələri düzəldir və istəsəniz serveri başladır.
+
+Nəsə alınmasa, diaqnostika işlədin — hansı addımın pozulduğunu və necə düzəldiləcəyini göstərir:
+
+```bash
+php backend-php/doctor.php
+```
+
+Aşağıdakı bölmələr həmin addımları əl ilə etmək istəyənlər üçündür.
+
+---
+
 ## 0. Nə lazımdır
 
 | Alət | Versiya | Yoxlama |
@@ -245,10 +276,10 @@ chmod -R 775 storage bootstrap/cache
 ## 9. Yoxlama əmrləri
 
 ```bash
+php backend-php/doctor.php      # mühit diaqnostikası — problem varsa nə etməli
 cd backend-php
-
-php tests/logic.php     # framework-siz məntiq: paketlər, imza, moderasiya (51 test)
-php tests/audit.php     # sintaksis, Blade balansı, route adları, PSR-4
+php tests/logic.php             # framework-siz məntiq: paketlər, imza, moderasiya (51 test)
+php tests/audit.php             # sintaksis, Blade balansı, route adları, PSR-4
 ```
 
 Frontend tərəfi (Node tələb olunur, layihənin kökündən):
