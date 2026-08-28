@@ -202,6 +202,7 @@ substrat üçün `paperBase()`, avadanlıq üçün `pageFurniture()` hazır köm
 | `node tools/e2e.js` | Brauzer + backend: rejim keçidi, dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 17/17 |
 | `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 12 dizayn + anket + rejim keçidi | 28/28 |
 | `npm run test:admin` | Admin kataloq paneli: variant siyahıları, canlı önizləmə, sxem validasiyası | 48/48 |
+| `npm run test:viewer` | Baxış səhifəsi: yalnız sənəd, zolaq, çap, PDF quruluşu, beş vəziyyət | 28/28 |
 | `node tools/shots.js` | Masaüstü + mobil ekran görüntüləri, şrift yoxlaması (`tools/shots/`) | xətasız |
 | `npm run render` | Hər tonda 12 dizaynın nümunəsi + tona görə iki kontakt vərəqi (216 şablon) | xətasız |
 
@@ -259,6 +260,22 @@ istifadəçilər (kredit vermə, bloklama) · şikayət növbəsi · parametrlə
 Panellər saytın öz dizayn sistemində əl ilə yazılıb — hazır admin paneli istifadə olunmayıb.
 
 ---
+
+## Sənədi yaydıqdan sonra
+
+Sənəd rəsmiləşdiriləndən sonra dörd əməliyyat açılır:
+
+- **PDF yüklə** — A4, 288 dpi, tək səhifə. PDF sıfırdan yazılıb: kitabxana və CDN yoxdur,
+  eynilə QR kodlayıcısı kimi.
+- **HD PNG** və **Story formatı** (1080×1920). Telefonda «Story paylaş» nativ paylaşma vərəqini
+  açır — Instagram, WhatsApp, Telegram; şəkil və link birlikdə gedir. Masaüstündə sadəcə yüklənir.
+- **Reyestr linki** — panoya kopyalanır.
+
+Linki açan adam **yalnız sənədi görür**: `/r/ZRF-2026-9482` ayrıca, yüngül səhifədir (~169 KB,
+saytın özü ~390 KB). Nə başlıq, nə menyu, nə futer — tünd fonda vərəq və altda kiçik zolaq:
+PDF · PNG · Story · Link · Şikayət. `Ctrl+P` ilə çap edəndə zolaq da yox olur.
+Müddəti bitmiş və ləğv edilmiş sənədlərdə vərəqin üstündə nazik izah zolağı çıxır; reyestrdə
+olmayan nömrədə isə yalnız sərt xəbərdarlıq göstərilir.
 
 ## Ödəniş
 

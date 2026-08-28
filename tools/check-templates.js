@@ -20,7 +20,18 @@ vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', 'doc.js'), 'utf8
 const LAYOUTS = s2.window.DOCGEN.LAYOUTS, PALETTES = s2.window.DOCGEN.PALETTES, TONES = s2.window.DOCGEN.TONES;
 
 /* Server bu hədləri sükutla kəsir — config/zarafat.php */
-const LIMIT = { title: 120, to: 60, from: 60, preamble: 700, powers: 600, penalty: 300, powerLines: 8, id: 40, label: 40 };
+const LIMIT = { title: 120, to: 60, from: 60, preamble: 700, powers: 600, penalty: 300, powerLines: 8, id: 40, label: 40,
+                signTitle: 40, signOrg: 60 };
+/* Qurum adı masthead-in altındakı sətrdir — 794px enində rahat sığması üçün
+   DB sütunundan (60) bir az dar tutulur. */
+const ORG_AIM = 56;
+/* Uydurma qurum real bir qurumu təqlid etməməlidir (CLAUDE.md hüquqi qalxanı).
+   Diqqət: JS-in `i` bayrağı «İ»-ni tutmur, ona görə fraqmentlər hərfi müqayisə
+   olunur və içində «İ» olan variantlar ayrıca sadalanır. «Dövlət Şurası»
+   qadağan DEYİL — uydurma qurum ailəsinin bir hissəsidir. */
+const ORG_BAN = ['Nazirliy', 'Nazirlər Kabineti', 'Azərbaycan Respublikası',
+                 'Dövlət Agentliyi', 'Dövlət Komitəsi', 'Prezident', 'Prokurorluq',
+                 'Polis', 'FIFA', 'UEFA', 'UNESCO', 'Interpol', 'İnterpol'];
 /* Vizual olaraq rahat oxunan diapazon */
 const AIM = { title: 52, tag: 24, preamble: [140, 380], powers: 300, penalty: [65, 240] };
 
@@ -143,8 +154,25 @@ T.forEach(t => {
   ['toLabel', 'fromLabel', 'powersLabel', 'penaltyLabel'].forEach(f => {
     if (t[f] && t[f].length > LIMIT.label) over.push(t.id + ' ' + f + ' ' + t[f].length);
   });
+  ['signTitle', 'signOrg'].forEach(f => {
+    if (t[f] && t[f].length > LIMIT[f]) over.push(t.id + ' ' + f + ' ' + t[f].length);
+  });
 });
 check('heç bir sahə server limitini aşmır', over.length === 0, over);
+
+console.log('\n6b. Verən qurum (signOrg)');
+const noOrg = T.filter(t => !t.signOrg || !t.signOrg.trim()).map(t => t.id);
+check('hər şablonun qurum adı var', noOrg.length === 0, noOrg);
+
+const wideOrg = T.filter(t => t.signOrg && t.signOrg.length > ORG_AIM)
+                 .map(t => t.id + ' ' + t.signOrg.length);
+check('qurum adı masthead sətrinə sığır (≤' + ORG_AIM + ')', wideOrg.length === 0, wideOrg);
+
+const realOrg = [];
+T.forEach(t => ORG_BAN.forEach(b => {
+  if (t.signOrg && t.signOrg.indexOf(b) >= 0) realOrg.push(t.id + ' → ' + b);
+}));
+check('heç bir qurum adı real qurumu təqlid etmir', realOrg.length === 0, realOrg);
 
 console.log('\n7. Vizual diapazon (xəbərdarlıq)');
 const w = [];

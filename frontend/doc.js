@@ -162,6 +162,18 @@ window.DOCGEN = (function () {
     return upper(fallback) === fallback ? x : x.charAt(0) + lower(x.slice(1));
   }
 
+  /* Masthead-in altındakı «verən qurum» sətri. Şablonun `signOrg` sahəsi
+     doludursa onu, boşdursa dizaynın öz mətnini yazır. `caps` slotun
+     registrindəndir: qrifi böyük hərflə yazan dizaynlarda true, cümlə
+     registrində olanlarda (blank, müqavilə) false.
+     `fallback` boş sətirdirsə (öz alt sətri olmayan üç dizayn) `signOrg`
+     yox ikən heç nə emissiya olunmur — çıxış bayt-bayt dəyişmir
+     (bax: tools/hash-layouts.js). */
+  function qurumSetri(doc, fallback, caps, x, y, o) {
+    var s = doc.signOrg ? (caps ? upper(doc.signOrg) : doc.signOrg) : fallback;
+    return s ? T(s, x, y, o) : '';
+  }
+
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -950,7 +962,7 @@ window.DOCGEN = (function () {
 
     out += crest(W / 2, 116, 40, P);
     out += T(CUR.org, W / 2, 186, { anchor: 'middle', size: 16, weight: 'bold', fill: P.head, ls: 4.5 });
-    out += T(CUR.orgSub + ' · ZARAFAT.AZ', W / 2, 205, { anchor: 'middle', size: 9, fam: SANS, fill: P.muted, ls: 2.6 });
+    out += qurumSetri(doc, CUR.orgSub + ' · ZARAFAT.AZ', true, W / 2, 205, { anchor: 'middle', size: 9, fam: SANS, fill: P.muted, ls: 2.6 });
     out += '<path d="M ' + M + ' 220 H ' + (W - M) + '" stroke="' + P.accent + '" stroke-width="1"/>';
     out += '<path d="M ' + (W / 2 - 40) + ' 220 L ' + (W / 2) + ' 214 L ' + (W / 2 + 40) + ' 220 L ' + (W / 2) + ' 226 Z" fill="' + P.paper + '" stroke="' + P.accent + '" stroke-width="1"/>';
 
@@ -1045,7 +1057,7 @@ window.DOCGEN = (function () {
 
     out += crest(M + 26, 74, 26, P, { sub: false });
     out += T(CUR.org, M + 62, 66, { size: 12.5, weight: 'bold', fam: SANS, fill: P.head, ls: 1.6 });
-    out += T('Qeyri-rəsmi sənədlər vahid reyestri', M + 62, 82, { size: 9, fam: SANS, fill: P.muted, ls: 0.6 });
+    out += qurumSetri(doc, 'Qeyri-rəsmi sənədlər vahid reyestri', false, M + 62, 82, { size: 9, fam: SANS, fill: P.muted, ls: 0.6 });
     out += T('zarafat.az · uydurma qurum', M + 62, 96, { size: 8.4, fam: SANS, fill: P.muted, ls: 0.6 });
 
     var bx = W - M - 208;
@@ -1163,6 +1175,7 @@ window.DOCGEN = (function () {
     out += '<circle cx="' + mx + '" cy="' + my + '" r="46" fill="' + P.paper + '" stroke="url(#' + idp + '-metal)" stroke-width="5"/>';
     out += crest(mx, my, 30, P, { banner: '' });
     out += T(CUR.org, W / 2, 268, { anchor: 'middle', size: 11.5, fam: SANS, weight: 'bold', fill: P.muted, ls: 4 });
+    out += qurumSetri(doc, '', true, W / 2, 286, { anchor: 'middle', size: 8.4, fam: SANS, fill: P.muted, ls: 2.4 });
 
     var bs = out.length;                                  /* --- gövdə --- */
 
@@ -1246,6 +1259,7 @@ window.DOCGEN = (function () {
     out += crest(BAND / 2, 56, 24, P, { mono: P.accentL, sub: false });
     out += T('2026', BAND / 2, H - 46, { anchor: 'middle', size: 9, fam: SANS, fill: P.accentL, ls: 1.6 });
 
+    out += qurumSetri(doc, '', true, M, 76, { size: 8.2, fam: SANS, fill: P.muted, ls: 2.4 });
     out += T('SERTİFİKAT', M, 96, { size: 10, fam: SANS, weight: 'bold', fill: P.accent, ls: 5 });
     out += T('№ ' + doc.regNo, W - 56, 96, { anchor: 'end', size: 10, fam: SANS, fill: P.muted, ls: 1.2 });
     out += '<path d="M ' + M + ' 112 H ' + (W - 56) + '" stroke="' + P.accent + '" stroke-width="0.6"/>';
@@ -1350,7 +1364,7 @@ window.DOCGEN = (function () {
     /* --- kağız və başlıq --- */
     out += paperBase(doc, C, { fibers: 75, fold: [10, W - 10] });
     out += T(CUR.org, W / 2, 62, { anchor: 'middle', size: 12, fam: SANS, weight: 'bold', fill: P.head, ls: 4.4 });
-    out += T('QEYRİ-RƏSMİ LİSENZİYALAR REYESTRİ', W / 2, 80, { anchor: 'middle', size: 8.4, fam: SANS, fill: P.muted, ls: 3 });
+    out += qurumSetri(doc, 'QEYRİ-RƏSMİ LİSENZİYALAR REYESTRİ', true, W / 2, 80, { anchor: 'middle', size: 8.4, fam: SANS, fill: P.muted, ls: 3 });
     out += '<path d="M 200 96 H ' + (W - 200) + '" stroke="' + P.accent + '" stroke-width="0.8"/>';
 
     /* --- kart --- */
@@ -1441,7 +1455,7 @@ window.DOCGEN = (function () {
 
     out += crest(W / 2, 92, 34, P, { solid: true });
     out += T(CUR.org, W / 2, 152, { anchor: 'middle', size: 15, weight: 'bold', fill: P.head, ls: 3.5 });
-    out += T(CUR.orgAgency, W / 2, 169, { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.4 });
+    out += qurumSetri(doc, CUR.orgAgency, true, W / 2, 169, { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.4 });
     out += T(CUR.addr, W / 2, 182, { anchor: 'middle', size: 7.4, fam: SANS, fill: P.muted });
     out += '<path d="M ' + M + ' 194 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.6"/>';
     out += '<path d="M ' + M + ' 198 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="0.5"/>';
@@ -1544,7 +1558,8 @@ window.DOCGEN = (function () {
     out += crest(W / 2, 84, 30, P);
     out += T(CUR.courtFrom, W / 2, 142, { anchor: 'middle', size: 10, fam: SANS, fill: P.muted, ls: 3 });
     out += T(CUR.court, W / 2, 166, { anchor: 'middle', size: 18, weight: 'bold', fill: P.head, ls: 4 });
-    out += T(CUR.courtSub, W / 2, 182, { anchor: 'middle', size: 8, fam: SANS, fill: P.muted, ls: 2 });
+    out += T(doc.signOrg ? upper(doc.signOrg) + ' · UYDURMA ORQAN' : CUR.courtSub, W / 2, 182,
+      { anchor: 'middle', size: 8, fam: SANS, fill: P.muted, ls: 2 });
     out += '<path d="M ' + M + ' 194 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.2"/>';
 
     out += intakeStamp(W - M - 158, 208, P, doc);
@@ -1650,7 +1665,7 @@ window.DOCGEN = (function () {
 
     out += crest(M + 22, 70, 22, P, { sub: false });
     out += T(CUR.org, M + 56, 64, { size: 12.5, weight: 'bold', fam: SANS, fill: P.head, ls: 1.6 });
-    out += T('Qeyri-rəsmi müqavilələr reyestri · uydurma qurum', M + 56, 80, { size: 8.6, fam: SANS, fill: P.muted });
+    out += qurumSetri(doc, 'Qeyri-rəsmi müqavilələr reyestri · uydurma qurum', false, M + 56, 80, { size: 8.6, fam: SANS, fill: P.muted });
 
     var bx = W - M - 208;
     out += '<rect x="' + bx + '" y="46" width="208" height="60" fill="none" stroke="' + P.accent + '" stroke-width="1"/>';
@@ -1761,6 +1776,7 @@ window.DOCGEN = (function () {
     out += '<rect x="' + (W - 26) + '" y="26" width="26" height="' + (H - 80) + '" fill="' + TP + '"/>';
 
     out += T('ZNP TELEQRAF', M, 70, { size: 18, weight: 'bold', fam: SANS, fill: P.head, ls: 6 });
+    out += qurumSetri(doc, '', true, M, 87, { size: 8, fam: SANS, fill: P.muted, ls: 1.6 });
     out += '<rect x="' + (W - M - 132) + '" y="50" width="132" height="30" fill="none" stroke="' + P.head + '" stroke-width="1.4"/>';
     out += T('TELEQRAM', W - M - 66, 70, { anchor: 'middle', size: 13, weight: 'bold', fam: SANS, fill: P.head, ls: 2.4 });
     out += '<path d="M ' + M + ' 92 H ' + (W - M) + '" stroke="' + P.head + '" stroke-width="1.4"/>';
@@ -1871,7 +1887,7 @@ window.DOCGEN = (function () {
 
     out += paperBase(doc, C, { fibers: 80, fold: [10, W - 10] });
     out += T(CUR.org, W / 2, 60, { anchor: 'middle', size: 12, fam: SANS, weight: 'bold', fill: P.head, ls: 4.4 });
-    out += T('ŞƏXSİYYƏT VƏSİQƏLƏRİ REYESTRİ · UYDURMA QURUM', W / 2, 78, { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.6 });
+    out += qurumSetri(doc, 'ŞƏXSİYYƏT VƏSİQƏLƏRİ REYESTRİ · UYDURMA QURUM', true, W / 2, 78, { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.6 });
     out += '<path d="M 190 92 H ' + (W - 190) + '" stroke="' + P.accent + '" stroke-width="0.8"/>';
 
     /* --- kart --- */
@@ -1966,7 +1982,7 @@ window.DOCGEN = (function () {
     out += '</g>';
 
     out += T(CUR.org, W / 2, 58, { anchor: 'middle', size: 12, fam: SANS, weight: 'bold', fill: P.head, ls: 4.2 });
-    out += T(upper(doc.signOrg || CUR.orgAgency), W / 2, 76,
+    out += qurumSetri(doc, CUR.orgAgency, true, W / 2, 76,
       { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.6 });
     out += '<path d="M ' + M + ' 92 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.4"/>';
     out += '<path d="M ' + M + ' 96 H ' + (W - M) + '" stroke="' + P.accent + '" stroke-width="0.5"/>';
@@ -2022,7 +2038,7 @@ window.DOCGEN = (function () {
       { size: 8.4, fam: SANS, weight: 'bold', fill: P.accent, ls: 1.6 });
     out += signature(doc.regNo + doc.from, W - M - 190, 848, 178, 38);
     out += '<path d="M ' + (W - M - 190) + ' 890 H ' + (W - M) + '" stroke="' + P.accent + '" stroke-width="0.7"/>';
-    out += T(doc.signOrg || CUR.notaryLine, W - M - 190, 902, { size: 8, fam: SANS, fill: P.muted });
+    out += T(CUR.notaryLine, W - M - 190, 902, { size: 8, fam: SANS, fill: P.muted });
 
     out += seal(M + 74, 866, 56, P, doc.regNo, idp, -9);
     if (doc.paid && doc.state === 'active')
@@ -2057,7 +2073,7 @@ window.DOCGEN = (function () {
       '<path d="M 0 0 H 4" stroke="' + P.accentL + '" stroke-width="0.6" opacity="0.5"/></pattern>';
 
     out += T(CUR.org, W / 2, 56, { anchor: 'middle', size: 11.5, fam: SANS, weight: 'bold', fill: P.head, ls: 4 });
-    out += T(upper(doc.signOrg || CUR.orgAgency), W / 2, 74,
+    out += qurumSetri(doc, CUR.orgAgency, true, W / 2, 74,
       { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.4 });
     out += '<path d="M ' + M + ' 90 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.2"/>';
 
@@ -2121,7 +2137,7 @@ window.DOCGEN = (function () {
       { size: 8.4, fam: SANS, weight: 'bold', fill: P.accent, ls: 1.6 });
     out += signature(doc.regNo + doc.from, M, 890, 176, 38);
     out += '<path d="M ' + M + ' 932 H ' + (M + 190) + '" stroke="' + P.accent + '" stroke-width="0.7"/>';
-    out += T(doc.signOrg || CUR.notaryLine, M, 944, { size: 8, fam: SANS, fill: P.muted });
+    out += T(CUR.notaryLine, M, 944, { size: 8, fam: SANS, fill: P.muted });
 
     out += seal(W - M - 96, 906, 58, P, doc.regNo, idp, -8);
     out += emboss(W / 2 + 10, 950, 42, P, idp);

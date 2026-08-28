@@ -57,7 +57,7 @@ class DocumentService
         );
 
         return Document::create([
-            'extra'       => $this->extraFrom($input) ?: null,
+            'extra'       => $this->extraFrom($input, $tpl) ?: null,
             'expires_at'  => $this->expiryFrom($input),
             'reg_no'      => $this->nextRegNo($tpl),
             'user_id'     => $user->id,
@@ -190,7 +190,7 @@ class DocumentService
     }
 
     /** Anket cavabları — `labels` sütunu ilə eyni nümunə. @return array<string, mixed> */
-    protected function extraFrom(array $input): array
+    protected function extraFrom(array $input, Template $tpl): array
     {
         $extra = [];
 
@@ -222,8 +222,18 @@ class DocumentService
             }
         }
 
-        foreach (['until' => 24, 'signTitle' => 40, 'signOrg' => 60, 'share' => 180] as $key => $max) {
+        foreach (['until' => 24, 'share' => 180] as $key => $max) {
             $v = Sanitizer::text($input[$key] ?? null, $max);
+            if ($v !== '') {
+                $extra[$key] = $v;
+            }
+        }
+
+        /* İmza vəzifəsi və verən qurum KLİENTDƏN DEYİL, kataloqdan gəlir —
+           başlıq/bəndlər/preamble ilə eyni qayda. Qurum adı sənədin başlığında
+           çıxdığı üçün saxta dəyər real bir qurumun adını sənədə yaza bilərdi. */
+        foreach (['signTitle' => ['sign_title', 40], 'signOrg' => ['sign_org', 60]] as $key => [$col, $max]) {
+            $v = Sanitizer::text($tpl->{$col}, $max);
             if ($v !== '') {
                 $extra[$key] = $v;
             }

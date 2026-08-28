@@ -18,7 +18,8 @@
     "test:doc": "node tools/check-doc.js",
     "test:fields": "node tools/check-fields.js",
     "test:admin": "node tools/check-admin-catalog.js",
-    "catalog:export": "node tools/export-catalog.js"
+    "catalog:export": "node tools/export-catalog.js",
+    "test:viewer": "node tools/check-viewer.js"
   },
   "keywords": [],
   "author": "",

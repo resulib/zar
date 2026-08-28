@@ -219,36 +219,15 @@
   function openModal(id) { $(id).classList.add('open'); }
   function closeModal(id) { $(id).classList.remove('open'); }
 
-  function svgToBlob(svg, w, h, scale) {
-    return new Promise(function (res, rej) {
-      var url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
-      var img = new Image();
-      img.onload = function () {
-        var c = document.createElement('canvas');
-        c.width = Math.round(w * scale); c.height = Math.round(h * scale);
-        var ctx = c.getContext('2d');
-        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height);
-        ctx.drawImage(img, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url);
-        c.toBlob(function (b) { b ? res(b) : rej(new Error('toBlob boş')); }, 'image/png', 0.95);
-      };
-      img.onerror = function (e) { URL.revokeObjectURL(url); rej(e); };
-      img.src = url;
-    });
-  }
-  function saveBlob(blob, name) {
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = name;
-    document.body.appendChild(a); a.click();
-    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
-  }
+  /* Eksport köməkçiləri `export.js`-dədir — baxış səhifəsi də onları işlədir. */
 
   /* ---------------- vəziyyət ---------------- */
   var state = {
     mode: 'zarafat',          // 'zarafat' | 'xatire' — sənədin tonu
     cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '',
     answers: {},              // anket cavabları — yalnız `fields` daşıyan şablonlarda
-    powerPicks: []            // seçilmiş bəndlər — variant sırasında saxlanılır
+    powerPicks: [],           // seçilmiş bəndlər — variant sırasında saxlanılır
+    storyBlob: null           // əvvəlcədən hazırlanmış story şəkli (iOS paylaşma jesti üçün)
   };
 
   /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
@@ -767,7 +746,6 @@
          tutucularını serverdə bunlardan doldurur (App\Support\Answers). */
       answers: F.vals,
       until: F.until, expiresAt: F.expiresAt,
-      signTitle: t.signTitle || null, signOrg: t.signOrg || null,
       share: t.share ? fill(t.share, F.vals) : null,
       state: 'active', cancelReason: null
     } : {};
@@ -775,6 +753,8 @@
       templateId: t.id,
       tone: t.tone || 'zarafat',
       layout: curLayout(), palette: curPalette(),
+      /* İmzalayan orqan hər şablonda var — anketli olub-olmamasından asılı deyil. */
+      signTitle: t.signTitle || null, signOrg: t.signOrg || null,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
       title: (F && F.into.title) || $('#fTitle').value.trim() || t.title,
@@ -808,11 +788,15 @@
     }
     var d = state.doc, html = '';
     html += '<button id="aFree" class="btn btn-ghost" type="button">Pulsuz yüklə</button>';
+    /* PDF sənəd yaradılan kimi əlçatandır; keyfiyyət `paid`-i izləyir — kodda
+       tək keyfiyyət anlayışı qalsın deyə eynilə PNG-dəki 2/3 bölgüsü. */
+    html += '<button id="aPdf" class="btn btn-ghost" type="button">PDF yüklə</button>';
     if (!d.paid) {
-      html += '<button id="aPay" class="btn" type="button">1 AZN — reyestrə yaz</button>';
+      html += '<button id="aPay" class="btn span2" type="button">1 AZN — reyestrə yaz</button>';
     } else {
       html += '<button id="aHd" class="btn" type="button">HD PNG yüklə</button>';
-      html += '<button id="aStory" class="btn btn-ghost" type="button">Story formatı</button>';
+      html += '<button id="aStory" class="btn btn-ghost" type="button">' +
+        (ZEXPORT.canShareFiles() ? 'Story paylaş' : 'Story formatı') + '</button>';
       html += '<button id="aLink" class="btn btn-ghost" type="button">Reyestr linki</button>';
       if (d.share) html += '<button id="aShare" class="btn btn-ghost span2" type="button">Paylaşım mətnini kopyala</button>';
       /* Ləğv yalnız müddəti olan və hələ ləğv edilməmiş sənəddə mənalıdır.
@@ -830,7 +814,8 @@
     var b;
     if ((b = $('#aFree')))  b.onclick = function () { download(d, false, 2); };
     if ((b = $('#aHd')))    b.onclick = function () { download(d, false, 3); };
-    if ((b = $('#aStory'))) b.onclick = function () { download(d, true, 1); };
+    if ((b = $('#aPdf')))   b.onclick = function () { downloadPdf(d); };
+    if ((b = $('#aStory'))) b.onclick = function () { shareStory(d); };
     if ((b = $('#aPay')))   b.onclick = function () { payFlow(d); };
     if ((b = $('#aCancel'))) b.onclick = function () { openCancel(d); };
     if ((b = $('#aShare'))) b.onclick = function () {
@@ -845,6 +830,62 @@
         .catch(function () { toast('Kopyalamaq alınmadı', 'err'); });
     };
     if ((b = $('#aReport'))) b.onclick = function () { openReport(d.regNo); };
+
+    /* iOS `navigator.share()`-i yalnız jest tapşırığının İÇİNDƏ qəbul edir,
+       rasterləşdirmə isə asinxrondur. Ona görə story şəklini indidən hazırlayıb
+       keşləyirik — klik anında hazır olsun. RegNo başına bir dəfə. */
+    if (d.paid && ZEXPORT.canShareFiles() &&
+        (!state.storyBlob || state.storyBlob.regNo !== d.regNo)) {
+      state.storyBlob = { regNo: d.regNo, blob: null };
+      ZEXPORT.pngBlob(DOCGEN.story(d, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+        .then(function (b) {
+          if (state.storyBlob && state.storyBlob.regNo === d.regNo) state.storyBlob.blob = b;
+        })
+        .catch(function () { state.storyBlob = null; });
+    }
+  }
+
+  function downloadPdf(doc) {
+    toast('PDF hazırlanır…');
+    var svg = DOCGEN.a4(doc, { idPrefix: 'ex' });
+    ZEXPORT.pdfBlob(svg, DOCGEN.W, DOCGEN.H, doc.paid ? 3 : 2, doc.regNo).then(function (b) {
+      ZEXPORT.saveBlob(b, 'zarafat-' + ZEXPORT.safeName(doc.regNo) + '.pdf');
+      toast('PDF yükləndi');
+    }).catch(function () { toast('PDF yaratmaq alınmadı', 'err'); });
+  }
+
+  /* Mobildə nativ paylaşma vərəqi, masaüstündə yükləmə. */
+  function shareStory(doc) {
+    var name = 'zarafat-' + ZEXPORT.safeName(doc.regNo) + '-story.png';
+    var link = doc.verifyUrl || (SITE + '/r/' + doc.regNo);
+    var meta = {
+      title: 'Zarafat sənədi ' + doc.regNo,
+      text: (doc.share ? doc.share + '\n' : 'Zarafat Notariat Palatası — ' + doc.regNo + '\n') + link
+    };
+
+    function fallback(b) { ZEXPORT.saveBlob(b, name); toast('Story şəkli yükləndi'); }
+
+    var cached = state.storyBlob && state.storyBlob.regNo === doc.regNo ? state.storyBlob.blob : null;
+
+    if (cached && ZEXPORT.canShareFiles()) {
+      /* Keş isti — sinxron çağırış, iOS jest zəncirini pozmuruq. */
+      ZEXPORT.shareFile(cached, name, 'image/png', meta).catch(function (e) {
+        if (ZEXPORT.isAbort(e)) return;
+        fallback(cached);
+      });
+      return;
+    }
+
+    toast('Şəkil hazırlanır…');
+    ZEXPORT.pngBlob(DOCGEN.story(doc, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+      .then(function (b) {
+        if (!ZEXPORT.canShareFiles()) return fallback(b);
+        return ZEXPORT.shareFile(b, name, 'image/png', meta).catch(function (e) {
+          if (ZEXPORT.isAbort(e)) return;
+          fallback(b);
+        });
+      })
+      .catch(function () { toast('Şəkli yaratmaq alınmadı', 'err'); });
   }
 
   function download(doc, isStory, scale) {
@@ -852,8 +893,8 @@
     var w = isStory ? DOCGEN.STORY_W : DOCGEN.W;
     var h = isStory ? DOCGEN.STORY_H : DOCGEN.H;
     toast('Şəkil hazırlanır…');
-    svgToBlob(svg, w, h, scale).then(function (b) {
-      saveBlob(b, 'zarafat-' + doc.regNo + (isStory ? '-story' : '') + '.png');
+    ZEXPORT.pngBlob(svg, w, h, scale).then(function (b) {
+      ZEXPORT.saveBlob(b, 'zarafat-' + ZEXPORT.safeName(doc.regNo) + (isStory ? '-story' : '') + '.png');
       toast('Yükləndi');
     }).catch(function () { toast('Şəkli yaratmaq alınmadı', 'err'); });
   }
@@ -1190,11 +1231,14 @@
       }).catch(function (e) { toast(apiError(e, 'Göndərilə bilmədi'), 'err'); });
     };
 
+    /* Deep link. PHP backend-i `/r/`-də ayrıca baxış səhifəsi verir, bu budaq
+       isə arxiv `backend-node/` (SPA verir) və `dist/`-in `#r/` forması üçündür.
+       Axtarış TAYMERLƏ deyil, `API.init()` bitəndən sonra işə düşür — əks halda
+       `/api/health` gecikəndə offline budaq açılıb düzgün sənədi «qeydə
+       alınmayıb» kimi göstərirdi. */
+    var deepReg = null;
     var m = location.pathname.match(/\/r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i) || location.hash.match(/#r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i);
-    if (m) {
-      $('#qReg').value = m[1].toUpperCase();
-      setTimeout(function () { doSearch(); document.getElementById('reyestr').scrollIntoView(); }, 300);
-    }
+    if (m) { deepReg = m[1].toUpperCase(); $('#qReg').value = deepReg; }
 
     var pay = new URLSearchParams(location.search).get('payment');
     if (pay) {
@@ -1212,6 +1256,7 @@
         var el = $(sel);
         if (el) el.hidden = !API.online;
       });
+      if (deepReg) { doSearch(); document.getElementById('reyestr').scrollIntoView(); }
       if (!API.online) return null;
       /* Kataloq açılışı gecikdirməsin: sorğu uğursuz olsa statik fayl qalır. */
       return API._json('/api/catalog', null).then(function (cat) {
