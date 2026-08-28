@@ -35,6 +35,7 @@
         <div><dt>Vəziyyət</dt><dd><span class="pill {{ $document->status === 'published' ? 'ok' : ($document->status === 'removed' ? 'bad' : 'mute') }}">{{ $document->status }}</span></dd></div>
         <div><dt>Kimə verilir</dt><dd>{{ $document->to_name }}</dd></div>
         <div><dt>Kimdən verilir</dt><dd>{{ $document->from_name }}</dd></div>
+        <div><dt>Ton</dt><dd>{{ $document->tone === 'xatire' ? 'Xatirə' : 'Zarafat' }}</dd></div>
         <div><dt>Blank forması</dt><dd>{{ $document->layout }} / {{ $document->palette }}</dd></div>
         <div><dt>Şablon</dt><dd>{{ $document->template_id ?: '—' }}</dd></div>
         <div><dt>Yaradılıb</dt><dd>{{ $document->created_at->format('d.m.Y H:i') }}</dd></div>

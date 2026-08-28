@@ -38,12 +38,17 @@ class DocumentController extends Controller
             $q->where('layout', $layout);
         }
 
+        if ($tone = (string) $request->query('tone')) {
+            $q->where('tone', $tone);
+        }
+
         return view('admin.documents', [
             'documents' => $q->paginate(25)->withQueryString(),
             'filters'   => [
                 'q'      => $request->query('q', ''),
                 'status' => $request->query('status', ''),
                 'layout' => $request->query('layout', ''),
+                'tone'   => $request->query('tone', ''),
             ],
         ]);
     }

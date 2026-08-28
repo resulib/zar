@@ -29,6 +29,15 @@ class PaymentService
     {
         $name = strtolower((string) config('zarafat.payment.provider'));
 
+        // Simulyasiya provayderi sifarişi dərhal «ödənilmiş» sayır. İstehsalatda
+        // bu, /api/payments/checkout vasitəsilə limitsiz pulsuz kredit deməkdir —
+        // ona görə orada ümumiyyətlə qurulmur.
+        if ($name !== 'epoint' && app()->environment('production')) {
+            throw new \RuntimeException(
+                'İstehsalatda simulyasiya provayderi işlədilə bilməz — PAYMENT_PROVIDER=epoint təyin edin.'
+            );
+        }
+
         if ($name === 'epoint') {
             $cfg = config('zarafat.payment.epoint');
 
@@ -46,8 +55,16 @@ class PaymentService
         return new SimulationProvider();
     }
 
+    /**
+     * Test ödənişi balansa pulsuz kredit yazır. İstehsalatda `.env`-də səhvən
+     * açıq qalsa belə işləməməlidir — ona görə mühit ayrıca yoxlanılır.
+     */
     public function simulationAllowed(): bool
     {
+        if (app()->environment('production')) {
+            return false;
+        }
+
         return (bool) config('zarafat.payment.allow_simulation');
     }
 
@@ -106,14 +123,32 @@ class PaymentService
      * Ödənişi təsdiqləyir. İdempotentdir: eyni sifariş iki dəfə gəlsə də
      * kredit yalnız bir dəfə yazılır.
      */
-    public function markPaid(string $orderId, ?string $providerRef, array $raw = []): ?Payment
+    public function markPaid(string $orderId, ?string $providerRef, array $raw = [], ?float $amount = null): ?Payment
     {
-        return DB::transaction(function () use ($orderId, $providerRef, $raw): ?Payment {
+        return DB::transaction(function () use ($orderId, $providerRef, $raw, $amount): ?Payment {
             /** @var Payment|null $payment */
             $payment = Payment::query()->where('order_id', $orderId)->lockForUpdate()->first();
 
             if (! $payment || $payment->status !== Payment::STATUS_PENDING) {
                 return null;                      // artıq işlənib və ya tapılmadı
+            }
+
+            /* Provayder məbləğ bildirirsə, sifarişin məbləği ilə üst-üstə düşməlidir.
+               İmza onsuz da yoxlanılıb — bu, provayder tərəfdəki səhvə və ya
+               dəyişdirilmiş sifarişə qarşı ikinci qatdır. */
+            if ($amount !== null && abs($amount - (float) $payment->amount) > 0.001) {
+                logger()->warning('Ödəniş məbləği uyğun gəlmir', [
+                    'order_id' => $orderId,
+                    'gözlənilən' => (float) $payment->amount,
+                    'gələn'      => $amount,
+                ]);
+
+                $payment->forceFill([
+                    'status'  => Payment::STATUS_FAILED,
+                    'payload' => $raw ?: null,
+                ])->save();
+
+                return null;
             }
 
             $payment->forceFill([

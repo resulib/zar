@@ -34,7 +34,10 @@ return [
     */
     'payment' => [
         'provider'         => env('PAYMENT_PROVIDER', 'simulation'),   // simulation | epoint
-        'allow_simulation' => env('ALLOW_SIMULATED_PAYMENTS', true),
+
+        // Test ödənişi pulsuz kredit deməkdir — default BAĞLIDIR və istehsalatda
+        // bayraqdan asılı olmayaraq açıla bilmir (bax: PaymentService::simulationAllowed).
+        'allow_simulation' => env('ALLOW_SIMULATED_PAYMENTS', false),
         'currency'         => 'AZN',
 
         'epoint' => [
@@ -61,8 +64,12 @@ return [
     'layouts'  => [
         'notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya',
         'arayis', 'qerar', 'muqavile', 'teleqram', 'vesiqe',
+        'viza', 'ekspertiza',
     ],
-    'palettes' => ['gold', 'steel', 'burgundy', 'forest', 'ink'],
+    'palettes' => ['gold', 'steel', 'burgundy', 'forest', 'ink', 'rose'],
+
+    // Sənədin tonu: zarafat — gülməli, xatire — səmimi xatirə sənədi.
+    'tones'    => ['zarafat', 'xatire'],
 
     // Vergüllə ayrılmış ilkin qadağan siyahısı; admin paneldən genişləndirilir.
     'banned_words' => env('BANNED_WORDS', ''),

@@ -23,8 +23,10 @@ interface PaymentProvider
     /**
      * Provayderin callback-ini yoxlayır və normal formaya salır.
      *
+     * `amount` verilirsə çağıran onu sifarişin məbləği ilə tutuşdurur.
+     *
      * @param array<string, mixed> $payload
-     * @return array{orderId:string,status:string,providerRef:?string,raw:array<string, mixed>}
+     * @return array{orderId:string,status:string,providerRef:?string,amount?:?float,currency?:?string,raw:array<string, mixed>}
      * @throws \RuntimeException imza yanlış olduqda
      */
     public function parseCallback(array $payload): array;

@@ -7,7 +7,7 @@ Backend **Laravel 13 / PHP 8.4**, frontend isə adi HTML/CSS/JS-dir (build təl�
 > orada `packagist.org` bağlı idi, yəni `composer install` mümkün olmayıb.
 > Kodun sintaksisi, Blade balansı, route adları, görünüş yolları və PSR-4 uyğunluğu
 > statik olaraq yoxlanılıb (`php backend-php/tests/audit.php`), framework-siz məntiq
-> isə real testlərdən keçib (`php backend-php/tests/logic.php`, 51 test).
+> isə real testlərdən keçib (`php backend-php/tests/logic.php`, 55 test).
 > İlk işə salışda kiçik səhvlərlə qarşılaşsanız, mətni mənə göndərin — dərhal düzəldim.
 
 ---
@@ -242,7 +242,26 @@ php artisan migrate --force
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://sizin-domen.az
+PAYMENT_PROVIDER=epoint
 ALLOW_SIMULATED_PAYMENTS=false
+ADMIN_PASSWORD=uzun-ve-tesadufi-parol
+```
+
+### Təhlükəsizlik yoxlama siyahısı
+
+| Nə | Niyə |
+|---|---|
+| `APP_ENV=production` | Simulyasiya ödənişini məcburi bağlayır — əks halda `/api/payments/checkout` pulsuz kredit yazır. |
+| `APP_URL` https ilə başlasın | Sessiya və qonaq cookie-ləri avtomatik `secure` olur. |
+| `ADMIN_PASSWORD` dəyişdirilsin | `admin12345` istehsalatda seeder tərəfindən rədd edilir; boş buraxsanız təsadüfi parol yaradılır. |
+| `php artisan migrate --force` | `cache` cədvəli olmadan bütün `throttle:*` limitləri (brute-force qoruması) səssizcə işləmir. |
+| `APP_DEBUG=false` | Xəta səhifələri konfiqurasiyanı və yolları açır. |
+
+Quraşdırmadan sonra davranışı yoxlayın:
+
+```bash
+php artisan serve --port=8000 &
+php backend-php/tests/security.php http://127.0.0.1:8000
 ```
 
 **Shared hostinq (cPanel):** domeni birbaşa `backend-php/public` qovluğuna yönləndirin.
@@ -278,7 +297,7 @@ chmod -R 775 storage bootstrap/cache
 ```bash
 php backend-php/doctor.php      # mühit diaqnostikası — problem varsa nə etməli
 cd backend-php
-php tests/logic.php             # framework-siz məntiq: paketlər, imza, moderasiya (51 test)
+php tests/logic.php             # framework-siz məntiq: paketlər, imza, ton, moderasiya (55 test)
 php tests/audit.php             # sintaksis, Blade balansı, route adları, PSR-4
 ```
 

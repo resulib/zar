@@ -7,8 +7,8 @@
 <meta name="description" content="Cütlüklər, dostlar və iş yeri üçün rəsmi görünüşlü, tamamilə əyləncə məqsədli sənədlər. Möhürlü, QR kodlu, reyestrdə yoxlanıla bilən.">
 <meta name="theme-color" content="#0e2340">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="{{ asset('assets/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
+<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=3cd8b7f5">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -16,7 +16,7 @@
 <!-- ═══════════ üst zolaq ═══════════ -->
 <div class="gov-bar">
   <div class="wrap">
-    <span><b>ZNP</b><span class="long"> · Qeyri-rəsmi sənədlər vahid reyestri</span></span>
+    <span><b>ZNP</b><span class="long" id="govSub"> · Qeyri-rəsmi sənədlər vahid reyestri</span></span>
     <span class="right">
       <span id="modeBadge"><span class="dot"></span>Yoxlanılır</span>
     </span>
@@ -34,8 +34,8 @@
       <text x="32" y="47" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="1">ZNP</text>
     </svg>
     <div class="mast-name">
-      <div class="n1">Zarafat Notariat Palatası</div>
-      <div class="n2">Uydurma qurum · qeyri-rəsmi sənədlər reyestri · zarafat.az</div>
+      <div class="n1" id="mastName">Zarafat Notariat Palatası</div>
+      <div class="n2" id="mastSub">Uydurma qurum · qeyri-rəsmi sənədlər reyestri · zarafat.az</div>
     </div>
     <div class="mast-tools">
       <button id="balanceBtn" class="chip" type="button">Balans: <b id="creditCount">0</b> sənəd</button>
@@ -53,13 +53,21 @@
   </div>
 </nav>
 
+<!-- ═══════════ rejim keçidi ═══════════ -->
+<div class="mode-bar">
+  <div class="wrap">
+    <div class="mode-switch segmented" id="modeSwitch" role="tablist" aria-label="Sənəd rejimi"></div>
+    <p class="mode-note" id="modeNote"></p>
+  </div>
+</div>
+
 <!-- ═══════════ hero ═══════════ -->
 <section class="hero" id="top">
   <div class="wrap">
     <div>
-      <div class="eyebrow">Xidmət 01 — sənədin hazırlanması</div>
-      <h1>Rəsmi görünüşlü sənədlər.<br><em>Heç bir hüquqi qüvvəsi yoxdur.</em></h1>
-      <p class="lede">
+      <div class="eyebrow" id="heroEyebrow">Xidmət 01 — sənədin hazırlanması</div>
+      <h1 id="heroTitle">Rəsmi görünüşlü sənədlər.<br><em>Heç bir hüquqi qüvvəsi yoxdur.</em></h1>
+      <p class="lede" id="heroLede">
         Möhürlü, imzalı, ştrix-kodlu sənəd hazırlayın; 1 AZN ödəyib reyestrə yazdırın.
         Sənədin üzərindəki QR kod istənilən şəxsin onu yoxlamasına imkan verir —
         yoxlama nəticəsi də eyni dərəcədə ciddi görünür.
@@ -69,8 +77,8 @@
         <a class="btn btn-ghost" href="#reyestr">Nömrə ilə yoxla</a>
       </div>
       <dl class="specs">
-        <div><dt>Sənəd növləri</dt><dd>36 şablon — cütlüklər, dostlar, iş yeri</dd></div>
-        <div><dt>Blank formaları</dt><dd>Notarial akt, rəsmi blank, diplom, sertifikat, lisenziya</dd></div>
+        <div><dt>Sənəd növləri</dt><dd id="specTemplates">—</dd></div>
+        <div><dt>Blank formaları</dt><dd id="specLayouts">—</dd></div>
         <div><dt>Rəsmiləşdirmə</dt><dd>1 AZN — reyestr qeydi, QR kod, HD yükləmə</dd></div>
         <div><dt>Hüquqi qüvvə</dt><dd>Yoxdur və heç vaxt olmayacaq</dd></div>
       </dl>
@@ -140,12 +148,12 @@
 
         <div class="panel">
           <div class="panel-head"><span class="label">Ərizə məlumatları</span></div>
-          <div class="panel-body">
-            <div class="field">
+          <div class="panel-body" id="editorForm">
+            <div class="field" id="fTitleField">
               <label class="label" for="fTitle">Sənədin adı</label>
               <input id="fTitle" class="input" maxlength="70" placeholder="Həftəsonu Çölə Çıxma Etibarnaməsi">
             </div>
-            <div class="row2">
+            <div class="row2" id="fNamesRow">
               <div class="field">
                 <label class="label" for="fTo">Kimə verilir</label>
                 <input id="fTo" class="input" maxlength="42" placeholder="Ad Soyad">
@@ -155,7 +163,11 @@
                 <input id="fFrom" class="input" maxlength="42" placeholder="Ad Soyad">
               </div>
             </div>
-            <div class="field">
+
+            <!-- şablona xas anket sahələri — app.js `renderFields()` doldurur -->
+            <div id="fFields" hidden></div>
+
+            <div class="field" id="fPowersField">
               <label class="label" for="fPowers">Səlahiyyətlər və şərtlər</label>
               <textarea id="fPowers" class="textarea" rows="5" maxlength="600" placeholder="Hər bəndi yeni sətirdən yazın"></textarea>
               <span class="hint">Sənədə ilk 6 bənd düşür.</span>
@@ -239,7 +251,7 @@
       <div>
         <div class="n">ADDIM 01</div>
         <h3>Şablonu seçin və doldurun</h3>
-        <p>36 hazır şablondan birini seçin, adları və şərtləri yazın. Önizləmə hər hərfdən sonra yenilənir.</p>
+        <p id="stepPick">Hazır şablondan birini seçin, adları və şərtləri yazın. Önizləmə hər hərfdən sonra yenilənir.</p>
       </div>
       <div>
         <div class="n">ADDIM 02</div>
@@ -352,11 +364,36 @@
   </div>
 </div>
 
+<div class="modal" id="cancelModal">
+  <div class="box">
+    <div class="box-head">
+      <h3>Sənədi ləğv et</h3>
+      <button class="x" data-close type="button" aria-label="Bağla">×</button>
+    </div>
+    <div class="box-body">
+      <p class="small" style="margin-bottom:14px">Sənəd nömrəsi: <b class="mono" id="cnlReg">—</b></p>
+      <div class="field" style="margin-bottom:0">
+        <label class="label" for="cnlReason">Ləğv səbəbi</label>
+        <select id="cnlReason" class="input"></select>
+      </div>
+      <p class="micro" style="margin-top:12px">
+        Sənəd reyestrdə qalır, lakin üzərinə «LƏĞV EDİLDİ» ştampı düşür və QR kodu ləğvi göstərir.
+        Ləğv geri qaytarılmır.
+      </p>
+    </div>
+    <div class="box-foot">
+      <button class="btn btn-ghost" data-close type="button">İmtina</button>
+      <button id="cnlSend" class="btn btn-danger" type="button">Ləğv et</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"><div class="msg"></div></div>
 
-<script src="{{ asset('assets/qr.js') }}"></script>
-<script src="{{ asset('assets/templates.js') }}"></script>
-<script src="{{ asset('assets/doc.js') }}"></script>
-<script src="{{ asset('assets/app.js') }}"></script>
+<script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
+<script src="{{ asset('assets/templates.js') }}?v=1ec73c11"></script>
+<script src="{{ asset('assets/templates-xatire.js') }}?v=af509127"></script>
+<script src="{{ asset('assets/doc.js') }}?v=c9c0a38d"></script>
+<script src="{{ asset('assets/app.js') }}?v=5c928dae"></script>
 </body>
 </html>

@@ -105,6 +105,8 @@ final class EpointProvider implements PaymentProvider
             'orderId'     => (string) ($decoded['order_id'] ?? ''),
             'status'      => ($decoded['status'] ?? '') === 'success' ? 'paid' : 'failed',
             'providerRef' => isset($decoded['transaction']) ? (string) $decoded['transaction'] : null,
+            'amount'      => isset($decoded['amount']) ? (float) $decoded['amount'] : null,
+            'currency'    => isset($decoded['currency']) ? (string) $decoded['currency'] : null,
             'raw'         => $decoded,
         ];
     }

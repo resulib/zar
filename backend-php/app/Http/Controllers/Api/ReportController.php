@@ -21,6 +21,10 @@ class ReportController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        if ($request->visitor()->is_blocked) {
+            return response()->json(['error' => 'blocked', 'message' => 'Hesab məhdudlaşdırılıb.'], 403);
+        }
+
         $regNo = strtoupper((string) $request->input('regNo'));
 
         if (! RegistryNumber::isValid($regNo)) {

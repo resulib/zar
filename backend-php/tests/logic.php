@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 require __DIR__ . '/../app/Support/Packs.php';
 require __DIR__ . '/../app/Support/RegistryNumber.php';
+require __DIR__ . '/../app/Support/RegistryPrefix.php';
 require __DIR__ . '/../app/Support/Moderation.php';
 require __DIR__ . '/../app/Support/Sanitizer.php';
+require __DIR__ . '/../app/Support/TemplateSchema.php';
 require __DIR__ . '/../app/Support/Payments/PaymentProvider.php';
 require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
@@ -25,7 +27,9 @@ use App\Support\Packs;
 use App\Support\Payments\EpointProvider;
 use App\Support\Payments\SimulationProvider;
 use App\Support\RegistryNumber;
+use App\Support\RegistryPrefix;
 use App\Support\Sanitizer;
+use App\Support\TemplateSchema;
 
 $pass = 0;
 $fail = 0;
@@ -92,6 +96,22 @@ check('tanınmayan mətn olduğu kimi qalır', RegistryNumber::normalize('salam'
 check('yanlış format rədd edilir', ! RegistryNumber::isValid('SALAM'));
 check('qısa nömrə rədd edilir', ! RegistryNumber::isValid('ZRF-2026-948'));
 
+echo "\nŞablona görə prefiks\n";
+check('viral şablon öz prefiksini alır',
+    RegistryPrefix::for('cole-cixma-vizasi', 'ZRF') === 'CCV',
+    RegistryPrefix::for('cole-cixma-vizasi', 'ZRF'));
+check('xəritədə olmayan şablon qlobal prefiksdə qalır',
+    RegistryPrefix::for('weekend-pass', 'ZRF') === 'ZRF');
+check('boş şablon qlobal prefiksdə qalır', RegistryPrefix::for('', 'ZRF') === 'ZRF');
+check('null şablon qlobal prefiksdə qalır', RegistryPrefix::for(null, 'ZRF') === 'ZRF');
+check('bütün prefikslər yalnız ASCII böyük hərfdir',
+    array_values(array_filter(RegistryPrefix::MAP,
+        static fn (string $p): bool => preg_match('/^[A-Z]{2,4}$/', $p) !== 1)) === []);
+foreach (RegistryPrefix::MAP as $tplId => $prefix) {
+    $no = RegistryNumber::generate($prefix, 2026, static fn (string $c): bool => false);
+    check("«{$tplId}» nömrəsi düzgün formatdadır", RegistryNumber::isValid($no), $no);
+}
+
 echo "\nModerasiya\n";
 $mod = new Moderation('qadağan, ikinci söz');
 check('böyük hərflə yazılmış söz tutulur', $mod->flagged('Burada QADAĞAN var'));
@@ -116,6 +136,92 @@ check('CRLF normallaşır', Sanitizer::multiline("Bir\r\nİki", 600, 8) === "Bir
 
 check('icazəli dəyər seçilir', Sanitizer::pick('blank', ['notarial', 'blank'], 'notarial') === 'blank');
 check('icazəsiz dəyər fallback olur', Sanitizer::pick('hack', ['notarial', 'blank'], 'notarial') === 'notarial');
+
+$tones = ['zarafat', 'xatire'];
+check('ton seçilir', Sanitizer::pick('xatire', $tones, 'zarafat') === 'xatire');
+check('naməlum ton zarafat olur', Sanitizer::pick('parodiya', $tones, 'zarafat') === 'zarafat');
+check('boş ton zarafat olur', Sanitizer::pick(null, $tones, 'zarafat') === 'zarafat');
+check('rose palitrası icazəlidir', Sanitizer::pick('rose', ['gold', 'steel', 'burgundy', 'forest', 'ink', 'rose'], 'gold') === 'rose');
+
+echo "\nAnket sahələri\n";
+check('massiv text()-də hələ də boş qalır', Sanitizer::text(['a'], 10) === '');
+check('ad sahəsi hərfləri saxlayır',
+    Sanitizer::person('Günel Şəkərova-Əliyeva', 40) === 'Günel Şəkərova-Əliyeva',
+    Sanitizer::person('Günel Şəkərova-Əliyeva', 40));
+check('ad sahəsi rəqəm və işarələri atır', Sanitizer::person('<b>Elvin</b> 123', 40) === 'bElvinb',
+    Sanitizer::person('<b>Elvin</b> 123', 40));
+check('ad sahəsi apostrofu saxlayır', Sanitizer::person("Nə'mət", 40) === "Nə'mət");
+check('saat düzgün formatda keçir', Sanitizer::clock('23:30') === '23:30');
+check('yanlış saat rədd edilir', Sanitizer::clock('25:00') === '');
+check('saat olmayan mətn rədd edilir', Sanitizer::clock('sabah') === '');
+check('şkala mətn rəqəmi qəbul edir', Sanitizer::scale('7', 1, 10) === 7);
+check('şkala aralıqdan kənarı rədd edir', Sanitizer::scale(11, 1, 10) === null);
+check('şkala rəqəm olmayanı rədd edir', Sanitizer::scale('yeddi', 1, 10) === null);
+check('siyahı adları təmizlənir',
+    Sanitizer::list(['Rəşad Quliyev', '  ', 'Tural Əliyev'], 4, 40) === ['Rəşad Quliyev', 'Tural Əliyev'],
+    Sanitizer::list(['Rəşad Quliyev', '  ', 'Tural Əliyev'], 4, 40));
+check('siyahı say həddini gözləyir', count(Sanitizer::list(['A B', 'C D', 'E F', 'G H', 'I J'], 4, 40)) === 4);
+check('siyahı massiv olmayanı rədd edir', Sanitizer::list('Rəşad', 4, 40) === []);
+check('çoxseçim say həddini gözləyir', count(Sanitizer::checks(['a', 'b', 'c'], 2, 80)) === 2);
+check('çoxseçim massiv olmayanı rədd edir', Sanitizer::checks(null, 5, 80) === []);
+check('cədvəl sətirləri iki elementə salınır',
+    Sanitizer::rows([['OYUN', 'FIFA'], ['', 'boş etiket'], ['ETİKET']], 5, 40, 80)
+        === [['OYUN', 'FIFA'], ['ETİKET', '']],
+    Sanitizer::rows([['OYUN', 'FIFA'], ['', 'boş etiket'], ['ETİKET']], 5, 40, 80));
+check('cədvəl massiv olmayanı rədd edir', Sanitizer::rows('x', 5, 40, 80) === []);
+
+echo "\nAnket sxeminin yoxlanışı\n";
+$ok = [['k' => 'teyinat', 't' => 'select', 'label' => 'Təyinat', 'opts' => ['Bir', 'İki']]];
+check('düzgün sxem qəbul olunur', TemplateSchema::validate($ok, [], null, '{to} üçün') === [],
+    TemplateSchema::validate($ok, [], null, '{to} üçün'));
+check('boş sxem qəbul olunur', TemplateSchema::validate(null, [], null, '{to} üçün') === []);
+check('massiv olmayan sxem rədd edilir', TemplateSchema::validate(['k' => 'a'], [], null, '') !== []);
+check('naməlum tip tutulur',
+    (bool) preg_grep('/naməlum tip/u', TemplateSchema::validate([['k' => 'a', 't' => 'yoxdur', 'label' => 'X']], [], null, '')));
+check('yanlış açar tutulur',
+    (bool) preg_grep('/«k»/u', TemplateSchema::validate([['k' => 'BAD KEY', 't' => 'text', 'label' => 'X']], [], null, '')));
+check('təkrar açar tutulur',
+    (bool) preg_grep('/təkrarlan/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'text', 'label' => 'X'], ['k' => 'a', 't' => 'text', 'label' => 'Y'],
+    ], [], null, '')));
+check('etiketsiz sahə tutulur',
+    (bool) preg_grep('/label/u', TemplateSchema::validate([['k' => 'a', 't' => 'text']], [], null, '')));
+check('variantsız select tutulur',
+    (bool) preg_grep('/opts/u', TemplateSchema::validate([['k' => 'a', 't' => 'select', 'label' => 'X']], [], null, '')));
+check('multi min/max tutulur',
+    (bool) preg_grep('/min/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'multi', 'label' => 'X', 'opts' => ['Bir', 'İki'], 'min' => 3, 'max' => 5],
+    ], [], null, '')));
+check('multi defolt variantda olmalıdır',
+    (bool) preg_grep('/def/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'multi', 'label' => 'X', 'opts' => ['Bir', 'İki'], 'min' => 1, 'max' => 2, 'def' => ['Üç']],
+    ], [], null, '')));
+check('şkala aralığı tutulur',
+    (bool) preg_grep('/şkala/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'scale', 'label' => 'X', 'min' => 5, 'max' => 3],
+    ], [], null, '')));
+check('iki expiry sahəsi tutulur',
+    (bool) preg_grep('/expiry/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'time', 'label' => 'X', 'expiry' => true],
+        ['k' => 'b', 't' => 'time', 'label' => 'Y', 'expiry' => true],
+    ], [], null, '')));
+check('expiry yalnız uyğun tipdə işləyir',
+    (bool) preg_grep('/time/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'text', 'label' => 'X', 'expiry' => true],
+    ], [], null, '')));
+check('uyğunsuz yer tutucu tutulur',
+    (bool) preg_grep('/uyğun gəlmir/u', TemplateSchema::validate($ok, [], null, '{{yoxdur}} mətni')));
+check('uyğun yer tutucu keçir', TemplateSchema::validate($ok, ['{{teyinat}} qeydi'], '{{teyinat}}', '') === []);
+check('anketsiz şablonda yer tutucu tutulur',
+    (bool) preg_grep('/anket sahəsi yoxdur/u', TemplateSchema::validate(null, [], null, '{{teyinat}}')));
+check('həddindən çox qeyd tutulur',
+    (bool) preg_grep('/qeyd/u', TemplateSchema::validate($ok, array_fill(0, 9, 'x'), null, '')));
+check('uzun paylaşım mətni tutulur',
+    (bool) preg_grep('/Paylaşım/u', TemplateSchema::validate($ok, [], str_repeat('a', 200), '')));
+check('naməlum «into» tutulur',
+    (bool) preg_grep('/into/u', TemplateSchema::validate([
+        ['k' => 'a', 't' => 'text', 'label' => 'X', 'into' => 'yoxdur'],
+    ], [], null, '')));
 
 echo "\nSimulyasiya provayderi\n";
 $sim = new SimulationProvider();

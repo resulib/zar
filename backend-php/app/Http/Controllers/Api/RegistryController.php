@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Document;
 use App\Support\RegistryNumber;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class RegistryController extends Controller
 {
-    public function show(string $regNo): JsonResponse
+    public function show(Request $request, string $regNo): JsonResponse
     {
         $regNo = strtoupper($regNo);
 
@@ -25,8 +27,22 @@ class RegistryController extends Controller
             return response()->json(['error' => 'not_found'], 404);
         }
 
-        $document->increment('views');
+        self::countView($request, $document);
 
         return response()->json($document->toApiArray());
+    }
+
+    /**
+     * Baxış sayğacı ziyarətçi başına saatda bir dəfə artır.
+     * Əks halda sadə döngə ilə istənilən sənədin sayğacı şişirdilə bilər.
+     */
+    public static function countView(Request $request, Document $document): void
+    {
+        $who = $request->attributes->get('visitor');
+        $key = 'view:' . $document->id . ':' . ($who?->id ?? 'ip:' . $request->ip());
+
+        if (Cache::add($key, 1, now()->addHour())) {
+            $document->increment('views');
+        }
     }
 }

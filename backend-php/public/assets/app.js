@@ -18,6 +18,15 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
 
+  /* Offline rejimdə sənədin vəziyyəti — serverin Document::state() metodu ilə
+     eyni məntiq. Onlayn rejimdə vəziyyəti server hesablayır. */
+  function docState(d) {
+    if (!d) return d;
+    d.state = d.cancelledAt ? 'cancelled'
+      : (d.expiresAt && d.expiresAt < Date.now() ? 'expired' : 'active');
+    return d;
+  }
+
   var API = {
     online: false,
     provider: 'simulation',
@@ -51,9 +60,20 @@
       });
     },
 
+    /* Cavab JSON olmaya bilər: 429 limit səhifəsi, 419 sessiya, proxy xətası.
+       `r.json()` birbaşa çağırılsa səhifə tutulmuş istisna ilə dayanır. */
+    _json: function (url, fallback) {
+      return fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; })
+        .then(function (j) { return j === null ? fallback : j; });
+    },
+
     credits: function () {
       if (!API.online) return Promise.resolve(LS.get('zrf_credits', 0));
-      return fetch('/api/me').then(function (r) { return r.json(); }).then(function (j) { return j.credits; });
+      return API._json('/api/me', null).then(function (j) {
+        return j && typeof j.credits === 'number' ? j.credits : 0;
+      });
     },
     buy: function (packId) {
       if (!API.online) {
@@ -75,8 +95,9 @@
     create: function (payload) {
       if (!API.online) {
         var docs = LS.get('zrf_docs', {});
-        var regNo;
-        do { regNo = 'ZRF-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000)); }
+        var regNo, pfx = regPrefix((payload && payload.regPrefix)
+          ? { regPrefix: payload.regPrefix } : (payload && payload.templateId));
+        do { regNo = pfx + '-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000)); }
         while (docs[regNo]);
         var doc = Object.assign({}, payload, {
           regNo: regNo, date: fmtDate(new Date()), paid: false,
@@ -100,22 +121,41 @@
       }
       return API._post('/api/documents/' + encodeURIComponent(regNo) + '/publish', {});
     },
+    /* Ləğv — dərcdən sonrakı yeganə mutasiya. Sənəd reyestrdə qalır, yalnız
+       vəziyyəti dəyişir və üzərinə «LƏĞV EDİLDİ» ştampı düşür. */
+    cancel: function (regNo, reason) {
+      if (!API.online) {
+        var docs = LS.get('zrf_docs', {});
+        if (!docs[regNo]) return Promise.reject({ error: 'not_found' });
+        if (!docs[regNo].paid) return Promise.reject({ error: 'not_published' });
+        if (!docs[regNo].cancelledAt) {
+          docs[regNo].cancelledAt = Date.now();
+          docs[regNo].cancelReason = reason || 'Səbəb göstərilmədi';
+          LS.set('zrf_docs', docs);
+        }
+        return Promise.resolve(docState(docs[regNo]));
+      }
+      return API._post('/api/documents/' + encodeURIComponent(regNo) + '/cancel', { reason: reason });
+    },
     lookup: function (regNo) {
       if (!API.online) {
         var d = LS.get('zrf_docs', {})[regNo];
         if (!d || !d.paid || d.deleted) return Promise.resolve(null);
-        return Promise.resolve(d);
+        return Promise.resolve(docState(d));
       }
-      return fetch('/api/registry/' + encodeURIComponent(regNo))
-        .then(function (r) { return r.status === 404 ? null : r.json(); });
+      return fetch('/api/registry/' + encodeURIComponent(regNo), { headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          if (r.status === 429) return Promise.reject({ error: 'rate_limited' });
+          return r.ok ? r.json() : null;
+        });
     },
     mine: function () {
       if (!API.online) {
         var docs = LS.get('zrf_docs', {});
         return Promise.resolve(LS.get('zrf_mine', []).map(function (n) { return docs[n]; })
-          .filter(function (d) { return d && !d.deleted; }));
+          .filter(function (d) { return d && !d.deleted; }).map(docState));
       }
-      return fetch('/api/me/documents').then(function (r) { return r.json(); });
+      return API._json('/api/me/documents', []);
     },
     report: function (regNo, reason, note) {
       if (!API.online) {
@@ -204,16 +244,109 @@
   }
 
   /* ---------------- vəziyyət ---------------- */
-  var state = { cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '' };
+  var state = {
+    mode: 'zarafat',          // 'zarafat' | 'xatire' — sənədin tonu
+    cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '',
+    answers: {}               // anket cavabları — yalnız `fields` daşıyan şablonlarda
+  };
+
+  /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
+  var MODE_COPY = {
+    zarafat: {
+      title:   'Zarafat Notariat Palatası — qeyri-rəsmi sənədlər reyestri',
+      mast:    'Zarafat Notariat Palatası',
+      mastSub: 'Uydurma qurum · qeyri-rəsmi sənədlər reyestri · zarafat.az',
+      govSub:  ' · Qeyri-rəsmi sənədlər vahid reyestri',
+      eyebrow: 'Xidmət 01 — sənədin hazırlanması',
+      h1:      'Rəsmi görünüşlü sənədlər.<br><em>Heç bir hüquqi qüvvəsi yoxdur.</em>',
+      lede:    'Möhürlü, imzalı, ştrix-kodlu sənəd hazırlayın; 1 AZN ödəyib reyestrə yazdırın. ' +
+               'Sənədin üzərindəki QR kod istənilən şəxsin onu yoxlamasına imkan verir — ' +
+               'yoxlama nəticəsi də eyni dərəcədə ciddi görünür.',
+      note:    'Zarafat rejimi: dostlara, cütlüklərə və iş yerinə göndərmək üçün gülməli sənədlər.',
+      specTag: 'cütlüklər, dostlar, iş yeri',
+      specimen: 'always-right'
+    },
+    xatire: {
+      title:   'Xatirə Sənədləri Palatası — səmimi sənədlər reyestri',
+      mast:    'Xatirə Sənədləri Palatası',
+      mastSub: 'Uydurma qurum · xatirə sənədləri reyestri · zarafat.az',
+      govSub:  ' · Xatirə sənədləri reyestri',
+      eyebrow: 'Xidmət 02 — xatirənin rəsmiləşdirilməsi',
+      h1:      'Saxlanılası sənədlər.<br><em>Yenə də hüquqi qüvvəsi yoxdur.</em>',
+      lede:    'Sevgi, təşəkkür, ad günü və ailə üçün möhürlü, imzalı xatirə sənədi hazırlayın; ' +
+               '1 AZN ödəyib reyestrə yazdırın. Quruluş eyni dərəcədə rəsmidir — ' +
+               'yalnız sözlər isti və səmimidir.',
+      note:    'Xatirə rejimi: çərçivəyə salınmaq və hədiyyə edilmək üçün səmimi sənədlər.',
+      specTag: 'sevgi, təşəkkür, ailə, təbriklər',
+      specimen: 'sevgi-etirafnamesi'
+    }
+  };
+
+  /* Kataloq serverdə, admin panelində idarə olunur. Statik templates.js faylı
+     toxum və offline ehtiyatdır: server əlçatmazsa (dist rejimi, `file://`)
+     sayt onunla işləməyə davam edir.
+     Massivlər YERİNDƏ dəyişdirilir — `CATEGORIES` / `TEMPLATES` istinadlarını
+     tutan bütün funksiyalar öz-özünə yeni kataloqu görsün deyə. */
+  function applyCatalog(payload) {
+    if (!payload || !payload.categories || !payload.templates) return false;
+    if (!payload.categories.length || !payload.templates.length) return false;
+
+    CATEGORIES.length = 0;
+    payload.categories.forEach(function (c) { CATEGORIES.push(c); });
+    TEMPLATES.length = 0;
+    payload.templates.forEach(function (t) { TEMPLATES.push(t); });
+    return true;
+  }
+
+  /* Kataloq dəyişəndən sonra bütün görünüşü yenidən qurur. */
+  function rebuildCatalogViews() {
+    if (!MODE_COPY[state.mode] || !catsOf(state.mode).length) {
+      var alt = DOCGEN.TONES.filter(function (t) { return catsOf(t).length; })[0];
+      if (alt) { state.mode = alt; LS.set('zrf_mode', alt); }
+    }
+    var cats = catsOf(state.mode);
+    if (!cats.filter(function (c) { return c.id === state.cat; }).length)
+      state.cat = cats.length ? cats[0].id : '';
+
+    renderModeSwitch(); applyModeCopy();
+    renderTabs(); renderCards(); renderSpecimen();
+
+    var list = tplsOf(state.mode);
+    var keep = state.tpl && list.filter(function (t) { return t.id === state.tpl.id; })[0];
+    if (keep) pickTemplate(keep.id);
+    else if (list.length) pickTemplate(list[0].id);
+    else { state.tpl = null; renderDesign(); updatePreview(); }
+  }
+
+  function catsOf(mode) {
+    return CATEGORIES.filter(function (c) { return c.tone === mode; });
+  }
+  function tplsOf(mode) {
+    return TEMPLATES.filter(function (t) { return t.tone === mode; });
+  }
 
   var LAYOUT_EDGE = {
     notarial: '#b0882a', blank: '#2f5d8a', diplom: '#8d1d33',
     sertifikat: '#1f7a52', lisenziya: '#3b4b6b',
     arayis: '#2f6d7a', qerar: '#5d2b4a', muqavile: '#6b5539',
-    teleqram: '#6f7a2f', vesiqe: '#8a5a2b'
+    teleqram: '#6f7a2f', vesiqe: '#8a5a2b',
+    viza: '#2f5d8a', ekspertiza: '#1f7a52'
   };
-  var PAL_LABEL = { gold: 'Qızılı', steel: 'Polad', burgundy: 'Bordo', forest: 'Zümrüd', ink: 'Qrafit' };
-  var PAL_SWATCH = { gold: '#b0882a', steel: '#2f5d8a', burgundy: '#8d1d33', forest: '#1f7a52', ink: '#3b4b6b' };
+  /* Şablona görə qeydiyyat prefiksi — backend-php/app/Support/RegistryPrefix.php güzgüsü.
+     Yalnız ASCII: nömrə QR kodun URL-inə düşür. */
+  var REG_PREFIX = {
+    'cole-cixma-vizasi': 'CCV', 'hesab-davasi-qalibi': 'HDQ', 'gorduldu-arayisi': 'GRL',
+    'bot-kimi-oynayir': 'BOT', 'immunitet-vesiqesi': 'QSM'
+  };
+  /* Prefiks kataloqdan gəlir; offline/dist rejimində yuxarıdakı xəritə işləyir. */
+  function regPrefix(tpl) {
+    if (tpl && tpl.regPrefix) return tpl.regPrefix;
+    var id = tpl && tpl.id ? tpl.id : tpl;
+    return REG_PREFIX[id] || 'ZRF';
+  }
+
+  var PAL_LABEL = { gold: 'Qızılı', steel: 'Polad', burgundy: 'Bordo', forest: 'Zümrüd', ink: 'Qrafit', rose: 'Çəhrayı' };
+  var PAL_SWATCH = { gold: '#b0882a', steel: '#2f5d8a', burgundy: '#8d1d33', forest: '#1f7a52', ink: '#3b4b6b', rose: '#a8586b' };
 
   /* blank formalarının kiçik sxematik nişanları */
   var LAYOUT_ICON = {
@@ -226,15 +359,64 @@
     qerar:    '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><path d="M12 7h12" stroke="currentColor" stroke-width="1.4"/><path d="M6 11.5h9M21 11.5h9" stroke="currentColor" stroke-width=".9"/><path d="M6 15h24M6 18h24M6 21h14" stroke="currentColor" stroke-width=".6"/>',
     muqavile: '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><rect x="6" y="5.5" width="10" height="6" fill="none" stroke="currentColor" stroke-width=".7"/><rect x="20" y="5.5" width="10" height="6" fill="none" stroke="currentColor" stroke-width=".7"/><path d="M6 15h24M6 17.5h24" stroke="currentColor" stroke-width=".6"/><path d="M6 21h10M20 21h10" stroke="currentColor" stroke-width=".9"/>',
     teleqram: '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><path d="M2.5 5.5h31M2.5 20.5h31" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2"/><path d="M7 10h22M7 13h22M7 16h14" stroke="currentColor" stroke-width=".8"/>',
-    vesiqe:   '<rect x="2.5" y="4.5" width="31" height="17" rx="2" fill="none" stroke="currentColor"/><rect x="5.5" y="7.5" width="7" height="8" fill="none" stroke="currentColor" stroke-width=".7"/><path d="M15 8.5h15M15 11.5h15M15 14.5h9" stroke="currentColor" stroke-width=".7"/><path d="M5.5 18h25M5.5 19.8h25" stroke="currentColor" stroke-width=".9" stroke-dasharray="1 1"/>'
+    vesiqe:   '<rect x="2.5" y="4.5" width="31" height="17" rx="2" fill="none" stroke="currentColor"/><rect x="5.5" y="7.5" width="7" height="8" fill="none" stroke="currentColor" stroke-width=".7"/><path d="M15 8.5h15M15 11.5h15M15 14.5h9" stroke="currentColor" stroke-width=".7"/><path d="M5.5 18h25M5.5 19.8h25" stroke="currentColor" stroke-width=".9" stroke-dasharray="1 1"/>',
+    viza:     '<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><rect x="2.5" y="2.5" width="31" height="4.5" fill="currentColor" opacity=".35"/><path d="M6 11h13M6 14h13M6 17h9" stroke="currentColor" stroke-width=".7"/><circle cx="26.5" cy="13" r="4" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M5 21h24" stroke="currentColor" stroke-width="1" stroke-dasharray="1.4 1"/>',
+    ekspertiza:'<rect x="2.5" y="2.5" width="31" height="21" fill="none" stroke="currentColor"/><rect x="2.5" y="2.5" width="31" height="6" fill="currentColor" opacity=".35"/><path d="M6 12h11M6 15h11" stroke="currentColor" stroke-width=".7"/><rect x="20" y="10" width="2.6" height="9" fill="currentColor" opacity=".8"/><rect x="24" y="13" width="2.6" height="6" fill="currentColor" opacity=".6"/><rect x="28" y="15.5" width="2.6" height="3.5" fill="none" stroke="currentColor" stroke-width=".7"/>'
   };
 
   function curLayout()  { return state.layout  || (state.tpl && state.tpl.layout)  || 'notarial'; }
   function curPalette() { return state.palette || (state.tpl && state.tpl.palette) || 'gold'; }
 
+  /* ---------------- rejim ---------------- */
+  function renderModeSwitch() {
+    var el = $('#modeSwitch');
+    if (!el) return;
+    el.innerHTML = DOCGEN.TONES.map(function (m) {
+      return '<button type="button" role="tab" data-mode="' + m + '" aria-pressed="' + (state.mode === m) + '">' +
+        esc(DOCGEN.TONE_NAMES[m]) + '<span class="g">' + tplsOf(m).length + '</span></button>';
+    }).join('');
+    $$('#modeSwitch button').forEach(function (b) {
+      b.onclick = function () { setMode(b.dataset.mode); };
+    });
+    var copy = MODE_COPY[state.mode];
+    if ($('#modeNote')) $('#modeNote').textContent = copy.note;
+  }
+
+  /* Rejimə bağlı bütün sayt mətnlərini yeniləyir. */
+  function applyModeCopy() {
+    var c = MODE_COPY[state.mode];
+    document.title = c.title;
+    var set = function (sel, val, html) {
+      var el = $(sel);
+      if (!el) return;
+      if (html) el.innerHTML = val; else el.textContent = val;
+    };
+    set('#mastName', c.mast); set('#mastSub', c.mastSub); set('#govSub', c.govSub);
+    set('#heroEyebrow', c.eyebrow); set('#heroTitle', c.h1, true); set('#heroLede', c.lede);
+    set('#specTemplates', tplsOf(state.mode).length + ' şablon — ' + c.specTag);
+    set('#stepPick', tplsOf(state.mode).length + ' hazır şablondan birini seçin, adları və şərtləri ' +
+      'yazın. Önizləmə hər hərfdən sonra yenilənir.');
+    set('#specLayouts', DOCGEN.LAYOUTS.length + ' blank forması, ' + DOCGEN.PALETTES.length + ' rəng palitrası');
+  }
+
+  function setMode(mode) {
+    if (!MODE_COPY[mode] || mode === state.mode) return;
+    state.mode = mode;
+    LS.set('zrf_mode', mode);
+    state.q = '';
+    if ($('#fSearch')) $('#fSearch').value = '';
+    var first = catsOf(mode)[0];
+    state.cat = first ? first.id : '';
+    state.tpl = null; state.doc = null; state.layout = null; state.palette = null;
+    renderModeSwitch(); applyModeCopy();
+    renderTabs(); renderCards(); renderSpecimen();
+    var t = tplsOf(mode)[0];
+    if (t) pickTemplate(t.id); else { renderDesign(); updatePreview(); }
+  }
+
   /* ---------------- kateqoriya / şablon ---------------- */
   function renderTabs() {
-    $('#tabs').innerHTML = CATEGORIES.map(function (c) {
+    $('#tabs').innerHTML = catsOf(state.mode).map(function (c) {
       var n = TEMPLATES.filter(function (t) { return t.cat === c.id; }).length;
       return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (state.cat === c.id) + '">' +
         esc(c.name) + '<span class="n">' + n + '</span></button>';
@@ -262,7 +444,8 @@
 
   function renderCards() {
     var q = state.q.trim();
-    var list = TEMPLATES.filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
+    /* Axtarış da rejim daxilində işləyir — başqa tonun şablonu siyahıya düşmür. */
+    var list = tplsOf(state.mode).filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
     $('#cardsEmpty').hidden = list.length > 0;
     $('#cards').innerHTML = list.map(function (t, i) {
       var idx = TEMPLATES.indexOf(t) + 1;
@@ -286,6 +469,13 @@
     $('#fTitle').value = t.title;
     $('#fPowers').value = t.powers;
     $('#fPenalty').value = t.penalty;
+    renderFields();
+    /* Anketli şablonda bəndlər `notes`-dan gəlir — sərbəst mətn sahəsi yalnız
+       qarışıqlıq yaradardı, ona görə gizlədilir. */
+    var anket = !!(t.fields && t.fields.length);
+    $('#fPowersField').hidden = anket;
+    $('#fTitleField').hidden = anket;
+    $('#fNamesRow').hidden = anket;
     renderCards(); renderDesign(); updatePreview();
   }
 
@@ -310,26 +500,190 @@
     });
   }
 
+  /* ---------------- anket sahələri ----------------
+     Şablon `fields[]` daşıyırsa, redaktor formanı ondan qurur. Cavablar iki
+     istiqamətə gedir: köhnə mətn sahələrinə (`into`) və sənədin struktur
+     bloklarına (`data` / `checks` / `scale`). `fields` olmayan şablonlar
+     bugünkü kod yolunda qalır — heç nə dəyişmir. */
+
+  var FIELD_TYPES = ['text', 'select', 'multi', 'list', 'scale', 'number', 'time', 'date', 'datetime'];
+  /* Ad sahələri: yalnız hərf, boşluq, defis və apostrof (server `Sanitizer::person` ilə eyni) */
+  var PERSON_RE = /[^\p{L}\p{M} '\-]/gu;
+
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function clockNow(offsetH) {
+    var d = new Date(Date.now() + (offsetH || 0) * 3600000);
+    return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+  function defVal(f) {
+    if (f.auto) return f.auto;
+    if (f.t === 'time') {
+      if (f.def === 'now') return clockNow(0);
+      var m = String(f.def || '').match(/^\+(\d+)h$/);
+      if (m) return clockNow(parseInt(m[1], 10));
+      return clockNow(0);
+    }
+    if (f.t === 'date') return new Date().toISOString().slice(0, 10);
+    if (f.t === 'datetime') return new Date().toISOString().slice(0, 16);
+    if (f.t === 'scale' || f.t === 'number') return f.def === undefined ? (f.min || 1) : f.def;
+    if (f.t === 'multi') return (f.def || []).slice();
+    if (f.t === 'list') return (f.def || ['']).slice();
+    if (f.t === 'select') return f.def || (f.opts && f.opts[0]) || '';
+    return f.def || '';
+  }
+
+  /* `{{k}}` yer tutucularını cavablarla əvəz edir. */
+  function fill(str, ans) {
+    return String(str == null ? '' : str).replace(/\{\{(\w+)\}\}/g, function (m, k) {
+      var v = ans[k];
+      if (v === undefined || v === null || v === '') return '—';
+      return Array.isArray(v) ? v.join(', ') : String(v);
+    });
+  }
+
+  function renderFields(preserve) {
+    var box = $('#fFields'), t = state.tpl;
+    if (!box) return;
+    if (!t || !t.fields || !t.fields.length) { box.innerHTML = ''; box.hidden = true; state.answers = {}; return; }
+    box.hidden = false;
+    var prev = preserve ? (state.answers || {}) : {};
+    state.answers = {};
+    t.fields.forEach(function (f) {
+      state.answers[f.k] = prev[f.k] === undefined ? defVal(f) : prev[f.k];
+    });
+
+    box.innerHTML = t.fields.map(function (f) {
+      if (f.auto) return '';
+      var v = state.answers[f.k], id = 'ff-' + f.k, h = '';
+      h += '<div class="field" data-fk="' + esc(f.k) + '">';
+      h += '<label class="label" for="' + id + '">' + esc(f.label) + (f.opt ? ' <span class="opt">(istəyə bağlı)</span>' : '') + '</label>';
+
+      if (f.t === 'multi') {
+        h += '<div class="checks" role="group" aria-label="' + esc(f.label) + '">' + (f.opts || []).map(function (o, i) {
+          return '<button type="button" data-fk="' + esc(f.k) + '" data-opt="' + i + '" aria-pressed="' +
+            (v.indexOf(o) >= 0) + '">' + esc(o) + '</button>';
+        }).join('') + '</div>';
+        h += '<span class="hint">Ən azı ' + (f.min || 1) + ', ən çoxu ' + (f.max || (f.opts || []).length) + ' bənd.</span>';
+      } else if (f.t === 'list') {
+        h += '<div class="list-box" data-fk="' + esc(f.k) + '">' + v.map(function (x, i) {
+          return '<div class="list-row"><input class="input" data-fk="' + esc(f.k) + '" data-i="' + i +
+            '" maxlength="' + (f.max || 40) + '" value="' + esc(x) + '" placeholder="Ad Soyad">' +
+            '<button type="button" class="btn-mini" data-list="del" data-fk="' + esc(f.k) + '" data-i="' + i +
+            '" aria-label="Sil">−</button></div>';
+        }).join('') + '</div>';
+        h += '<button type="button" class="btn-mini" data-list="add" data-fk="' + esc(f.k) + '">+ Ad əlavə et</button>';
+      } else if (f.t === 'select') {
+        h += '<select id="' + id + '" class="input" data-fk="' + esc(f.k) + '">' +
+          (f.opts || []).map(function (o) {
+            return '<option value="' + esc(o) + '"' + (o === v ? ' selected' : '') + '>' + esc(o) + '</option>';
+          }).join('') + (f.free ? '<option value="__free">Özün yaz…</option>' : '') + '</select>';
+        if (f.free) h += '<input class="input free" data-fk="' + esc(f.k) + '" data-free="1" maxlength="' +
+          (f.max || 40) + '" placeholder="Öz variantınız" hidden>';
+      } else if (f.t === 'scale') {
+        h += '<div class="range-wrap"><input id="' + id + '" type="range" class="range" data-fk="' + esc(f.k) +
+          '" min="' + (f.min || 1) + '" max="' + (f.max || 10) + '" step="1" value="' + v + '">' +
+          '<span class="range-val" data-val="' + esc(f.k) + '">' + v + '/' + (f.max || 10) + '</span></div>';
+      } else {
+        var type = f.t === 'number' ? 'number' : (f.t === 'time' ? 'time' : (f.t === 'date' ? 'date' : (f.t === 'datetime' ? 'datetime-local' : 'text')));
+        h += '<input id="' + id + '" type="' + type + '" class="input" data-fk="' + esc(f.k) + '"' +
+          (f.t === 'number' ? ' min="' + (f.min || 0) + '" max="' + (f.max || 999) + '"' : '') +
+          (f.t === 'text' ? ' maxlength="' + (f.max || 40) + '"' : '') +
+          ' value="' + esc(String(v)) + '">';
+      }
+      if (f.hint) h += '<span class="hint">' + esc(f.hint) + '</span>';
+      return h + '</div>';
+    }).join('');
+  }
+
+  /* Ad siyahısı dəyişəndə formanı yenidən qurur, amma cavabları sıfırlamır. */
+  function renderFieldsKeepFocus(k) {
+    renderFields(true);
+    var inp = $('#fFields .field[data-fk="' + k + '"] input');
+    if (inp) inp.focus();
+  }
+
+  /* Formadakı cavabları oxuyub sənədin struktur bloklarını qurur. */
+  function readFields() {
+    var t = state.tpl, out = { data: [], checks: [], scale: null, notes: null, expiresAt: null, until: null, into: {} };
+    if (!t || !t.fields || !t.fields.length) return null;
+    var ans = state.answers || {};   /* yalnız oxumaq üçün */
+
+    /* Cavablar `state.answers`-də saxlanılır — DOM-dan deyil, oradan oxunur:
+       forma yenidən qurulanda da mənbə tək qalır.
+       `state.answers` BURADA DƏYİŞDİRİLMİR: təmizlənmiş dəyərlər yerli `vals`-a
+       yığılır, əks halda boş siyahı sətri formadan silinər və istifadəçi ad
+       əlavə edə bilməzdi. */
+    var vals = {};
+    t.fields.forEach(function (f) {
+      var v = f.auto ? f.auto : ans[f.k];
+      if (f.t === 'multi' || f.t === 'list') v = (v || []).slice();
+      if (f.t === 'scale' || f.t === 'number') v = parseInt(v, 10) || (f.min || 0);
+      if (v === undefined || v === null) v = '';
+      if (f.t === 'text' && f.person) v = String(v).replace(PERSON_RE, '').slice(0, f.max || 40);
+      if (f.t === 'list') v = v.map(function (x) { return String(x).replace(PERSON_RE, '').trim(); }).filter(Boolean).slice(0, f.count || 4);
+      vals[f.k] = v;
+
+      var shown = Array.isArray(v) ? v.join(', ') : (f.up ? String(v).toLocaleUpperCase('az') : v);
+      if (f.into) out.into[f.into] = String(shown);
+      if (f.expiry === 'hours') out.untilHours = parseInt(v, 10) || 0;
+      else if (f.expiry) out.until = String(v);
+      if (f.t === 'multi') out.checks = v.slice();
+      else if (f.t === 'scale') out.scale = { label: f.label, v: v, max: f.max || 10 };
+      if (!f.hide && f.t !== 'multi' && f.t !== 'scale')
+        out.data.push([f.row || f.label, String(shown === '' || shown === undefined ? '—' : shown) + (f.unit ? ' ' + f.unit : '')]);
+    });
+
+    /* Etibarlılıq müddəti iki formada verilə bilər:
+         expiry: true      — sahə HH:MM saatıdır, ən yaxın gələcək həmin saat
+         expiry: 'hours'   — sahə saat sayıdır, indidən o qədər sonra */
+    if (out.untilHours) {
+      var dh = new Date(Date.now() + out.untilHours * 3600000);
+      out.expiresAt = dh.getTime();
+      out.until = pad2(dh.getHours()) + ':' + pad2(dh.getMinutes());
+    } else if (out.until && /^\d{2}:\d{2}$/.test(out.until)) {
+      var p = out.until.split(':'), d = new Date();
+      d.setHours(parseInt(p[0], 10), parseInt(p[1], 10), 0, 0);
+      if (d.getTime() <= Date.now()) d.setDate(d.getDate() + 1);
+      out.expiresAt = d.getTime();
+    }
+    if (t.notes) out.notes = t.notes.map(function (n) { return fill(n, vals); });
+    out.vals = vals;
+    return out;
+  }
+
   /* ---------------- sənəd obyekti ---------------- */
   function formDoc(base) {
     var t = state.tpl || TEMPLATES[0];
-    var to = $('#fTo').value.trim() || 'Ad Soyad';
-    var from = $('#fFrom').value.trim() || 'Ad Soyad';
+    var F = readFields();
+    var to = (F && F.into.to) || $('#fTo').value.trim() || 'Ad Soyad';
+    var from = (F && F.into.from) || $('#fFrom').value.trim() || 'Ad Soyad';
     var pre = (t.preamble || '').replace(/\{to\}/g, to).replace(/\{from\}/g, from);
+    if (F) pre = fill(pre, F.vals);
+    /* Hibrid qat: cavablar həm struktur bloklara, həm də `powers`-ə düşür ki,
+       anketli şablon istifadəçi dizaynı dəyişdikdə köhnə on dizaynda da oxunsun. */
+    var extra = F ? {
+      powers: (F.checks.length ? F.checks : (F.notes || [])).join('\n') || t.powers,
+      data: F.data, checks: F.checks, scale: F.scale, notes: F.notes,
+      until: F.until, expiresAt: F.expiresAt,
+      signTitle: t.signTitle || null, signOrg: t.signOrg || null,
+      share: t.share ? fill(t.share, F.vals) : null,
+      state: 'active', cancelReason: null
+    } : {};
     return Object.assign({
       templateId: t.id,
+      tone: t.tone || 'zarafat',
       layout: curLayout(), palette: curPalette(),
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
-      title: $('#fTitle').value.trim() || t.title,
+      title: (F && F.into.title) || $('#fTitle').value.trim() || t.title,
       to: to, from: from,
       powers: $('#fPowers').value,
       penalty: $('#fPenalty').value.trim(),
       preamble: pre,
-      regNo: 'ZRF-' + new Date().getFullYear() + '-————',
+      regNo: regPrefix(t) + '-' + new Date().getFullYear() + '-————',
       date: fmtDate(new Date()),
       paid: false, verifyUrl: ''
-    }, base || {});
+    }, extra, base || {});
   }
 
   function updatePreview() {
@@ -356,6 +710,11 @@
       html += '<button id="aHd" class="btn" type="button">HD PNG yüklə</button>';
       html += '<button id="aStory" class="btn btn-ghost" type="button">Story formatı</button>';
       html += '<button id="aLink" class="btn btn-ghost" type="button">Reyestr linki</button>';
+      if (d.share) html += '<button id="aShare" class="btn btn-ghost span2" type="button">Paylaşım mətnini kopyala</button>';
+      /* Ləğv yalnız müddəti olan və hələ ləğv edilməmiş sənəddə mənalıdır.
+         Arxiv Node backend-ində bu endpoint yoxdur — offline rejimdə də işləyir. */
+      if (d.expiresAt && !d.cancelledAt)
+        html += '<button id="aCancel" class="btn btn-danger span2" type="button">Vizanı ləğv et</button>';
     }
     html += '<button id="aReport" class="btn btn-danger span2" type="button">Şikayət et / sil</button>';
     box.innerHTML = html;
@@ -369,6 +728,13 @@
     if ((b = $('#aHd')))    b.onclick = function () { download(d, false, 3); };
     if ((b = $('#aStory'))) b.onclick = function () { download(d, true, 1); };
     if ((b = $('#aPay')))   b.onclick = function () { payFlow(d); };
+    if ((b = $('#aCancel'))) b.onclick = function () { openCancel(d); };
+    if ((b = $('#aShare'))) b.onclick = function () {
+      var txt = d.share + '\n' + (d.verifyUrl || (SITE + '/r/' + d.regNo));
+      navigator.clipboard.writeText(txt)
+        .then(function () { toast('Paylaşım mətni kopyalandı'); })
+        .catch(function () { toast('Kopyalamaq alınmadı', 'err'); });
+    };
     if ((b = $('#aLink')))  b.onclick = function () {
       navigator.clipboard.writeText(d.verifyUrl || (SITE + '/r/' + d.regNo))
         .then(function () { toast('Link kopyalandı'); })
@@ -435,34 +801,74 @@
     if (/^\d{4}$/.test(v)) v = 'ZRF-' + new Date().getFullYear() + '-' + v;
     return v;
   }
-  function verdict(kind, title, meta) {
+  /* `long` — bir neçə cümləlik izah üçün: mono əvəzinə sans, daha rahat sətir hündürlüyü. */
+  function verdict(kind, title, meta, long) {
     return '<div class="verdict ' + kind + '"><strong>' + title + '</strong>' +
-      (meta ? '<div class="meta">' + meta + '</div>' : '') + '</div>';
+      (meta ? '<div class="meta' + (long ? ' long' : '') + '">' + meta + '</div>' : '') + '</div>';
   }
 
   function doSearch() {
     var reg = normReg($('#qReg').value);
     $('#searchResult').innerHTML = '';
-    if (!/^ZRF-\d{4}-\d{4}$/.test(reg)) {
+    if (!/^[A-Z]{2,4}-\d{4}-\d{4}$/.test(reg)) {
       $('#searchMsg').innerHTML = verdict('wait', 'Nömrə formatı yanlışdır', 'Düzgün format: ZRF-2026-9482');
       return;
     }
     $('#searchMsg').innerHTML = verdict('wait', 'Reyestrdə axtarılır…', reg);
     API.lookup(reg).then(function (d) {
       if (!d) {
-        $('#searchMsg').innerHTML = verdict('no', 'Reyestrdə belə sənəd tapılmadı',
-          'Yalnız ödənişi tamamlanmış sənədlər reyestrə düşür');
+        /* Bu mətn qəsdən sərtdir: konsolda «düzəldilmiş» sənədin QR kodu məhz
+           buraya düşür və sənədin qeydə alınmadığını özü elan edir. */
+        $('#searchMsg').innerHTML = verdict('no', 'Bu nömrə reyestrdə qeydə alınmayıb',
+          'Əlinizdə bu nömrəni daşıyan sənəd varsa, o, bu reyestrdən çıxarılmayıb: ya heç vaxt ' +
+          'rəsmiləşdirilməyib, ya sonradan dəyişdirilib, ya da sahibi tərəfindən silinib. ' +
+          'Reyestrdə olmayan sənəd bu qurumun verdiyi sənəd sayılmır.', true);
         return;
       }
-      $('#searchMsg').innerHTML = verdict('ok', 'Rəsmi təsdiq olunub',
-        'Qeydiyyat: ' + esc(d.regNo) + ' · Tarix: ' + esc(d.date));
+      /* Vəziyyət serverdə hesablanır və sənədin üzərindəki ştampı da o seçir —
+         reyestr mətni ilə sənədin özü heç vaxt bir-birinə zidd olmur. */
+      if (d.state === 'cancelled') {
+        $('#searchMsg').innerHTML = verdict('no', 'Sənəd ləğv edilib',
+          'Qeydiyyat: ' + esc(d.regNo) + '. Ləğv səbəbi: «' + esc(d.cancelReason || 'göstərilməyib') + '». ' +
+          'Ləğv edilmiş sənəd qüvvədə deyil və heç bir öhdəlik yaratmır.', true);
+      } else if (d.state === 'expired') {
+        $('#searchMsg').innerHTML = verdict('wait', 'Sənədin müddəti bitib',
+          'Qeydiyyat: ' + esc(d.regNo) + ' · Tarix: ' + esc(d.date) + '. Sənəd reyestrdədir, ' +
+          'lakin etibarlılıq müddəti başa çatdığı üçün qüvvədə deyil.', true);
+      } else {
+        $('#searchMsg').innerHTML = verdict('ok', 'Rəsmi təsdiq olunub',
+          'Qeydiyyat: ' + esc(d.regNo) + ' · Tarix: ' + esc(d.date));
+      }
       $('#searchResult').innerHTML =
         '<div class="sheet-wrap"><div class="paper">' + DOCGEN.a4(d, { idPrefix: 'sr', verified: true }) + '</div></div>' +
         '<div style="margin-top:10px"><button id="srReport" class="btn btn-danger btn-sm" type="button">Şikayət et / sil</button></div>';
       $('#srReport').onclick = function () { openReport(d.regNo); };
-    }).catch(function () {
-      $('#searchMsg').innerHTML = verdict('no', 'Axtarış zamanı xəta baş verdi', '');
+    }).catch(function (e) {
+      $('#searchMsg').innerHTML = e && e.error === 'rate_limited'
+        ? verdict('wait', 'Çox sayda sorğu göndərildi', 'Bir dəqiqə gözləyib yenidən yoxlayın.')
+        : verdict('no', 'Axtarış zamanı xəta baş verdi', '');
     });
+  }
+
+  /* Ləğv modalı — səbəb siyahısı şablondan gəlir. */
+  function openCancel(d) {
+    var t = state.tpl && state.tpl.id === d.templateId ? state.tpl
+      : TEMPLATES.filter(function (x) { return x.id === d.templateId; })[0];
+    var reasons = (t && t.cancelReasons) || ['Səbəb göstərilmədi'];
+    $('#cnlReason').innerHTML = reasons.map(function (r) {
+      return '<option value="' + esc(r) + '">' + esc(r) + '</option>';
+    }).join('');
+    $('#cnlReg').textContent = d.regNo;
+    openModal('#cancelModal');
+    $('#cnlSend').onclick = function () {
+      $('#cnlSend').disabled = true;
+      API.cancel(d.regNo, $('#cnlReason').value).then(function (nd) {
+        state.doc = nd || d; closeModal('#cancelModal');
+        updatePreview(); renderMine();
+        toast('Sənəd ləğv edildi');
+      }).catch(function (e) { toast(apiError(e, 'Ləğv edilə bilmədi'), 'err'); })
+        .then(function () { $('#cnlSend').disabled = false; });
+    };
   }
 
   /* ---------------- mənim sənədlərim ---------------- */
@@ -478,7 +884,10 @@
           '<div class="meta">' + esc(d.regNo) + ' · ' + esc(d.date) +
             (d.layout ? ' · ' + esc(DOCGEN.LAYOUT_NAMES[d.layout] || d.layout) : '') + '</div></div>' +
           '<div class="acts">' +
-            '<span class="state ' + (d.paid ? 'pub' : 'dra') + '">' + (d.paid ? 'Reyestrdə' : 'Qaralama') + '</span>' +
+            '<span class="state ' + (d.state === 'cancelled' ? 'dra' : (d.paid ? 'pub' : 'dra')) + '">' +
+              (d.state === 'cancelled' ? 'Ləğv edilib'
+                : d.state === 'expired' ? 'Müddəti bitib'
+                : (d.paid ? 'Reyestrdə' : 'Qaralama')) + '</span>' +
             '<button class="btn btn-ghost btn-sm" data-open="' + d.regNo + '" type="button">Aç</button>' +
             '<button class="btn btn-danger btn-sm" data-rep="' + d.regNo + '" type="button">Sil</button>' +
           '</div></div>';
@@ -508,10 +917,11 @@
 
   /* ---------------- hero nümunəsi ---------------- */
   function renderSpecimen() {
-    var t = TEMPLATES.filter(function (x) { return x.id === 'always-right'; })[0] || TEMPLATES[0];
+    var want = MODE_COPY[state.mode].specimen;
+    var t = TEMPLATES.filter(function (x) { return x.id === want; })[0] || tplsOf(state.mode)[0] || TEMPLATES[0];
     var to = 'Günel Şəkərova', from = 'Elvin Məmmədov', reg = 'ZRF-2026-4471';
     var doc = {
-      templateId: t.id, layout: t.layout, palette: t.palette,
+      templateId: t.id, tone: t.tone || 'zarafat', layout: t.layout, palette: t.palette,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
       title: t.title, to: to, from: from, powers: t.powers, penalty: t.penalty,
@@ -525,16 +935,82 @@
 
   /* ---------------- başlanğıc ---------------- */
   function init() {
+    /* Rejim seçimi yaddaşdan bərpa olunur; naməlum dəyər zarafat-a düşür. */
+    var saved = LS.get('zrf_mode', 'zarafat');
+    state.mode = MODE_COPY[saved] ? saved : 'zarafat';
+    var firstCat = catsOf(state.mode)[0];
+    if (firstCat) state.cat = firstCat.id;
+
+    renderModeSwitch(); applyModeCopy();
     renderTabs(); renderCards(); renderDesign();
-    pickTemplate(TEMPLATES[0].id);
+    var first = tplsOf(state.mode)[0];
+    if (first) pickTemplate(first.id);
     renderSpecimen();
 
+    /* Delegasiya olunan dinləyici: `#fFields` hər şablon seçimində yenidən qurulur,
+       ona görə element səviyyəsində bağlanan dinləyicilər itərdi. */
     var deb;
-    ['#fTitle', '#fTo', '#fFrom', '#fPowers', '#fPenalty'].forEach(function (sel) {
-      $(sel).addEventListener('input', function () {
-        state.doc = null;
-        clearTimeout(deb); deb = setTimeout(updatePreview, 180);
-      });
+    function touch() { state.doc = null; clearTimeout(deb); deb = setTimeout(updatePreview, 180); }
+
+    $('#editorForm').addEventListener('input', function (e) {
+      var el = e.target, k = el.getAttribute && el.getAttribute('data-fk');
+      if (k && state.answers) {
+        if (el.hasAttribute('data-free')) {
+          state.answers[k] = el.value;
+        } else if (el.hasAttribute('data-i')) {
+          state.answers[k] = (state.answers[k] || []).slice();
+          state.answers[k][parseInt(el.getAttribute('data-i'), 10)] = el.value;
+        } else if (el.type === 'range') {
+          state.answers[k] = parseInt(el.value, 10);
+          var lbl = $('#fFields [data-val="' + k + '"]');
+          if (lbl) lbl.textContent = el.value + '/' + el.max;
+        } else if (el.tagName === 'SELECT') {
+          var free = $('#fFields [data-fk="' + k + '"][data-free]');
+          if (free) free.hidden = el.value !== '__free';
+          state.answers[k] = el.value === '__free' ? (free ? free.value : '') : el.value;
+        } else {
+          state.answers[k] = el.value;
+        }
+      }
+      touch();
+    });
+
+    /* Çoxseçim düymələri və ad siyahısının əlavə/sil düymələri */
+    $('#editorForm').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button') : null;
+      if (!b || !state.tpl || !state.tpl.fields) return;
+      var k = b.getAttribute('data-fk');
+      if (!k) return;
+      var f = state.tpl.fields.filter(function (x) { return x.k === k; })[0];
+      if (!f) return;
+
+      if (b.hasAttribute('data-opt')) {
+        var opt = f.opts[parseInt(b.getAttribute('data-opt'), 10)];
+        var cur = (state.answers[k] || []).slice(), at = cur.indexOf(opt);
+        if (at >= 0) {
+          if (cur.length <= (f.min || 1)) return toast('Ən azı ' + (f.min || 1) + ' bənd seçilməlidir', 'err');
+          cur.splice(at, 1);
+        } else {
+          if (cur.length >= (f.max || f.opts.length)) return toast('Ən çoxu ' + (f.max || f.opts.length) + ' bənd seçilə bilər', 'err');
+          cur.push(opt);
+        }
+        state.answers[k] = cur;
+        b.setAttribute('aria-pressed', at < 0);
+        return touch();
+      }
+
+      var act = b.getAttribute('data-list');
+      if (act === 'add') {
+        var l = (state.answers[k] || []).slice();
+        if (l.length >= (f.count || 4)) return toast('Ən çoxu ' + (f.count || 4) + ' ad', 'err');
+        l.push(''); state.answers[k] = l; renderFieldsKeepFocus(k); return touch();
+      }
+      if (act === 'del') {
+        var l2 = (state.answers[k] || []).slice();
+        if (l2.length <= (f.minCount || 1)) return toast('Ən azı ' + (f.minCount || 1) + ' ad', 'err');
+        l2.splice(parseInt(b.getAttribute('data-i'), 10), 1);
+        state.answers[k] = l2; renderFieldsKeepFocus(k); return touch();
+      }
     });
 
     var sdeb;
@@ -551,6 +1027,9 @@
     $('#btnCreate').onclick = function () {
       var payload = formDoc();
       delete payload.regNo; delete payload.date; delete payload.paid; delete payload.verifyUrl;
+      /* `state` və `cancelReason` serverdə hesablanır — göndərilmir. */
+      delete payload.state; delete payload.cancelReason;
+      delete payload.regPrefix;
       $('#btnCreate').disabled = true;
       API.create(payload).then(function (d) {
         state.doc = d; updatePreview(); renderMine();
@@ -564,7 +1043,10 @@
       var names = ['Elvin Məmmədov', 'Günel Şəkərova', 'Rəşad Quliyev', 'Aysel Hüseynova', 'Tural Əliyev', 'Nərmin Bağırlı'];
       var pick = function () { return names[Math.floor(Math.random() * names.length)]; };
       var a = pick(), b; do { b = pick(); } while (b === a);
-      var t = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+      /* Yalnız cari rejimin şablonlarından — əks halda state.cat başqa rejimin
+         kateqoriyasına düşüb tabları pozar. */
+      var pool = tplsOf(state.mode);
+      var t = pool[Math.floor(Math.random() * pool.length)];
       state.cat = t.cat; state.q = ''; $('#fSearch').value = '';
       renderTabs(); pickTemplate(t.id);
       $('#fTo').value = a; $('#fFrom').value = b;
@@ -578,13 +1060,13 @@
     $('#reportOpen').onclick = function () { openReport(state.doc ? state.doc.regNo : ''); };
 
     $$('[data-close]').forEach(function (b) {
-      b.onclick = function () { closeModal('#payModal'); closeModal('#reportModal'); };
+      b.onclick = function () { closeModal('#payModal'); closeModal('#reportModal'); closeModal('#cancelModal'); };
     });
     $$('.modal').forEach(function (m) {
       m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('open'); });
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeModal('#payModal'); closeModal('#reportModal'); }
+      if (e.key === 'Escape') { closeModal('#payModal'); closeModal('#reportModal'); closeModal('#cancelModal'); }
     });
 
     $('#repSend').onclick = function () {
@@ -597,7 +1079,7 @@
       }).catch(function (e) { toast(apiError(e, 'Göndərilə bilmədi'), 'err'); });
     };
 
-    var m = location.pathname.match(/\/r\/(ZRF-\d{4}-\d{4})/i) || location.hash.match(/#r\/(ZRF-\d{4}-\d{4})/i);
+    var m = location.pathname.match(/\/r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i) || location.hash.match(/#r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i);
     if (m) {
       $('#qReg').value = m[1].toUpperCase();
       setTimeout(function () { doSearch(); document.getElementById('reyestr').scrollIntoView(); }, 300);
@@ -619,6 +1101,12 @@
         var el = $(sel);
         if (el) el.hidden = !API.online;
       });
+      if (!API.online) return null;
+      /* Kataloq açılışı gecikdirməsin: sorğu uğursuz olsa statik fayl qalır. */
+      return API._json('/api/catalog', null).then(function (cat) {
+        if (applyCatalog(cat)) rebuildCatalogViews();
+      });
+    }).then(function () {
       return refreshCredits();
     }).then(renderMine).then(function () {
       var pending = sessionStorage.getItem('zrf_pending_doc');

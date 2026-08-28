@@ -56,6 +56,14 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   const d2 = mine.find(x => x.regNo === reg2);
   check('dizayn backend-də saxlanılır', d2 && d2.layout === 'lisenziya' && d2.palette === 'forest', d2 && [d2.layout, d2.palette]);
 
+  // rejim keçidi — kateqoriyalar və şablonlar tona görə süzülür
+  await p.click('#modeSwitch button[data-mode="xatire"]'); await wait(700);
+  check('xatirə rejimində 6 kateqoriya var', (await p.$$eval('#tabs button', b => b.length)) === 6);
+  const xCards = await p.$$eval('#cards button', b => b.length);
+  check('xatirə kateqoriyasında 12 kart var', xCards === 12, xCards);
+  await p.click('#modeSwitch button[data-mode="zarafat"]'); await wait(700);
+  check('zarafat rejiminə qayıdır', (await p.$$eval('#tabs button', b => b.length)) === 12);
+
   // şablon axtarışı
   await p.fill('#fSearch', 'kofe'); await wait(400);
   const found = await p.$$eval('#cards button', els => els.map(e => e.textContent));

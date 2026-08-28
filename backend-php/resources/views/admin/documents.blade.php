@@ -23,13 +23,19 @@
       <option value="{{ $l }}" @selected($filters['layout'] === $l)>{{ $l }}</option>
     @endforeach
   </select>
+  <select class="input" name="tone">
+    <option value="">Bütün tonlar</option>
+    @foreach (['zarafat' => 'Zarafat', 'xatire' => 'Xatirə'] as $k => $v)
+      <option value="{{ $k }}" @selected($filters['tone'] === $k)>{{ $v }}</option>
+    @endforeach
+  </select>
   <button class="btn btn-sm" type="submit">Süz</button>
   <a class="btn btn-ghost btn-sm" href="{{ route('admin.documents') }}">Sıfırla</a>
 </form>
 
 <div class="tbl-wrap">
   <table class="tbl">
-    <thead><tr><th>Nömrə</th><th>Sənəd</th><th>İstifadəçi</th><th>Forma</th><th>Vəziyyət</th><th class="num">Baxış</th><th></th></tr></thead>
+    <thead><tr><th>Nömrə</th><th>Sənəd</th><th>İstifadəçi</th><th>Ton</th><th>Forma</th><th>Vəziyyət</th><th class="num">Baxış</th><th></th></tr></thead>
     <tbody>
     @forelse ($documents as $doc)
       <tr>
@@ -39,6 +45,7 @@
           <span class="s">{{ $doc->to_name }} ← {{ $doc->from_name }}</span>
         </td>
         <td><span class="s">{{ $doc->user?->displayName() }}</span></td>
+        <td><span class="pill {{ $doc->tone === 'xatire' ? 'ok' : 'mute' }}">{{ $doc->tone === 'xatire' ? 'Xatirə' : 'Zarafat' }}</span></td>
         <td class="mono">{{ $doc->layout }}<br><span class="s">{{ $doc->palette }}</span></td>
         <td><span class="pill {{ $doc->status === 'published' ? 'ok' : ($doc->status === 'removed' ? 'bad' : 'mute') }}">{{ $doc->status }}</span></td>
         <td class="num">{{ $doc->views }}</td>
@@ -49,7 +56,7 @@
         </td>
       </tr>
     @empty
-      <tr><td colspan="7" class="tbl-empty">Uyğun sənəd tapılmadı.</td></tr>
+      <tr><td colspan="8" class="tbl-empty">Uyğun sənəd tapılmadı.</td></tr>
     @endforelse
     </tbody>
   </table>
