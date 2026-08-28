@@ -6,7 +6,7 @@ Rəsmi görünüşlü, tamamilə əyləncə məqsədli sənəd generatoru. Cütl
 Sayt **iki tonludur**: «Zarafat» rejimi gülməli sənədlər, «Xatirə» rejimi isə saxlanılası,
 çərçivəyə salınası səmimi sənədlər verir. Quruluş hər iki tonda eyni dərəcədə rəsmidir.
 
-**204 şablon · 17 kateqoriya · 10 fərqli sənəd dizaynı · 6 rəng palitrası.**
+**216 şablon · 18 kateqoriya · 12 fərqli sənəd dizaynı · 6 rəng palitrası.**
 İstifadəçi istənilən şablona istənilən dizaynı və rəngi tətbiq edə bilər.
 
 | Rejim | Şablon | Kateqoriya |
@@ -147,6 +147,9 @@ saxlanılır, ona görə reyestrdən açılan sənəd eyni tonda görünür.
 | `teleqram` | Teletayp lenti: zolaqlı kənarlar, tam böyük hərflər, monospace mətn, cümlə sonu « TCK » | Bildiriş, xəbərdarlıq, təbrik |
 | `vesiqe` | Pasport məlumat səhifəsi: ikidilli sahələr, foto + kölgə portret + holoqram, ICAO TD3 MRZ zolağı | Vəsiqə, şəxsiyyət sənədi |
 
+| `viza` | Pasport viza səhifəsi: holoqram şəbəkəsi, etiket→dəyər cədvəli, nömrələnmiş qeydlər, dekorativ MRZ | Viza, buraxılış, icazə |
+| `ekspertiza` | Texniki rəy: tünd panel, işarələnmiş siyahı, cədvəl və 1–10 şkalası | Ekspertiza, qiymətləndirmə |
+
 Palitralar: `gold` (qızılı), `steel` (polad mavi), `burgundy` (bordo), `forest` (zümrüd),
 `ink` (qrafit), `rose` (çəhrayı).
 
@@ -189,17 +192,18 @@ substrat üçün `paperBase()`, avadanlıq üçün `pageFurniture()` hazır köm
 |---|---|---|
 | `npm run test:qr` | QR matrisinin `qrcode` kitabxanası ilə bit-bit uyğunluğu | 6/6 |
 | `npm run test:barcode` | Code-39 cədvəlinin invariantları + kodlayıcının geri oxunması | 19/19 |
-| `npm run test:doc` | 2 ton × 10 layout × 6 palitra: `<g>` balansı, ton nişanları, element sayı, MRZ | 143/143 |
-| `npm run test:templates` | 204 şablon: unikal id, ton uyğunluğu, mətn büdcəsi, dizayn paylanması | 29/29 |
+| `npm run test:doc` | 2 ton × 12 layout × 6 palitra: `<g>` balansı, ton nişanları, struktur bloklar, MRZ | 180/180 |
+| `npm run test:templates` | 216 şablon: unikal id, ton uyğunluğu, anket sxemi, mətn büdcəsi | 32/32 |
 | `node tools/decode-test.js` | Yaradılan QR-ın `jsQR` ilə real skan olunması | 4/4 |
-| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, reyestr nömrəsi, ton seçimi, moderasiya | 55/55 |
+| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, prefikslər, anket sahələri, sxem validasiyası | 101/101 |
 | `php backend-php/tests/audit.php` | PHP sintaksisi, Blade balansı, route adları, view yolları, PSR-4 | 6/6 |
-| `php backend-php/tests/security.php` | İşləyən serverə qarşı: limitlər, CSRF, admin qorunması, qonaq sətri | 13/13 |
+| `php backend-php/tests/security.php` | İşləyən serverə qarşı: limitlər, CSRF, ləğv axını, kataloq qorunması | 27/27 |
 | `node backend-node/test-api.js` | Köhnə Node API-si: kredit, publish, reyestr, icazələr | 30/30 |
 | `node tools/e2e.js` | Brauzer + backend: rejim keçidi, dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 17/17 |
-| `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 10 dizayn + rejim keçidi | 22/22 |
+| `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 12 dizayn + anket + rejim keçidi | 28/28 |
+| `npm run test:admin` | Admin kataloq paneli: canlı önizləmə, kateqoriya→şablon redaktəsi, sxem validasiyası | 34/34 |
 | `node tools/shots.js` | Masaüstü + mobil ekran görüntüləri, şrift yoxlaması (`tools/shots/`) | xətasız |
-| `npm run render` | Hər tonda 10 dizaynın nümunəsi + tona görə iki kontakt vərəqi (204 şablon) | xətasız |
+| `npm run render` | Hər tonda 12 dizaynın nümunəsi + tona görə iki kontakt vərəqi (216 şablon) | xətasız |
 
 Eksport edilən PNG-dəki QR kod real decoder ilə oxunur və reyestr linkinə aparır.
 
@@ -223,6 +227,23 @@ tarixçəni buradan göstərir, balans isə sətir kilidi altında dəyişdirili
 Balans və paket alışı · əməliyyat tarixçəsi · sənədlər siyahısı · hesab (qeydiyyat/giriş).
 
 ### Admin panel (`/admin`)
+
+Şablon kataloqu buradan idarə olunur: **Şablonlar** və **Kateqoriyalar** bölmələri.
+Kateqoriyanı açanda onun bütün şablonları sıra ilə sadalanır — hər birini oradaca redaktə etmək,
+söndürmək, yaxud «Şablon əlavə et» ilə həmin kateqoriyaya yenisini yaratmaq olar.
+
+Şablon redaktəsində **canlı önizləmə** var: mətni, dizaynı və ya palitranı dəyişdikcə sənəd
+sağ tərəfdə dərhal yenidən çəkilir. «Ödənişli» keçidi su nişanısız və QR kodlu görünüşü,
+«Reyestr təsdiqi» isə yaşıl təsdiq ştampını göstərir. Anket sxemindəki səhvlər vərəqin altında
+sətir-sətir yazılır.
+Kateqoriya və şablon yaratmaq, redaktə etmək, sıralamaq, aktiv/deaktiv etmək, nüsxə çıxarmaq
+və silmək mümkündür. Anket sahələri (`fields`), qeydlər və ləğv səbəbləri JSON kimi yazılır və
+yadda saxlayanda server sxemi tam yoxlayır — naməlum tip, təkrar açar, yanlış min/max və
+uyğunsuz `{{yer-tutucu}}` sətir-sətir izahla rədd edilir.
+
+Kataloq bazadadır; `frontend/templates.js` yalnız ilkin doldurma və offline ehtiyatdır.
+Söndürülmüş şablon və kateqoriya saytdan dərhal yığışdırılır, amma silinmir — onunla yaradılmış
+sənədlər reyestrdə qalır. «Kataloqu ixrac et» düyməsi cari bazanı `catalog.json` kimi verir.
 
 Ümumi baxış (gəlir, sənəd, istifadəçi statistikası + 14 günlük SVG qrafik) ·
 sənədlər (filtr, baxış, reyestrdən çıxarma/bərpa) · ödənişlər · kredit əməliyyatları ·

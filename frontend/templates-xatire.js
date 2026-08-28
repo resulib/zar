@@ -1,6 +1,6 @@
 /* ==================================================================
    Xatirə Sənədləri Palatası — səmimi şablon kitabxanası
-   72 şablon · 6 kateqoriya · 10 dizayn · 6 palitra · tone: 'xatire'
+   72 şablon · 6 kateqoriya · 12 dizayn · 6 palitra · tone: 'xatire'
 
    Bu fayl templates.js-dən SONRA yüklənməlidir — kataloqa əlavə edir,
    onu əvəz etmir. Rəsmi quruluş eynidir, yalnız sözlər yumşaqdır:
@@ -51,7 +51,7 @@ window.TEMPLATES.push(
   penalty: 'Bəyannamə müddətsizdir. Ləğvi yalnız hər iki tərəfin razılığı ilə mümkündür, indiyədək belə bir müraciət olmayıb.'
 },
 {
-  id: 'ilk-gorus-qeydi', cat: 'x-love', tone: 'xatire', layout: 'notarial', palette: 'gold',
+  id: 'ilk-gorus-qeydi', cat: 'x-love', tone: 'xatire', layout: 'viza', palette: 'gold',
   title: 'İlk Görüşün Xatirə Qeydi', tag: 'Başlanğıc',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu qeyd ilə {from} və {to} arasındakı ilk görüşün tarixi, yeri və o günün əhvalı rəsmi qaydada arxivə salınır. Xırda təfərrüatlar unudulmasın deyə yazıya alınmışdır.',
@@ -59,7 +59,7 @@ window.TEMPLATES.push(
   penalty: 'Qeyd arxivdən çıxarıla bilməz. İllər sonra oxunduqda eyni günün xatirəsi bərpa olunmuş sayılır.'
 },
 {
-  id: 'birge-gelecek', cat: 'x-love', tone: 'xatire', layout: 'diplom', palette: 'gold',
+  id: 'birge-gelecek', cat: 'x-love', tone: 'xatire', layout: 'ekspertiza', palette: 'gold',
   title: 'Birgə Gələcək Bəyannaməsi', tag: 'Gələcək',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu bəyannamə ilə {from} və {to} gələcəyə aid planlarını ayrı deyil, birgə qurduqlarını təsdiq edirlər. Sənəd tərəflərin öz iradəsi ilə, kənar təsir olmadan hazırlanmışdır.',
@@ -141,7 +141,7 @@ window.TEMPLATES.push(
   penalty: 'Minnətdarlıq müddətsizdir. Bu sənəd məzun olduqdan illər sonra da qüvvəsini saxlayır.'
 },
 {
-  id: 'ilin-anasi', cat: 'x-thanks', tone: 'xatire', layout: 'diplom', palette: 'rose',
+  id: 'ilin-anasi', cat: 'x-thanks', tone: 'xatire', layout: 'viza', palette: 'rose',
   title: '«İlin Anası» Fəxri Fərmanı', tag: 'Ana',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu fərman {to} adlı şəxsə göstərdiyi qayğıya, səbrə və heç vaxt hesablanmayan əməyə görə {from} tərəfindən təqdim olunur. Seçim yekdilliklə aparılmışdır.',
@@ -157,7 +157,7 @@ window.TEMPLATES.push(
   penalty: 'Sənəd hesabat tələb etmir. Yeganə istəyi: eyni münasibətin davam etməsidir.'
 },
 {
-  id: 'komandaya-tesekkur', cat: 'x-thanks', tone: 'xatire', layout: 'sertifikat', palette: 'forest',
+  id: 'komandaya-tesekkur', cat: 'x-thanks', tone: 'xatire', layout: 'ekspertiza', palette: 'forest',
   title: 'Komandaya Təşəkkür Sertifikatı', tag: 'Komanda',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu sertifikat {to} adlı komandaya {from} tərəfindən çətin dövrdə göstərdiyi birliyə və dözümə görə təqdim olunur. Nəticə hər kəsin payı ilə əldə edilmişdir.',
@@ -231,7 +231,7 @@ window.TEMPLATES.push(
   penalty: 'Növbəti addımlar sayılmayacaq qədər çox olsun; bu isə birinci kimi xatırlansın.'
 },
 {
-  id: 'verdisi-tergitme', cat: 'x-milestone', tone: 'xatire', layout: 'sertifikat', palette: 'forest',
+  id: 'verdisi-tergitme', cat: 'x-milestone', tone: 'xatire', layout: 'ekspertiza', palette: 'forest',
   title: 'Vərdişi Tərgitmə Sertifikatı', tag: 'İradə',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sertifikat {to} adlı şəxsə uzun illər davam edən bir vərdişdən öz iradəsi ilə imtina etdiyinə görə {from} tərəfindən təqdim olunur. Qərar bir gündə verilməyib, aylarla hazırlanıb.',
@@ -239,7 +239,7 @@ window.TEMPLATES.push(
   penalty: 'Bu sertifikat gözə görünən yerdə saxlanılsın — zəif anlarda oxunmaq üçün nəzərdə tutulub.'
 },
 {
-  id: 'idman-nailiyyeti', cat: 'x-milestone', tone: 'xatire', layout: 'sertifikat', palette: 'steel',
+  id: 'idman-nailiyyeti', cat: 'x-milestone', tone: 'xatire', layout: 'viza', palette: 'steel',
   title: 'İdman Nailiyyəti Sənədi', tag: 'İdman',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sənəd {to} adlı şəxsə göstərdiyi idman nəticəsinə və ona aparan səbrli hazırlığa görə {from} tərəfindən təqdim olunur. Nəticənin arxasında illərlə davam edən gündəlik iş dayanır.',
@@ -337,7 +337,7 @@ window.TEMPLATES.push(
   penalty: 'Nişan hər onillikdə yenilənir. Yeniləmə mərasimi adətən uzun bir söhbətlə keçirilir.'
 },
 {
-  id: 'hemise-yanimda', cat: 'x-bonds', tone: 'xatire', layout: 'notarial', palette: 'rose',
+  id: 'hemise-yanimda', cat: 'x-bonds', tone: 'xatire', layout: 'viza', palette: 'rose',
   title: '«Həmişə Yanımda» Minnətdarlıq Sənədi', tag: 'Dəstək',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu sənəd {to} adlı şəxsə {from} tərəfindən ən çətin dövrlərdə yanında qaldığına görə təqdim olunur. Dəstək xahiş edilmədən, izahat tələb edilmədən göstərilmişdir.',
@@ -401,7 +401,7 @@ window.TEMPLATES.push(
   penalty: 'Vəsiqə şəxsidir və başqasına ötürülmür. İtirildikdə sahibi eyni gün yenidən tanınır.'
 },
 {
-  id: 'sedaqet-diplomu', cat: 'x-bonds', tone: 'xatire', layout: 'diplom', palette: 'ink',
+  id: 'sedaqet-diplomu', cat: 'x-bonds', tone: 'xatire', layout: 'ekspertiza', palette: 'ink',
   title: 'Sədaqət Diplomu', tag: 'Sədaqət',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu diplom {to} adlı şəxsə uzun illər ərzində nümayiş etdirdiyi sədaqətə görə {from} tərəfindən təqdim olunur. Sədaqət sınaqlardan keçmiş və təsdiqlənmişdir.',
@@ -435,7 +435,7 @@ window.TEMPLATES.push(
   penalty: 'Şəhadətnamə hər iki tərəf üçün eyni qüvvəyə malikdir və ləğv edilmir.'
 },
 {
-  id: 'yeni-dogulan-sehadetnamesi', cat: 'x-family', tone: 'xatire', layout: 'sertifikat', palette: 'rose',
+  id: 'yeni-dogulan-sehadetnamesi', cat: 'x-family', tone: 'xatire', layout: 'ekspertiza', palette: 'rose',
   title: 'Yeni Doğulanın Xatirə Şəhadətnaməsi', tag: 'Körpə',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu şəhadətnamə ilə {to} adlı şəxsin ailəyə qoşulması {from} tərəfindən xatirə üçün qeydə alınır. Həmin gün ailənin təqvimində əbədi yer aldı və hər il ayrıca qeyd olunur.',
@@ -451,7 +451,7 @@ window.TEMPLATES.push(
   penalty: 'Bəyannamə ailənin bütün üzvləri üçün eyni qüvvəyə malikdir və hər il süfrə arxasında oxunur.'
 },
 {
-  id: 'aile-toplantisi', cat: 'x-family', tone: 'xatire', layout: 'blank', palette: 'ink',
+  id: 'aile-toplantisi', cat: 'x-family', tone: 'xatire', layout: 'viza', palette: 'ink',
   title: 'Ailə Toplantısı Xatirə Protokolu', tag: 'Protokol',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu protokol {from} tərəfindən tərtib olunur və {to} adlı ailənin toplantısının gedişatını xatirə üçün qeydə alır. İclas gözləniləndən uzun sürmüşdür.',
@@ -517,7 +517,7 @@ window.TEMPLATES.push(
   penalty: 'Təbriknamə hər il yenilənir. Köhnə nüsxələr saxlanılır və birlikdə oxunur.'
 },
 {
-  id: 'yubiley-fexri-fermani', cat: 'x-greetings', tone: 'xatire', layout: 'diplom', palette: 'gold',
+  id: 'yubiley-fexri-fermani', cat: 'x-greetings', tone: 'xatire', layout: 'viza', palette: 'gold',
   title: 'Yubiley Fəxri Fərmanı', tag: 'Yubiley',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu fərman {to} adlı şəxsə yubiley münasibətilə {from} tərəfindən təqdim olunur. Keçən illər sayılmır, yaşanan günlər sayılır — bu göstəriciyə görə hesabat əladır.',
@@ -549,7 +549,7 @@ window.TEMPLATES.push(
   penalty: 'Təbriknamə bayram günü təqdim olunur və evin görünən yerində saxlanılır.'
 },
 {
-  id: 'sekkiz-mart-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'sertifikat', palette: 'rose',
+  id: 'sekkiz-mart-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'ekspertiza', palette: 'rose',
   title: '8 Mart Təbriknaməsi', tag: '8 Mart',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə 8 Mart münasibətilə {from} tərəfindən təqdim olunur. Təbrik bir günlə məhdudlaşmır, sadəcə bu gün yazıya alınır.',

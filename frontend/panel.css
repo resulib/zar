@@ -93,6 +93,41 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .flash.ok  { border-left-color: var(--green); background: var(--green-soft); color: var(--green); }
 .flash.err { border-left-color: var(--red); background: var(--red-soft); color: var(--red); }
 .flash ul { margin: 6px 0 0; padding-left: 18px; }
+.flash.warn { border-left-color: #b8892a; background: #faf4e4; color: #8a6d1f; }
+
+/* ---------- kataloq formaları ---------- */
+.panel-foot {
+  display: flex; gap: 8px; align-items: center;
+  padding: 14px 15px; border-top: 1px solid var(--rule); background: var(--tint);
+}
+.check { display: flex; align-items: center; gap: 8px; padding: 9px 0; cursor: pointer; }
+.check input { width: 15px; height: 15px; accent-color: var(--blue); }
+.check span { font-size: 13.5px; color: var(--ink); }
+.textarea.mono { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; }
+
+/* ---------- şablon redaktəsi: forma + canlı önizləmə ---------- */
+.tpl-edit { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 18px; align-items: start; }
+.tpl-preview { position: sticky; top: 18px; }
+.tpl-preview .sheet-wrap { padding: 12px; }
+.tpl-preview svg { display: block; width: 100%; height: auto; }
+.tpl-preview .panel-body { padding: 0; }
+.prev-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+.prev-bar .check { padding: 0; }
+.prev-bar .check span { font-size: 12px; }
+.prev-err {
+  padding: 10px 12px; border-top: 1px solid var(--rule);
+  background: var(--red-soft); color: var(--red); font-size: 12px; line-height: 1.5;
+}
+.prev-err ul { margin: 4px 0 0; padding-left: 16px; }
+.prev-ok { padding: 10px 12px; border-top: 1px solid var(--rule); color: var(--green); font-size: 12px; }
+@media (max-width: 1180px) {
+  .tpl-edit { grid-template-columns: minmax(0, 1fr); }
+  .tpl-preview { position: static; }
+}
+.hint code, .micro code {
+  padding: 1px 4px; border: 1px solid var(--rule); border-radius: 2px;
+  background: var(--tint); font: 500 11px/1 var(--mono);
+}
 
 /* ---------- giriş / qeydiyyat formaları ---------- */
 .auth-wrap { max-width: 420px; margin: 54px auto; }

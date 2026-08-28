@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        $this->call(CatalogSeeder::class);
+
         $email    = trim((string) env('ADMIN_EMAIL', 'admin@zarafat.az'));
         $password = (string) env('ADMIN_PASSWORD', '');
 

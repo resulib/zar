@@ -64,6 +64,7 @@ return [
     'layouts'  => [
         'notarial', 'blank', 'diplom', 'sertifikat', 'lisenziya',
         'arayis', 'qerar', 'muqavile', 'teleqram', 'vesiqe',
+        'viza', 'ekspertiza',
     ],
     'palettes' => ['gold', 'steel', 'burgundy', 'forest', 'ink', 'rose'],
 

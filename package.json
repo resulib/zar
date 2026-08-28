@@ -15,7 +15,10 @@
     "build:laravel": "node tools/build-laravel.js",
     "test:barcode": "node tools/verify-barcode.js",
     "test:templates": "node tools/check-templates.js",
-    "test:doc": "node tools/check-doc.js"
+    "test:doc": "node tools/check-doc.js",
+    "test:fields": "node tools/check-fields.js",
+    "test:admin": "node tools/check-admin-catalog.js",
+    "catalog:export": "node tools/export-catalog.js"
   },
   "keywords": [],
   "author": "",

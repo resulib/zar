@@ -62,7 +62,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   const xCards = await p.$$eval('#cards button', b => b.length);
   check('xatirə kateqoriyasında 12 kart var', xCards === 12, xCards);
   await p.click('#modeSwitch button[data-mode="zarafat"]'); await wait(700);
-  check('zarafat rejiminə qayıdır', (await p.$$eval('#tabs button', b => b.length)) === 11);
+  check('zarafat rejiminə qayıdır', (await p.$$eval('#tabs button', b => b.length)) === 12);
 
   // şablon axtarışı
   await p.fill('#fSearch', 'kofe'); await wait(400);

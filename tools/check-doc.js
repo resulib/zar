@@ -38,7 +38,7 @@ function depth(svg) {
 const countNodes = svg => (svg.match(/<(text|rect|path|circle|ellipse)[\s>]/g) || []).length;
 
 console.log('\n1. Layout, palitra və ton siyahıları');
-check('10 layout qeydiyyatdadır', D.LAYOUTS.length === 10, D.LAYOUTS);
+check('12 layout qeydiyyatdadır', D.LAYOUTS.length === 12, D.LAYOUTS);
 check('hər layoutun adı var', D.LAYOUTS.every(l => !!D.LAYOUT_NAMES[l]),
   D.LAYOUTS.filter(l => !D.LAYOUT_NAMES[l]));
 check('6 palitra qeydiyyatdadır', D.PALETTES.length === 6, D.PALETTES);
@@ -88,7 +88,7 @@ for (const tone of D.TONES) {
 
 console.log('\n3. Ödənilməmiş sənəd (NÜMUNƏ kafeli tondan asılı deyil)');
 for (const L of D.LAYOUTS) {
-  const svg = D.a4(mkDoc(L, 'gold', false, L === 'vesiqe' ? 'xatire' : 'zarafat'), { idPrefix: 'u' });
+  const svg = D.a4(mkDoc(L, 'gold', false, (L === 'vesiqe' || L === 'viza') ? 'xatire' : 'zarafat'), { idPrefix: 'u' });
   if (svg.indexOf('NÜMUNƏ') < 0) check(L + ' NÜMUNƏ tərtibi var', false);
   else if (depth(svg).end !== 0) check(L + ' <g> balanslıdır', false);
   else pass++;
@@ -110,7 +110,35 @@ check('zarafat MRZ-də PARODIYA var', /PARODIYA/.test(vs));
 check('xatirə MRZ-də XATIRE var', /XATIRE/.test(vx));
 check('xatirə MRZ-də PARODIYA qalmayıb', !/PARODIYA/.test(vx));
 
-console.log('\n6. Naməlum layout notarial-a düşür');
+/* Viza dekorativ MRZ daşıyır, amma qalxan eynidir: optional data sahəsi tonun nişanıdır */
+const zs = D.a4(mkDoc('viza', 'steel'), { idPrefix: 'mv' }).replace(/<[^>]*>/g, '');
+const zx = D.a4(mkDoc('viza', 'rose', true, 'xatire'), { idPrefix: 'mvx' }).replace(/<[^>]*>/g, '');
+check('viza MRZ-də PARODIYA var', /PARODIYA/.test(zs));
+check('viza xatirə MRZ-də XATIRE var', /XATIRE/.test(zx));
+check('viza xatirə MRZ-də PARODIYA qalmayıb', !/PARODIYA/.test(zx));
+
+console.log('\n6. Struktur bloklar və vəziyyət ştampları');
+const strDoc = Object.assign(mkDoc('ekspertiza', 'forest'), {
+  data: [['OYUN', 'FIFA'], ['SÜNİ İNTELLEKT SƏVİYYƏSİ', 'Əfsanəvi']],
+  checks: ['Eyni hərəkəti dövri olaraq təkrarlayır', 'Küncdə dayanıb gözləyir'],
+  scale: { label: 'ZƏİFLİK DƏRƏCƏSİ', v: 7, max: 10 }
+});
+const str = D.a4(strDoc, { idPrefix: 'st' });
+check('şkala rəqəmi çıxır', str.replace(/<[^>]*>/g, '').indexOf('7/10') >= 0);
+const CELL = /height="14" fill="[^"]*" stroke="[^"]*" stroke-width="0\.8"\/>/g;
+check('şkala 10 xana çəkir', (str.match(CELL) || []).length === 10, (str.match(CELL) || []).length);
+check('çoxseçim bəndləri çıxır', str.replace(/<[^>]*>/g, '').indexOf('Küncdə dayanıb') >= 0);
+check('struktur blokla balans pozulmur', depth(str).end === 0);
+
+for (const [st8, mark] of [['expired', 'MÜDDƏTİ BİTİB'], ['cancelled', 'LƏĞV EDİLDİ']]) {
+  for (const L of ['viza', 'ekspertiza']) {
+    const sv = D.a4(Object.assign(mkDoc(L, 'steel'), { state: st8, cancelReason: 'Cavabsız zəng' }), { idPrefix: 'ss' });
+    check(L + ' «' + mark + '» ştampı və balans',
+      sv.replace(/<[^>]*>/g, '').indexOf(mark) >= 0 && depth(sv).end === 0);
+  }
+}
+
+console.log('\n7. Naməlum layout notarial-a düşür');
 const unk = D.a4(mkDoc('yoxdur', 'gold'), { idPrefix: 'z' });
 check('naməlum layout render olunur', unk.length > 5000 && depth(unk).end === 0);
 

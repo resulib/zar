@@ -127,17 +127,62 @@ check('tokensiz POST 419 qaytarır', $r['status'] === 419, $r['status']);
 $r = req($base . '/kabinet/giris', 'POST', ['email' => 'a@b.c', 'password' => 'x']);
 check('tokensiz giriş 419 qaytarır', $r['status'] === 419, $r['status']);
 
-echo "\n5. Ödəniş callback-i\n";
+echo "\n5. Sənədin ləğvi\n";
+$r = req($base . '/api/documents/CCV-2026-0001/cancel', 'POST', ['reason' => 'Cavabsız zəng']);
+check('tokensiz ləğv 419 qaytarır', $r['status'] === 419, $r['status']);
+
+$s2 = session($base . '/admin/giris');
+$r = req($base . '/api/documents/CCV-2026-9999/cancel', 'POST',
+    ['reason' => 'Cavabsız zəng', '_token' => $s2['token']], $s2['cookies']);
+check('mövcud olmayan sənəd 404 qaytarır', $r['status'] === 404, [$r['status'], substr($r['body'], 0, 120)]);
+
+$r = req($base . '/api/documents/SALAM/cancel', 'POST',
+    ['reason' => 'x', '_token' => $s2['token']], $s2['cookies']);
+check('yanlış nömrə formatı 400 və ya 404 qaytarır', in_array($r['status'], [400, 404], true), $r['status']);
+
+$r = req($base . '/api/documents', 'POST',
+    ['title' => 'Ləğv sınağı', 'to' => 'A B', 'from' => 'C D', '_token' => $s2['token']], $s2['cookies']);
+$reg = json_decode($r['body'], true)['regNo'] ?? null;
+check('sənəd yaradıldı', $reg !== null, [$r['status'], substr($r['body'], 0, 120)]);
+/* Qonaq sətri məhz bu sorğuda yaranır və `zrf_uid` cookie-si cavabla gəlir —
+   sahiblik yoxlaması üçün onu sonrakı sorğulara daşımaq lazımdır. */
+$own = $s2['cookies'] . ($r['cookies'] !== '' ? '; ' . $r['cookies'] : '');
+if ($reg !== null) {
+    $r = req($base . '/api/documents/' . $reg . '/cancel', 'POST',
+        ['reason' => 'Cavabsız zəng', '_token' => $s2['token']], $own);
+    check('dərc olunmamış sənəd 409 qaytarır', $r['status'] === 409, [$r['status'], substr($r['body'], 0, 120)]);
+
+    $s3 = session($base . '/admin/giris');
+    $r = req($base . '/api/documents/' . $reg . '/cancel', 'POST',
+        ['reason' => 'Cavabsız zəng', '_token' => $s3['token']], $s3['cookies']);
+    check('özgə sənədi 403 qaytarır', $r['status'] === 403, [$r['status'], substr($r['body'], 0, 120)]);
+}
+
+echo "\n6. Ödəniş callback-i\n";
 $r = req($base . '/api/payments/callback', 'POST', ['order_id' => 'ZRFYOXDUR', 'status' => 'success']);
 check('naməlum sifariş kredit yazmır', $r['status'] !== 500 && ! str_contains($r['body'], 'credits'), [$r['status'], substr($r['body'], 0, 100)]);
 
-echo "\n6. Admin paneli girişsiz açılmır\n";
-foreach (['/admin', '/admin/senedler', '/admin/istifadeciler', '/admin/parametrler', '/admin/odenisler'] as $path) {
+echo "\n7. Admin paneli girişsiz açılmır\n";
+foreach (['/admin', '/admin/senedler', '/admin/istifadeciler', '/admin/parametrler', '/admin/odenisler',
+          '/admin/sablonlar', '/admin/sablonlar/yeni', '/admin/kateqoriyalar', '/admin/sablonlar/ixrac'] as $path) {
     $r = req($base . $path);
     check("{$path} → yönləndirilir", $r['status'] === 302, $r['status']);
 }
 
-echo "\n7. Reyestr yalnız dərc olunmuş sənədi verir\n";
+echo "\n8. Kataloq yazma əməliyyatları qorunur\n";
+foreach ([
+    '/admin/kateqoriyalar/yeni' => 'kateqoriya yaratmaq',
+    '/admin/sablonlar/yeni'     => 'şablon yaratmaq',
+] as $path => $label) {
+    $r = req($base . $path, 'POST', ['name' => 'X', 'slug' => 'x']);
+    check("{$label} girişsiz mümkün deyil", in_array($r['status'], [302, 419], true), $r['status']);
+}
+$r = req($base . '/api/catalog');
+$cat = json_decode($r['body'], true);
+check('kataloq API-si açıqdır', $r['status'] === 200 && isset($cat['categories'], $cat['templates']), $r['status']);
+check('kataloq boş deyil', count($cat['templates'] ?? []) > 0, count($cat['templates'] ?? []));
+
+echo "\n9. Reyestr yalnız dərc olunmuş sənədi verir\n";
 $r = req($base . '/api/registry/HACK-1-1');
 check('yanlış format qəbul edilmir', in_array($r['status'], [400, 404, 429], true), $r['status']);
 

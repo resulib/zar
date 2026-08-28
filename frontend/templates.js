@@ -1,9 +1,9 @@
 /* ==================================================================
    Zarafat Notariat Palatası — şablon kitabxanası
-   132 şablon · 11 kateqoriya · 10 dizayn · 5 palitra · tone: 'zarafat'
+   144 şablon · 12 kateqoriya · 12 dizayn · 5 palitra · tone: 'zarafat'
    Xatirə tonunun şablonları ayrıca fayldadır: templates-xatire.js
    layout:  notarial | blank | diplom | sertifikat | lisenziya
-            arayis | qerar | muqavile | teleqram | vesiqe
+            arayis | qerar | muqavile | teleqram | vesiqe | viza | ekspertiza
    palette: gold | steel | burgundy | forest | ink
    ================================================================== */
 window.CATEGORIES = [
@@ -17,7 +17,8 @@ window.CATEGORIES = [
   { id: 'holiday',   tone: 'zarafat', name: 'Bayram & Toy',         icon: '✵', blurb: 'Novruz, toy masası, hədiyyə öhdəlikləri və qonaq qəbulu.' },
   { id: 'travel',    tone: 'zarafat', name: 'Səyahət / Yol',        icon: '✈', blurb: 'Çamadan, naviqasiya səlahiyyəti, sürücülük növbəsi və otel seçimi.' },
   { id: 'pets',      tone: 'zarafat', name: 'Ev heyvanları',        icon: '✿', blurb: 'Pişik-it səlahiyyətnamələri, yemləmə növbəsi və divan hüququ.' },
-  { id: 'gaming',    tone: 'zarafat', name: 'Oyunçular',            icon: '▶', blurb: 'Rank, komanda seçimi, ekran vaxtı və klaviatura sülhü.' }
+  { id: 'gaming',    tone: 'zarafat', name: 'Oyunçular',            icon: '▶', blurb: 'Rank, komanda seçimi, ekran vaxtı və klaviatura sülhü.' },
+  { id: 'viral',     tone: 'zarafat', name: 'Viral',                icon: '⚡', blurb: 'Anket doldurulur, sənəd cavablardan qurulur: viza, arayış, sertifikat və ekspertiza rəyi.' }
 ];
 
 window.TEMPLATES = [
@@ -68,7 +69,7 @@ window.TEMPLATES = [
   penalty: 'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə sürpriz təşkil etmək öhdəliyi daşıyır.'
 },
 {
-  id: 'shopping-power', cat: 'couples', tone: 'zarafat', layout: 'notarial', palette: 'steel',
+  id: 'shopping-power', cat: 'couples', tone: 'zarafat', layout: 'viza', palette: 'steel',
   title: 'Alış-veriş Səlahiyyətnaməsi', tag: 'Büdcə',
   preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə ailə büdcəsi hesabına alış-veriş etmək səlahiyyəti verilir. Səlahiyyət yalnız siyahıda yazılmış məhsullara şamil olunur; siyahıdan kənar alışlar ayrıca izahat tələb edir.',
   powers: 'Siyahıdakı məhsulları müstəqil seçmək.\nEndirimli məhsulu siyahıya sonradan əlavə etmək (1 ədəd).\nÇek itdikdə məbləği yuvarlaqlaşdırmaq.\n«Lazım olacaq» arqumentindən həftədə bir dəfə istifadə etmək.',
@@ -105,7 +106,7 @@ window.TEMPLATES = [
   penalty: 'Gecikmə 25 dəqiqəni aşdıqda səlahiyyət həmin səfər üçün ləğv olunur və naviqasiya digər tərəfə keçir.'
 },
 {
-  id: 'peace-treaty', cat: 'couples', tone: 'zarafat', layout: 'diplom', palette: 'gold',
+  id: 'peace-treaty', cat: 'couples', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
   title: 'Barışıq Sazişi', tag: 'Sülh',
   preamble: 'Tərəflər aralarında baş vermiş mübahisəni tam və qeyd-şərtsiz bağlanmış elan edirlər. Saziş {from} tərəfindən təklif olunmuş, {to} tərəfindən qəbul edilmişdir. Keçmiş epizodlar müzakirə mövzusu ola bilməz.',
   powers: 'Mübahisə mövzusuna bir daha qayıtmamaq.\nKöhnə epizodları arqument kimi istifadə etməmək.\nBarışıq şirniyyatını birlikdə bölüşmək.\nGecə yatmazdan əvvəl mövzunu təzələməmək.',
@@ -174,7 +175,7 @@ window.TEMPLATES = [
   penalty: '48 saatlıq müddət pozulduqda borclu tərəf növbəti səfərin tam məbləğini ödəyir.'
 },
 {
-  id: 'plan-canceller', cat: 'friends', tone: 'zarafat', layout: 'lisenziya', palette: 'ink',
+  id: 'plan-canceller', cat: 'friends', tone: 'zarafat', layout: 'ekspertiza', palette: 'ink',
   title: 'Plan Ləğvetmə Lisenziyası', tag: 'Universal',
   toLabel: 'LİSENZİYA SAHİBİ',
   preamble: 'Bu lisenziya {to} adlı şəxsə razılaşdırılmış planları son anda ləğv etmək hüququ verir. Lisenziya {from} tərəfindən, artıq gözlənilən davranışın rəsmiləşdirilməsi məqsədilə təqdim olunmuşdur.',
@@ -197,7 +198,7 @@ window.TEMPLATES = [
   penalty: 'And pozulduqda pozan tərəf növbəti həftə birgə idmanın bütün təşkilini öz üzərinə götürür.'
 },
 {
-  id: 'gossip-license', cat: 'friends', tone: 'zarafat', layout: 'lisenziya', palette: 'forest',
+  id: 'gossip-license', cat: 'friends', tone: 'zarafat', layout: 'viza', palette: 'forest',
   title: 'Söhbət Aparma Lisenziyası', tag: 'Padruqa',
   powersLabel: 'İCAZƏ VERİLƏN MÖVZULAR',
   preamble: 'Bu lisenziya {to} adlı şəxsə {from} ilə saatlarla davam edən telefon söhbətləri aparmaq hüququ verir. Lisenziya gecə saatlarında da qüvvədədir və batareya bitənə qədər etibarlıdır.',
@@ -265,14 +266,14 @@ window.TEMPLATES = [
   penalty: 'Fasilə iki saatı aşdıqda vəsiqə həmin həftə üçün dayandırılır və sahib komanda üçün qəhvə gətirir.'
 },
 {
-  id: 'printer-master', cat: 'work', tone: 'zarafat', layout: 'sertifikat', palette: 'steel',
+  id: 'printer-master', cat: 'work', tone: 'zarafat', layout: 'ekspertiza', palette: 'steel',
   title: 'Printer Ustası Sertifikatı', tag: 'Texniki',
   preamble: 'Bu sertifikat {to} adlı şəxsin ofis printerini kağız sıxışdığı hallarda bərpa etmək sahəsindəki müstəsna bacarığını təsdiq edir. Qiymətləndirmə {from} tərəfindən aparılmışdır.',
   powers: 'Printeri qapağını açıb-bağlamaqla bərpa etmək.\nKartricin bitdiyini gözlə müəyyən etmək.\nNövbəni idarə etmək.\n«Yenidən göndər» məsləhətini rəsmi həll kimi təqdim etmək.',
   penalty: 'Bərpa cəhdi iki dəfə uğursuz olduqda sertifikat sahibi texniki dəstəyə müraciət formasını doldurmaq öhdəliyi daşıyır.'
 },
 {
-  id: 'employee-year', cat: 'work', tone: 'zarafat', layout: 'diplom', palette: 'forest',
+  id: 'employee-year', cat: 'work', tone: 'zarafat', layout: 'viza', palette: 'forest',
   title: 'İlin İşçisi Diplomu', tag: 'Təltif',
   preamble: 'Zarafat Notariat Palatası təsdiq edir ki, bu şəxs heç bir səsvermə keçirilmədən, tamamilə öz təşəbbüsü ilə «İlin İşçisi» adına layiq görülmüşdür. Diplom {from} tərəfindən təqdim olunur.',
   powers: 'Adı iş yerində nümayiş etdirmək.\nToplantılarda titula istinad etmək.\nSəsvermə nəticələrini açıqlamamaq.\nNövbəti il üçün adı avtomatik uzatmaq.',
@@ -356,7 +357,7 @@ window.TEMPLATES = [
   penalty: 'Qərar icra olunmadıqda iş yenidən baxılmaq üçün nənəyə göndərilir və onun qərarı qəti sayılır.'
 },
 {
-  id: 'sibling-peace', cat: 'family', tone: 'zarafat', layout: 'muqavile', palette: 'forest',
+  id: 'sibling-peace', cat: 'family', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   title: 'Bacı-Qardaş Sülh Müqaviləsi', tag: 'Sərhəd bölgüsü',
   preamble: 'Bu müqavilə ilə {from} və {to} arasında otaq, oyuncaq və pult üzərində uzun illik münaqişəyə son qoyulur. Tərəflər bir-birinin əşyalarını icazəsiz götürməmək və valideynə şikayət etməzdən əvvəl danışıqlar aparmaq öhdəliyi götürürlər.',
   powers: 'Otağın sərhədi razılaşdırılmış xətt üzrə müəyyən edilir.\nPult növbə ilə, hər biri 40 dəqiqə.\nBorc alınan əşya eyni gün qaytarılır.\nŞikayətdən əvvəl bir dəfə xəbərdarlıq edilir.',
@@ -378,7 +379,7 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə ərzində şirniyyat növbəsi sonuncuya keçir.'
 },
 {
-  id: 'chore-authority', cat: 'family', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
+  id: 'chore-authority', cat: 'family', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
   title: 'Ev İşləri Səlahiyyətnaməsi', tag: 'Növbə cədvəli',
   powersLabel: 'HƏVALƏ OLUNAN İŞLƏR',
   preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə müəyyən ev işlərinin icrası həvalə olunur. Səlahiyyət könüllü qəbul edilmiş sayılır və «mən növbəmi keçən həftə etmişdim» iddiası sənədlə təsdiqlənmədikdə nəzərə alınmır.',
@@ -463,14 +464,14 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi dərhal verilir, lakin bir ay ərzində çay süfrəsi növbəsi ikiqat olur.'
 },
 {
-  id: 'comparison-ban', cat: 'relatives', tone: 'zarafat', layout: 'blank', palette: 'ink',
+  id: 'comparison-ban', cat: 'relatives', tone: 'zarafat', layout: 'ekspertiza', palette: 'ink',
   title: 'Müqayisə Qadağası Fərmanı', tag: 'Sinir sülhü',
   preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxsin qonşu ailənin uşaqları, kürəkəni və ya gəlini ilə müqayisə edilməsi qadağan olunur. Fərman bütün ailə yığıncaqlarında və telefon danışıqlarında qüvvədədir.',
   powers: 'Müqayisə cümləsi başlanan kimi dayandırılır.\n«Filankəsin oğlu» ifadəsi işlədilmir.\nUğurlar yalnız öz keçmişi ilə müqayisə edilir.\nİldə bir dəfə istisna hüququ saxlanılır.',
   penalty: 'Qadağa pozulduqda pozan tərəf növbəti ailə tədbirində qablı yumaq öhdəliyi daşıyır.'
 },
 {
-  id: 'tea-ceremony-act', cat: 'relatives', tone: 'zarafat', layout: 'notarial', palette: 'steel',
+  id: 'tea-ceremony-act', cat: 'relatives', tone: 'zarafat', layout: 'viza', palette: 'steel',
   title: 'Çay Süfrəsi Aktı', tag: 'Süfrə protokolu',
   preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə ailə çay süfrəsinin təşkili və idarə olunması həvalə edilir. Aktda armudu stəkanın istifadəsi məcburi, kupanın istifadəsi isə müstəsna hal kimi qeyd olunur.',
   powers: 'Çayı süzmək və növbəni müəyyən etmək.\nMürəbbə növünü seçmək.\nSüfrəyə əlavə şirniyyat gətirmək.\nSöhbətin mövzusunu bir dəfə dəyişmək.',
@@ -553,7 +554,7 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə konspekt istəmək hüququ dayandırılır.'
 },
 {
-  id: 'presentation-authority', cat: 'student', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
+  id: 'presentation-authority', cat: 'student', tone: 'zarafat', layout: 'viza', palette: 'forest',
   title: 'Təqdimat Danışma Səlahiyyəti', tag: 'Komanda işi',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
   preamble: 'Bu sertifikatla {to} adlı şəxsə qrup təqdimatında danışmaq səlahiyyəti verilir. Səlahiyyət {from} və digər komanda üzvləri tərəfindən, slaydları hazırlamaq müqabilində həvalə edilmişdir.',
@@ -561,7 +562,7 @@ window.TEMPLATES = [
   penalty: 'Danışan şəxs slaydları oxumaqla kifayətləndikdə səlahiyyət növbəti təqdimatda başqasına keçir.'
 },
 {
-  id: 'retake-amnesty', cat: 'student', tone: 'zarafat', layout: 'blank', palette: 'gold',
+  id: 'retake-amnesty', cat: 'student', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
   title: 'Təkrar İmtahan Amnistiyası', tag: 'İkinci şans',
   toLabel: 'Amnistiya olunan', fromLabel: 'Amnistiya verən',
   preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə keçmiş semestrdə buraxılmış bütün dərslərə görə tam və qeyd-şərtsiz amnistiya elan olunur. Amnistiya yalnız keçmişə şamil edilir.',
@@ -646,14 +647,14 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir ay park yeri növbəsi sonuncuya keçir.'
 },
 {
-  id: 'salt-borrow-act', cat: 'neighbors', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
+  id: 'salt-borrow-act', cat: 'neighbors', tone: 'zarafat', layout: 'ekspertiza', palette: 'burgundy',
   title: 'Duz Borcu Aktı', tag: 'Klassik janr',
   preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə bir stəkan duz müvəqqəti istifadəyə verilir. Borcun qaytarılma müddəti müəyyən edilmir, lakin qarşılıqlı xoş münasibət şərti saxlanılır.',
   powers: 'Borcu istənilən vaxt qaytarmaq.\nDuz əvəzinə şəkər qaytarmaq (razılıqla).\nBorcu üç dəfəyə qədər yeniləmək.\nQaytarma zamanı çaya dəvət olunmaq.',
   penalty: 'Borc bir il ərzində qaytarılmadıqda növbəti dəfə duz istəyən tərəf öz stəkanını gətirir.'
 },
 {
-  id: 'wifi-sharing-permit', cat: 'neighbors', tone: 'zarafat', layout: 'arayis', palette: 'steel',
+  id: 'wifi-sharing-permit', cat: 'neighbors', tone: 'zarafat', layout: 'viza', palette: 'steel',
   title: 'Wi-Fi Paylaşma İcazəsi', tag: 'Rəqəmsal qonşuluq',
   toLabel: 'İcazə verilən şəxs', fromLabel: 'Şəbəkə sahibi',
   preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxsə {from} tərəfindən məhdud müddətə Wi-Fi şəbəkəsindən istifadə icazəsi verilmişdir. İcazə şifrənin üçüncü şəxslərə ötürülməsini əhatə etmir.',
@@ -684,7 +685,7 @@ window.TEMPLATES = [
   penalty: 'Hədiyyə üçüncü şəxsə ötürüldüyü aşkarlandıqda akt ləğv edilir və qarşılıqlı öhdəlik ikiqat artır.'
 },
 {
-  id: 'birthday-decree', cat: 'holiday', tone: 'zarafat', layout: 'blank', palette: 'burgundy',
+  id: 'birthday-decree', cat: 'holiday', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
   title: 'Ad Günü Fərmanı', tag: 'Bir günlük hakimiyyət',
   preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxsə ad günü boyunca müstəsna səlahiyyətlər verilir. Fərman gecə saat 00:00-dan növbəti gecə 00:00-a qədər qüvvədədir.',
   powers: 'Menyunu təkbaşına müəyyən etmək.\nHeç bir ev işi görməmək.\nMusiqi seçimində son söz sahibi olmaq.\nTortun ilk dilimini kəsmək.',
@@ -744,7 +745,7 @@ window.TEMPLATES = [
   penalty: 'Fotolar bir həftə ərzində paylaşılmadıqda səlahiyyət növbəti bayramda başqasına keçir.'
 },
 {
-  id: 'leftovers-treaty', cat: 'holiday', tone: 'zarafat', layout: 'muqavile', palette: 'forest',
+  id: 'leftovers-treaty', cat: 'holiday', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   title: 'Süfrə Qalığı Müqaviləsi', tag: 'Ədalətli bölgü',
   preamble: 'Bu müqavilə ilə {from} və {to} arasında bayram süfrəsindən qalan yeməklərin bölgüsü razılaşdırılır. Tərəflər qablaşdırma və daşınma məsələlərini də əvvəlcədən müəyyən edirlər.',
   powers: 'Hər tərəf öz gətirdiyi qabı geri aparır.\nDolma bərabər bölünür.\nTort qalığı uşaqlara verilir.\nSalat bölgüsü müzakirə olunmur — qalır.',
@@ -828,7 +829,7 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin növbəti səfərdə pəncərə yeri iddiası irəli sürülmür.'
 },
 {
-  id: 'snack-authority', cat: 'travel', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
+  id: 'snack-authority', cat: 'travel', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
   title: 'Yol Ərzağı Səlahiyyəti', tag: 'Bagaj hüququ',
   powersLabel: 'ƏRZAQ ÜZRƏ SƏLAHİYYƏTLƏR',
   preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə yol ərzağının seçimi, qablaşdırılması və paylanması həvalə olunur. Səlahiyyət sürücünün payını əvvəlcədən ayırmaq şərti ilə verilir.',
@@ -836,7 +837,7 @@ window.TEMPLATES = [
   penalty: 'Ərzaq yolun yarısında bitdikdə növbəti dayanacaqda alış-veriş həmin şəxsin hesabına aparılır.'
 },
 {
-  id: 'window-seat-treaty', cat: 'travel', tone: 'zarafat', layout: 'muqavile', palette: 'gold',
+  id: 'window-seat-treaty', cat: 'travel', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
   title: 'Pəncərə Yeri Müqaviləsi', tag: 'Əbədi mübahisə',
   preamble: 'Bu müqavilə ilə {from} və {to} arasında nəqliyyat vasitəsində pəncərə yerindən istifadə növbəsi müəyyən edilir. Müqavilə təyyarə, qatar və avtobus üçün eyni dərəcədə qüvvədədir.',
   powers: 'Gediş və qayıdış yerləri dəyişdirilir.\nUzun səfərdə orta nöqtədə növbə dəyişir.\nPəncərə pərdəsi razılıqla bağlanır.\nFoto çəkmək üçün müvəqqəti yer dəyişikliyi.',
@@ -890,7 +891,7 @@ window.TEMPLATES = [
   penalty: 'Rejim gecə pozulduqda növbəti gün gəzinti müddəti 15 dəqiqə uzadılır (enerji üçün).'
 },
 {
-  id: 'vet-visit-arayis', cat: 'pets', tone: 'zarafat', layout: 'arayis', palette: 'steel',
+  id: 'vet-visit-arayis', cat: 'pets', tone: 'zarafat', layout: 'ekspertiza', palette: 'steel',
   title: 'Baytar Ziyarəti Arayışı', tag: 'Rəsmi təsdiq',
   toLabel: 'Müayinə olunan', fromLabel: 'Müşayiət edən',
   preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı ev heyvanı {from} tərəfindən baytar müayinəsinə aparılmış və müayinə boyunca nümunəvi davranış nümayiş etdirmişdir (qapıya çatana qədər).',
@@ -928,7 +929,7 @@ window.TEMPLATES = [
   penalty: 'Oyuncaq 24 saat ərzində tapılmadıqda evdə gecə yarısı müstəqil axtarış əməliyyatı başlanır.'
 },
 {
-  id: 'bed-sharing-act', cat: 'pets', tone: 'zarafat', layout: 'notarial', palette: 'steel',
+  id: 'bed-sharing-act', cat: 'pets', tone: 'zarafat', layout: 'viza', palette: 'steel',
   title: 'Yataq Bölüşmə Aktı', tag: 'Gecə sərhədi',
   preamble: 'Bu aktla {from} tərəfindən {to} adlı ev heyvanına gecə saatlarında yataqdan istifadə hüququ tanınır. Aktda sərhədlər müəyyən edilsə də, səhərə qədər qorunacağına zəmanət verilmir.',
   powers: 'Yatağın ayaq tərəfində yer tutmaq.\nGecə bir dəfə yer dəyişmək.\nYorğanın altına girmək (soyuq havalarda).\nSəhər oyatma funksiyasını icra etmək.',
@@ -1011,7 +1012,7 @@ window.TEMPLATES = [
   penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə rol seçimində sonuncu növbəyə keçirilir.'
 },
 {
-  id: 'controller-authority', cat: 'gaming', tone: 'zarafat', layout: 'sertifikat', palette: 'burgundy',
+  id: 'controller-authority', cat: 'gaming', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
   title: 'Kontroller Səlahiyyəti', tag: 'Növbə hüququ',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
   preamble: 'Bu sertifikatla {to} adlı şəxsə birinci kontrollerdən istifadə səlahiyyəti verilir. Səlahiyyət {from} tərəfindən, uzun növbə mübahisələrindən sonra rəsmiləşdirilmişdir.',
@@ -1019,11 +1020,212 @@ window.TEMPLATES = [
   penalty: 'Kontroller şarjsız qaldıqda növbəti oyunda birinci kontroller digər tərəfə keçir.'
 },
 {
-  id: 'revenge-match-treaty', cat: 'gaming', tone: 'zarafat', layout: 'muqavile', palette: 'burgundy',
+  id: 'revenge-match-treaty', cat: 'gaming', tone: 'zarafat', layout: 'ekspertiza', palette: 'burgundy',
   title: 'Revanş Matçı Müqaviləsi', tag: 'İkinci şans',
   preamble: 'Bu müqavilə ilə {from} və {to} arasında revanş matçının şərtləri müəyyən edilir. Tərəflər eyni xəritədə, eyni heyətlə oynamaq və nəticəni qəti qəbul etmək öhdəliyi götürürlər.',
   powers: 'Matç 7 gün ərzində keçirilir.\nXəritə və rejim dəyişdirilmir.\nHeyət eyni saxlanılır.\nQalib nəticəni elan etmək hüququna malikdir.',
   penalty: 'Revanş 7 gün ərzində keçirilmədikdə əvvəlki nəticə yekun sayılır və bir daha müzakirə olunmur.'
+},
+
+/* ==================== VİRAL ====================
+   Anketlə doldurulan şablonlar: istifadəçi sahələri seçir, sənəd cavablardan
+   qurulur. `fields` daşıyan şablonda redaktor dinamik forma göstərir; cavablar
+   həm `data`/`checks`/`scale` struktur bloklarına, həm də `powers` mətninə düşür
+   ki, istifadəçi dizaynı dəyişdikdə sənəd yenə oxunaqlı qalsın. */
+{
+  id: 'cole-cixma-vizasi', cat: 'viral', tone: 'zarafat', layout: 'viza', palette: 'steel',
+  title: 'Çölə Çıxma Vizası', tag: 'Ən çox paylaşılan',
+  penaltyLabel: 'VİZANIN LƏĞVİ',
+  preamble: '{from} tərəfindən {to} adlı şəxsə {{teyinat}} istiqamətində, {{radius}} hüdudlarında {{qayidis_vaxti}}-a qədər evdən kənara çıxmaq üçün viza verilir. Viza şərtlər pozulduqda avtomatik olaraq etibarsız sayılır.',
+  powers: 'Hər 45 dəqiqədən bir həyat əlaməti göstərmək.\nZəngə birinci cəhddən cavab vermək.\nGöstərilən radiusdan kənara çıxmamaq.\nQayıdarkən çörək və süd gətirmək.',
+  penalty: 'Üçüncü cavabsız zəng vizanı avtomatik ləğv edir. Növbəti viza ən tezi bir həftədən sonra verilir.',
+  signTitle: 'Baş İnspektor',
+  signOrg: 'Miqrasiya və Çöl İşləri Baş İdarəsi',
+  share: 'Nəhayət rəsmiləşdirdim. {{qayidis_vaxti}}-a qədər etibarlıdır 🛂',
+  cancelReasons: ['Cavabsız zəng', 'Gec qayıtdı', 'Çörək gətirmədi', 'Səbəb göstərilmədi'],
+  fields: [
+    { k: 'soyad_ad', t: 'text', label: 'Soyad, ad', max: 40, person: true, up: true, into: 'to', row: 'SOYAD, AD / SURNAME' },
+    { k: 'teyinat', t: 'select', label: 'Təyinat yeri', free: true, max: 40, row: 'TƏYİNAT YERİ',
+      opts: ['Çayxana', 'Mangal', 'Oğlanlarla görüş', 'Toy', 'Bir işim var', 'Stadion'] },
+    { k: 'cixis_vaxti', t: 'time', label: 'Çıxış vaxtı', def: 'now', row: 'QÜVVƏYƏ MİNİR' },
+    { k: 'qayidis_vaxti', t: 'time', label: 'Qayıdış vaxtı', def: '+3h', expiry: true, row: 'QÜVVƏDƏN DÜŞÜR',
+      hint: 'Vizanın etibarlılıq müddəti bu saatdan hesablanır.' },
+    { k: 'giris_sayi', t: 'select', label: 'Giriş sayı', opts: ['01', '02', 'MULTI'], row: 'GİRİŞ SAYI' },
+    { k: 'radius', t: 'select', label: 'İcazə verilən radius', row: 'ETİBARLIDIR',
+      opts: ['Məhəllə', 'Şəhər daxili', 'Bakıdan kənar', 'Limitsiz'] },
+    { k: 'icaze_veren', t: 'select', label: 'İcazəni verən', into: 'from', row: 'VERƏN ORQAN',
+      opts: ['Həyat yoldaşı', 'Ana', 'Qaynana', 'Kollektiv qərar'] },
+    { k: 'musayiet', t: 'text', label: 'Müşayiət edən şəxslər', max: 60, opt: true, row: 'MÜŞAYİƏT' }
+  ],
+  notes: [
+    'Viza sahibi hər 45 dəqiqədən bir həyat əlaməti göstərməyə — mesaj yazmağa və ya zəngə cavab verməyə borcludur.',
+    'Zəngə ikinci cəhddən sonra cavab verilməsi pozuntu sayılır; üçüncü cavabsız zəng vizanın ləğvinə səbəb olur.',
+    'Mesaja «görüldü» qoyulub cavab yazılmaması ağırlaşdırıcı hal hesab edilir.',
+    'Qayıdış zamanı çörək və süd gətirilməsi vizanın ayrılmaz şərtidir.',
+    '{{radius}} hüdudlarından kənara çıxmaq ayrıca yazılı razılıq tələb edir.',
+    'Müddətin uzadılması yalnız birinci zəngə cavab verilməklə mümkündür.',
+    'Story paylaşılması halında viza sahibinin yeri açıqlanmış sayılır.'
+  ]
+},
+{
+  id: 'hesab-davasi-qalibi', cat: 'viral', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
+  title: 'Hesab Davası Qalibi Sertifikatı', tag: 'Süfrə arbitrajı',
+  powersLabel: 'SERTİFİKATIN ŞƏRTLƏRİ',
+  preamble: 'Bununla təsdiq edilir ki, {{tarix}} tarixində {{mekan}} ünvanında baş vermiş hesab mübahisəsində {to} adlı şəxs qalib gəlmiş və {{mebleg}} AZN məbləğində öhdəliyi könüllü surətdə öz üzərinə götürmüşdür. Qələbə üsulu: {{usul}}.',
+  powers: 'Növbəti süfrədə ödəniş məğlub tərəfə keçir.\nQalib altı ay ərzində bu sənədə istinad edə bilər.\nSertifikat yalnız faktiki ödəyənə verilir.\nHesabın bölünməsi sertifikatı qüvvədən salır.',
+  penalty: 'Ödəniş faktiki olaraq bölünübsə, sertifikat qüvvədən düşür və mübahisə yenidən açıq elan edilir.',
+  signTitle: 'Sədr',
+  signOrg: 'Süfrə Mübahisələri üzrə Arbitraj Kollegiyası',
+  share: 'Mübahisə bitdi, sənəd əldədir. Növbəti dəfə siz 🧾',
+  fields: [
+    { k: 'qalib', t: 'text', label: 'Qalib', max: 40, person: true, into: 'to', row: 'QALİB' },
+    { k: 'meglublar', t: 'list', label: 'Məğlub tərəflər', max: 40, count: 4, row: 'MƏĞLUB TƏRƏFLƏR',
+      hint: 'Ən çoxu dörd ad.' },
+    { k: 'mekan', t: 'text', label: 'Məkan', max: 40, row: 'MƏKAN' },
+    { k: 'mebleg', t: 'number', label: 'Məbləğ', min: 1, max: 999, def: 60, unit: 'AZN', row: 'MƏBLƏĞ' },
+    { k: 'usul', t: 'select', label: 'Qələbə üsulu', row: 'QƏLƏBƏ ÜSULU',
+      opts: ['Ofisianta əvvəlcədən xəbərdarlıq edilmişdi', 'Kart əl altında hazır saxlanılmışdı',
+             'Tualetə gedib ödənilmişdir', '«Mən böyüyəm» arqumenti tətbiq edilmişdir',
+             'Fiziki üstünlük', 'Qarşı tərəf ayaqqabısını bağlayırdı'] },
+    { k: 'tarix', t: 'date', label: 'Tarix', row: 'TARİX' },
+    { k: 'kollegiya', t: 'text', label: 'Kollegiya', auto: 'Arbitraj Kollegiyası', into: 'from' }
+  ],
+  notes: [
+    'MƏĞLUB TƏRƏFLƏR: {{meglublar}}.',
+    'Növbəti süfrədə ödəniş öhdəliyi avtomatik olaraq məğlub tərəflərin üzərinə düşür və mübahisə predmeti sayılmır.',
+    'Qalibin bu sertifikata istinad hüququ altı ay qorunur; həmin müddətdə məğlub tərəflər etiraz edə bilməz.',
+    'Sertifikat yalnız hesabı faktiki ödəmiş şəxsə verilir. «Mən çıxaracam» deyib əl atmayan şəxs qalib sayılmır.',
+    'Ödənişin bölünməsi halında sertifikat qüvvədən düşür.'
+  ]
+},
+{
+  id: 'gorduldu-arayisi', cat: 'viral', tone: 'zarafat', layout: 'arayis', palette: 'ink',
+  title: '«Görüldü» Arayışı', tag: 'Cavab toxunulmazlığı',
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, {from} tərəfindən {{mesaj_tarixi}} tarixində göndərilmiş {{mesaj_novu}} mesaj oxunmuş, lakin cavablandırılmamışdır. Səbəb kimi göstərilir: «{{sebeb}}». Adıçəkilən şəxsə {{susqunluq_saat}} saat cavab toxunulmazlığı verilir.',
+  powers: 'Toxunulmazlıq «onlayn» görünəndə də qüvvədədir.\nStory paylaşmaq arayışı dərhal qüvvədən salır.\nEyni şəxsə ayda iki dəfədən artıq verilmir.\nTelefon söndü izahatı ilə birlikdə işlədilmir.',
+  penalty: 'Toxunulmazlıq müddəti bitdikdən sonra cavab yazılmazsa, arayış qüvvədən düşür və izahat qəbul edilmir.',
+  signTitle: 'Şöbə müdiri',
+  signOrg: 'Rəqəmsal Ünsiyyət və Susqunluq Departamenti',
+  share: 'Sənədim var, {{susqunluq_saat}} saat mənə toxunmaq olmaz ✓✓',
+  cancelReasons: ['Story paylaşdı', 'Onlayn göründü', 'Cavab yazdı', 'Səbəb göstərilmədi'],
+  fields: [
+    { k: 'ad', t: 'text', label: 'Arayış verilən', max: 40, person: true, into: 'to', row: 'ARAYIŞ VERİLİR' },
+    { k: 'qarsi_teref', t: 'text', label: 'Mesajı göndərən', max: 40, person: true, into: 'from', row: 'GÖNDƏRƏN' },
+    { k: 'mesaj_tarixi', t: 'datetime', label: 'Mesajın vaxtı', row: 'MESAJIN VAXTI' },
+    { k: 'mesaj_novu', t: 'select', label: 'Mesajın növü', row: 'MESAJIN NÖVÜ',
+      opts: ['Yazılı', 'Səsli', 'Şəkil', 'Link', '«Salam» (tək söz)'] },
+    { k: 'susqunluq_saat', t: 'number', label: 'Toxunulmazlıq müddəti', min: 1, max: 72, def: 24, unit: 'saat',
+      row: 'TOXUNULMAZLIQ', expiry: 'hours', hint: 'Arayışın etibarlılıq müddəti bu saatdan hesablanır.' },
+    { k: 'sebeb', t: 'select', label: 'Səbəb', row: 'GÖSTƏRİLƏN SƏBƏB',
+      opts: ['Cavab yazacaqdım, sonra unutdum', 'Fikirləşirdim', 'Nə yazacağımı bilmədim',
+             'Səsli mesaj idi, əlverişli şərait olmadı', 'Elə bir şey deyildi ki cavab verim', 'Əlim dolu idi'] }
+  ],
+  notes: [
+    'Toxunulmazlıq şəxsin «onlayn» görünməsi halında da qüvvədədir.',
+    'Story və ya status paylaşılması işbu arayışı dərhal qüvvədən salır.',
+    'Arayış eyni şəxsə qarşı ayda iki dəfədən artıq verilmir.',
+    '«Yazacaqdım, telefonum söndü» izahatı ilə birlikdə istifadə edilə bilməz.'
+  ]
+},
+{
+  id: 'bot-kimi-oynayir', cat: 'viral', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
+  title: 'Bot Kimi Oynayır Sertifikatı', tag: 'Texniki ekspertiza',
+  penaltyLabel: 'NƏTİCƏ',
+  preamble: 'Aparılmış texniki müşahidə nəticəsində {to} adlı şəxsin {{oyun}} oyunundakı tərzinin süni intellekt davranışından fərqləndirilməsi mümkün olmamışdır. Rəy {from} tərəfindən verilmiş şikayət əsasında tərtib edilmişdir. Zəiflik dərəcəsi: {{zeiflik}}/10.',
+  powers: 'Eyni hərəkəti dövri olaraq təkrarlayır.\nUduzduqda internet bağlantısına istinad edir.\nKomanda yoldaşını günahlandırır.\n«Bir dəfə də» deyib altı dəfə oynayır.',
+  penalty: 'Turinq testi keçilməmişdir. Çətinlik səviyyəsinin aşağı salınması və məşq rejiminin bərpası məqsədəuyğun hesab edilir.',
+  signTitle: 'Baş ekspert',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
+  share: 'Rəsmi ekspertiza hazırdır. Zəiflik dərəcəsi {{zeiflik}}/10 🤖',
+  fields: [
+    { k: 'ad', t: 'text', label: 'Ekspertizadan keçən', max: 40, person: true, into: 'to', row: 'BARƏSİNDƏ' },
+    { k: 'oyun', t: 'select', label: 'Oyun', free: true, max: 24, row: 'OYUN',
+      opts: ['FIFA', 'PES', 'CS', 'PUBG', 'Dota', 'Valorant', 'Nərd', 'Domino', 'Şahmat'] },
+    { k: 'si_seviyye', t: 'select', label: 'Süni intellekt səviyyəsi', row: 'SÜNİ İNTELLEKT SƏVİYYƏSİ',
+      opts: ['Amatyor', 'Yarı-professional', 'Professional', 'Əfsanəvi'] },
+    { k: 'davranislar', t: 'multi', label: 'Aşkarlanmış davranış əlamətləri', min: 2, max: 5,
+      def: ['Eyni hərəkəti dövri olaraq təkrarlayır', 'Küncdə dayanıb gözləyir'],
+      opts: ['Eyni hərəkəti dövri olaraq təkrarlayır', 'Yalnız bir komanda seçir',
+             'Avtomatik müdafiə ilə oynayır', 'Qapıçı ilə top saxlayır', 'Küncdə dayanıb gözləyir',
+             'Uduzduqda internet bağlantısına istinad edir', 'Uduzduqda pultu yerə qoyur',
+             '«Bir dəfə də» deyib altı dəfə oynayır', 'Komanda yoldaşını günahlandırır',
+             'Mikrofona ağır nəfəs alır'] },
+    { k: 'zeiflik', t: 'scale', label: 'Zəiflik dərəcəsi', min: 1, max: 10, def: 7 },
+    { k: 'ekspert', t: 'text', label: 'Ekspert', auto: 'Baş ekspert', into: 'from', row: 'EKSPERT' }
+  ]
+},
+{
+  id: 'immunitet-vesiqesi', cat: 'viral', tone: 'zarafat', layout: 'lisenziya', palette: 'burgundy',
+  title: '«Sənə də qismət olsun» İmmunitet Vəsiqəsi', tag: 'Toy mövsümü',
+  powersLabel: 'İMMUNİTETİN ƏHATƏ ETDİYİ SUALLAR',
+  preamble: 'Bu vəsiqə ilə {from} tərəfindən {to} adlı şəxsə ({{yas}} yaş) toy, nişan, elçilik və qohum yığıncaqlarında müəyyən suallara cavab verməkdən imtina etmək hüququ verilir. Vəsiqə {{muddet}} müddətinə etibarlıdır, süfrə arxasında da qüvvədədir.',
+  powers: 'Sualı eşitməmiş kimi davranmaq hüququ.\nMövzunu nəzakətsizlik sayılmadan dəyişmək.\nSual verəndən bir qutu şirniyyat tələb etmək.\nİSTİSNA: immunitet nənələrə şamil edilmir.',
+  penalty: '«Mən sənin xeyrini istəyirəm» ifadəsi vəsiqəni qüvvədən salmır; vəsiqə yalnız müddəti bitdikdə etibarsızdır.',
+  signTitle: 'Komissiya sədri',
+  signOrg: 'Subaylıq Hüquqlarının Müdafiəsi üzrə Komissiya',
+  share: 'Bu mövsüm mənə sual yoxdur, sənədim var 🛡️',
+  fields: [
+    { k: 'ad_soyad', t: 'text', label: 'Ad, soyad', max: 40, person: true, into: 'to', row: 'VƏSİQƏ SAHİBİ' },
+    { k: 'yas', t: 'number', label: 'Yaş', min: 16, max: 99, def: 27, opt: true, row: 'YAŞ' },
+    { k: 'muddet', t: 'select', label: 'Etibarlılıq müddəti', row: 'ETİBARLIDIR',
+      opts: ['1 toy mövsümü', '6 ay', '1 il', 'Novruza qədər'] },
+    { k: 'qorunan_suallar', t: 'multi', label: 'Qorunan suallar', min: 2, max: 5,
+      def: ['«Sənə də qismət olsun»', '«Yaşın keçir ha»'],
+      opts: ['«Sənə də qismət olsun»', '«Nə vaxt sənin toyunda oynayacağıq?»', '«Yaşın keçir ha»',
+             '«Bir tanışım var, çox yaxşı ailədəndir»', '«Bizim vaxtımızda bu yaşda iki uşağımız vardı»',
+             '«Anan yazıq nə vaxta qədər gözləsin?»', '«Seçici olma da bir az»'] },
+    { k: 'istisna', t: 'text', label: 'İstisna şəxslər', auto: 'Nənə, baba', row: 'İSTİSNA' },
+    { k: 'komissiya', t: 'text', label: 'Verən orqan', auto: 'Subaylıq Hüquqları Komissiyası', into: 'from' }
+  ]
+},
+{
+  id: 'etiraz-erizesi', cat: 'viral', tone: 'zarafat', layout: 'qerar', palette: 'ink',
+  title: '«Qardaşım Oynayırdı» Etiraz Ərizəsi', tag: 'Cavab sənədi',
+  preamble: '{from} tərəfindən verilmiş ekspertiza rəyinə etiraz olaraq {to} adlı şəxs bildirir ki, göstərilən vaxt aralığında hesabdan üçüncü şəxs — qardaşı istifadə etmişdir. Etiraz təxirəsalınmaz qaydada baxılmaq üçün təqdim edilir.',
+  powers: 'Hesabın üçüncü şəxsə verilməsi sübut edilməlidir.\nQardaşın yaşı və oyun stajı göstərilir.\nEkran görüntüsü sübut sayılmır.\nEtiraz bir dəfə verilə bilər.',
+  penalty: 'Etiraz təkrarlandıqda ekspertiza rəyi qəti qüvvəyə minir və zəiflik dərəcəsi bir bal artırılır.'
+},
+{
+  id: 'yuxu-rejimi-vesiqesi', cat: 'viral', tone: 'zarafat', layout: 'vesiqe', palette: 'steel',
+  title: 'Yuxu Rejimi Vəsiqəsi', tag: 'Səhər toxunulmazlığı',
+  preamble: 'Bu vəsiqə {to} adlı şəxsin gecə rejimini və səhər oyanma hüdudlarını təsdiq edir. Vəsiqə {from} tərəfindən uzunmüddətli müşahidə və nəticəsiz oyatma cəhdlərindən sonra rəsmiləşdirilmişdir.',
+  powers: 'Səhər saat 10:00-a qədər dinclik hüququ.\nİkinci zəngdən sonra oyanmaq öhdəliyi.\n«Beş dəqiqə də» hüququ gündə iki dəfə.\nHəftəsonu rejim tamamilə dayandırılır.',
+  penalty: 'Vəsiqə sahibi işə və ya dərsə gecikdikdə vəsiqəyə istinad edə bilməz; bu hal ayrıca qeydə alınır.'
+},
+{
+  id: 'story-izleme-muqavilesi', cat: 'viral', tone: 'zarafat', layout: 'muqavile', palette: 'gold',
+  title: 'Story İzləmə Müqaviləsi', tag: 'Rəqəmsal etiket',
+  preamble: 'Bu müqavilə ilə {from} və {to} arasında story izləmə qaydaları müəyyən edilir. Tərəflər bir-birinin paylaşımlarına münasibətdə şəffaflıq və qarşılıqlılıq prinsipini əsas götürürlər.',
+  powers: 'Hər story qarşılıqlı olaraq izlənilir.\nİzləyib reaksiya verməmək pozuntu sayılır.\nGizli rejimdə izləmə qadağandır.\nArxiv paylaşımlar müqaviləyə daxil deyil.',
+  penalty: 'Bir tərəf ardıcıl olaraq üç story-ni reaksiyasız izləyərsə, digər tərəf müqaviləni birtərəfli qaydada dayandıra bilər.'
+},
+{
+  id: 'qrup-cati-fermani', cat: 'viral', tone: 'zarafat', layout: 'blank', palette: 'steel',
+  title: 'Qrup Çatında Susqunluq Fərmanı', tag: 'Bildirişlər',
+  preamble: '{from} bu fərmanla {to} adlı şəxsə qrup çatında lazımsız mesaj göndərməmək öhdəliyi qoyur. Fərman səhər saat 07:00-dan gecə 23:00-dək qüvvədədir və bütün ailə qruplarına şamil edilir.',
+  powers: 'Səhər salamlaşma şəkilləri göndərilmir.\n«Salam» tək mesaj kimi yazılmır.\nSəsli mesaj bir dəqiqədən uzun olmur.\nGecə 23:00-dan sonra yalnız təcili hallar.',
+  penalty: 'Fərman pozulduqda pozan tərəf qrupda növbəti həftənin bütün doğum günü təbriklərini təkbaşına yazmalı olur.'
+},
+{
+  id: 'gecikme-diplomu', cat: 'viral', tone: 'zarafat', layout: 'diplom', palette: 'gold',
+  title: 'Peşəkar Gecikmə Diplomu', tag: 'Fəxri ad',
+  preamble: 'Bu diplomla {to} adlı şəxsə görüşlərə ardıcıl və sistemli gecikməkdə göstərdiyi davamlılığa görə fəxri ad verilir. Diplom {from} tərəfindən uzunmüddətli gözləmə təcrübəsi əsasında təqdim edilmişdir.',
+  powers: '«Yoldayam» ifadəsini sərbəst işlətmək.\nTıxaca istinad etmək hüququ.\nGörüş saatını on beş dəqiqə yuvarlaqlaşdırmaq.\nSon çıxan olub birinci şikayət etmək.',
+  penalty: 'Diplom sahibi bir dəfə vaxtında gəldikdə fəxri ad avtomatik olaraq dayandırılır və yenidən qazanılmalıdır.'
+},
+{
+  id: 'internet-teleqrami', cat: 'viral', tone: 'zarafat', layout: 'teleqram', palette: 'ink',
+  title: '«İnternet Kəsildi» Təcili Teleqramı', tag: 'Təcili bildiriş',
+  preamble: '{from} tərəfindən {to} adlı şəxsə təcili bildirilir ki, oyun və ya iclas zamanı internet bağlantısının kəsilməsi barədə məlumat qeydə alınmış, lakin texniki yoxlama nəticəsində təsdiqlənməmişdir.',
+  powers: 'Bağlantının kəsilməsi ekran görüntüsü ilə sübut edilir.\nEyni izahat həftədə bir dəfə qəbul olunur.\nRouter yenidən başladılmalıdır.\nQonşunun şəbəkəsi bəhanə sayılmır.',
+  penalty: 'İzahat üçüncü dəfə təkrarlandıqda oyunun nəticəsi qarşı tərəfin xeyrinə yekunlaşdırılır.'
+},
+{
+  id: 'soz-verme-akti', cat: 'viral', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
+  title: 'Gəlmə Vədinin Pozulması Aktı', tag: 'Söz verib gəlmədi',
+  preamble: 'Bu aktla təsdiq olunur ki, {to} adlı şəxs {from} qarşısında görüşə gəlmək barədə şifahi öhdəlik götürmüş, lakin həmin öhdəliyi yerinə yetirməmişdir. Akt şahidlərin iştirakı olmadan, birtərəfli qaydada tərtib edilmişdir.',
+  powers: 'Öhdəlik şifahi olsa da qüvvəyə malikdir.\n«Sabah mütləq» ifadəsi vəd sayılır.\nÜzrxahlıq yazılı formada təqdim edilir.\nNövbəti görüşün yeri qarşı tərəfə seçilir.',
+  penalty: 'Vəd üçüncü dəfə pozulduqda görüş təşkil etmək hüququ tamamilə digər tərəfə keçir və mübahisə predmeti sayılmır.'
 },
 
 ];

@@ -42,15 +42,45 @@ class DocumentController extends Controller
             'fromLabel'    => ['nullable', 'string', 'max:40'],
             'powersLabel'  => ['nullable', 'string', 'max:40'],
             'penaltyLabel' => ['nullable', 'string', 'max:40'],
+
+            /* Anket cavabları. Hamısı `nullable` — anketi olmayan şablonlar
+               (və tests/security.php-in minimal sorğusu) toxunulmaz qalır. */
+            'data'         => ['nullable', 'array', 'max:14'],
+            'data.*'       => ['array', 'size:2'],
+            'data.*.*'     => ['nullable', 'string', 'max:80'],
+            'checks'       => ['nullable', 'array', 'max:6'],
+            'checks.*'     => ['string', 'max:100'],
+            'notes'        => ['nullable', 'array', 'max:8'],
+            'notes.*'      => ['string', 'max:180'],
+            'scale'        => ['nullable', 'array'],
+            'scale.label'  => ['nullable', 'string', 'max:40'],
+            'scale.v'      => ['nullable', 'integer', 'min:0', 'max:10'],
+            'scale.max'    => ['nullable', 'integer', 'min:1', 'max:10'],
+            'until'        => ['nullable', 'string', 'max:24'],
+            'signTitle'    => ['nullable', 'string', 'max:40'],
+            'signOrg'      => ['nullable', 'string', 'max:60'],
+            'share'        => ['nullable', 'string', 'max:180'],
+            'expiresAt'    => ['nullable', 'integer'],
         ]);
 
         $moderation = new Moderation(
             Setting::get('banned_words', (string) config('zarafat.banned_words')) ?? ''
         );
 
+        /* Anket cavabları da istifadəçi mətnidir və SVG-yə düşür — süzgəcdən
+           kənarda qalsalar, qadağan olunmuş söz filtri yeni forma ilə keçilərdi. */
+        $flat = [];
+        foreach ($data['data'] ?? [] as $row) {
+            $flat[] = implode(' ', array_map(static fn ($v): string => (string) $v, (array) $row));
+        }
+
         $flagged = $moderation->flagged(
             $data['title'], $data['to'], $data['from'],
-            $data['powers'] ?? '', $data['penalty'] ?? ''
+            $data['powers'] ?? '', $data['penalty'] ?? '', $data['preamble'] ?? '',
+            implode(' ', $flat),
+            implode(' ', $data['checks'] ?? []),
+            implode(' ', $data['notes'] ?? []),
+            (string) ($data['share'] ?? '')
         );
 
         if ($flagged) {
@@ -91,6 +121,45 @@ class DocumentController extends Controller
                 'forbidden'  => [403, 'Bu sənəd sizə aid deyil.'],
                 'removed'    => [410, 'Sənəd silinib.'],
                 default      => [500, 'Xəta baş verdi.'],
+            };
+
+            return response()->json(['error' => $e->getMessage(), 'message' => $message], $code);
+        }
+
+        return response()->json($document->toApiArray(withOwner: true));
+    }
+
+    /** Dərc olunmuş sənədi ləğv edir — sahibi üçün ikinci paylaşım anı. */
+    public function cancel(Request $request, string $regNo): JsonResponse
+    {
+        if ($request->visitor()->is_blocked) {
+            return response()->json(['error' => 'blocked', 'message' => 'Hesab məhdudlaşdırılıb.'], 403);
+        }
+
+        $regNo = strtoupper($regNo);
+
+        if (! RegistryNumber::isValid($regNo)) {
+            return response()->json(['error' => 'bad_reg_no'], 400);
+        }
+
+        $document = Document::query()->where('reg_no', $regNo)->first();
+
+        if (! $document) {
+            return response()->json(['error' => 'not_found', 'message' => 'Sənəd tapılmadı.'], 404);
+        }
+
+        $reason = $request->validate([
+            'reason' => ['nullable', 'string', 'max:60'],
+        ])['reason'] ?? null;
+
+        try {
+            $document = $this->documents->cancel($request->visitor(), $document, $reason);
+        } catch (\RuntimeException $e) {
+            [$code, $message] = match ($e->getMessage()) {
+                'forbidden'     => [403, 'Bu sənəd sizə aid deyil.'],
+                'removed'       => [410, 'Sənəd silinib.'],
+                'not_published' => [409, 'Sənəd hələ reyestrə yazılmayıb.'],
+                default         => [500, 'Xəta baş verdi.'],
             };
 
             return response()->json(['error' => $e->getMessage(), 'message' => $message], $code);

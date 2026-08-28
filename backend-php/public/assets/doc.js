@@ -49,6 +49,11 @@ window.DOCGEN = (function () {
       band:       'BU SƏNƏD TAMAMİLƏ ƏYLƏNCƏ MƏQSƏDİ DAŞIYIR VƏ HEÇ BİR HÜQUQİ QÜVVƏYƏ MALİK DEYİL.',
       mrzOpt:     'PARODIYA',
       storyFoot:  'Yalnız əyləncə üçün · Hüquqi qüvvəsi yoxdur',
+      /* ekspertiza dizaynının başlıqları — xatirə tonunda klinik səslənməsin deyə ayrıdır */
+      expHead:    'EKSPERTİZA RƏYİ',
+      expNo:      'RƏY №',
+      expFound:   'MÜƏYYƏN EDİLMİŞDİR',
+      expMarks:   'AŞKARLANMIŞ ƏLAMƏTLƏR',
       penAccent:  false
     },
     xatire: {
@@ -82,6 +87,10 @@ window.DOCGEN = (function () {
       band:       'BU SƏNƏD XATİRƏ MƏQSƏDLİDİR VƏ HEÇ BİR HÜQUQİ QÜVVƏYƏ MALİK DEYİL.',
       mrzOpt:     'XATIRE',
       storyFoot:  'Xatirə sənədi · Hüquqi qüvvəsi yoxdur',
+      expHead:    'QEYD VƏRƏQİ',
+      expNo:      'QEYD №',
+      expFound:   'QEYDƏ ALINMIŞDIR',
+      expMarks:   'QEYD OLUNANLAR',
       penAccent:  true
     }
   };
@@ -118,7 +127,9 @@ window.DOCGEN = (function () {
     qerar:      'Məhkəmə qərarı',
     muqavile:   'Müqavilə',
     teleqram:   'Teleqram',
-    vesiqe:     'Vəsiqə'
+    vesiqe:     'Vəsiqə',
+    viza:       'Viza',
+    ekspertiza: 'Ekspertiza rəyi'
   };
 
   /* ---------------- ölçmə və mətn ---------------- */
@@ -393,13 +404,28 @@ window.DOCGEN = (function () {
     return out;
   }
 
-  function seal(cx, cy, r, P, regNo, idp, rot) {
+  /* Tərəzi piktoqramı — «hesab bağlandı» möhrünün mərkəzi. */
+  function terezi(cx, cy, r, C) {
+    var a = 'stroke="' + C + '" stroke-width="1.3" fill="none" stroke-linecap="round"';
+    return '<g ' + a + '>' +
+      '<path d="M ' + cx + ' ' + (cy - r) + ' V ' + (cy + r * 0.9) + '"/>' +
+      '<path d="M ' + (cx - r) + ' ' + (cy - r * 0.62) + ' H ' + (cx + r) + '"/>' +
+      '<path d="M ' + (cx - r * 0.62) + ' ' + (cy + r * 0.9) + ' H ' + (cx + r * 0.62) + '"/>' +
+      '<path d="M ' + (cx - r) + ' ' + (cy - r * 0.62) + ' l ' + (-r * 0.42) + ' ' + (r * 0.72) + ' h ' + (r * 0.84) + ' Z"/>' +
+      '<path d="M ' + (cx + r) + ' ' + (cy - r * 0.62) + ' l ' + (-r * 0.42) + ' ' + (r * 0.72) + ' h ' + (r * 0.84) + ' Z"/>' +
+      '</g>';
+  }
+
+  /* `o` — dizayna xas ikinci dərəcəli möhür üçün: {color, top, bot, tag, center, glyph}.
+     Arqumentsiz çağırışda hər şey `CUR`-dan gəlir, yəni parodiya möhrü olduğu kimi qalır. */
+  function seal(cx, cy, r, P, regNo, idp, rot, o) {
+    o = o || {};
     var top = 'M ' + (cx - (r - 15)) + ' ' + cy + ' A ' + (r - 15) + ' ' + (r - 15) + ' 0 1 1 ' + (cx + (r - 15)) + ' ' + cy;
     var bot = 'M ' + (cx - (r - 17)) + ' ' + cy + ' A ' + (r - 17) + ' ' + (r - 17) + ' 0 0 0 ' + (cx + (r - 17)) + ' ' + cy;
-    var C = P.seal;
+    var C = o.color || P.seal;
     /* Halqa yazısı qövsdən uzun olarsa kəsilir — kiçik radiuslarda şrifti sığdırırıq.
        `measure` hərf aralığını saymır, ona görə onu ayrıca çıxırıq. */
-    var topTxt = CUR.org, botTxt = CUR.sealBot;
+    var topTxt = o.top || CUR.org, botTxt = o.bot || CUR.sealBot;
     var szT = fit(topTxt, Math.PI * (r - 15) * 0.94 - topTxt.length * 0.9, 8.6, 5.4, 'bold', SANS);
     var szB = fit(botTxt, Math.PI * (r - 17) * 0.94 - botTxt.length * 0.9, 8, 5.2, 'bold', SANS);
     var s = '<g transform="rotate(' + (rot === undefined ? -11 : rot) + ' ' + cx + ' ' + cy + ')" opacity="0.88">';
@@ -411,10 +437,11 @@ window.DOCGEN = (function () {
       '<textPath href="#' + idp + '-st" startOffset="50%" text-anchor="middle">' + esc(topTxt) + '</textPath></text>';
     s += '<text font-family="' + SANS + '" font-size="' + szB.toFixed(1) + '" font-weight="bold" fill="' + C + '" letter-spacing="0.9">' +
       '<textPath href="#' + idp + '-sb" startOffset="50%" text-anchor="middle">' + esc(botTxt) + '</textPath></text>';
-    s += T('ZNP', cx, cy - 8, { anchor: 'middle', size: 19, weight: 'bold', fill: C, ls: 1 });
+    s += o.glyph === 'terezi' ? terezi(cx, cy - 10, 15, C)
+      : T(o.center || 'ZNP', cx, cy - 8, { anchor: 'middle', size: 19, weight: 'bold', fill: C, ls: 1 });
     s += T(regNo, cx, cy + 8, { anchor: 'middle', size: 7.5, fam: SANS, fill: C, ls: 0.6 });
     s += '<path d="M ' + (cx - 22) + ' ' + (cy + 15) + ' H ' + (cx + 22) + '" stroke="' + C + '" stroke-width="0.9"/>';
-    s += T(CUR.sealTag, cx, cy + 26, { anchor: 'middle', size: 7, fam: SANS, fill: C, ls: 0.5 });
+    s += T(o.tag || CUR.sealTag, cx, cy + 26, { anchor: 'middle', size: 7, fam: SANS, fill: C, ls: 0.5 });
     return s + '</g>';
   }
 
@@ -587,14 +614,39 @@ window.DOCGEN = (function () {
       T(CUR.band, x + w / 2, y + 17, { anchor: 'middle', size: 9.2, fam: SANS, fill: '#f3e6bf', ls: 0.7 });
   }
 
+  /* Diaqonal qutu ştampı — təsdiq, müddət bitməsi, ləğv və dizayna xas ştamplar.
+     `verifiedStamp` bunun sabit arqumentli halıdır: defolt dəyərlər hərfi olaraq
+     əvvəlki çıxışı verir, ona görə mövcud dizaynların baytı dəyişmir. */
+  function stateStamp(cx, cy, o) {
+    o = o || {};
+    var C = o.color || '#1d6b3f';
+    var w = o.w || 270, h = o.h || 74;
+    var s = '<g transform="rotate(' + (o.rot || -14) + ' ' + cx + ' ' + cy + ')" opacity="' + (o.op || 0.85) + '">';
+    s += '<rect x="' + (cx - w / 2) + '" y="' + (cy - h / 2) + '" width="' + w + '" height="' + h +
+      '" fill="none" stroke="' + C + '" stroke-width="4" rx="6"/>';
+    s += '<rect x="' + (cx - w / 2 + 8) + '" y="' + (cy - h / 2 + 8) + '" width="' + (w - 16) + '" height="' + (h - 16) +
+      '" fill="none" stroke="' + C + '" stroke-width="1.2" rx="3"/>';
+    s += T(o.top || '', cx, cy - 3,
+      { anchor: 'middle', size: o.topSize || 19, weight: 'bold', fam: SANS, fill: C, ls: o.topLs === undefined ? 1.6 : o.topLs });
+    if (o.bot) s += T(o.bot, cx, cy + 19,
+      { anchor: 'middle', size: o.botSize || 12, weight: 'bold', fam: SANS, fill: C, ls: o.botLs === undefined ? 2.6 : o.botLs });
+    if (o.sub) s += T(o.sub, cx, cy + h / 2 - 8,
+      { anchor: 'middle', size: 8.6, fam: SANS, fill: C, ls: 0.6 });
+    return s + '</g>';
+  }
+
+  /* Sənədin reyestrdəki vəziyyətinə görə ştamp. `doc.state` serverdə hesablanır —
+     doc.js-də Date.now() ÇAĞIRILMIR, render determinist qalmalıdır. */
+  function docStateStamp(doc, cx, cy) {
+    if (doc.state === 'expired')
+      return stateStamp(cx, cy, { color: '#5d6577', top: 'MÜDDƏTİ BİTİB', rot: -24, w: 340, h: 68, topSize: 22, op: 0.78 });
+    if (doc.state === 'cancelled')
+      return stateStamp(cx, cy, { color: '#a1202b', top: 'LƏĞV EDİLDİ', sub: doc.cancelReason || '', rot: -24, w: 366, h: 84, topSize: 24, op: 0.82 });
+    return '';
+  }
+
   function verifiedStamp(cx, cy, rot) {
-    var C = '#1d6b3f';
-    return '<g transform="rotate(' + (rot || -14) + ' ' + cx + ' ' + cy + ')" opacity="0.85">' +
-      '<rect x="' + (cx - 135) + '" y="' + (cy - 37) + '" width="270" height="74" fill="none" stroke="' + C + '" stroke-width="4" rx="6"/>' +
-      '<rect x="' + (cx - 127) + '" y="' + (cy - 29) + '" width="254" height="58" fill="none" stroke="' + C + '" stroke-width="1.2" rx="3"/>' +
-      T('RƏSMİ TƏSDİQ', cx, cy - 3, { anchor: 'middle', size: 19, weight: 'bold', fam: SANS, fill: C, ls: 1.6 }) +
-      T('OLUNUB', cx, cy + 19, { anchor: 'middle', size: 12, weight: 'bold', fam: SANS, fill: C, ls: 2.6 }) +
-      '</g>';
+    return stateStamp(cx, cy, { color: '#1d6b3f', top: 'RƏSMİ TƏSDİQ', bot: 'OLUNUB', rot: rot });
   }
 
   /* ---------------- blank avadanlığı ---------------- */
@@ -710,6 +762,25 @@ window.DOCGEN = (function () {
       opt + mrzCheck(opt) + mrzCheck(core);
     return [mrzFix(l1, 44), mrzFix(l2, 44)];
   }
+  /* Viza səhifəsinin maşınoxunan zonası. `mrzPair`-dən fərqi: TD3 deyil,
+     dekorativdir — buna baxmayaraq 29–42 mövqelərində `CUR.mrzOpt` daşıyır,
+     yəni istənilən OCR sənədin parodiya olduğunu oxuyur (hüquqi qalxan).
+     `doc.until` — qayıdış vaxtı; yoxdursa sənədin tarixi işlədilir. */
+  function mrzViza(doc) {
+    var parts = String(doc.to || '').trim().split(/\s+/);
+    var sur = mrzTrans(parts.length > 1 ? parts[parts.length - 1] : (parts[0] || 'X'));
+    var giv = mrzTrans(parts.slice(0, -1).join(' ')) || 'X';
+    var opt = mrzFix(CUR.mrzOpt, 14);
+    /* 5 (prefiks) + 23 (ad) = 28, sonra 29–42 optional data, sonuncu iki xana doldurucu */
+    var l1 = mrzFix('V<AZE' + mrzFix(sur + '<<' + giv, 23) + opt, 44);
+
+    var digits = String(doc.regNo || '').replace(/\D/g, '');
+    var docNo = mrzFix('V' + (digits.length >= 8 ? digits.slice(-8) : pad(digits, 8)), 9);
+    var until = mrzFix(mrzTrans(String(doc.until || doc.date || '')), 10);
+    var l2 = mrzFix(docNo + mrzCheck(docNo) + 'ZRF' + until + mrzCheck(until) + opt + mrzCheck(opt), 44);
+    return [l1, l2];
+  }
+
   /* Bir <text> + 44 <tspan>: həqiqi monospace addım, cəmi bir element düyünü. */
   function mrzLine(str, x, y, adv, size, fill) {
     var t = '<text font-family="' + MONO + '" font-size="' + size + '" fill="' + fill + '">', i;
@@ -731,6 +802,100 @@ window.DOCGEN = (function () {
     var dy = Math.max(0, Math.min(slack * 0.45, maxShift === undefined ? 130 : maxShift));
     if (dy < 6) return out;
     return out.slice(0, bodyStart) + '<g transform="translate(0,' + dy.toFixed(1) + ')">' + out.slice(bodyStart) + '</g>';
+  }
+
+  /* ---------------- struktur bloklar ----------------
+     Anket cavablarını sənədə çevirən üç köməkçi: `doc.data` etiket→dəyər
+     sətirləri, `doc.checks` seçilmiş bəndlər, `doc.scale` isə 1–10 şkalası.
+     Hər biri {s, y} qaytarır — `y` növbəti blokun başlanğıc nöqtəsidir.
+
+     Bu köməkçiləri YALNIZ yeni dizaynlar çağırır. Mövcud on dizayn öz əl ilə
+     yazılmış cədvəllərini saxlayır ki, `zarafat` çıxışı bayt-bayt eyni qalsın
+     (bax: tools/hash-layouts.js). */
+
+  /* Etiket→dəyər cədvəli. Üç üslub:
+       'rule' — dəyər etiketdən sağda, altdan nöqtəli xətt (vəsiqə/viza)
+       'grid' — haşiyəli qutu, etiket xanası boyalı (rəsmi blank)
+       'dots' — etiket solda, dəyər sağda, aralarında nöqtəli aparıcı (arayış) */
+  function kvTable(rows, x, y, w, P, o) {
+    o = o || {};
+    var style = o.style || 'rule', lw = o.lw || 200, rh = o.rh || 26;
+    var ls = o.labelSize || 8.6, vs = o.valueSize || 12.5;
+    var lf = font(ls, 'bold', SANS), vf = font(vs, 'bold', SANS);
+    var s = '', i, r, lab, val, vw, top = y - 14, H = rows.length * rh + 8;
+
+    if (style === 'grid') {
+      s += '<rect x="' + x + '" y="' + top + '" width="' + w + '" height="' + H +
+        '" fill="none" stroke="' + P.accent + '" stroke-width="0.9"/>';
+      s += '<path d="M ' + (x + lw) + ' ' + top + ' V ' + (top + H) +
+        '" stroke="' + P.accent + '" stroke-width="0.7"/>';
+    }
+
+    for (i = 0; i < rows.length; i++) {
+      r = rows[i] || [];
+      lab = upper(String(r[0] === undefined || r[0] === null ? '' : r[0]));
+      val = String(r[1] === undefined || r[1] === null || r[1] === '' ? '—' : r[1]);
+
+      if (style === 'dots') {
+        vw = measure(val, vf);
+        s += T(lab, x, y, { size: ls + 1.4, fam: SANS, fill: P.muted });
+        s += '<path d="M ' + (x + measure(lab, lf) + 8) + ' ' + (y - 3) + ' H ' + (x + w - vw - 8) +
+          '" stroke="' + P.muted + '" stroke-width="0.7" stroke-dasharray="1 2.5" opacity="0.8"/>';
+        s += T(val, x + w, y, { anchor: 'end', size: vs, weight: 'bold', fam: SANS, fill: P.head });
+      } else {
+        if (style === 'grid') {
+          s += '<rect x="' + x + '" y="' + (y - 14) + '" width="' + lw + '" height="' + rh +
+            '" fill="' + P.soft + '" opacity="0.55"/>';
+          if (i) s += '<path d="M ' + x + ' ' + (y - 14) + ' H ' + (x + w) +
+            '" stroke="' + P.accent + '" stroke-width="0.5"/>';
+        }
+        s += T(lab, x + (style === 'grid' ? 8 : 0), y,
+          { size: ls, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.2 });
+        s += T(wrap(val, vf, w - lw - 14, 1)[0], x + lw + (style === 'grid' ? 10 : 0), y,
+          { size: vs, weight: 'bold', fam: SANS, fill: P.head });
+        if (style === 'rule') s += '<path d="M ' + x + ' ' + (y + 7) + ' H ' + (x + w) +
+          '" stroke="' + P.accent + '" stroke-width="0.4" stroke-dasharray="2 2" opacity="0.7"/>';
+      }
+      y += rh;
+    }
+    return { s: s, y: y + 6 };
+  }
+
+  /* İşarələnmiş siyahı — çoxseçimli sahənin cavabları. */
+  function checkList(list, x, y, w, P, o) {
+    o = o || {};
+    var mark = o.mark || '▪', size = o.size || 11.5, lh = o.lh || 19, ind = o.ind || 16;
+    var gap = o.gap === undefined ? 4 : o.gap;
+    var a = (list && list.length ? list : ['—']).slice(0, o.max || 6);
+    var s = '', i, ln;
+    for (i = 0; i < a.length; i++) {
+      ln = wrap(String(a[i]), font(size, '', SANS), w - ind, 2);
+      s += T(mark, x, y, { size: size, fam: SANS, weight: 'bold', fill: o.markFill || P.accentD });
+      s += block(ln, x + ind, y, lh, { size: size, fam: SANS, fill: o.fill || P.ink });
+      y += ln.length * lh + gap;
+    }
+    return { s: s, y: y };
+  }
+
+  /* Vizual şkala: dolu və boş xanalar + «7/10».
+     Xanalar <rect>-dir, ▓/░ simvolu deyil — blok simvolları hər şriftdə yoxdur
+     və PNG eksportu canvas üzərindən getdiyi üçün nəticə maşından maşına dəyişərdi. */
+  function scaleBar(label, v, max, x, y, w, P, o) {
+    o = o || {};
+    var cells = o.cells || 10, gap = o.gap === undefined ? 3 : o.gap;
+    var capW = o.capW || 54, ch = o.h || 14;
+    var n = Math.max(0, Math.min(cells, Math.round(Number(v) / (Number(max) || 1) * cells)));
+    var barW = w - capW, cw = (barW - gap * (cells - 1)) / cells;
+    var s = '', i, by;
+    if (label) s += T(upper(label), x, y, { size: 8.6, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.2 });
+    by = label ? y + 10 : y - 10;
+    for (i = 0; i < cells; i++)
+      s += '<rect x="' + (x + i * (cw + gap)).toFixed(1) + '" y="' + by + '" width="' + cw.toFixed(1) +
+        '" height="' + ch + '" fill="' + (i < n ? P.accentD : 'none') +
+        '" stroke="' + P.accent + '" stroke-width="0.8"/>';
+    s += T(v + '/' + max, x + w, by + ch - 2,
+      { anchor: 'end', size: 13, fam: MONO, weight: 'bold', fill: P.head });
+    return { s: s, y: by + ch + 16 };
   }
 
   /* ---------------- kompozisiya köməkçiləri ----------------
@@ -1781,9 +1946,199 @@ window.DOCGEN = (function () {
     return out;
   }
 
+  /* ==================================================================
+     LAYOUT 11 — VİZA (pasport səhifəsi: holoqram şəbəkəsi, MRZ zolağı)
+     ================================================================== */
+  function L_viza(doc, C) {
+    var P = C.P, idp = C.idp, M = 70, CW = W - M * 2, out = '', i, j;
+
+    /* --- QAT 1: substrat --- */
+    out += paperBase(doc, C, {
+      fibers: 90, ghost: [W / 2, 600, 158, 0.05], fold: [10, W - 10],
+      micro: [30, 30, W - 60, H - 60]
+    });
+    /* holoqram şəbəkəsi — pasport səhifəsinin optik qoruması */
+    out += '<g opacity="0.07">';
+    for (i = 0; i < 4; i++)
+      for (j = 0; j < 6; j++)
+        out += '<path d="' + rosette(140 + i * 172, 268 + j * 126, 38, 11, 0.2) +
+          '" fill="url(#' + idp + '-holo)" stroke="' + P.accent + '" stroke-width="0.3"/>';
+    out += '</g>';
+
+    out += T(CUR.org, W / 2, 58, { anchor: 'middle', size: 12, fam: SANS, weight: 'bold', fill: P.head, ls: 4.2 });
+    out += T(upper(doc.signOrg || CUR.orgAgency), W / 2, 76,
+      { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.6 });
+    out += '<path d="M ' + M + ' 92 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.4"/>';
+    out += '<path d="M ' + M + ' 96 H ' + (W - M) + '" stroke="' + P.accent + '" stroke-width="0.5"/>';
+
+    var bs = out.length;                       /* --- QAT 2: gövdə --- */
+
+    var y = 124;
+    out += '<rect x="' + M + '" y="' + y + '" width="' + CW + '" height="46" fill="' + P.head + '"/>';
+    out += T('VİZA / VISA', M + 18, y + 30, { size: 15, fam: SANS, weight: 'bold', fill: '#fff', ls: 3.4 });
+    out += T('№ ' + doc.regNo, W - M - 18, y + 30,
+      { anchor: 'end', size: 12.5, fam: SANS, weight: 'bold', fill: P.accentL, ls: 1.4 });
+    y += 46 + 26;
+
+    var ts = fit(upper(doc.title || ''), CW, 17, 11, 'bold', SANS);
+    out += T(upper(doc.title || ''), M, y, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 1 });
+    y += 26;
+
+    var rows = (doc.data && doc.data.length) ? doc.data : [
+      [lbl(doc, 'toLabel', 'SOYAD, AD / SURNAME'), doc.to],
+      [lbl(doc, 'fromLabel', 'VERƏN ORQAN / AUTHORITY'), doc.from],
+      ['VERİLMƏ TARİXİ / DATE', doc.date],
+      ['SERİYA / SERIES', seriya(doc)]
+    ];
+    var kv = kvTable(rows.slice(0, 10), M, y, CW, P, { style: 'rule', lw: 250, rh: 25 });
+    out += kv.s; y = kv.y + 12;
+
+    out += T('QEYDLƏR / REMARKS', M, y, { size: 8.6, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.8 });
+    y += 16;
+    var notes = (doc.notes && doc.notes.length) ? doc.notes : items(doc, 7);
+    for (i = 0; i < notes.length && y < 720; i++) {
+      var ln = wrap(String(notes[i]), font(10.6, '', SERIF), CW - 22, 2);
+      out += T((i + 1) + '.', M, y, { size: 10.6, weight: 'bold', fill: P.accentD });
+      out += block(ln, M + 20, y, 16, { size: 10.6, fill: P.ink });
+      y += ln.length * 16 + 5;
+    }
+    y += 12;
+
+    var pen = wrap(doc.penalty || '—', font(10.6, '', SERIF, 'italic'), CW - 22, 2);
+    out += '<rect x="' + M + '" y="' + (y - 12) + '" width="3" height="' + (pen.length * 16 + 6) + '" fill="' + penC(P) + '" opacity="0.85"/>';
+    out += T(lbl(doc, 'penaltyLabel', 'ETİBARSIZLIQ ŞƏRTİ'), M + 12, y,
+      { size: 9, fam: SANS, weight: 'bold', fill: penC(P), ls: 1.2 });
+    out += block(pen, M + 12, y + 15, 16, { size: 10.6, style: 'italic', fill: P.muted });
+    y += pen.length * 16 + 26;
+
+    var al = attestLines(doc, CW, 3);
+    out += attestation(P, al, M, y, CW);
+    y += al.length * 13.6 + 6;
+
+    out = centerBody(out, bs, y, 820, 150);    /* sürüşmə yalnız gövdəyə aiddir — MRZ və möhür sonra gəlir */
+
+    /* --- QAT 3-dən əvvəl: imza, möhür, MRZ, kodlar --- */
+    out += T(upper(doc.signTitle || CUR.role), W - M - 190, 842,
+      { size: 8.4, fam: SANS, weight: 'bold', fill: P.accent, ls: 1.6 });
+    out += signature(doc.regNo + doc.from, W - M - 190, 848, 178, 38);
+    out += '<path d="M ' + (W - M - 190) + ' 890 H ' + (W - M) + '" stroke="' + P.accent + '" stroke-width="0.7"/>';
+    out += T(doc.signOrg || CUR.notaryLine, W - M - 190, 902, { size: 8, fam: SANS, fill: P.muted });
+
+    out += seal(M + 74, 866, 56, P, doc.regNo, idp, -9);
+    if (doc.paid && doc.state === 'active')
+      out += stateStamp(W / 2 - 30, 800, { color: '#1e4b9c', top: 'BURAXILIŞ VERİLDİ', sub: doc.date, rot: -7, w: 300, h: 70, topSize: 16, op: 0.8 });
+    out += docStateStamp(doc, W / 2, 560);
+
+    var mrz = mrzViza(doc), adv = (CW - 26) / 44;
+    out += '<rect x="' + M + '" y="916" width="' + CW + '" height="58" fill="#ffffff" opacity="0.93" stroke="' + P.accent + '" stroke-width="0.5"/>';
+    out += mrzLine(mrz[0], M + 13, 940, adv, 13, '#101827');
+    out += mrzLine(mrz[1], M + 13, 962, adv, 13, '#101827');
+
+    out += emboss(W - M - 60, 830, 40, P, idp);
+    out += qrOrHint(doc, P, M, 992, 54, M + 68);
+    out += barcode(doc.regNo, W - M - 190, 1000, 190, 20, { hri: true, bg: true, P: P });
+
+    if (C.verified) out += verifiedStamp(W / 2 + 40, 700, -12);
+    out += pageFurniture(doc, C, { form: [M, 1084], page: [W - M, 1084, 'end'] });
+    return out;
+  }
+
+  /* ==================================================================
+     LAYOUT 12 — EKSPERTİZA RƏYİ (texniki hesabat: panel, cədvəl, şkala)
+     ================================================================== */
+  function L_ekspertiza(doc, C) {
+    var P = C.P, idp = C.idp, M = 70, CW = W - M * 2, out = '', i;
+
+    /* --- QAT 1: substrat --- */
+    out += paperBase(doc, C, { fibers: 60, fold: [10, W - 10], micro: [28, 28, W - 56, H - 56] });
+    /* Skan xətləri yalnız bu dizaynda işlənir, ona görə `defs()`-ə əlavə edilmir:
+       ortaq defs-ə toxunmaq bütün dizaynların baytını dəyişərdi. */
+    out += '<pattern id="' + idp + '-scan" width="4" height="4" patternUnits="userSpaceOnUse">' +
+      '<path d="M 0 0 H 4" stroke="' + P.accentL + '" stroke-width="0.6" opacity="0.5"/></pattern>';
+
+    out += T(CUR.org, W / 2, 56, { anchor: 'middle', size: 11.5, fam: SANS, weight: 'bold', fill: P.head, ls: 4 });
+    out += T(upper(doc.signOrg || CUR.orgAgency), W / 2, 74,
+      { anchor: 'middle', size: 8.2, fam: SANS, fill: P.muted, ls: 2.4 });
+    out += '<path d="M ' + M + ' 90 H ' + (W - M) + '" stroke="' + P.accentD + '" stroke-width="1.2"/>';
+
+    var bs = out.length;                       /* --- QAT 2: gövdə --- */
+
+    var y = 118;
+    out += '<rect x="' + M + '" y="' + y + '" width="' + CW + '" height="64" fill="' + P.head + '"/>';
+    out += '<rect x="' + M + '" y="' + y + '" width="' + CW + '" height="64" fill="url(#' + idp + '-scan)" opacity="0.22"/>';
+    out += T(CUR.expHead, M + 18, y + 28, { size: 16, fam: SANS, weight: 'bold', fill: '#fff', ls: 2.8 });
+    out += T(CUR.expNo + ' ' + doc.regNo + '  ·  ' + doc.date + '  ·  ' + seriya(doc), M + 18, y + 50,
+      { size: 10, fam: MONO, fill: P.accentL, ls: 0.6 });
+    y += 64 + 26;
+
+    var ts = fit(upper(doc.title || ''), CW, 16, 11, 'bold', SANS);
+    out += T(upper(doc.title || ''), M, y, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 0.8 });
+    y += 26;
+
+    out += T(CUR.expFound, M, y, { size: 8.8, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.8 });
+    y += 16;
+    var pre = wrapIndent(doc.preamble || '—', font(11.8, '', SERIF), CW, 24, 5);
+    out += T(pre[0], M + 24, y, { size: 11.8, fill: P.ink });
+    if (pre.length > 1) out += block(pre.slice(1), M, y + 19, 19, { size: 11.8, fill: P.ink });
+    y += pre.length * 19 + 20;
+
+    out += T(CUR.expMarks, M, y, { size: 8.8, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.8 });
+    y += 16;
+    var cl = checkList(doc.checks && doc.checks.length ? doc.checks : items(doc, 5), M, y, CW, P, { max: 5 });
+    out += cl.s; y = cl.y + 12;
+
+    var rows = (doc.data && doc.data.length) ? doc.data : [
+      ['BARƏSİNDƏ', doc.to],
+      ['EKSPERTİZANI APARAN', doc.from],
+      ['RƏYİN TARİXİ', doc.date],
+      ['SERİYA', seriya(doc)]
+    ];
+    var kv = kvTable(rows.slice(0, 8), M, y + 14, CW, P, { style: 'grid', lw: 260, rh: 26 });
+    out += kv.s; y = kv.y + 14;
+
+    if (doc.scale && doc.scale.max) {
+      var sc = scaleBar(doc.scale.label || 'DƏRƏCƏ', doc.scale.v, doc.scale.max, M, y, CW, P);
+      out += sc.s; y = sc.y;
+    }
+
+    var pen = wrap(doc.penalty || '—', font(11, '', SERIF), CW - 26, 3);
+    out += '<rect x="' + M + '" y="' + (y - 14) + '" width="' + CW + '" height="' + (pen.length * 17 + 26) +
+      '" fill="' + P.soft + '" opacity="0.5"/>';
+    out += '<rect x="' + M + '" y="' + (y - 14) + '" width="3.5" height="' + (pen.length * 17 + 26) + '" fill="' + penC(P) + '"/>';
+    out += T(lbl(doc, 'penaltyLabel', 'NƏTİCƏ'), M + 14, y + 2,
+      { size: 9, fam: SANS, weight: 'bold', fill: penC(P), ls: 1.4 });
+    out += block(pen, M + 14, y + 18, 17, { size: 11, fill: P.ink });
+    y += pen.length * 17 + 32;
+
+    var al = attestLines(doc, CW, 3);
+    out += attestation(P, al, M, y, CW);
+    y += al.length * 13.6 + 6;
+
+    out = centerBody(out, bs, y, 856, 130);
+
+    /* --- QAT 3-dən əvvəl --- */
+    out += T(upper(doc.signTitle || CUR.role), M, 884,
+      { size: 8.4, fam: SANS, weight: 'bold', fill: P.accent, ls: 1.6 });
+    out += signature(doc.regNo + doc.from, M, 890, 176, 38);
+    out += '<path d="M ' + M + ' 932 H ' + (M + 190) + '" stroke="' + P.accent + '" stroke-width="0.7"/>';
+    out += T(doc.signOrg || CUR.notaryLine, M, 944, { size: 8, fam: SANS, fill: P.muted });
+
+    out += seal(W - M - 96, 906, 58, P, doc.regNo, idp, -8);
+    out += emboss(W / 2 + 10, 950, 42, P, idp);
+    out += docStateStamp(doc, W / 2, 596);
+
+    out += qrOrHint(doc, P, M, 986, 54, M + 68);
+    out += barcode(doc.regNo, W - M - 190, 994, 190, 20, { hri: true, P: P });
+
+    if (C.verified) out += verifiedStamp(W / 2 + 30, 720, -12);
+    out += pageFurniture(doc, C, { form: [M, 1084], page: [W - M, 1084, 'end'] });
+    return out;
+  }
+
   var LAYOUTS = {
     notarial: L_notarial, blank: L_blank, diplom: L_diplom, sertifikat: L_sertifikat, lisenziya: L_lisenziya,
-    arayis: L_arayis, qerar: L_qerar, muqavile: L_muqavile, teleqram: L_teleqram, vesiqe: L_vesiqe
+    arayis: L_arayis, qerar: L_qerar, muqavile: L_muqavile, teleqram: L_teleqram, vesiqe: L_vesiqe,
+    viza: L_viza, ekspertiza: L_ekspertiza
   };
 
   /* ---------------- defs ---------------- */

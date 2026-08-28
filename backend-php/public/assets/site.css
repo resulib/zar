@@ -139,6 +139,33 @@ input, textarea, select { font: inherit; }
 .textarea { resize: vertical; }
 .input:focus, .textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: var(--blue); }
 .input::placeholder, .textarea::placeholder { color: #a9aab0; }
+
+/* ---- anket sahələri (şablona xas dinamik forma) ---- */
+.field .opt { color: var(--ink-3); font-weight: 400; }
+.checks { display: flex; flex-wrap: wrap; gap: 6px; }
+.checks button {
+  padding: 7px 10px; background: var(--sheet); border: 1px solid var(--rule-hard);
+  border-radius: 2px; color: var(--ink-2); font: 500 12px/1.25 var(--sans);
+  text-align: left; cursor: pointer;
+}
+.checks button:hover { border-color: var(--ink-3); }
+.checks button[aria-pressed="true"] {
+  border-color: var(--blue); background: var(--blue-soft); color: var(--blue); font-weight: 600;
+}
+.list-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 6px; }
+.btn-mini {
+  padding: 6px 10px; background: var(--sheet); border: 1px solid var(--rule-hard);
+  border-radius: 2px; color: var(--ink-2); font: 500 12px/1 var(--sans); cursor: pointer;
+}
+.btn-mini:hover { border-color: var(--blue); color: var(--blue); }
+.range-wrap { display: grid; grid-template-columns: 1fr 52px; gap: 10px; align-items: center; }
+.range { width: 100%; accent-color: var(--blue); }
+.range-val { font: 600 13px/1 var(--mono); color: var(--blue); text-align: right; }
+.field .err { display: block; margin-top: 5px; font-size: 11.5px; color: var(--red); }
+.input.free { margin-top: 6px; }
+input[type="time"].input, input[type="date"].input,
+input[type="datetime-local"].input, input[type="number"].input { font-family: var(--mono); }
+
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 /* ==========================================================================
@@ -241,7 +268,7 @@ input, textarea, select { font: inherit; }
 .panel-head .right { margin-left: auto; }
 .panel-body { padding: 17px 15px; }
 
-.layouts { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.layouts { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .layouts button {
   background: var(--sheet); border: 1px solid var(--rule); border-radius: 2px;
   padding: 7px 4px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;

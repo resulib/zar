@@ -1,0 +1,44 @@
+/* Statik kataloqu (templates.js + templates-xatire.js) seeder üçün JSON-a çevirir.
+   Baza əsas mənbədir; bu fayl yalnız ilkin doldurma («toxum») üçündür.
+
+   İşlətmək:  node tools/export-catalog.js
+   Nəticə:    backend-php/database/seeders/catalog.json */
+const fs = require('fs'), path = require('path'), vm = require('vm');
+const ROOT_DIR = path.join(__dirname, '..');
+
+const sandbox = { window: {} };
+vm.createContext(sandbox);
+for (const f of ['templates.js', 'templates-xatire.js'])
+  vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', f), 'utf8'), sandbox);
+
+const CATS = sandbox.window.CATEGORIES, TPLS = sandbox.window.TEMPLATES;
+
+/* Şablona xas qeydiyyat prefiksi — RegistryPrefix::MAP güzgüsü. */
+const REG_PREFIX = {
+  'cole-cixma-vizasi': 'CCV', 'hesab-davasi-qalibi': 'HDQ', 'gorduldu-arayisi': 'GRL',
+  'bot-kimi-oynayir': 'BOT', 'immunitet-vesiqesi': 'QSM'
+};
+
+const out = {
+  categories: CATS.map((c, i) => ({
+    slug: c.id, tone: c.tone, name: c.name, icon: c.icon || null,
+    blurb: c.blurb || '', sort: (i + 1) * 10
+  })),
+  templates: TPLS.map((t, i) => ({
+    slug: t.id, category: t.cat, tone: t.tone,
+    layout: t.layout, palette: t.palette,
+    title: t.title, tag: t.tag,
+    preamble: t.preamble, powers: t.powers, penalty: t.penalty,
+    to_label: t.toLabel || null, from_label: t.fromLabel || null,
+    powers_label: t.powersLabel || null, penalty_label: t.penaltyLabel || null,
+    reg_prefix: REG_PREFIX[t.id] || null,
+    sign_title: t.signTitle || null, sign_org: t.signOrg || null, share: t.share || null,
+    fields: t.fields || null, notes: t.notes || null, cancel_reasons: t.cancelReasons || null,
+    sort: (i + 1) * 10
+  }))
+};
+
+const dest = path.join(ROOT_DIR, 'backend-php', 'database', 'seeders', 'catalog.json');
+fs.writeFileSync(dest, JSON.stringify(out, null, 2) + '\n');
+console.log('Yazıldı: ' + dest);
+console.log(out.categories.length + ' kateqoriya · ' + out.templates.length + ' şablon');

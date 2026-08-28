@@ -31,9 +31,11 @@ Route::prefix('api')->group(function (): void {
     Route::get('/me',            [Api\SessionController::class, 'me'])->middleware('throttle:registry');
     Route::get('/me/documents',  [Api\SessionController::class, 'documents'])->middleware('throttle:registry');
     Route::get('/packs',         [Api\SessionController::class, 'packs']);
+    Route::get('/catalog',       [Api\CatalogController::class, 'index']);
 
     Route::post('/documents', [Api\DocumentController::class, 'store'])->middleware('throttle:documents');
     Route::post('/documents/{regNo}/publish', [Api\DocumentController::class, 'publish'])->middleware('throttle:documents');
+    Route::post('/documents/{regNo}/cancel', [Api\DocumentController::class, 'cancel'])->middleware('throttle:documents');
 
     Route::get('/registry/{regNo}', [Api\RegistryController::class, 'show'])->middleware('throttle:registry');
 
@@ -90,6 +92,25 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/sikayetler',                 [Admin\ReportController::class, 'index'])->name('reports');
         Route::post('/sikayetler/{report}/qebul', [Admin\ReportController::class, 'accept'])->name('reports.accept');
         Route::post('/sikayetler/{report}/redd',  [Admin\ReportController::class, 'reject'])->name('reports.reject');
+
+        /* Kataloq — kateqoriyalar və şablonlar */
+        Route::get('/kateqoriyalar',                    [Admin\CatalogController::class, 'categories'])->name('catalog.categories');
+        Route::get('/kateqoriyalar/yeni',               [Admin\CatalogController::class, 'categoryForm'])->name('catalog.categories.create');
+        Route::post('/kateqoriyalar/yeni',              [Admin\CatalogController::class, 'categorySave'])->name('catalog.categories.store');
+        Route::get('/kateqoriyalar/{category}',         [Admin\CatalogController::class, 'categoryForm'])->name('catalog.categories.edit');
+        Route::post('/kateqoriyalar/{category}',        [Admin\CatalogController::class, 'categorySave'])->name('catalog.categories.update');
+        Route::post('/kateqoriyalar/{category}/vezi',   [Admin\CatalogController::class, 'categoryToggle'])->name('catalog.categories.toggle');
+        Route::post('/kateqoriyalar/{category}/sil',    [Admin\CatalogController::class, 'categoryDelete'])->name('catalog.categories.delete');
+
+        Route::get('/sablonlar',                    [Admin\CatalogController::class, 'templates'])->name('catalog.templates');
+        Route::get('/sablonlar/yeni',               [Admin\CatalogController::class, 'templateForm'])->name('catalog.templates.create');
+        Route::post('/sablonlar/yeni',              [Admin\CatalogController::class, 'templateSave'])->name('catalog.templates.store');
+        Route::get('/sablonlar/ixrac',              [Admin\CatalogController::class, 'export'])->name('catalog.export');
+        Route::get('/sablonlar/{template}',         [Admin\CatalogController::class, 'templateForm'])->name('catalog.templates.edit');
+        Route::post('/sablonlar/{template}',        [Admin\CatalogController::class, 'templateSave'])->name('catalog.templates.update');
+        Route::post('/sablonlar/{template}/vezi',   [Admin\CatalogController::class, 'templateToggle'])->name('catalog.templates.toggle');
+        Route::post('/sablonlar/{template}/nusxe',  [Admin\CatalogController::class, 'templateDuplicate'])->name('catalog.templates.duplicate');
+        Route::post('/sablonlar/{template}/sil',    [Admin\CatalogController::class, 'templateDelete'])->name('catalog.templates.delete');
 
         Route::get('/parametrler',  [Admin\SettingController::class, 'edit'])->name('settings');
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');
