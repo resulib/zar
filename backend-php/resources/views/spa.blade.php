@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e2340">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=3cd8b7f5">
+<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=2bb59107">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -151,7 +151,7 @@
           <div class="panel-body" id="editorForm">
             <div class="field" id="fTitleField">
               <label class="label" for="fTitle">Sənədin adı</label>
-              <input id="fTitle" class="input" maxlength="70" placeholder="Həftəsonu Çölə Çıxma Etibarnaməsi">
+              <input id="fTitle" class="input" maxlength="70" readonly>
             </div>
             <div class="row2" id="fNamesRow">
               <div class="field">
@@ -169,12 +169,11 @@
 
             <div class="field" id="fPowersField">
               <label class="label" for="fPowers">Səlahiyyətlər və şərtlər</label>
-              <textarea id="fPowers" class="textarea" rows="5" maxlength="600" placeholder="Hər bəndi yeni sətirdən yazın"></textarea>
-              <span class="hint">Sənədə ilk 6 bənd düşür.</span>
+              <textarea id="fPowers" class="textarea" rows="5" maxlength="600" readonly></textarea>
             </div>
-            <div class="field" style="margin-bottom:18px">
+            <div class="field" id="fPenaltyField" style="margin-bottom:18px">
               <label class="label" for="fPenalty">Cəza bəndi</label>
-              <textarea id="fPenalty" class="textarea" rows="3" maxlength="300" placeholder="Şərtlər pozulduqda nə baş verir?"></textarea>
+              <textarea id="fPenalty" class="textarea" rows="3" maxlength="300" readonly></textarea>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               <button id="btnCreate" class="btn" type="button">Sənədi rəsmiləşdir</button>
@@ -394,6 +393,6 @@
 <script src="{{ asset('assets/templates.js') }}?v=1ec73c11"></script>
 <script src="{{ asset('assets/templates-xatire.js') }}?v=af509127"></script>
 <script src="{{ asset('assets/doc.js') }}?v=c9c0a38d"></script>
-<script src="{{ asset('assets/app.js') }}?v=5c928dae"></script>
+<script src="{{ asset('assets/app.js') }}?v=f6dff6fb"></script>
 </body>
 </html>

@@ -30,6 +30,7 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   await page.waitForTimeout(400);
   check('anket sahələri göründü', await page.$eval('#fFields', e => !e.hidden && e.children.length === 8));
   check('mətn sahələri gizləndi', await page.$eval('#fPowersField', e => e.hidden));
+  check('anketdə cəza sahəsi də gizlidir', await page.$eval('#fPenaltyField', e => e.hidden));
   check('sənədin adı sahəsi gizləndi', await page.$eval('#fTitleField', e => e.hidden));
   check('vaxt sahəsi defolt aldı', /^\d{2}:\d{2}$/.test(await page.$eval('#ff-qayidis_vaxti', e => e.value)));
   check('önizləmə viza dizaynındadır', (await page.$eval('#preview', e => e.textContent)).indexOf('VİZA / VISA') >= 0);
@@ -85,7 +86,13 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   await page.click('[data-tpl="weekend-pass"]');
   await page.waitForTimeout(400);
   check('köhnə şablonda anket gizlidir', await page.$eval('#fFields', e => e.hidden));
-  check('köhnə şablonda mətn sahələri açıqdır', await page.$eval('#fPowersField', e => !e.hidden));
+  check('köhnə şablonda mətn sahələri görünür', await page.$eval('#fPowersField', e => !e.hidden));
+  /* Variant siyahısı yoxdursa sahələr kilidlidir — statik kataloqda hamısı belədir. */
+  check('başlıq kilidlidir', await page.$eval('#fTitle', e => e.readOnly));
+  check('bəndlər kilidlidir', await page.$eval('#fPowers', e => e.readOnly));
+  check('cəza bəndi kilidlidir', await page.$eval('#fPenalty', e => e.readOnly));
+  check('kilidli sahə şablonun mətnini göstərir',
+    (await page.$eval('#fPowers', e => e.value)).indexOf('Həftədə bir dəfə') >= 0);
   check('köhnə şablonda ZRF prefiksi', /^ZRF-/.test(await page.$eval('#regBadge', e => e.textContent)));
 
   check('brauzer xətası yoxdur', errs.length === 0, errs);

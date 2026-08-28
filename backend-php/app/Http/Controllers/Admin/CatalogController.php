@@ -190,10 +190,20 @@ class CatalogController extends Controller
             'fields'        => ['nullable', 'string'],
             'notes'         => ['nullable', 'string'],
             'cancel_reasons' => ['nullable', 'string'],
+
+            /* İstifadəçi seçimləri — sətir-sətir textarea */
+            'title_options'   => ['nullable', 'string', 'max:2000'],
+            'powers_options'  => ['nullable', 'string', 'max:4000'],
+            'penalty_options' => ['nullable', 'string', 'max:4000'],
+            'powers_min'      => ['nullable', 'integer', 'min:1', 'max:' . TemplateSchema::MAX_PICK],
+            'powers_max'      => ['nullable', 'integer', 'min:1', 'max:' . TemplateSchema::MAX_PICK],
         ], [], [
             'slug' => 'açar', 'category_id' => 'kateqoriya', 'layout' => 'dizayn', 'palette' => 'palitra',
             'title' => 'başlıq', 'preamble' => 'preamble', 'powers' => 'bəndlər', 'penalty' => 'cəza bəndi',
             'reg_prefix' => 'prefiks', 'sort' => 'sıra',
+            'title_options' => 'başlıq variantları', 'powers_options' => 'bənd variantları',
+            'penalty_options' => 'cəza bəndi variantları',
+            'powers_min' => 'ən azı seçilən', 'powers_max' => 'ən çoxu seçilən',
         ]);
 
         /* Bəndlər sənəddə sətir-sətir render olunur — say həddi serverdəki ilə eynidir. */
@@ -216,6 +226,42 @@ class CatalogController extends Controller
             }
         }
 
+        /* İstifadəçi seçimləri */
+        $optErr = array_merge(
+            TemplateSchema::optionErrors('Başlıq variantları', $data['title_options'] ?? null,
+                TemplateSchema::MAX_TITLE_OPTS, $limits['title']),
+            TemplateSchema::optionErrors('Bənd variantları', $data['powers_options'] ?? null,
+                TemplateSchema::MAX_POWER_OPTS, TemplateSchema::MAX_POWER_LINE),
+            TemplateSchema::optionErrors('Cəza bəndi variantları', $data['penalty_options'] ?? null,
+                TemplateSchema::MAX_PENALTY_OPTS, $limits['penalty']),
+        );
+
+        $titleOpts = TemplateSchema::parseOptions($data['title_options'] ?? null,
+            TemplateSchema::MAX_TITLE_OPTS, $limits['title']);
+        $powerOpts = TemplateSchema::parseOptions($data['powers_options'] ?? null,
+            TemplateSchema::MAX_POWER_OPTS, TemplateSchema::MAX_POWER_LINE);
+        $penaltyOpts = TemplateSchema::parseOptions($data['penalty_options'] ?? null,
+            TemplateSchema::MAX_PENALTY_OPTS, $limits['penalty']);
+
+        /* İki sistem eyni şablonda işləmir: anket cavabları onsuz da bəndləri qurur. */
+        if ($fields !== null && $fields !== [] && ($titleOpts || $powerOpts || $penaltyOpts)) {
+            $optErr[] = 'Anket sxemi olan şablonda variant siyahıları işləmir — biri boş qalmalıdır.';
+        }
+
+        if ($powerOpts !== [] && (int) ($data['powers_min'] ?? 1) > (int) ($data['powers_max'] ?? TemplateSchema::MAX_PICK)) {
+            $optErr[] = '«Ən azı seçilən» «ən çoxu seçilən»dən böyük ola bilməz.';
+        }
+
+        if ($powerOpts !== [] && (int) ($data['powers_max'] ?? 0) > count($powerOpts)) {
+            $optErr[] = '«Ən çoxu seçilən» variant sayından (' . count($powerOpts) . ') böyük ola bilməz.';
+        }
+
+        if ($optErr !== []) {
+            throw ValidationException::withMessages(['powers_options' => $optErr]);
+        }
+
+        [$pMin, $pMax] = TemplateSchema::pickRange($data['powers_min'] ?? null, $data['powers_max'] ?? null, count($powerOpts));
+
         $schemaErrors = TemplateSchema::validate($fields, $notes ?? [], $data['share'] ?? null, $data['preamble']);
 
         if ($schemaErrors !== []) {
@@ -229,9 +275,14 @@ class CatalogController extends Controller
         $data['tag']            = (string) ($data['tag'] ?? '');
         $data['is_active']      = $request->boolean('is_active');
         $data['powers']         = implode("\n", $powerLines);
-        $data['fields']         = $fields;
-        $data['notes']          = $notes;
-        $data['cancel_reasons'] = $reasons;
+        $data['fields']          = $fields;
+        $data['notes']           = $notes;
+        $data['cancel_reasons']  = $reasons;
+        $data['title_options']   = $titleOpts ?: null;
+        $data['powers_options']  = $powerOpts ?: null;
+        $data['penalty_options'] = $penaltyOpts ?: null;
+        $data['powers_min']      = $pMin;
+        $data['powers_max']      = $pMax;
 
         $wasNew = ! $template->exists;
         $template->fill($data)->save();
@@ -301,6 +352,9 @@ class CatalogController extends Controller
                     'reg_prefix' => $t->reg_prefix, 'sign_title' => $t->sign_title,
                     'sign_org' => $t->sign_org, 'share' => $t->share,
                     'fields' => $t->fields, 'notes' => $t->notes, 'cancel_reasons' => $t->cancel_reasons,
+                    'title_options' => $t->title_options, 'powers_options' => $t->powers_options,
+                    'powers_min' => $t->powers_min, 'powers_max' => $t->powers_max,
+                    'penalty_options' => $t->penalty_options,
                     'sort' => $t->sort,
                 ])->values(),
         ];

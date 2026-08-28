@@ -247,7 +247,8 @@
   var state = {
     mode: 'zarafat',          // 'zarafat' | 'xatire' — sənədin tonu
     cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '',
-    answers: {}               // anket cavabları — yalnız `fields` daşıyan şablonlarda
+    answers: {},              // anket cavabları — yalnız `fields` daşıyan şablonlarda
+    powerPicks: []            // seçilmiş bəndlər — variant sırasında saxlanılır
   };
 
   /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
@@ -466,16 +467,15 @@
     if (!t) return;
     state.tpl = t; state.doc = null;
     state.layout = null; state.palette = null;
-    $('#fTitle').value = t.title;
-    $('#fPowers').value = t.powers;
-    $('#fPenalty').value = t.penalty;
+    renderPicks();
     renderFields();
     /* Anketli şablonda bəndlər `notes`-dan gəlir — sərbəst mətn sahəsi yalnız
        qarışıqlıq yaradardı, ona görə gizlədilir. */
     var anket = !!(t.fields && t.fields.length);
-    $('#fPowersField').hidden = anket;
-    $('#fTitleField').hidden = anket;
-    $('#fNamesRow').hidden = anket;
+    $('#fPowersField').hidden  = anket;
+    $('#fTitleField').hidden   = anket;
+    $('#fPenaltyField').hidden = anket;
+    $('#fNamesRow').hidden     = anket;
     renderCards(); renderDesign(); updatePreview();
   }
 
@@ -497,6 +497,101 @@
     });
     $$('#palettePicker button').forEach(function (b) {
       b.onclick = function () { state.palette = b.dataset.palette; state.doc = null; renderDesign(); updatePreview(); };
+    });
+  }
+
+  /* ---------------- şablon variantları (kilidli sahələr) ----------------
+     Ziyarətçi yalnız adları sərbəst yazır. Başlıq, bəndlər və cəza bəndi
+     adminin daxil etdiyi variantlardan seçilir; variant yoxdursa şablonun öz
+     mətni yalnız oxunan şəkildə göstərilir.
+
+     Bu qat yalnız rahatlıq üçündür — əsl məhdudiyyət serverdədir
+     (DocumentService::pickTitle/pickPowers/pickPenalty). */
+
+  function optsOf(t, key) {
+    var a = t && t[key];
+    return Array.isArray(a)
+      ? a.filter(function (o) { return typeof o === 'string' && o.trim(); })
+      : [];
+  }
+
+  function selHtml(id, opts) {
+    return '<select id="' + id + '" class="input">' + opts.map(function (o) {
+      return '<option value="' + esc(o) + '">' + esc(o) + '</option>';
+    }).join('') + '</select>';
+  }
+
+  /* Bənd seçiminin sərhədləri — serverdəki `TemplateSchema::pickRange()` güzgüsü. */
+  function powRange(t, n) {
+    if (!n) return [1, 1];
+    var ceil = Math.min(4, n);
+    var lo = Math.max(1, Math.min(parseInt(t.powersMin, 10) || 1, ceil));
+    var hi = Math.max(lo, Math.min(parseInt(t.powersMax, 10) || 4, ceil));
+    return [lo, hi];
+  }
+
+  function renderPicks() {
+    var t = state.tpl;
+    if (!t) return;
+
+    var tOpts = optsOf(t, 'titleOptions');
+    var pOpts = optsOf(t, 'powersOptions');
+    var qOpts = optsOf(t, 'penaltyOptions');
+
+    $('#fTitleField').innerHTML = '<label class="label" for="fTitle">Sənədin adı</label>' +
+      (tOpts.length
+        ? selHtml('fTitle', tOpts)
+        : '<input id="fTitle" class="input" readonly value="' + esc(t.title || '') + '">' +
+          '<span class="hint">Bu şablonun adı dəyişdirilmir.</span>');
+
+    var rng = powRange(t, pOpts.length);
+    state.powerPicks = pOpts.slice(0, rng[0]);
+
+    $('#fPowersField').innerHTML = '<label class="label" for="fPowers">Səlahiyyətlər və şərtlər</label>' +
+      (pOpts.length
+        ? '<div class="checks" role="group" aria-label="Bəndlər">' + pOpts.map(function (o, i) {
+            return '<button type="button" data-pow="' + i + '" aria-pressed="' +
+              (state.powerPicks.indexOf(o) >= 0) + '">' + esc(o) + '</button>';
+          }).join('') + '</div>' +
+          '<span class="hint">Ən azı ' + rng[0] + ', ən çoxu ' + rng[1] + ' bənd seçin.</span>' +
+          '<textarea id="fPowers" hidden></textarea>'
+        : '<textarea id="fPowers" class="textarea" rows="5" readonly></textarea>' +
+          '<span class="hint">Bu şablonun bəndləri dəyişdirilmir.</span>');
+
+    $('#fPowers').value = pOpts.length ? state.powerPicks.join('\n') : (t.powers || '');
+
+    $('#fPenaltyField').innerHTML = '<label class="label" for="fPenalty">Cəza bəndi</label>' +
+      (qOpts.length
+        ? selHtml('fPenalty', qOpts)
+        : '<textarea id="fPenalty" class="textarea" rows="3" readonly></textarea>' +
+          '<span class="hint">Bu şablonun cəza bəndi dəyişdirilmir.</span>');
+
+    if (!qOpts.length) $('#fPenalty').value = t.penalty || '';
+  }
+
+  /* Bənd seçimi. Nəticə HƏMİŞƏ variant sırasındadır — server
+     `Sanitizer::pickList()` də eyni sıranı verir; fərqlənsə, yüklənən PNG ilə
+     reyestrdəki nüsxə fərqli sıralanardı. */
+  function togglePower(i) {
+    var t = state.tpl, pOpts = optsOf(t, 'powersOptions');
+    var o = pOpts[i];
+    if (!o) return;
+
+    var rng = powRange(t, pOpts.length);
+    var cur = (state.powerPicks || []).slice(), at = cur.indexOf(o);
+
+    if (at >= 0) {
+      if (cur.length <= rng[0]) return toast('Ən azı ' + rng[0] + ' bənd seçilməlidir', 'err');
+      cur.splice(at, 1);
+    } else {
+      if (cur.length >= rng[1]) return toast('Ən çoxu ' + rng[1] + ' bənd seçilə bilər', 'err');
+      cur.push(o);
+    }
+
+    state.powerPicks = pOpts.filter(function (x) { return cur.indexOf(x) >= 0; });
+    $('#fPowers').value = state.powerPicks.join('\n');
+    $$('#fPowersField [data-pow]').forEach(function (b, k) {
+      b.setAttribute('aria-pressed', state.powerPicks.indexOf(pOpts[k]) >= 0);
     });
   }
 
@@ -655,8 +750,12 @@
   function formDoc(base) {
     var t = state.tpl || TEMPLATES[0];
     var F = readFields();
-    var to = (F && F.into.to) || $('#fTo').value.trim() || 'Ad Soyad';
-    var from = (F && F.into.from) || $('#fFrom').value.trim() || 'Ad Soyad';
+    /* Gizli sahə sənədə heç nə verməməlidir: anketli şablona keçəndə əvvəl
+       yazılmış ad `doc.to`-ya sızırdı. Sahəni təmizləmirik — istifadəçi
+       şablonlara baxarkən yazdığı adı itirməsin. */
+    var freeNames = !$('#fNamesRow').hidden;
+    var to   = (F && F.into.to)   || (freeNames ? $('#fTo').value.trim()   : '') || 'Ad Soyad';
+    var from = (F && F.into.from) || (freeNames ? $('#fFrom').value.trim() : '') || 'Ad Soyad';
     var pre = (t.preamble || '').replace(/\{to\}/g, to).replace(/\{from\}/g, from);
     if (F) pre = fill(pre, F.vals);
     /* Hibrid qat: cavablar həm struktur bloklara, həm də `powers`-ə düşür ki,
@@ -664,6 +763,9 @@
     var extra = F ? {
       powers: (F.checks.length ? F.checks : (F.notes || [])).join('\n') || t.powers,
       data: F.data, checks: F.checks, scale: F.scale, notes: F.notes,
+      /* Təmizlənmiş cavablar — PHP backend preamble-ın `{{açar}}` yer
+         tutucularını serverdə bunlardan doldurur (App\Support\Answers). */
+      answers: F.vals,
       until: F.until, expiresAt: F.expiresAt,
       signTitle: t.signTitle || null, signOrg: t.signOrg || null,
       share: t.share ? fill(t.share, F.vals) : null,
@@ -679,6 +781,8 @@
       to: to, from: from,
       powers: $('#fPowers').value,
       penalty: $('#fPenalty').value.trim(),
+      /* PHP backend preamble-ı şablondan özü qurur və bu dəyəri oxumur;
+         sətir arxiv `backend-node/` üçün saxlanılır. */
       preamble: pre,
       regNo: regPrefix(t) + '-' + new Date().getFullYear() + '-————',
       date: fmtDate(new Date()),
@@ -978,7 +1082,14 @@
     /* Çoxseçim düymələri və ad siyahısının əlavə/sil düymələri */
     $('#editorForm').addEventListener('click', function (e) {
       var b = e.target.closest ? e.target.closest('button') : null;
-      if (!b || !state.tpl || !state.tpl.fields) return;
+      if (!b) return;
+
+      /* Bənd variantları anket qatından asılı deyil — aşağıdakı `fields`
+         yoxlamasından ƏVVƏL gəlməlidir, yoxsa kliklər udulur. */
+      var pi = b.getAttribute('data-pow');
+      if (pi !== null) { togglePower(parseInt(pi, 10)); return touch(); }
+
+      if (!state.tpl || !state.tpl.fields) return;
       var k = b.getAttribute('data-fk');
       if (!k) return;
       var f = state.tpl.fields.filter(function (x) { return x.k === k; })[0];

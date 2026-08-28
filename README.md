@@ -195,13 +195,13 @@ substrat üçün `paperBase()`, avadanlıq üçün `pageFurniture()` hazır köm
 | `npm run test:doc` | 2 ton × 12 layout × 6 palitra: `<g>` balansı, ton nişanları, struktur bloklar, MRZ | 180/180 |
 | `npm run test:templates` | 216 şablon: unikal id, ton uyğunluğu, anket sxemi, mətn büdcəsi | 32/32 |
 | `node tools/decode-test.js` | Yaradılan QR-ın `jsQR` ilə real skan olunması | 4/4 |
-| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, prefikslər, anket sahələri, sxem validasiyası | 101/101 |
+| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, prefikslər, variant siyahıları, anket cavabları | 137/137 |
 | `php backend-php/tests/audit.php` | PHP sintaksisi, Blade balansı, route adları, view yolları, PSR-4 | 6/6 |
-| `php backend-php/tests/security.php` | İşləyən serverə qarşı: limitlər, CSRF, ləğv axını, kataloq qorunması | 27/27 |
+| `php backend-php/tests/security.php` | İşləyən serverə qarşı: limitlər, CSRF, **şablon kilidi**, kataloq qorunması | 40/40 |
 | `node backend-node/test-api.js` | Köhnə Node API-si: kredit, publish, reyestr, icazələr | 30/30 |
 | `node tools/e2e.js` | Brauzer + backend: rejim keçidi, dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 17/17 |
 | `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 12 dizayn + anket + rejim keçidi | 28/28 |
-| `npm run test:admin` | Admin kataloq paneli: canlı önizləmə, kateqoriya→şablon redaktəsi, sxem validasiyası | 34/34 |
+| `npm run test:admin` | Admin kataloq paneli: variant siyahıları, canlı önizləmə, sxem validasiyası | 48/48 |
 | `node tools/shots.js` | Masaüstü + mobil ekran görüntüləri, şrift yoxlaması (`tools/shots/`) | xətasız |
 | `npm run render` | Hər tonda 12 dizaynın nümunəsi + tona görə iki kontakt vərəqi (216 şablon) | xətasız |
 
@@ -231,6 +231,13 @@ Balans və paket alışı · əməliyyat tarixçəsi · sənədlər siyahısı �
 Şablon kataloqu buradan idarə olunur: **Şablonlar** və **Kateqoriyalar** bölmələri.
 Kateqoriyanı açanda onun bütün şablonları sıra ilə sadalanır — hər birini oradaca redaktə etmək,
 söndürmək, yaxud «Şablon əlavə et» ilə həmin kateqoriyaya yenisini yaratmaq olar.
+
+Hər şablonda **istifadəçi seçimləri** təyin olunur: «Başlıq variantları», «Bənd variantları»
+(+ ən azı/ən çoxu neçəsinin seçiləcəyi) və «Cəza bəndi variantları» — hər sətir bir variant.
+Saytda ziyarətçi yalnız adları yazır; başlıq və cəza bəndi açılan siyahıdan, bəndlər isə
+çoxseçimdən gəlir. Variant yazılmayıbsa şablonun öz mətni dəyişdirilə bilməyən şəkildə görünür.
+Bu, yalnız görünüş deyil: server də sənədi kataloqdan qurur, ona görə brauzer konsolundan
+göndərilən saxta mətn sənədə düşmür.
 
 Şablon redaktəsində **canlı önizləmə** var: mətni, dizaynı və ya palitranı dəyişdikcə sənəd
 sağ tərəfdə dərhal yenidən çəkilir. «Ödənişli» keçidi su nişanısız və QR kodlu görünüşü,

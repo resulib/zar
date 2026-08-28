@@ -47,6 +47,74 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(600);
   check('təkrar açar rədd olunur', (await page.content()).indexOf('Formada xəta var') >= 0);
 
+  /* --- istifadəçi seçimləri (variant siyahıları) --- */
+  await page.goto(BASE + '/admin/sablonlar?q=snoring-license', { waitUntil: 'domcontentloaded' });
+  await page.click('a:has-text("Redaktə")'); await page.waitForTimeout(1100);
+  const keepOpts = await page.$eval('#powers_options', e => e.value);
+
+  await page.fill('#powers_options', 'a'.repeat(120)); await page.waitForTimeout(600);
+  check('uzun variant önizləmədə xəbərdarlıq verir',
+    (await page.$eval('#prevMsg', e => e.textContent)).indexOf('90 simvolu aşır') >= 0);
+  await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(700);
+  check('uzun variant serverdə rədd edilir', (await page.content()).indexOf('90 simvolu aşır') >= 0);
+
+  await page.fill('#title_options', 'Xoruldama Lisenziyası\nGecə Səs Lisenziyası');
+  await page.fill('#powers_options',
+    'Gecə 23:00-dan 07:00-a qədər xoruldamaq.\nSəhər «mən xoruldamıram» demək hüququ.\n' +
+    'Divana sürgün edilməyə etiraz etmək.\nQulaq tıxacının qiymətini ödəməmək.\nYastığı tək başına işlətmək.');
+  await page.fill('#powers_min', '2'); await page.fill('#powers_max', '3');
+  await page.fill('#penalty_options',
+    'Səs həddi keçdikdə lisenziya bir gecəlik dayandırılır.\nLisenziya növbəti həftəyə keçirilir.');
+  await page.waitForTimeout(700);
+  check('önizləmə ilk başlıq variantını göstərir',
+    (await page.$eval('#prevDoc', e => e.textContent)).indexOf('XORULDAMA LİSENZİYASI') >= 0);
+  await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(900);
+  const optApi = await page.evaluate(async () => {
+    const t = (await (await fetch('/api/catalog')).json()).templates.find(x => x.id === 'snoring-license');
+    return { t: (t.titleOptions || []).length, p: (t.powersOptions || []).length,
+             mn: t.powersMin, mx: t.powersMax, q: (t.penaltyOptions || []).length };
+  });
+  check('variantlar kataloqa düşür',
+    optApi.t === 2 && optApi.p === 5 && optApi.mn === 2 && optApi.mx === 3 && optApi.q === 2, optApi);
+
+  /* --- saytda dropdown və çoxseçim --- */
+  const site0 = await b.newPage();
+  await site0.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await site0.waitForTimeout(2200);
+  await site0.click('#tabs button:has-text("Cütlüklər")'); await site0.waitForTimeout(300);
+  await site0.click('[data-tpl="snoring-license"]'); await site0.waitForTimeout(600);
+  check('saytda başlıq açılan siyahıdır', (await site0.$eval('#fTitle', e => e.tagName)) === 'SELECT');
+  check('saytda cəza bəndi açılan siyahıdır', (await site0.$eval('#fPenalty', e => e.tagName)) === 'SELECT');
+  check('saytda bənd çoxseçimi var', (await site0.$$eval('#fPowersField [data-pow]', b => b.length)) === 5);
+  check('min sayda bənd öncədən seçilib',
+    (await site0.$$eval('#fPowersField [data-pow][aria-pressed="true"]', b => b.length)) === 2);
+  await site0.click('#fPowersField [data-pow="4"]'); await site0.waitForTimeout(500);
+  check('seçim sənədə düşür', (await site0.$eval('#preview', e => e.textContent)).indexOf('Yastığı tək başına') >= 0);
+  check('bənd sırası variant sırasındadır',
+    (await site0.$eval('#fPowers', e => e.value)).split('\n')[0].indexOf('Gecə 23:00') >= 0);
+  await site0.click('[data-tpl="weekend-pass"]'); await site0.waitForTimeout(500);
+  check('variantsız şablon kilidlidir',
+    await site0.$eval('#fTitle', e => e.tagName === 'INPUT' && e.readOnly));
+  await site0.close();
+
+  /* --- anketli şablonda variant qadağandır --- */
+  await page.goto(BASE + '/admin/sablonlar?q=cole-cixma-vizasi', { waitUntil: 'domcontentloaded' });
+  await page.click('a:has-text("Redaktə")'); await page.waitForTimeout(900);
+  await page.fill('#title_options', 'Bir variant'); await page.waitForTimeout(600);
+  check('anketlə toqquşma önizləmədə görünür',
+    (await page.$eval('#prevMsg', e => e.textContent)).indexOf('işləmir') >= 0);
+  await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(800);
+  check('anketlə toqquşma serverdə rədd edilir', (await page.content()).indexOf('işləmir') >= 0);
+
+  /* --- variantları geri qaytar --- */
+  await page.goto(BASE + '/admin/sablonlar?q=snoring-license', { waitUntil: 'domcontentloaded' });
+  await page.click('a:has-text("Redaktə")'); await page.waitForTimeout(800);
+  await page.fill('#title_options', ''); await page.fill('#penalty_options', '');
+  await page.fill('#powers_options', keepOpts);
+  await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(800);
+  check('variantlar geri qaytarıldı', await page.evaluate(async () =>
+    !(await (await fetch('/api/catalog')).json()).templates.find(x => x.id === 'snoring-license').titleOptions));
+
   /* --- canlı önizləmə --- */
   await page.goto(BASE + '/admin/sablonlar?q=snoring-license', { waitUntil: 'domcontentloaded' });
   await page.click('a:has-text("Redaktə")'); await page.waitForTimeout(1200);

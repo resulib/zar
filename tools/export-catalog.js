@@ -34,6 +34,11 @@ const out = {
     reg_prefix: REG_PREFIX[t.id] || null,
     sign_title: t.signTitle || null, sign_org: t.signOrg || null, share: t.share || null,
     fields: t.fields || null, notes: t.notes || null, cancel_reasons: t.cancelReasons || null,
+    /* İstifadəçi seçimləri — statik kataloqda hələ yoxdur, açarlar admin
+       ixracının geri qayıtması üçün saxlanılır. */
+    title_options: t.titleOptions || null, powers_options: t.powersOptions || null,
+    powers_min: t.powersMin || 1, powers_max: t.powersMax || 4,
+    penalty_options: t.penaltyOptions || null,
     sort: (i + 1) * 10
   }))
 };

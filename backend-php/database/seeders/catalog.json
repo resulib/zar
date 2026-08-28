@@ -168,6 +168,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 10
     },
     {
@@ -192,6 +197,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 20
     },
     {
@@ -216,6 +226,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 30
     },
     {
@@ -240,6 +255,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 40
     },
     {
@@ -264,6 +284,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 50
     },
     {
@@ -288,6 +313,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 60
     },
     {
@@ -312,6 +342,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 70
     },
     {
@@ -336,6 +371,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 80
     },
     {
@@ -360,6 +400,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 90
     },
     {
@@ -384,6 +429,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 100
     },
     {
@@ -408,6 +458,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 110
     },
     {
@@ -432,6 +487,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 120
     },
     {
@@ -456,6 +516,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 130
     },
     {
@@ -480,6 +545,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 140
     },
     {
@@ -504,6 +574,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 150
     },
     {
@@ -528,6 +603,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 160
     },
     {
@@ -552,6 +632,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 170
     },
     {
@@ -576,6 +661,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 180
     },
     {
@@ -600,6 +690,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 190
     },
     {
@@ -624,6 +719,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 200
     },
     {
@@ -648,6 +748,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 210
     },
     {
@@ -672,6 +777,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 220
     },
     {
@@ -696,6 +806,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 230
     },
     {
@@ -720,6 +835,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 240
     },
     {
@@ -744,6 +864,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 250
     },
     {
@@ -768,6 +893,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 260
     },
     {
@@ -792,6 +922,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 270
     },
     {
@@ -816,6 +951,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 280
     },
     {
@@ -840,6 +980,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 290
     },
     {
@@ -864,6 +1009,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 300
     },
     {
@@ -888,6 +1038,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 310
     },
     {
@@ -912,6 +1067,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 320
     },
     {
@@ -936,6 +1096,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 330
     },
     {
@@ -960,6 +1125,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 340
     },
     {
@@ -984,6 +1154,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 350
     },
     {
@@ -1008,6 +1183,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 360
     },
     {
@@ -1032,6 +1212,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 370
     },
     {
@@ -1056,6 +1241,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 380
     },
     {
@@ -1080,6 +1270,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 390
     },
     {
@@ -1104,6 +1299,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 400
     },
     {
@@ -1128,6 +1328,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 410
     },
     {
@@ -1152,6 +1357,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 420
     },
     {
@@ -1176,6 +1386,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 430
     },
     {
@@ -1200,6 +1415,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 440
     },
     {
@@ -1224,6 +1444,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 450
     },
     {
@@ -1248,6 +1473,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 460
     },
     {
@@ -1272,6 +1502,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 470
     },
     {
@@ -1296,6 +1531,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 480
     },
     {
@@ -1320,6 +1560,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 490
     },
     {
@@ -1344,6 +1589,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 500
     },
     {
@@ -1368,6 +1618,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 510
     },
     {
@@ -1392,6 +1647,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 520
     },
     {
@@ -1416,6 +1676,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 530
     },
     {
@@ -1440,6 +1705,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 540
     },
     {
@@ -1464,6 +1734,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 550
     },
     {
@@ -1488,6 +1763,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 560
     },
     {
@@ -1512,6 +1792,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 570
     },
     {
@@ -1536,6 +1821,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 580
     },
     {
@@ -1560,6 +1850,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 590
     },
     {
@@ -1584,6 +1879,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 600
     },
     {
@@ -1608,6 +1908,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 610
     },
     {
@@ -1632,6 +1937,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 620
     },
     {
@@ -1656,6 +1966,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 630
     },
     {
@@ -1680,6 +1995,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 640
     },
     {
@@ -1704,6 +2024,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 650
     },
     {
@@ -1728,6 +2053,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 660
     },
     {
@@ -1752,6 +2082,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 670
     },
     {
@@ -1776,6 +2111,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 680
     },
     {
@@ -1800,6 +2140,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 690
     },
     {
@@ -1824,6 +2169,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 700
     },
     {
@@ -1848,6 +2198,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 710
     },
     {
@@ -1872,6 +2227,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 720
     },
     {
@@ -1896,6 +2256,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 730
     },
     {
@@ -1920,6 +2285,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 740
     },
     {
@@ -1944,6 +2314,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 750
     },
     {
@@ -1968,6 +2343,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 760
     },
     {
@@ -1992,6 +2372,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 770
     },
     {
@@ -2016,6 +2401,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 780
     },
     {
@@ -2040,6 +2430,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 790
     },
     {
@@ -2064,6 +2459,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 800
     },
     {
@@ -2088,6 +2488,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 810
     },
     {
@@ -2112,6 +2517,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 820
     },
     {
@@ -2136,6 +2546,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 830
     },
     {
@@ -2160,6 +2575,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 840
     },
     {
@@ -2184,6 +2604,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 850
     },
     {
@@ -2208,6 +2633,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 860
     },
     {
@@ -2232,6 +2662,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 870
     },
     {
@@ -2256,6 +2691,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 880
     },
     {
@@ -2280,6 +2720,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 890
     },
     {
@@ -2304,6 +2749,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 900
     },
     {
@@ -2328,6 +2778,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 910
     },
     {
@@ -2352,6 +2807,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 920
     },
     {
@@ -2376,6 +2836,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 930
     },
     {
@@ -2400,6 +2865,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 940
     },
     {
@@ -2424,6 +2894,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 950
     },
     {
@@ -2448,6 +2923,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 960
     },
     {
@@ -2472,6 +2952,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 970
     },
     {
@@ -2496,6 +2981,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 980
     },
     {
@@ -2520,6 +3010,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 990
     },
     {
@@ -2544,6 +3039,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1000
     },
     {
@@ -2568,6 +3068,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1010
     },
     {
@@ -2592,6 +3097,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1020
     },
     {
@@ -2616,6 +3126,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1030
     },
     {
@@ -2640,6 +3155,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1040
     },
     {
@@ -2664,6 +3184,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1050
     },
     {
@@ -2688,6 +3213,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1060
     },
     {
@@ -2712,6 +3242,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1070
     },
     {
@@ -2736,6 +3271,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1080
     },
     {
@@ -2760,6 +3300,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1090
     },
     {
@@ -2784,6 +3329,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1100
     },
     {
@@ -2808,6 +3358,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1110
     },
     {
@@ -2832,6 +3387,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1120
     },
     {
@@ -2856,6 +3416,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1130
     },
     {
@@ -2880,6 +3445,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1140
     },
     {
@@ -2904,6 +3474,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1150
     },
     {
@@ -2928,6 +3503,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1160
     },
     {
@@ -2952,6 +3532,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1170
     },
     {
@@ -2976,6 +3561,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1180
     },
     {
@@ -3000,6 +3590,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1190
     },
     {
@@ -3024,6 +3619,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1200
     },
     {
@@ -3048,6 +3648,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1210
     },
     {
@@ -3072,6 +3677,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1220
     },
     {
@@ -3096,6 +3706,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1230
     },
     {
@@ -3120,6 +3735,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1240
     },
     {
@@ -3144,6 +3764,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1250
     },
     {
@@ -3168,6 +3793,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1260
     },
     {
@@ -3192,6 +3822,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1270
     },
     {
@@ -3216,6 +3851,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1280
     },
     {
@@ -3240,6 +3880,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1290
     },
     {
@@ -3264,6 +3909,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1300
     },
     {
@@ -3288,6 +3938,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1310
     },
     {
@@ -3312,6 +3967,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1320
     },
     {
@@ -3436,6 +4096,11 @@
         "Çörək gətirmədi",
         "Səbəb göstərilmədi"
       ],
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1330
     },
     {
@@ -3529,6 +4194,11 @@
         "Ödənişin bölünməsi halında sertifikat qüvvədən düşür."
       ],
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1340
     },
     {
@@ -3627,6 +4297,11 @@
         "Cavab yazdı",
         "Səbəb göstərilmədi"
       ],
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1350
     },
     {
@@ -3731,6 +4406,11 @@
       ],
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1360
     },
     {
@@ -3821,6 +4501,11 @@
       ],
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1370
     },
     {
@@ -3845,6 +4530,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1380
     },
     {
@@ -3869,6 +4559,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1390
     },
     {
@@ -3893,6 +4588,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1400
     },
     {
@@ -3917,6 +4617,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1410
     },
     {
@@ -3941,6 +4646,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1420
     },
     {
@@ -3965,6 +4675,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1430
     },
     {
@@ -3989,6 +4704,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1440
     },
     {
@@ -4013,6 +4733,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1450
     },
     {
@@ -4037,6 +4762,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1460
     },
     {
@@ -4061,6 +4791,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1470
     },
     {
@@ -4085,6 +4820,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1480
     },
     {
@@ -4109,6 +4849,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1490
     },
     {
@@ -4133,6 +4878,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1500
     },
     {
@@ -4157,6 +4907,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1510
     },
     {
@@ -4181,6 +4936,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1520
     },
     {
@@ -4205,6 +4965,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1530
     },
     {
@@ -4229,6 +4994,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1540
     },
     {
@@ -4253,6 +5023,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1550
     },
     {
@@ -4277,6 +5052,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1560
     },
     {
@@ -4301,6 +5081,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1570
     },
     {
@@ -4325,6 +5110,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1580
     },
     {
@@ -4349,6 +5139,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1590
     },
     {
@@ -4373,6 +5168,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1600
     },
     {
@@ -4397,6 +5197,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1610
     },
     {
@@ -4421,6 +5226,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1620
     },
     {
@@ -4445,6 +5255,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1630
     },
     {
@@ -4469,6 +5284,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1640
     },
     {
@@ -4493,6 +5313,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1650
     },
     {
@@ -4517,6 +5342,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1660
     },
     {
@@ -4541,6 +5371,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1670
     },
     {
@@ -4565,6 +5400,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1680
     },
     {
@@ -4589,6 +5429,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1690
     },
     {
@@ -4613,6 +5458,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1700
     },
     {
@@ -4637,6 +5487,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1710
     },
     {
@@ -4661,6 +5516,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1720
     },
     {
@@ -4685,6 +5545,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1730
     },
     {
@@ -4709,6 +5574,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1740
     },
     {
@@ -4733,6 +5603,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1750
     },
     {
@@ -4757,6 +5632,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1760
     },
     {
@@ -4781,6 +5661,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1770
     },
     {
@@ -4805,6 +5690,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1780
     },
     {
@@ -4829,6 +5719,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1790
     },
     {
@@ -4853,6 +5748,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1800
     },
     {
@@ -4877,6 +5777,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1810
     },
     {
@@ -4901,6 +5806,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1820
     },
     {
@@ -4925,6 +5835,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1830
     },
     {
@@ -4949,6 +5864,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1840
     },
     {
@@ -4973,6 +5893,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1850
     },
     {
@@ -4997,6 +5922,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1860
     },
     {
@@ -5021,6 +5951,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1870
     },
     {
@@ -5045,6 +5980,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1880
     },
     {
@@ -5069,6 +6009,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1890
     },
     {
@@ -5093,6 +6038,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1900
     },
     {
@@ -5117,6 +6067,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1910
     },
     {
@@ -5141,6 +6096,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1920
     },
     {
@@ -5165,6 +6125,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1930
     },
     {
@@ -5189,6 +6154,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1940
     },
     {
@@ -5213,6 +6183,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1950
     },
     {
@@ -5237,6 +6212,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1960
     },
     {
@@ -5261,6 +6241,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1970
     },
     {
@@ -5285,6 +6270,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1980
     },
     {
@@ -5309,6 +6299,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 1990
     },
     {
@@ -5333,6 +6328,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2000
     },
     {
@@ -5357,6 +6357,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2010
     },
     {
@@ -5381,6 +6386,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2020
     },
     {
@@ -5405,6 +6415,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2030
     },
     {
@@ -5429,6 +6444,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2040
     },
     {
@@ -5453,6 +6473,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2050
     },
     {
@@ -5477,6 +6502,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2060
     },
     {
@@ -5501,6 +6531,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2070
     },
     {
@@ -5525,6 +6560,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2080
     },
     {
@@ -5549,6 +6589,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2090
     },
     {
@@ -5573,6 +6618,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2100
     },
     {
@@ -5597,6 +6647,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2110
     },
     {
@@ -5621,6 +6676,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2120
     },
     {
@@ -5645,6 +6705,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2130
     },
     {
@@ -5669,6 +6734,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2140
     },
     {
@@ -5693,6 +6763,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2150
     },
     {
@@ -5717,6 +6792,11 @@
       "fields": null,
       "notes": null,
       "cancel_reasons": null,
+      "title_options": null,
+      "powers_options": null,
+      "powers_min": 1,
+      "powers_max": 4,
+      "penalty_options": null,
       "sort": 2160
     }
   ]

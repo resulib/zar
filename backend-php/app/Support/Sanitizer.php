@@ -46,6 +46,78 @@ final class Sanitizer
         return in_array($v, $allowed, true) ? $v : $fallback;
     }
 
+    /* ---------------- variant siyahıları ----------------
+       Saytda istifadəçi başlığı, bəndləri və cəza bəndini yazmır, adminin
+       daxil etdiyi siyahıdan seçir. Açılan siyahı yalnız UI-dır — əsl
+       məhdudiyyət bu iki metoddur. */
+
+    /**
+     * `pick()`-in mətn variantı. Müqayisədən əvvəl hər iki tərəf normallaşdırılır,
+     * çünki HTML gediş-gəlişində ikiqat boşluq itə bilər. Qayıdan dəyər HƏMİŞƏ
+     * `$allowed` üzvüdür; uyğun gəlməsə `$fallback`.
+     *
+     * @param  list<string>  $allowed
+     */
+    public static function pickText(mixed $value, array $allowed, string $fallback, int $max): string
+    {
+        $needle = self::text($value, $max);
+
+        if ($needle !== '') {
+            foreach ($allowed as $option) {
+                if (self::text($option, $max) === $needle) {
+                    return self::text($option, $max);
+                }
+            }
+        }
+
+        return self::text($fallback, $max);
+    }
+
+    /**
+     * Çoxseçim. Sətir (\n ilə) və ya massiv qəbul edir.
+     *
+     * Nəticənin sırası HƏMİŞƏ `$allowed` sırasıdır — klikləmə sırası deyil.
+     * Əks halda istifadəçinin yüklədiyi PNG ilə reyestrdəki nüsxə fərqli
+     * sıralanardı (frontend `togglePower()` də eyni qaydanı tətbiq edir).
+     *
+     * `$min`-dən az üzv qalarsa boş massiv qaytarılır ki, çağıran şablonun
+     * öz mətninə düşsün.
+     *
+     * @param  list<string>  $allowed
+     * @return list<string>
+     */
+    public static function pickList(mixed $value, array $allowed, int $min, int $max, int $lineMax): array
+    {
+        if (is_array($value)) {
+            $raw = $value;
+        } elseif (is_scalar($value)) {
+            $raw = preg_split('/\R/u', (string) $value) ?: [];
+        } else {
+            return [];
+        }
+
+        $wanted = [];
+        foreach ($raw as $item) {
+            $v = self::text($item, $lineMax);
+            if ($v !== '') {
+                $wanted[$v] = true;
+            }
+        }
+
+        $out = [];
+        foreach ($allowed as $option) {
+            $v = self::text($option, $lineMax);
+            if ($v !== '' && isset($wanted[$v])) {
+                $out[] = $v;
+            }
+            if (count($out) >= $max) {
+                break;
+            }
+        }
+
+        return count($out) >= $min ? $out : [];
+    }
+
     /* ---------------- anket sahələri ----------------
        `text()` massivi boş sətrə çevirir və bu davranış testlə kilidlənib.
        Struktur sahələr üçün ona görə ayrıca metodlar var. */
