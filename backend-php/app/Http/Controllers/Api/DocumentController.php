@@ -59,8 +59,6 @@ class DocumentController extends Controller
             'scale.v'      => ['nullable', 'integer', 'min:0', 'max:10'],
             'scale.max'    => ['nullable', 'integer', 'min:1', 'max:10'],
             'until'        => ['nullable', 'string', 'max:24'],
-            'signTitle'    => ['nullable', 'string', 'max:40'],
-            'signOrg'      => ['nullable', 'string', 'max:60'],
             'share'        => ['nullable', 'string', 'max:180'],
             'expiresAt'    => ['nullable', 'integer'],
 

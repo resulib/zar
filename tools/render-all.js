@@ -31,6 +31,7 @@ const server = http.createServer((req, res) => {
       templateId: t.id, tone: t.tone, layout: layoutOverride || t.layout, palette: t.palette,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
+      signTitle: t.signTitle || null, signOrg: t.signOrg || null,
       title: t.title, to, from, powers: t.powers, penalty: t.penalty,
       preamble: t.preamble.replace(/\{to\}/g, to).replace(/\{from\}/g, from),
       regNo: 'ZRF-2026-' + (1000 + (t.title.length * 137) % 9000),

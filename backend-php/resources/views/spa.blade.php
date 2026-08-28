@@ -390,9 +390,10 @@
 <div id="toast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/templates.js') }}?v=1ec73c11"></script>
-<script src="{{ asset('assets/templates-xatire.js') }}?v=af509127"></script>
-<script src="{{ asset('assets/doc.js') }}?v=c9c0a38d"></script>
-<script src="{{ asset('assets/app.js') }}?v=f6dff6fb"></script>
+<script src="{{ asset('assets/templates.js') }}?v=4faca11c"></script>
+<script src="{{ asset('assets/templates-xatire.js') }}?v=ed6a5ecf"></script>
+<script src="{{ asset('assets/doc.js') }}?v=1634dfa3"></script>
+<script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
+<script src="{{ asset('assets/app.js') }}?v=dfbdd2a6"></script>
 </body>
 </html>

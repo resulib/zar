@@ -15,9 +15,13 @@ class PageController extends Controller
         return view('spa');
     }
 
-    /** QR kodun düşdüyü ünvan — eyni səhifə, nömrə JS tərəfindən oxunur. */
+    /**
+     * QR kodun düşdüyü ünvan — yalnız sənədi göstərən ayrıca səhifə.
+     * Baza sorğusu yoxdur: sənədi `viewer.js` `/api/registry/{regNo}`-dan alır,
+     * `$regNo` isə yalnız sosial önizləmə başlığında işlənir.
+     */
     public function registry(string $regNo): View
     {
-        return view('spa');
+        return view('viewer', ['regNo' => strtoupper($regNo)]);
     }
 }

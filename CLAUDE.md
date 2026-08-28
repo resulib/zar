@@ -38,6 +38,7 @@ npm run test:templates   # 216 templates: unique ids, tone/category match, field
 node tools/decode-test.js  # real jsQR scan of generated QR
 npm run test:fields      # dynamic questionnaire layer in a real browser (no backend needed)
 npm run test:admin       # admin catalog CRUD end-to-end (needs `php artisan serve` on :8080)
+npm run test:viewer      # the bare /r/{regNo} document viewer + PDF structure (no backend needed)
 npm run test:dist        # dist/zarafat-mvp.html under file:// (build first)
 npm run test:e2e         # Playwright + backend-node end-to-end
 npm run test:api         # backend-node API suite
@@ -189,6 +190,25 @@ mutating it** (an earlier version stripped blank list rows and made the "add nam
 The editor uses one delegated `input`/`click` listener on `#editorForm` because `#fFields` is
 rebuilt on every template pick. Templates with no `fields` take the original code path untouched.
 
+### The issuing agency (`signOrg`)
+
+Every template names the fictional body that issues it — `templates.sign_org`, edited in the admin
+form as «İmzalayan orqan», served as `signOrg`. It renders as the **masthead sub-line in all 12
+layouts** via `qurumSetri(doc, fallback, caps, x, y, o)` in `doc.js`, which falls back to each
+layout's own text when the field is empty.
+
+- **That fallback path must stay byte-identical** — `tools/hash-layouts.js` hashes 720 renders and
+  its `mkDoc()` never sets `signOrg`. Never emit an unconditional new `T(...)` line for it; the
+  three layouts with no sub-line of their own (`diplom`, `sertifikat`, `teleqram`) pass `''` as the
+  fallback so the helper emits nothing.
+- `qerar` is the exception: the agency is suffixed `· UYDURMA ORQAN` rather than replacing
+  `CUR.courtSub`, which carries the "no jurisdiction" wording.
+- **Budget is 56 characters** (column is 60). `tools/check-templates.js` section 6b enforces that
+  every template has one, that it fits, and that it does not contain a real institution fragment
+  (`ORG_BAN`) — the legal shield, automated.
+- `signOrg` sits in the always-present part of `formDoc()` in `app.js`, **not** in the questionnaire
+  `extra` block; putting it back there would silently drop it for the 211 templates with no `fields`.
+
 ### The catalog is database-owned
 
 `GET /api/catalog` is the live source of categories and templates; `frontend/templates.js` +
@@ -253,6 +273,10 @@ by `templateId` and rebuilds the document from the catalog:
 - `templateId` is **required**; an unresolvable slug is a 422 (`bad_template`). Omitting it was the
   obvious bypass.
 - `cancel()` picks the reason from the template's `cancelReasons` the same way.
+- **`signOrg` / `signTitle` are never accepted from the client either.** They are read straight off
+  `$tpl->sign_org` / `$tpl->sign_title` in `extraFrom()`; the validation rules are gone from
+  `DocumentController::store()`. The issuing agency is printed in the masthead, so a forged value
+  would put a real ministry's name on a parody document.
 
 `App\Support\Answers` is a **line-by-line mirror of `frontend/app.js`**: `clean()` ↔ `readFields()`
 (`app.js:606-652`), `fill()` ↔ `fill()` (`app.js:536-542`). If they diverge by one character the
@@ -266,6 +290,42 @@ change the layout at runtime, so 4 is the only count guaranteed visible everywhe
 Option lists and `fields` are **mutually exclusive** on a template; `templateSave()` rejects the
 combination. `CatalogSeeder` never writes null over an existing option list — a stale
 `catalog.json` would otherwise unlock every template with no error output.
+
+### Export and the bare document viewer
+
+`frontend/export.js` (`window.ZEXPORT`) owns everything that turns a rendered SVG into a file:
+`svgToCanvas` · `pngBlob` · `pdfBlob` · `saveBlob` · `safeName` · `canShareFiles` · `shareFile` ·
+`isAbort`. It exists as a separate file because **both** `app.js` and `viewer.js` need it. It is
+registered in four places that must stay in sync: `index.html`'s script tags, `build.js`'s inline
+list, `build-laravel.js`'s `ASSETS`, and `viewer.html`.
+
+- **PDF is written from scratch**, no library — canvas → JPEG → a 6-object, single-page A4 PDF with
+  `/DCTDecode`. `/CreationDate` is deliberately omitted so output stays deterministic for a given
+  canvas (the same discipline as "never call `Date.now()` in `doc.js`") and a test can assert
+  structure. `/Producer` is spelled without diacritics on purpose, so no UTF-16BE string encoder is
+  needed. Raster scale is `paid ? 3 : 2` (288 / 192 dpi) at JPEG q = 0.92 — **do not drop below
+  0.88**, the microtext band is part of the legal shield and JPEG ringing degrades it first.
+- **Story sharing** uses `navigator.share({files, title, text})`. No `url` is passed: Instagram and
+  WhatsApp silently drop the file when a `url` is also present, so the verify link goes inside
+  `text`. iOS only accepts `share()` **inside the gesture task**, so the story PNG is
+  pre-rasterised and cached (`state.storyBlob` / `viewer.js`'s `storyBlob`) as soon as a paid
+  document renders. `AbortError` is a normal cancel — never toast an error for it.
+
+**`/r/{regNo}` is a dedicated bare page**, not the SPA: `PageController::registry()` returns
+`view('viewer')` and loads only `qr.js` + `doc.js` + `export.js` + `viewer.js` + `viewer.css`
+(~169 KB vs the SPA's ~390 KB). It renders the document, a small floating toolbar, and nothing
+else. Five states: loading · ok · expired · cancelled · notfound.
+
+- **The viewer has no `localStorage` fallback, ever.** It shows only what `/api/registry/{regNo}`
+  returns — that is the core of the "registry is authoritative" guarantee.
+- The **report/delete flow is in the toolbar**, not behind an overflow menu (`CLAUDE.md` legal
+  shield: "Report/delete flow stays on every document").
+- `viewer.css` is separate from `site.css` and **the print block must live there** —
+  `build-laravel.js` aborts on any `@directive` anywhere in an HTML file, so a single inline
+  `@media print` would break the build.
+- The SPA's registry section (`#qReg` / `#btnSearch` / `#searchMsg`) stays for manual lookup, and
+  `app.js`'s `/r/` pathname branch stays because the archive `backend-node/` still serves the SPA
+  there (`tools/e2e.js` depends on it) and `dist/` uses the `#r/` hash form.
 
 ### `frontend/app.js` — app logic + API layer
 
@@ -340,6 +400,9 @@ occasional runtime wrinkle on first run.
   `REG_PREFIX` ↔ `tools/export-catalog.js` `REG_PREFIX` (three copies of the same five entries;
   they only matter for seeding and the offline branch — live prefixes come from the DB).
 - **Field types**: `TemplateSchema::TYPES` ↔ `app.js` `FIELD_TYPES` ↔ `tools/check-templates.js` `F_TYPES`.
+- **Registry verdict copy**: `app.js` `doSearch()` ↔ `viewer.js` `showNotFound()`/`showDoc()` —
+  the stern not-found sentence is asserted identical by `tools/check-viewer.js`.
+- **Viewer palette**: `viewer.css` `:root` redeclares the few tokens it needs from `site.css`.
 - **Clause order**: `app.js` `togglePower()` ↔ `Sanitizer::pickList()` — both must emit in the
   admin's option order, never in click order.
 - **Answer cleaning**: `App\Support\Answers::clean/fill` ↔ `app.js` `readFields()`/`fill()`.

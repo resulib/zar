@@ -21,6 +21,7 @@ window.TEMPLATES.push(
 {
   id: 'sevgi-etirafnamesi', cat: 'x-love', tone: 'xatire', layout: 'notarial', palette: 'rose',
   title: 'Sevgi Etirafnaməsi', tag: 'Ən çox seçilən',
+  signOrg: 'Sevgi və Etiraf Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu sənədlə təsdiq olunur ki, {from} tərəfindən {to} adlı şəxsə uzun müddət söylənilməmiş, lakin heç vaxt azalmamış bir hiss rəsmi qaydada bəyan olunur. Etiraf könüllüdür, şahid tələb etmir və geri götürülmür.',
   powers: 'Səhər oyananda ilk düşünülən ad dəyişməyib.\nSusmaq da rahatdır — söhbət olmasa da yer isti qalır.\nUzaq şəhərlər yaxınlığı azaltmadı.\nSevinc bölüşəndə böyüyür, qayğı bölüşəndə kiçilir.',
@@ -29,6 +30,7 @@ window.TEMPLATES.push(
 {
   id: 'evlilik-teklifi', cat: 'x-love', tone: 'xatire', layout: 'diplom', palette: 'burgundy',
   title: 'Evlilik Təklifi Sənədi', tag: 'Böyük an',
+  signOrg: 'Evlilik Təkliflərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu sənədlə {from} tərəfindən {to} adlı şəxsə ömrün qalan hissəsini birlikdə keçirmək təklifi rəsmi qaydada təqdim olunur. Təklif düşünülmüş, tələsik olmayan və tam səmimi hesab olunur.',
   powers: 'Birgə keçən illər tələsik qərar üçün yer qoymadı.\nÇətin günlərdə tərəflərin heç biri geri çəkilmədi.\nGələcək planları illərdir eyni cümlə ilə başlayır.\nCavab nə olursa olsun, sual verilməyə dəyərdi.',
@@ -37,6 +39,7 @@ window.TEMPLATES.push(
 {
   id: 'ildonumu-sehadetnamesi', cat: 'x-love', tone: 'xatire', layout: 'sertifikat', palette: 'rose',
   title: 'İldönümü Xatirə Şəhadətnaməsi', tag: 'İldönümü',
+  signOrg: 'İldönümü və Xatirə Tarixləri Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu şəhadətnamə ilə təsdiq olunur ki, {from} və {to} arasındakı birgə yol növbəti ilini tamamlamışdır. Keçən müddət heç bir tərəf üçün itirilmiş sayılmır.',
   powers: 'Bir il daha yan-yana, eyni masa arxasında.\nMübahisələr axşama qədər davam etmədi.\nSevinc xəbərləri həmişə birinci bir-birinə çatdırıldı.\nEv sözü hər ikisi üçün eyni mənanı saxladı.',
@@ -45,6 +48,7 @@ window.TEMPLATES.push(
 {
   id: 'seni-secirem', cat: 'x-love', tone: 'xatire', layout: 'blank', palette: 'burgundy',
   title: '«Səni Seçirəm» Bəyannaməsi', tag: 'Bəyannamə',
+  signOrg: 'Sevgi Bəyannamələrinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu bəyannamə ilə {from} bildirir ki, {to} adlı şəxsi bir dəfə deyil, hər gün yenidən seçir. Seçim vərdişdən deyil, düşünülmüş qərardan doğur və müddətlə məhdudlaşdırılmır.',
   powers: 'Seçim yorğun günlərdə də dəyişmir.\nDaha rahat variant axtarılmadı və axtarılmayacaq.\nBaşqalarının rəyi bu qərara heç vaxt daxil edilmədi.\nSabah da eyni ad yazılacaq.',
@@ -53,6 +57,7 @@ window.TEMPLATES.push(
 {
   id: 'ilk-gorus-qeydi', cat: 'x-love', tone: 'xatire', layout: 'viza', palette: 'gold',
   title: 'İlk Görüşün Xatirə Qeydi', tag: 'Başlanğıc',
+  signOrg: 'İlk Görüşlərin Xatirə Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu qeyd ilə {from} və {to} arasındakı ilk görüşün tarixi, yeri və o günün əhvalı rəsmi qaydada arxivə salınır. Xırda təfərrüatlar unudulmasın deyə yazıya alınmışdır.',
   powers: 'O gün nə deyiləcəyi əvvəlcədən düşünülmüşdü, heç biri deyilmədi.\nSöhbət planlaşdırılandan xeyli uzun sürdü.\nAyrılarkən hər ikisi geri baxdı.\nHəmin axşam telefon uzun müddət əldən yerə qoyulmadı.',
@@ -61,6 +66,7 @@ window.TEMPLATES.push(
 {
   id: 'birge-gelecek', cat: 'x-love', tone: 'xatire', layout: 'ekspertiza', palette: 'gold',
   title: 'Birgə Gələcək Bəyannaməsi', tag: 'Gələcək',
+  signOrg: 'Birgə Gələcək Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu bəyannamə ilə {from} və {to} gələcəyə aid planlarını ayrı deyil, birgə qurduqlarını təsdiq edirlər. Sənəd tərəflərin öz iradəsi ilə, kənar təsir olmadan hazırlanmışdır.',
   powers: 'Bütün planlar cəm halında qurulur.\nBöyük qərarlar məsləhətləşmədən verilmir.\nBirinin arzusu digərinin cədvəlinə yazılır.\nUzaq şəhər təklifi yalnız birlikdə nəzərdən keçirilir.',
@@ -69,6 +75,7 @@ window.TEMPLATES.push(
 {
   id: 'sevgi-etimad-karti', cat: 'x-love', tone: 'xatire', layout: 'lisenziya', palette: 'steel',
   title: 'Sevgi Etimad Kartı', tag: 'Etimad',
+  signOrg: 'Sevgi Etimadının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu kart {from} tərəfindən {to} adlı şəxsə tam etimadın nişanəsi kimi verilir. Etimad müddətlə məhdudlaşdırılmır və hər hansı yoxlama tələb etmir.',
   powers: 'Deyilən sözə izahat tələb olunmur.\nGecikməyə səbəb soruşulmadan qəbul edilir.\nSirlər üçüncü şəxsə çatmadı və çatmayacaq.\nÇətin xəbər də birinci bu ünvana deyilir.',
@@ -77,6 +84,7 @@ window.TEMPLATES.push(
 {
   id: 'sevgi-arayisi', cat: 'x-love', tone: 'xatire', layout: 'arayis', palette: 'forest',
   title: 'Səmimi Hisslər Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Səmimi Hisslərin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Arayış {to} adlı şəxsə ona bəslənən hisslərin real, davamlı və dəyişməz olduğunu təsdiq etmək üçün {from} tərəfindən verilir. Təqdim olunduğu yerdən asılı olmayaraq qüvvədədir.',
   powers: 'Hisslər müşahidə dövrü boyunca azalmayıb.\nUzun ayrılıqlar göstəricini dəyişməyib.\nGündəlik qayğılar onu kölgədə qoymayıb.\nİllər ötdükcə yalnız sakitləşib, yox olmayıb.',
@@ -85,6 +93,7 @@ window.TEMPLATES.push(
 {
   id: 'barisiq-qerari', cat: 'x-love', tone: 'xatire', layout: 'qerar', palette: 'ink',
   title: 'Barışıq Qərarı', tag: 'Barışıq',
+  signOrg: 'Barışıq və Səmimiyyət Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {from} və {to} arasındakı mübahisənin mövzusu artıq əhəmiyyətini itirmişdir. Tərəflərin hər ikisi barışığın xeyrinə olduğunu bildirmişdir.',
   powers: 'Mübahisənin səbəbi bir həftə sonra xatırlanmadı.\nHər iki tərəf öz payına düşən sözü geri götürdü.\nSusqunluq dövrü hər ikisinə ağır gəldi.\nBarışıq könüllüdür, təzyiq altında qəbul edilməyib.',
@@ -93,6 +102,7 @@ window.TEMPLATES.push(
 {
   id: 'birge-heyat-sazisi', cat: 'x-love', tone: 'xatire', layout: 'muqavile', palette: 'burgundy',
   title: 'Birgə Həyat Sazişi', tag: 'Saziş',
+  signOrg: 'Birgə Həyat Sazişlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və birgə həyatın gündəlik qaydalarını səmimi şəkildə qeydə alır. Saziş məcburiyyətdən deyil, qarşılıqlı istəkdən doğur.',
   powers: 'Səhər çayı hər gün növbə ilə hazırlanır.\nAğır gün keçirən tərəf sual verilmədən dinlənilir.\nUzun səfərlərdən əliboş qayıdılmır.\nBayram süfrəsi birlikdə qurulur.',
@@ -101,6 +111,7 @@ window.TEMPLATES.push(
 {
   id: 'sevgi-teleqrami', cat: 'x-love', tone: 'xatire', layout: 'teleqram', palette: 'rose',
   title: 'Sevgi Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Sevgi Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Mətn qısadır, çünki deyiləcək söz uzun izahat tələb etmir. Çatdırılma təcili qaydada, növbədənkənar aparılmışdır.',
   powers: 'Səni düşünürəm nöqtə\nUzaqlıq müvəqqətidir nöqtə\nQayıdanda hər şey danışılacaq nöqtə\nGözlə nöqtə',
@@ -109,6 +120,7 @@ window.TEMPLATES.push(
 {
   id: 'birge-heyat-vesiqesi', cat: 'x-love', tone: 'xatire', layout: 'vesiqe', palette: 'gold',
   title: 'Birgə Həyat Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Birgə Həyatın Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və birgə həyatın rəsmi olmayan, lakin real qeydiyyatını təsdiq edir. Sənəd daşıyıcının cibində deyil, yaddaşında saxlanılır.',
   powers: 'Qeydiyyat ünvanı: eyni ev, eyni mətbəx.\nDaimi yoldaş statusu təsdiqlənib.\nMüddət: müəyyən edilməyib.\nƏlavə qeyd: yenilənməyə ehtiyac yoxdur.',
@@ -119,6 +131,7 @@ window.TEMPLATES.push(
 {
   id: 'tesekkurname', cat: 'x-thanks', tone: 'xatire', layout: 'blank', palette: 'steel',
   title: 'Təşəkkürnamə', tag: 'Klassik',
+  signOrg: 'Minnətdarlıq və Təltif Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu təşəkkürnamə {from} tərəfindən {to} adlı şəxsə göstərdiyi köməyə görə təqdim olunur. Kömək tələb olunmadan, qarşılıq gözlənilmədən göstərilmişdir.',
   powers: 'Ən çətin gündə heç bir sual vermədən yanında oldu.\nÖz işini kənara qoyub vaxt ayırdı.\nVerilən sözü axıra qədər gözlədi.\nKöməyini heç vaxt xatırlatmadı.',
@@ -127,6 +140,7 @@ window.TEMPLATES.push(
 {
   id: 'fexri-ferman', cat: 'x-thanks', tone: 'xatire', layout: 'diplom', palette: 'burgundy',
   title: 'Fəxri Fərman', tag: 'Təltif',
+  signOrg: 'Fəxri Fərmanların Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Fəxri Fərman {to} adlı şəxsə uzun illər ərzində göstərdiyi vicdanlı əməyə və səmimi münasibətə görə {from} tərəfindən təqdim olunur. Təltif üçün əsaslar uzun müddət toplanmış və mübahisəsiz hesab edilmişdir.',
   powers: 'İşini heç vaxt yarımçıq qoymadı.\nBaşqasının səhvini üzərinə götürməkdən çəkinmədi.\nTərif gözləmədən çalışdı.\nƏtrafındakılar üçün nümunə oldu.',
@@ -135,6 +149,7 @@ window.TEMPLATES.push(
 {
   id: 'muellime-minnetdarliq', cat: 'x-thanks', tone: 'xatire', layout: 'notarial', palette: 'forest',
   title: 'Müəllimə Minnətdarlıq Məktubu', tag: 'Müəllim',
+  signOrg: 'Müəllim Əməyinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu məktub {from} tərəfindən müəllim {to} adlı şəxsə ünvanlanır. Sinifdə deyilən bəzi sözlərin illər sonra da xatırlandığı bununla təsdiq olunur.',
   powers: 'Sualı təkrar soruşmağa utandırmadı.\nZəif nəticəni deyil, səyi qiymətləndirdi.\nDərsdən sonra da vaxt ayırdı.\nBir cümləsi peşə seçimini dəyişdirdi.',
@@ -143,6 +158,7 @@ window.TEMPLATES.push(
 {
   id: 'ilin-anasi', cat: 'x-thanks', tone: 'xatire', layout: 'viza', palette: 'rose',
   title: '«İlin Anası» Fəxri Fərmanı', tag: 'Ana',
+  signOrg: 'Ana Zəhmətinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu fərman {to} adlı şəxsə göstərdiyi qayğıya, səbrə və heç vaxt hesablanmayan əməyə görə {from} tərəfindən təqdim olunur. Seçim yekdilliklə aparılmışdır.',
   powers: 'Yuxusuz gecələr heç vaxt sayılmadı.\nƏn yaxşı tikə həmişə başqasına verildi.\nNarahatlıq gizlədildi, sevinc bölüşüldü.\nQapı hər zaman açıq qaldı.',
@@ -151,6 +167,7 @@ window.TEMPLATES.push(
 {
   id: 'hekime-minnetdarliq', cat: 'x-thanks', tone: 'xatire', layout: 'sertifikat', palette: 'steel',
   title: 'Həkimə Minnətdarlıq Sənədi', tag: 'Həkim',
+  signOrg: 'Həkim Əməyinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu sənəd həkim {to} adlı şəxsə {from} tərəfindən göstərdiyi peşəkar köməyə və insani münasibətə görə təqdim olunur. Sənəd ən çətin günlərin yaddaşda qaldığını rəsmi qaydada təsdiq edir.',
   powers: 'Narahatlığı azaltmaq üçün əlavə vaxt ayırdı.\nİzahatı sadə və aydın verdi.\nAğır xəbəri insan kimi çatdırdı.\nNövbədən sonra da telefonu cavabsız qoymadı.',
@@ -159,6 +176,7 @@ window.TEMPLATES.push(
 {
   id: 'komandaya-tesekkur', cat: 'x-thanks', tone: 'xatire', layout: 'ekspertiza', palette: 'forest',
   title: 'Komandaya Təşəkkür Sertifikatı', tag: 'Komanda',
+  signOrg: 'Komanda Əməyinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu sertifikat {to} adlı komandaya {from} tərəfindən çətin dövrdə göstərdiyi birliyə və dözümə görə təqdim olunur. Nəticə hər kəsin payı ilə əldə edilmişdir.',
   powers: 'Son həftə heç kim işi yarımçıq qoymadı.\nSəhvlər axtarılmadı, düzəldildi.\nUğur şəxsi deyil, ümumi sayıldı.\nGecikən həmkar tək qalmadı.',
@@ -167,6 +185,7 @@ window.TEMPLATES.push(
 {
   id: 'ustadliq-lisenziyasi', cat: 'x-thanks', tone: 'xatire', layout: 'lisenziya', palette: 'gold',
   title: 'Ustadlıq Lisenziyası', tag: 'Ustad',
+  signOrg: 'Ustadlıq və Peşəkarlıq Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu lisenziya {to} adlı şəxsə öz işini başqasına öyrətmək bacarığına görə {from} tərəfindən verilir. Sənəd imtahan nəticəsinə deyil, illərin təcrübəsinə əsaslanır.',
   powers: 'Bildiyini gizlətmədi, öyrətdi.\nSəhv edəni utandırmadan düzəltdi.\nÖz üsulunu tələb etmədi, seçim buraxdı.\nŞagirdinin uğuruna öz uğuru kimi sevindi.',
@@ -175,6 +194,7 @@ window.TEMPLATES.push(
 {
   id: 'xidmetler-arayisi', cat: 'x-thanks', tone: 'xatire', layout: 'arayis', palette: 'ink',
   title: 'Göstərilən Kömək Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Göstərilən Köməyin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Arayış {to} adlı şəxsə {from} tərəfindən verilir və göstərilən köməyin real, vaxtında və əvəzsiz olduğunu təsdiq edir. Təqdim olunduğu yerdən asılı olmayaraq qüvvədədir.',
   powers: 'Kömək xahiş edilmədən təklif olundu.\nHeç bir mərhələdə qarşılıq gözlənilmədi.\nVəziyyət çətinləşəndə geri çəkilmə olmadı.\nİş bitəndən sonra da soruşub hal-əhval tutuldu.',
@@ -183,6 +203,7 @@ window.TEMPLATES.push(
 {
   id: 'teltif-qerari', cat: 'x-thanks', tone: 'xatire', layout: 'qerar', palette: 'gold',
   title: 'Təltif Haqqında Qərar', tag: 'Qərar',
+  signOrg: 'Təltif Qərarlarının Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {to} adlı şəxs göstərdiyi əməyə görə təltifə layiqdir. Qərar {from} tərəfindən təqdim olunan əsaslara istinadən qəbul edilmişdir.',
   powers: 'Əmək uzun müddət diqqətdən kənarda qaldı.\nHeç bir mərhələdə şikayət səsləndirilmədi.\nNəticə göz qabağındadır və mübahisə doğurmur.\nƏtrafdakıların rəyi yekdildir.',
@@ -191,6 +212,7 @@ window.TEMPLATES.push(
 {
   id: 'minnetdarliq-sazisi', cat: 'x-thanks', tone: 'xatire', layout: 'muqavile', palette: 'rose',
   title: 'Minnətdarlıq Sazişi', tag: 'Saziş',
+  signOrg: 'Minnətdarlıq Sazişlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və göstərilən köməyin qarşılıqlı olaraq unudulmayacağını qeydə alır. Tərəflər borc münasibətinin olmadığını təsdiq edirlər.',
   powers: 'Kömək istənilən vaxt, izahatsız göstərilir.\nGecə yarısı zəngi cavabsız qalmır.\nÇətin xəbər əvvəlcə bir-birinə deyilir.\nHesab aparılmır, sayğac yoxdur.',
@@ -199,6 +221,7 @@ window.TEMPLATES.push(
 {
   id: 'tesekkur-teleqrami', cat: 'x-thanks', tone: 'xatire', layout: 'teleqram', palette: 'burgundy',
   title: 'Təşəkkür Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Təşəkkür Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Mətn qısadır, minnətdarlıq isə deyil. Sözün uzunu şəxsən deyiləcək, teleqram isə yalnız gecikməmək üçün göndərilir.',
   powers: 'Köməyin çatdı nöqtə\nVaxtında oldu nöqtə\nUnudulmayacaq nöqtə\nBorclu qaldım nöqtə',
@@ -207,6 +230,7 @@ window.TEMPLATES.push(
 {
   id: 'fexri-uzv-vesiqesi', cat: 'x-thanks', tone: 'xatire', layout: 'vesiqe', palette: 'ink',
   title: 'Fəxri Üzv Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Fəxri Üzvlüyün Qeydiyyatı Şöbəsi',
   toLabel: 'TƏLTİF OLUNAN', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'XİDMƏTLƏR', penaltyLabel: 'QEYD',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və onun fəxri üzv statusunu təsdiq edir. Status göstərilən xidmətlərə görə müddətsiz olaraq təyin edilmişdir.',
   powers: 'Statusun əsası: uzunmüddətli dəstək.\nÜzvlük haqqı alınmır.\nGiriş bütün qapılardan sərbəstdir.\nStatusun ləğvi qaydası nəzərdə tutulmayıb.',
@@ -217,6 +241,7 @@ window.TEMPLATES.push(
 {
   id: 'mezuniyyet-diplomu', cat: 'x-milestone', tone: 'xatire', layout: 'diplom', palette: 'gold',
   title: 'Məzuniyyət Xatirə Diplomu', tag: 'Məzuniyyət',
+  signOrg: 'Təhsil Mərhələlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu diplom {to} adlı şəxsə uzun və çətin bir mərhələni başa vurduğuna görə {from} tərəfindən təqdim olunur. Yol asan olmadı, buna görə də daha qiymətlidir.',
   powers: 'İlk il tərk etmək fikri bir neçə dəfə yarandı.\nGecə hazırlıqları saya gəlmir.\nƏn çətin imtahan ikinci cəhddə verildi.\nSon gün heç kim tələsmək istəmədi.',
@@ -225,6 +250,7 @@ window.TEMPLATES.push(
 {
   id: 'ilk-addim', cat: 'x-milestone', tone: 'xatire', layout: 'sertifikat', palette: 'rose',
   title: 'İlk Addım Şəhadətnaməsi', tag: 'İlk addım',
+  signOrg: 'İlk Addımların Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu şəhadətnamə ilə təsdiq olunur ki, {to} adlı şəxs ilk addımını atmışdır. Hadisə {from} tərəfindən müşahidə olunmuş və dərhal qeydə alınmışdır.',
   powers: 'Addım qısa idi, məsafə isə əhəmiyyətsiz deyil.\nHamı susdu, sonra hamı birdən danışdı.\nİkinci cəhd birincidən daha inamlı oldu.\nO gün ev daha səsli qaldı.',
@@ -233,6 +259,7 @@ window.TEMPLATES.push(
 {
   id: 'verdisi-tergitme', cat: 'x-milestone', tone: 'xatire', layout: 'ekspertiza', palette: 'forest',
   title: 'Vərdişi Tərgitmə Sertifikatı', tag: 'İradə',
+  signOrg: 'Yeni Vərdişlərin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sertifikat {to} adlı şəxsə uzun illər davam edən bir vərdişdən öz iradəsi ilə imtina etdiyinə görə {from} tərəfindən təqdim olunur. Qərar bir gündə verilməyib, aylarla hazırlanıb.',
   powers: 'Qərar kənar təzyiq olmadan verildi.\nİlk həftə ən çətini oldu və keçdi.\nGeri dönüş üçün bəhanə axtarılmadı.\nƏtrafdakılar dəyişikliyi ilk gündən hiss etdi.',
@@ -241,6 +268,7 @@ window.TEMPLATES.push(
 {
   id: 'idman-nailiyyeti', cat: 'x-milestone', tone: 'xatire', layout: 'viza', palette: 'steel',
   title: 'İdman Nailiyyəti Sənədi', tag: 'İdman',
+  signOrg: 'İdman Nailiyyətlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sənəd {to} adlı şəxsə göstərdiyi idman nəticəsinə və ona aparan səbrli hazırlığa görə {from} tərəfindən təqdim olunur. Nəticənin arxasında illərlə davam edən gündəlik iş dayanır.',
   powers: 'Səhər məşqləri heç bir hava şəraitində dayanmadı.\nZədədən sonra qayıdış aylarla çəkdi.\nNəticə bir gündə deyil, illərlə qazanıldı.\nUduzulan yarışlardan da nəticə çıxarıldı.',
@@ -249,6 +277,7 @@ window.TEMPLATES.push(
 {
   id: 'ilk-is-gunu', cat: 'x-milestone', tone: 'xatire', layout: 'blank', palette: 'ink',
   title: 'İlk İş Günü Xatirə Sənədi', tag: 'İlk iş',
+  signOrg: 'İlk İş Gününün Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sənədlə {to} adlı şəxsin ilk iş günü rəsmi qaydada arxivə salınır. Qeyd {from} tərəfindən həmin günün sonunda, təəssüratlar hələ təzə ikən tərtib edilmişdir və dəyişdirilməyə təqdim olunmur.',
   powers: 'Səhər planlaşdırılandan xeyli tez gəlindi.\nBirinci gün ad yadda saxlamaqla keçdi.\nİlk tapşırıq iki dəfə yoxlanıldı.\nAxşam evə qayıdanda yorğunluq xoş idi.',
@@ -257,6 +286,7 @@ window.TEMPLATES.push(
 {
   id: 'yeni-ev', cat: 'x-milestone', tone: 'xatire', layout: 'notarial', palette: 'gold',
   title: 'Yeni Ev Xatirə Sənədi', tag: 'Yeni ev',
+  signOrg: 'Yeni Ev və Ocaq Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu sənədlə {to} adlı şəxsin yeni evə köçməsi qeydə alınır. Qeyd {from} tərəfindən ilk axşamın xatirəsinə tərtib edilmişdir. Yeni ünvan bu sənədlə ailənin təqviminə salınır.',
   powers: 'İlk gecə qutuların arasında keçirildi.\nİlk çay hələ açılmamış qutunun üstündə içildi.\nQonşuluq ilk həftədə tanış oldu.\nDivarlar tez bir zamanda öz səsini tapdı.',
@@ -265,6 +295,7 @@ window.TEMPLATES.push(
 {
   id: 'ilk-sukan-lisenziyasi', cat: 'x-milestone', tone: 'xatire', layout: 'lisenziya', palette: 'burgundy',
   title: 'İlk Sükan Xatirə Lisenziyası', tag: 'İlk sükan',
+  signOrg: 'İlk Sükan Xatirəsinin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu lisenziya {to} adlı şəxsə ilk müstəqil sürüşünün xatirəsinə {from} tərəfindən verilir. Sənəd yol hərəkəti üçün deyil, yaddaş üçün nəzərdə tutulub.',
   powers: 'İlk manevr uzun və ehtiyatlı alındı.\nSərnişin bütün yol boyu susmağa çalışdı.\nİlk park yeri üçüncü cəhddə tapıldı.\nQayıdanda maşın diqqətlə yoxlanıldı.',
@@ -273,6 +304,7 @@ window.TEMPLATES.push(
 {
   id: 'nailiyyet-arayisi', cat: 'x-milestone', tone: 'xatire', layout: 'arayis', palette: 'steel',
   title: 'Nailiyyət Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Nailiyyətlərin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Arayış {to} adlı şəxsə {from} tərəfindən verilir və qeyd olunan nəticənin təsadüfi olmadığını, uzun və səbrli hazırlığın qanunauyğun davamı olduğunu təsdiq edir. Əlavə təsdiq tələb olunmur.',
   powers: 'Hazırlıq mərhələsi bir neçə il çəkdi.\nAralıq nəticələr heç kimə göstərilmədi.\nUğursuz cəhdlər dayandırmaq üçün əsas sayılmadı.\nSon nəticə gözləniləndən yüksək oldu.',
@@ -281,6 +313,7 @@ window.TEMPLATES.push(
 {
   id: 'merhele-qerari', cat: 'x-milestone', tone: 'xatire', layout: 'qerar', palette: 'ink',
   title: 'Mərhələnin Tamamlanması Qərarı', tag: 'Qərar',
+  signOrg: 'Həyat Mərhələlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {to} adlı şəxsin başladığı mərhələ tam və uğurla tamamlanmışdır. Əsaslar {from} tərəfindən təqdim olunmuşdur.',
   powers: 'Başlanğıc tarixi ilə bitiş tarixi arasında uzun məsafə var.\nAradakı çətinliklər sənədə daxil edilmədi, xatirədə qaldı.\nNəticə mübahisə doğurmur.\nNövbəti mərhələ artıq başlayıb.',
@@ -289,6 +322,7 @@ window.TEMPLATES.push(
 {
   id: 'yeni-baslangic-sazisi', cat: 'x-milestone', tone: 'xatire', layout: 'muqavile', palette: 'forest',
   title: 'Yeni Başlanğıc Sazişi', tag: 'Saziş',
+  signOrg: 'Yeni Başlanğıcların Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və yeni mərhələyə keçidin şərtlərini səmimi şəkildə qeydə alır. Keçmiş mərhələ bağlanmış hesab olunur.',
   powers: 'Köhnə səhvlər hesaba alınır, təkrarlanmır.\nYeni plan yazılı şəkildə tərtib olunub.\nDəstək hər mərhələdə davam edir.\nGeri dönüş yolu bağlanmayıb, sadəcə lazım deyil.',
@@ -297,6 +331,7 @@ window.TEMPLATES.push(
 {
   id: 'nailiyyet-teleqrami', cat: 'x-milestone', tone: 'xatire', layout: 'teleqram', palette: 'rose',
   title: 'Nailiyyət Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Nailiyyət Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Xəbər gözlənilirdi, buna görə də mətn qısadır. Uzun təbriklər görüş zamanı şəxsən çatdırılacaq.',
   powers: 'Alındı nöqtə\nHamı sevinir nöqtə\nBilirdik nöqtə\nDavamını gözləyirik nöqtə',
@@ -305,6 +340,7 @@ window.TEMPLATES.push(
 {
   id: 'yeni-merhele-vesiqesi', cat: 'x-milestone', tone: 'xatire', layout: 'vesiqe', palette: 'burgundy',
   title: 'Yeni Mərhələ Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Yeni Mərhələnin Qeydiyyatı Şöbəsi',
   toLabel: 'SƏNƏD SAHİBİ', fromLabel: 'TƏQDİM EDƏN', powersLabel: 'QEYDƏ ALINAN', penaltyLabel: 'ARZU',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və onun yeni mərhələyə keçdiyini təsdiq edir. Sənəd köhnə mərhələni ləğv etmir, arxivə salır.',
   powers: 'Status: yeni mərhələ, birinci il.\nƏvvəlki mərhələ uğurla bağlanıb.\nMüddət: qarşıdakı bütün illər.\nƏlavə qeyd: geri qaytarılmır.',
@@ -315,6 +351,7 @@ window.TEMPLATES.push(
 {
   id: 'dostluq-sehadetnamesi', cat: 'x-bonds', tone: 'xatire', layout: 'notarial', palette: 'gold',
   title: 'Dostluq Şəhadətnaməsi', tag: 'Klassik',
+  signOrg: 'Dostluq Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu şəhadətnamə ilə təsdiq olunur ki, {from} və {to} arasındakı dostluq uzun illərdir davam edir və heç bir mərhələdə fasilə verməmişdir. Başlanğıc tarixi dəqiq bilinmir, davamı isə şübhə doğurmur.',
   powers: 'Aylarla danışmamaq münasibəti dəyişmədi.\nÇətin gündə zəng birinci ondan gəldi.\nSevinc xəbəri ən əvvəl ona deyildi.\nHeç bir mübahisə dostluğu üstələmədi.',
@@ -323,6 +360,7 @@ window.TEMPLATES.push(
 {
   id: 'en-yaxsi-dost', cat: 'x-bonds', tone: 'xatire', layout: 'diplom', palette: 'burgundy',
   title: '«Ən Yaxşı Dost» Fəxri Fərmanı', tag: 'Təltif',
+  signOrg: 'Dostluq Təltiflərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu fərman {to} adlı şəxsə uzun illər ərzində göstərdiyi sarsılmaz dostluğa görə {from} tərəfindən təqdim olunur. Namizədlik müzakirə olunmadı, qərar birmənalı idi.',
   powers: 'Ən pis vəziyyətdə də gülməyə səbəb tapdı.\nHeç vaxt «mən sənə demişdim» demədi.\nKöçmək lazım olanda ilk gələn o oldu.\nSirr saxlamaq bacarığı sınaqdan keçdi.',
@@ -331,6 +369,7 @@ window.TEMPLATES.push(
 {
   id: 'uzunillik-dostluq', cat: 'x-bonds', tone: 'xatire', layout: 'sertifikat', palette: 'forest',
   title: 'Uzunillik Dostluq Nişanı', tag: 'Uzun illər',
+  signOrg: 'Uzunillik Dostluğun Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu nişan {to} adlı şəxsə {from} ilə uzun illər davam edən dostluğa görə təqdim olunur. Müddət hesablanmır, çünki başlanğıc tarixini heç biri dəqiq xatırlamır.',
   powers: 'Tanışlıq təsadüfi başladı, davamı təsadüfi olmadı.\nMəktəb, iş və şəhər dəyişdi, əlaqə dəyişmədi.\nAilələr də bir-birini tanıdı.\nOrtaq xatirələr sayı-hesabı itirdi.',
@@ -339,6 +378,7 @@ window.TEMPLATES.push(
 {
   id: 'hemise-yanimda', cat: 'x-bonds', tone: 'xatire', layout: 'viza', palette: 'rose',
   title: '«Həmişə Yanımda» Minnətdarlıq Sənədi', tag: 'Dəstək',
+  signOrg: 'Dost Dayağının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu sənəd {to} adlı şəxsə {from} tərəfindən ən çətin dövrlərdə yanında qaldığına görə təqdim olunur. Dəstək xahiş edilmədən, izahat tələb edilmədən göstərilmişdir.',
   powers: 'Gecə saatında zəng heç vaxt cavabsız qalmadı.\nSusmaq lazım olanda susdu, danışmaq lazım olanda danışdı.\nHeç bir mərhələdə nəsihət verməyə tələsmədi.\nYanında olduğunu sözlə deyil, iş ilə göstərdi.',
@@ -347,6 +387,7 @@ window.TEMPLATES.push(
 {
   id: 'dost-qrupu', cat: 'x-bonds', tone: 'xatire', layout: 'blank', palette: 'steel',
   title: 'Dost Qrupu Xatirə Sənədi', tag: 'Qrup',
+  signOrg: 'Dost Qruplarının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu sənədlə {from} tərəfindən {to} adlı qrupun uzun illər davam edən birliyi rəsmi qaydada qeydə alınır. Qrupun tərkibi ilk gündən bəri dəyişməyib və dəyişdirilməsi nəzərdə tutulmur.',
   powers: 'İllik görüş heç vaxt tam ləğv olunmadı.\nHər kəsin öz rolu var və dəyişdirilmir.\nKöhnə zarafatlar hələ də işləyir.\nBiri çətinliyə düşəndə qalanları xəbər tutur.',
@@ -355,6 +396,7 @@ window.TEMPLATES.push(
 {
   id: 'sirdas-etimadnamesi', cat: 'x-bonds', tone: 'xatire', layout: 'lisenziya', palette: 'ink',
   title: 'Sirdaş Etimadnaməsi', tag: 'Sirdaş',
+  signOrg: 'Sirdaşlıq və Etimad Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu etimadnamə {from} tərəfindən {to} adlı şəxsə verilir və ona tam sirdaş statusu tanıyır. Status uzun illərin sınağından sonra rəsmiləşdirilmişdir.',
   powers: 'Deyilən söz heç vaxt üçüncü şəxsə çatmadı.\nMühakimə etmədən dinləmək bacarığı təsdiqləndi.\nƏn narahat sual ondan gəldi və yerində idi.\nSusmaq lazım olan yeri dəqiq bildi.',
@@ -363,6 +405,7 @@ window.TEMPLATES.push(
 {
   id: 'dostluq-arayisi', cat: 'x-bonds', tone: 'xatire', layout: 'arayis', palette: 'gold',
   title: 'Dostluq Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Dostluq Münasibətlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Arayış {to} adlı şəxsə {from} tərəfindən verilir və aralarındakı dostluğun real, uzunmüddətli və şərtsiz olduğunu təsdiq edir. Təqdim olunduğu yerdən asılı olmayaraq qüvvədədir.',
   powers: 'Müşahidə dövrü: uzun illər, fasiləsiz.\nMünasibətdə maddi maraq aşkar edilməyib.\nÇətin dövrlərdə davamlılıq təsdiqlənib.\nƏtrafdakıların rəyi mübahisə doğurmur.',
@@ -371,6 +414,7 @@ window.TEMPLATES.push(
 {
   id: 'dostluq-qerari', cat: 'x-bonds', tone: 'xatire', layout: 'qerar', palette: 'burgundy',
   title: 'Dostluğun Təsdiqi Qərarı', tag: 'Qərar',
+  signOrg: 'Dostluğun Təsdiqi Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {from} və {to} arasındakı dostluq rəsmi təsdiqə ehtiyac duymayacaq qədər aydındır. Qərar buna baxmayaraq yazılı şəkildə tərtib olunur.',
   powers: 'İllərlə davam edən əlaqə sənədlə təsdiqlənir.\nHeç bir tərəf digərini yarı yolda qoymayıb.\nMübahisələr həmişə həmin gün bağlanıb.\nUzaqlıq əlaqənin keyfiyyətini azaltmayıb.',
@@ -379,6 +423,7 @@ window.TEMPLATES.push(
 {
   id: 'dostluq-sazisi', cat: 'x-bonds', tone: 'xatire', layout: 'muqavile', palette: 'forest',
   title: 'Dostluq Sazişi', tag: 'Saziş',
+  signOrg: 'Dostluq Sazişlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və dostluğun yazılmamış qaydalarını ilk dəfə yazıya alır. Qaydalar illərdir onsuz da tətbiq olunur.',
   powers: 'Zəngə ən geci həmin gün cavab verilir.\nKöçmək və təmir işlərində iştirak məcburidir.\nBorc məsələsi dostluğa daxil edilmir.\nMübahisə heç vaxt başqalarının yanında aparılmır.',
@@ -387,6 +432,7 @@ window.TEMPLATES.push(
 {
   id: 'dostluq-teleqrami', cat: 'x-bonds', tone: 'xatire', layout: 'teleqram', palette: 'steel',
   title: 'Dostluq Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Dostluq Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Uzun müddət yazılmadı, buna görə də mətn qısa tutulub. Qalan sözlər ilk görüşdə, uzun bir söhbətdə deyiləcək.',
   powers: 'Yadımdasan nöqtə\nUzaqlıq problem deyil nöqtə\nGörüş vaxtı gəldi nöqtə\nXəbər gözləyirəm nöqtə',
@@ -395,6 +441,7 @@ window.TEMPLATES.push(
 {
   id: 'en-yaxsi-dost-vesiqesi', cat: 'x-bonds', tone: 'xatire', layout: 'vesiqe', palette: 'rose',
   title: 'Ən Yaxşı Dost Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Ən Yaxşı Dost Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və onun ən yaxın dost statusunu təsdiq edir. Status uzun illərin nəticəsidir və müddətlə məhdudlaşdırılmır.',
   powers: 'Status: ən yaxın dost, birinci sırada.\nEtimad dərəcəsi: tam.\nMüddət: müəyyən edilməyib.\nƏlavə qeyd: alternativ namizəd yoxdur.',
@@ -403,6 +450,7 @@ window.TEMPLATES.push(
 {
   id: 'sedaqet-diplomu', cat: 'x-bonds', tone: 'xatire', layout: 'ekspertiza', palette: 'ink',
   title: 'Sədaqət Diplomu', tag: 'Sədaqət',
+  signOrg: 'Sədaqət və Etimad Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'SON SÖZ',
   preamble: 'Bu diplom {to} adlı şəxsə uzun illər ərzində nümayiş etdirdiyi sədaqətə görə {from} tərəfindən təqdim olunur. Sədaqət sınaqlardan keçmiş və təsdiqlənmişdir.',
   powers: 'Arxadan danışmaq halı qeydə alınmayıb.\nSöz verildikdə həmişə yerinə yetirildi.\nÇətin seçim qarşısında tərəf dəyişdirilmədi.\nUzun fasilələr münasibətə xələl gətirmədi.',
@@ -413,6 +461,7 @@ window.TEMPLATES.push(
 {
   id: 'valideynlere-minnetdarliq', cat: 'x-family', tone: 'xatire', layout: 'diplom', palette: 'gold',
   title: 'Valideynlərə Minnətdarlıq Sənədi', tag: 'Valideyn',
+  signOrg: 'Valideyn Zəhmətinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu sənəd {to} adlı şəxslərə {from} tərəfindən illər boyu göstərdikləri qayğıya və heç vaxt hesablanmayan zəhmətə görə təqdim olunur. Sənəd gec deyil, vaxtında verilmiş sayılır.',
   powers: 'Uşaqlıqda çəkilən zəhmət heç vaxt xatırladılmadı.\nÇətin illər övladdan gizlədildi.\nHər uğur öz uğurları kimi qeyd olundu.\nQapı hər zaman, hər saat açıq qaldı.',
@@ -421,6 +470,7 @@ window.TEMPLATES.push(
 {
   id: 'nene-babaya-xatire', cat: 'x-family', tone: 'xatire', layout: 'notarial', palette: 'rose',
   title: 'Nənə və Babaya Xatirə Sənədi', tag: 'Nənə-baba',
+  signOrg: 'Nəsil və Kök Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu sənədlə {from} tərəfindən {to} adlı şəxslərə uşaqlığın ən isti hissəsini onların evində keçirdiyi rəsmi qaydada bildirilir. Həmin evin qoxusu, səsi və süfrəsi yaddaşdan silinməyib.',
   powers: 'Yay tətilləri həmişə eyni həyətdə keçdi.\nDanışılan nağıllar hələ də yadda qalır.\nHeç bir səhv üçün danlanmadı.\nSüfrədə ən yaxşı yer həmişə saxlanıldı.',
@@ -429,6 +479,7 @@ window.TEMPLATES.push(
 {
   id: 'baci-qardas-sehadetnamesi', cat: 'x-family', tone: 'xatire', layout: 'sertifikat', palette: 'burgundy',
   title: 'Bacı-Qardaş Şəhadətnaməsi', tag: 'Bacı-qardaş',
+  signOrg: 'Bacı-Qardaş Bağlılığının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu şəhadətnamə ilə {from} və {to} arasındakı bacı-qardaş bağlılığı rəsmi qaydada təsdiq olunur. Bağlılıq seçilməyib, lakin hər gün yenidən qorunur.',
   powers: 'Uşaqlıq mübahisələri heç bir iz qoymadı.\nÇətin gündə birinci xəbər tutan o oldu.\nValideynlərin yanında tərəf saxlandı.\nOrtaq xatirələr başqasına izah olunmur.',
@@ -437,6 +488,7 @@ window.TEMPLATES.push(
 {
   id: 'yeni-dogulan-sehadetnamesi', cat: 'x-family', tone: 'xatire', layout: 'ekspertiza', palette: 'rose',
   title: 'Yeni Doğulanın Xatirə Şəhadətnaməsi', tag: 'Körpə',
+  signOrg: 'Yeni Doğulanların Xatirə Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu şəhadətnamə ilə {to} adlı şəxsin ailəyə qoşulması {from} tərəfindən xatirə üçün qeydə alınır. Həmin gün ailənin təqvimində əbədi yer aldı və hər il ayrıca qeyd olunur.',
   powers: 'Ad uzun müzakirədən sonra seçildi.\nİlk gecə evdə heç kim yatmadı.\nHamı eyni cümləni təkrarladı: gözü aydın.\nEv o gündən daha səsli və daha isti oldu.',
@@ -445,6 +497,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-birliyi', cat: 'x-family', tone: 'xatire', layout: 'blank', palette: 'forest',
   title: 'Ailə Birliyi Bəyannaməsi', tag: 'Birlik',
+  signOrg: 'Ailə Birliyinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu bəyannamə ilə {from} tərəfindən {to} adlı ailənin birliyi rəsmi qaydada bəyan olunur. Birlik çətin illərdə sınaqdan çıxmış və heç bir mərhələdə zəifləməmişdir.',
   powers: 'Böyük qərarlar ortaq masada verilir.\nHeç kim çətinliyi tək qarşılamadı.\nBayramlar bir ünvanda qeyd olunur.\nMübahisə evdən kənara çıxarılmır.',
@@ -453,6 +506,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-toplantisi', cat: 'x-family', tone: 'xatire', layout: 'viza', palette: 'ink',
   title: 'Ailə Toplantısı Xatirə Protokolu', tag: 'Protokol',
+  signOrg: 'Ailə Toplantılarının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu protokol {from} tərəfindən tərtib olunur və {to} adlı ailənin toplantısının gedişatını xatirə üçün qeydə alır. İclas gözləniləndən uzun sürmüşdür.',
   powers: 'Gündəlikdəki bütün məsələlərə baxıldı.\nSöz növbəsi bir dəfə də gözlənilmədi.\nYekun qərar süfrə arxasında qəbul olundu.\nNövbəti toplantının tarixi razılaşdırıldı.',
@@ -461,6 +515,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-uzvu-karti', cat: 'x-family', tone: 'xatire', layout: 'lisenziya', palette: 'steel',
   title: 'Ailə Üzvü Kartı', tag: 'Üzvlük',
+  signOrg: 'Ailə Üzvlüyünün Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu kart {to} adlı şəxsə {from} tərəfindən verilir və onun ailənin tamhüquqlu üzvü olduğunu təsdiq edir. Üzvlük qan bağına deyil, münasibətə əsaslanır.',
   powers: 'Süfrədə daimi yer ayrılıb.\nBayram siyahısına daxil edilib.\nEvin açarı təhvil verilib.\nAilə söhbətlərindən kənarda saxlanılmır.',
@@ -469,6 +524,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-arayisi', cat: 'x-family', tone: 'xatire', layout: 'arayis', palette: 'gold',
   title: 'Ailə Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Ailə Xatirələrinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Arayış {to} adlı şəxsə {from} tərəfindən verilir və onun ailənin ayrılmaz hissəsi olduğunu təsdiq edir. Arayış təqdim olunduğu hər yerdə qüvvədədir.',
   powers: 'Ailə siyahısında adı ilk sıralardadır.\nBütün mühüm günlərdə iştirakı qeydə alınıb.\nÇətin dövrlərdə payına düşən işi görüb.\nƏlaqə heç bir dövrdə kəsilməyib.',
@@ -477,6 +533,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-surasi-qerari', cat: 'x-family', tone: 'xatire', layout: 'qerar', palette: 'burgundy',
   title: 'Ailə Şurasının Qərarı', tag: 'Qərar',
+  signOrg: 'Ailə Qərarlarının Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {to} adlı şəxs ailənin fəxri hesab olunur. Qərar {from} tərəfindən təqdim olunan əsaslara istinadən yekdilliklə qəbul edilmişdir.',
   powers: 'Ailənin bütün üzvləri eyni rəydədir.\nƏsaslar uzun illərin müşahidəsinə söykənir.\nAlternativ təklif səsləndirilmədi.\nQərar süfrə arxasında elan olundu.',
@@ -485,6 +542,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-sazisi', cat: 'x-family', tone: 'xatire', layout: 'muqavile', palette: 'steel',
   title: 'Ailə Sazişi', tag: 'Saziş',
+  signOrg: 'Ailə Sazişlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və ailənin gündəlik qaydalarını səmimi şəkildə qeydə alır. Qaydalar illərdir yazısız tətbiq olunur.',
   powers: 'Şam yeməyi mümkün qədər birlikdə yeyilir.\nHəftədə bir dəfə zəng məcburidir.\nBayramlar bir ünvanda qeyd olunur.\nNarahat xəbər gizlədilmir.',
@@ -493,6 +551,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-teleqrami', cat: 'x-family', tone: 'xatire', layout: 'teleqram', palette: 'forest',
   title: 'Ailə Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Ailə Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Uzaq şəhərdən göndərilib, buna görə də mətn qısadır. Ətraflı danışıq ilk görüşə saxlanılır.',
   powers: 'Hamı sağ salamatdır nöqtə\nDarıxırıq nöqtə\nBayrama qədər gəlirik nöqtə\nÖzünüzdən muğayat olun nöqtə',
@@ -501,6 +560,7 @@ window.TEMPLATES.push(
 {
   id: 'aile-vesiqesi', cat: 'x-family', tone: 'xatire', layout: 'vesiqe', palette: 'ink',
   title: 'Ailə Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Ailə Qeydiyyatı Şöbəsi',
   toLabel: 'KİMƏ', fromLabel: 'KİMDƏN', powersLabel: 'ƏSASLAR', penaltyLabel: 'QEYD',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və onun ailəyə mənsubiyyətini təsdiq edir. Sənəd qeydiyyat ünvanından asılı deyil və heç bir mərhələdə yenidən baxılmaya təqdim olunmur.',
   powers: 'Ailə: bir soyad, bir süfrə.\nStatus: daimi üzv.\nMüddət: ömürlük.\nƏlavə qeyd: ünvan dəyişsə də status qalır.',
@@ -511,6 +571,7 @@ window.TEMPLATES.push(
 {
   id: 'ad-gunu-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'diplom', palette: 'rose',
   title: 'Ad Günü Təbriknaməsi', tag: 'Ad günü',
+  signOrg: 'Ad Günü Təbriklərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə ad günü münasibətilə {from} tərəfindən təqdim olunur. Arzular səmimi, ölçülü və tam ürəkdəndir; icrası üçün heç bir şərt qoyulmur.',
   powers: 'Qarşıdakı il əvvəlkindən sakit keçsin.\nPlanlar vaxtında və tələsmədən baş tutsun.\nSevindirən xəbərlər gözlənilmədən gəlsin.\nYaxınlar həmişə əlçatan məsafədə qalsın.',
@@ -519,6 +580,7 @@ window.TEMPLATES.push(
 {
   id: 'yubiley-fexri-fermani', cat: 'x-greetings', tone: 'xatire', layout: 'viza', palette: 'gold',
   title: 'Yubiley Fəxri Fərmanı', tag: 'Yubiley',
+  signOrg: 'Yubiley Mərasimlərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu fərman {to} adlı şəxsə yubiley münasibətilə {from} tərəfindən təqdim olunur. Keçən illər sayılmır, yaşanan günlər sayılır — bu göstəriciyə görə hesabat əladır.',
   powers: 'Qarşıdakı illər bu qədər dolu keçsin.\nSağlamlıq heç bir plana mane olmasın.\nEv həmişə qonaqla dolu olsun.\nƏn yaxşı xəbərlər hələ qabaqdadır.',
@@ -527,6 +589,7 @@ window.TEMPLATES.push(
 {
   id: 'novruz-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'notarial', palette: 'forest',
   title: 'Novruz Təbriknaməsi', tag: 'Novruz',
+  signOrg: 'Novruz Təbriklərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə Novruz bayramı münasibətilə {from} tərəfindən təqdim olunur. Bahar hər il eyni ümidlə qarşılanır və bu ümid indiyədək boşa çıxmayıb.',
   powers: 'Süfrə həmişə bu qədər səxavətli olsun.\nEv isti, qonaq çox olsun.\nKöhnə çətinliklər köhnə ildə qalsın.\nTonqaldan atlanan arzular yerinə yetsin.',
@@ -535,6 +598,7 @@ window.TEMPLATES.push(
 {
   id: 'yeni-il-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'sertifikat', palette: 'burgundy',
   title: 'Yeni İl Təbriknaməsi', tag: 'Yeni il',
+  signOrg: 'Yeni İl Təbriklərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə Yeni il münasibətilə {from} tərəfindən təqdim olunur. Ötən il üçün təşəkkür, gələn il üçün isə səmimi ümid bildirilir. Hesabat qapadılmış sayılır.',
   powers: 'Yeni il əvvəlkindən yüngül keçsin.\nBaşlanan işlər yarımçıq qalmasın.\nMasa arxasında hər kəs öz yerində olsun.\nGözlənilən xəbər nəhayət gəlsin.',
@@ -543,6 +607,7 @@ window.TEMPLATES.push(
 {
   id: 'bayram-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'blank', palette: 'gold',
   title: 'Bayram Təbriknaməsi', tag: 'Bayram',
+  signOrg: 'Bayram Təbriklərinin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə bayram münasibətilə {from} tərəfindən təqdim olunur. Bayramın əsl mənası süfrədə deyil, birlikdə keçirilən saatlardadır — bu sənəd məhz onları qeyd edir.',
   powers: 'Bayram süfrəsi hər il eyni adamlarla qurulsun.\nUzaqdakılar bu günə çatsın.\nEvin səsi kəsilməsin.\nKiçiklərin sevinci böyüklərə də keçsin.',
@@ -551,6 +616,7 @@ window.TEMPLATES.push(
 {
   id: 'sekkiz-mart-tebriknamesi', cat: 'x-greetings', tone: 'xatire', layout: 'ekspertiza', palette: 'rose',
   title: '8 Mart Təbriknaməsi', tag: '8 Mart',
+  signOrg: 'Bahar Bayramı Təbrikləri Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu təbriknamə {to} adlı şəxsə 8 Mart münasibətilə {from} tərəfindən təqdim olunur. Təbrik bir günlə məhdudlaşmır, sadəcə bu gün yazıya alınır.',
   powers: 'Zəhmət heç vaxt görünməz qalmasın.\nQayğı qarşılıqlı olsun.\nÖzü üçün ayrılan vaxt artsın.\nSevindirən xırdalıqlar tez-tez təkrarlansın.',
@@ -559,6 +625,7 @@ window.TEMPLATES.push(
 {
   id: 'tebrik-karti', cat: 'x-greetings', tone: 'xatire', layout: 'lisenziya', palette: 'steel',
   title: 'Təbrik Kartı', tag: 'Kart',
+  signOrg: 'Təbrik və Arzular Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu kart {to} adlı şəxsə {from} tərəfindən təbrik nişanəsi kimi verilir. Kart kiçikdir, arxasındakı istək isə deyil; ölçüsü ilə məzmunu arasında uyğunsuzluq qəsdən buraxılıb.',
   powers: 'Bu gün yalnız xoş xəbər gəlsin.\nPlanlar öz vaxtında baş tutsun.\nYorğunluq axşama qalmasın.\nSəbəb olmadan da sevinmək mümkün olsun.',
@@ -567,6 +634,7 @@ window.TEMPLATES.push(
 {
   id: 'tebrik-arayisi', cat: 'x-greetings', tone: 'xatire', layout: 'arayis', palette: 'ink',
   title: 'Təbrik Haqqında Arayış', tag: 'Arayış',
+  signOrg: 'Təbriklərin Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Arayış {to} adlı şəxsə {from} tərəfindən verilir və təbrikin rəsmi qaydada, vaxtında və tam səmimi şəkildə bildirildiyini təsdiq edir. Sənəd təqdim olunduğu hər yerdə əlavə yoxlama tələb etmir.',
   powers: 'Təbrik gününə bir gün də gecikməyib.\nArzuların sayı və keyfiyyəti yoxlanılıb.\nSəmimilik dərəcəsi: tam.\nTəkrar təbrik üçün maneə yoxdur.',
@@ -575,6 +643,7 @@ window.TEMPLATES.push(
 {
   id: 'tebrik-qerari', cat: 'x-greetings', tone: 'xatire', layout: 'qerar', palette: 'burgundy',
   title: 'Təbrik Haqqında Qərar', tag: 'Qərar',
+  signOrg: 'Təbrik Qərarlarının Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Baxılan müraciət üzrə müəyyən edildi ki, {to} adlı şəxs təbrikə layiqdir. Qərar {from} tərəfindən təqdim olunan əsaslara istinadən yekdilliklə qəbul edilmişdir.',
   powers: 'Səbəb aydındır və mübahisə doğurmur.\nƏtrafdakıların rəyi yekdildir.\nTəbrikin gecikdirilməsi yolverilməz sayıldı.\nArzuların icrasına dərhal başlanılır.',
@@ -583,6 +652,7 @@ window.TEMPLATES.push(
 {
   id: 'arzular-sazisi', cat: 'x-greetings', tone: 'xatire', layout: 'muqavile', palette: 'forest',
   title: 'Arzular Sazişi', tag: 'Saziş',
+  signOrg: 'Arzular və Diləklər Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Bu saziş {from} və {to} arasında bağlanır və bildirilən arzuların yerinə yetirilməsi üçün qarşılıqlı dəstəyi qeydə alır. Arzular real və əlçatan sayılır.',
   powers: 'Böyük arzu kiçik addımlara bölünür.\nHər mərhələdə dəstək göstərilir.\nGecikmə səbəb sayılmır, davam edilir.\nYerinə yetən arzu qeyd olunur.',
@@ -591,6 +661,7 @@ window.TEMPLATES.push(
 {
   id: 'tebrik-teleqrami', cat: 'x-greetings', tone: 'xatire', layout: 'teleqram', palette: 'gold',
   title: 'Təbrik Teleqramı', tag: 'Qısa mesaj',
+  signOrg: 'Təbrik Bildirişləri üzrə Rabitə Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Təcili çatdırılır. {from} tərəfindən {to} adlı şəxsə ünvanlanmışdır. Günün əsas xəbəri bu teleqramdır. Uzun təbrik mətni yerinə qısa və dəqiq forma seçilib, səmimilik isə azalmayıb.',
   powers: 'Təbrik edirik nöqtə\nSağlam ol nöqtə\nArzular yerinə yetsin nöqtə\nGörüşənədək nöqtə',
@@ -599,6 +670,7 @@ window.TEMPLATES.push(
 {
   id: 'yubilyar-vesiqesi', cat: 'x-greetings', tone: 'xatire', layout: 'vesiqe', palette: 'steel',
   title: 'Yubilyar Vəsiqəsi', tag: 'Vəsiqə',
+  signOrg: 'Yubilyarların Qeydiyyatı Şöbəsi',
   toLabel: 'TƏBRİK OLUNAN', fromLabel: 'TƏBRİK EDƏN', powersLabel: 'ARZULAR', penaltyLabel: 'QEYD',
   preamble: 'Vəsiqə {to} adlı şəxsə {from} tərəfindən verilir və onun günün yubilyarı statusunu təsdiq edir. Status bir gün deyil, bütün həftə qüvvədədir.',
   powers: 'Status: günün yubilyarı.\nSüfrədə baş yer ayrılıb.\nBütün istəklər növbədənkənar yerinə yetirilir.\nMüddət: bayram həftəsi.',
