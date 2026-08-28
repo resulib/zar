@@ -27,6 +27,107 @@ final class TemplateSchema
     public const MAX_ROW_LEN    = 40;
     public const MAX_OPT_LEN    = 100;
 
+    /* ---------------- variant siyahıları ----------------
+       `MAX_PICK` 4-dür, 6 deyil: doc.js-də dizaynlar 4–7 bənd çəkir və beşi
+       (lisenziya · arayis · teleqram · muqavile · notarial) cəmi 4 göstərir.
+       İstifadəçi dizaynı işləmə vaxtı dəyişə bildiyi üçün yeganə təhlükəsiz
+       say minimumdur. `MAX_POWER_LINE` 90: 4 × 90 + 3 = 363 ≤ limits.powers (600). */
+    public const MAX_TITLE_OPTS   = 12;
+    public const MAX_POWER_OPTS   = 20;
+    public const MAX_PENALTY_OPTS = 10;
+    public const MAX_POWER_LINE   = 90;
+    public const MAX_PICK         = 4;
+
+    /**
+     * Sətir-sətir textarea → variant siyahısı.
+     * Trim olunur, boş sətir və təkrar atılır, uzunluq kəsilmir (səhv kimi bildirilir).
+     *
+     * @return list<string>
+     */
+    public static function parseOptions(?string $raw, int $maxItems, int $maxLen): array
+    {
+        $raw = trim((string) $raw);
+
+        if ($raw === '') {
+            return [];
+        }
+
+        $out = [];
+        foreach (preg_split('/\R/u', $raw) ?: [] as $line) {
+            $line = trim(preg_replace('/[ \t]+/u', ' ', $line) ?? '');
+            if ($line === '' || in_array($line, $out, true)) {
+                continue;
+            }
+            $out[] = mb_substr($line, 0, $maxLen, 'UTF-8');
+            if (count($out) >= $maxItems) {
+                break;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Variant siyahısının səhvləri — admin formasında sətir-sətir göstərilir.
+     *
+     * @return list<string>
+     */
+    public static function optionErrors(string $label, ?string $raw, int $maxItems, int $maxLen): array
+    {
+        $raw = trim((string) $raw);
+
+        if ($raw === '') {
+            return [];
+        }
+
+        $err  = [];
+        $seen = [];
+        $n    = 0;
+
+        foreach (preg_split('/\R/u', $raw) ?: [] as $line) {
+            $line = trim(preg_replace('/[ \t]+/u', ' ', $line) ?? '');
+            if ($line === '') {
+                continue;
+            }
+            $n++;
+
+            if (mb_strlen($line) > $maxLen) {
+                $err[] = "{$label}: {$n}-ci sətir {$maxLen} simvolu aşır.";
+            }
+            if (in_array($line, $seen, true)) {
+                $err[] = "{$label}: {$n}-ci sətir təkrarlanır.";
+            }
+            $seen[] = $line;
+        }
+
+        if ($n > $maxItems) {
+            $err[] = "{$label}: ən çoxu {$maxItems} sətir ola bilər, {$n} verilib.";
+        }
+
+        return $err;
+    }
+
+    /**
+     * Bənd seçimi üçün say aralığı: 1 ≤ min ≤ max ≤ min(MAX_PICK, variant sayı).
+     *
+     * @return array{0:int,1:int}
+     */
+    public static function pickRange(mixed $min, mixed $max, int $count): array
+    {
+        if ($count < 1) {
+            return [1, 1];
+        }
+
+        $ceil = min(self::MAX_PICK, $count);
+        $lo   = Sanitizer::scale($min, 1, self::MAX_PICK) ?? 1;
+        $hi   = Sanitizer::scale($max, 1, self::MAX_PICK) ?? self::MAX_PICK;
+
+        $lo = max(1, min($lo, $ceil));
+        $hi = max($lo, min($hi, $ceil));
+
+        return [$lo, $hi];
+    }
+
     /**
      * Sxemi yoxlayır və Azərbaycan dilində səhv siyahısı qaytarır.
      * Boş siyahı — sxem etibarlıdır.

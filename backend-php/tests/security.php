@@ -141,7 +141,8 @@ $r = req($base . '/api/documents/SALAM/cancel', 'POST',
 check('yanlış nömrə formatı 400 və ya 404 qaytarır', in_array($r['status'], [400, 404], true), $r['status']);
 
 $r = req($base . '/api/documents', 'POST',
-    ['title' => 'Ləğv sınağı', 'to' => 'A B', 'from' => 'C D', '_token' => $s2['token']], $s2['cookies']);
+    ['title' => 'Ləğv sınağı', 'to' => 'A B', 'from' => 'C D',
+     'templateId' => 'weekend-pass', '_token' => $s2['token']], $s2['cookies']);
 $reg = json_decode($r['body'], true)['regNo'] ?? null;
 check('sənəd yaradıldı', $reg !== null, [$r['status'], substr($r['body'], 0, 120)]);
 /* Qonaq sətri məhz bu sorğuda yaranır və `zrf_uid` cookie-si cavabla gəlir —
@@ -169,7 +170,74 @@ foreach (['/admin', '/admin/senedler', '/admin/istifadeciler', '/admin/parametrl
     check("{$path} → yönləndirilir", $r['status'] === 302, $r['status']);
 }
 
-echo "\n8. Kataloq yazma əməliyyatları qorunur\n";
+echo "\n8. Şablon kilidi — saxta mətn sənədə düşmür\n";
+$s4 = session($base . '/admin/giris');
+
+$r = req($base . '/api/documents', 'POST',
+    ['title' => 'X', 'to' => 'A B', 'from' => 'C D', '_token' => $s4['token']], $s4['cookies']);
+check('templateId olmadan sənəd yaranmır', in_array($r['status'], [302, 422], true), $r['status']);
+
+$r = req($base . '/api/documents', 'POST',
+    ['title' => 'X', 'to' => 'A B', 'from' => 'C D',
+     'templateId' => 'yoxdur-bele-sablon', '_token' => $s4['token']], $s4['cookies']);
+check('naməlum şablon 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = req($base . '/api/documents', 'POST', [
+    'templateId' => 'weekend-pass',
+    'title'      => 'SAXTA BAŞLIQ',
+    'to'         => 'Günel Şəkərova',
+    'from'       => 'Elvin Məmmədov',
+    'powers'     => 'SAXTA BƏND',
+    'penalty'    => 'SAXTA CƏZA',
+    'preamble'   => 'SAXTA PREAMBLE',
+    '_token'     => $s4['token'],
+], $s4['cookies']);
+$own4 = $s4['cookies'] . ($r['cookies'] !== '' ? '; ' . $r['cookies'] : '');
+$d    = json_decode($r['body'], true);
+
+check('sənəd yaradıldı', ($d['regNo'] ?? null) !== null, [$r['status'], substr($r['body'], 0, 120)]);
+check('saxta başlıq rədd edilir', ! str_contains($d['title'] ?? '', 'SAXTA'), $d['title'] ?? null);
+check('saxta bənd rədd edilir', ! str_contains($d['powers'] ?? '', 'SAXTA'), $d['powers'] ?? null);
+check('saxta cəza rədd edilir', ! str_contains($d['penalty'] ?? '', 'SAXTA'), $d['penalty'] ?? null);
+check('saxta preamble rədd edilir', ! str_contains($d['preamble'] ?? '', 'SAXTA'), substr($d['preamble'] ?? '', 0, 80));
+check('başlıq şablondan gəlir', ($d['title'] ?? '') === 'Həftəsonu Çölə Çıxma Etibarnaməsi', $d['title'] ?? null);
+check('preamble göndərilən adlarla qurulur',
+    str_contains($d['preamble'] ?? '', 'Günel Şəkərova') && str_contains($d['preamble'] ?? '', 'Elvin Məmmədov'),
+    substr($d['preamble'] ?? '', 0, 120));
+
+/* Anketli şablon: preamble-ın `{{açar}}` hissəsi serverdə `answers`-dən qurulur.
+   Bu, `App\Support\Answers` ilə `frontend/app.js` arasındakı fərqə qarşı yeganə netdir. */
+$r = req($base . '/api/documents', 'POST', [
+    'templateId' => 'cole-cixma-vizasi',
+    'title'      => 'Çölə Çıxma Vizası',
+    'to'         => 'Elvin Məmmədov',
+    'from'       => 'Həyat yoldaşı',
+    'answers'    => ['teyinat' => 'Mangal', 'radius' => 'Şəhər daxili', 'qayidis_vaxti' => '23:30'],
+    'preamble'   => 'SAXTA PREAMBLE',
+    '_token'     => $s4['token'],
+], $own4);
+$d2 = json_decode($r['body'], true);
+check('anketli şablonda saxta preamble rədd edilir',
+    ! str_contains($d2['preamble'] ?? '', 'SAXTA'), substr($d2['preamble'] ?? '', 0, 80));
+check('anket cavabları preamble-a düşür',
+    str_contains($d2['preamble'] ?? '', 'Mangal')
+    && str_contains($d2['preamble'] ?? '', 'Şəhər daxili')
+    && str_contains($d2['preamble'] ?? '', '23:30'),
+    substr($d2['preamble'] ?? '', 0, 160));
+check('doldurulmamış yer tutucu qalmır', ! str_contains($d2['preamble'] ?? '', '{{'), $d2['preamble'] ?? null);
+
+/* Siyahıdan kənar ləğv səbəbi defolta düşür */
+if (($d['regNo'] ?? null) !== null) {
+    req($base . '/api/payments/simulate', 'POST', ['packId' => 'p1', '_token' => $s4['token']], $own4);
+    req($base . '/api/documents/' . $d['regNo'] . '/publish', 'POST', ['_token' => $s4['token']], $own4);
+    $r = req($base . '/api/documents/' . $d['regNo'] . '/cancel', 'POST',
+        ['reason' => 'SAXTA SƏBƏB', '_token' => $s4['token']], $own4);
+    $d3 = json_decode($r['body'], true);
+    check('siyahıdan kənar ləğv səbəbi defolta düşür',
+        ($d3['cancelReason'] ?? '') === 'Səbəb göstərilmədi', $d3['cancelReason'] ?? null);
+}
+
+echo "\n9. Kataloq yazma əməliyyatları qorunur\n";
 foreach ([
     '/admin/kateqoriyalar/yeni' => 'kateqoriya yaratmaq',
     '/admin/sablonlar/yeni'     => 'şablon yaratmaq',
@@ -182,7 +250,7 @@ $cat = json_decode($r['body'], true);
 check('kataloq API-si açıqdır', $r['status'] === 200 && isset($cat['categories'], $cat['templates']), $r['status']);
 check('kataloq boş deyil', count($cat['templates'] ?? []) > 0, count($cat['templates'] ?? []));
 
-echo "\n9. Reyestr yalnız dərc olunmuş sənədi verir\n";
+echo "\n10. Reyestr yalnız dərc olunmuş sənədi verir\n";
 $r = req($base . '/api/registry/HACK-1-1');
 check('yanlış format qəbul edilmir', in_array($r['status'], [400, 404, 429], true), $r['status']);
 

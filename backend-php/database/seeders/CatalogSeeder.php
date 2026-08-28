@@ -91,6 +91,16 @@ class CatalogSeeder extends Seeder
                 'cancel_reasons' => $t['cancel_reasons'] ?? null,
             ]);
 
+            /* Variant siyahıları QORUNUR: köhnə catalog.json-da hamısı null olur və
+               `fill()`-ə qoyulsalar, növbəti `db:seed` adminin daxil etdiyi bütün
+               variantları sükutla silərdi — sayt xəbərsiz açılardı. Yalnız toxumda
+               həqiqi dəyər varsa yazılır. */
+            foreach (['title_options', 'powers_options', 'penalty_options', 'powers_min', 'powers_max'] as $key) {
+                if (array_key_exists($key, $t) && $t[$key] !== null) {
+                    $tpl->{$key} = $t[$key];
+                }
+            }
+
             if ($new) {
                 $tpl->sort      = $t['sort'] ?? 0;
                 $tpl->is_active = true;

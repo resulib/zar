@@ -7,9 +7,11 @@ namespace App\Services;
 use App\Models\Document;
 use App\Models\Template;
 use App\Models\User;
+use App\Support\Answers;
 use App\Support\RegistryNumber;
 use App\Support\RegistryPrefix;
 use App\Support\Sanitizer;
+use App\Support\TemplateSchema;
 use Illuminate\Support\Carbon;
 
 class DocumentService
@@ -31,20 +33,41 @@ class DocumentService
             }
         }
 
+        /* Şablon kataloqdan gəlir. Başlıq, bəndlər, cəza bəndi və preamble
+           KLİENTDƏN DEYİL, buradan qurulur — klient yalnız hansı variantı
+           seçdiyini bildirir. Açılan siyahılar saytda sadəcə rahatlıqdır. */
         $templateId = Sanitizer::text($input['templateId'] ?? null, 40) ?: null;
+        $tpl = $templateId === null ? null : Template::query()->where('slug', $templateId)->first();
+
+        /* `active()` süzgəci qəsdən yoxdur: səhifə açıldıqdan sonra söndürülmüş
+           şablon legitim ziyarətçini rədd edərdi, sətir isə hələ də doğru
+           variant siyahılarını daşıyır. */
+        if (! $tpl) {
+            throw new \RuntimeException('bad_template');
+        }
+
+        $to   = Sanitizer::person($input['to'] ?? null, $limits['name']);
+        $from = Sanitizer::person($input['from'] ?? null, $limits['name']);
+
+        $answers  = Answers::clean($tpl->fields, $input['answers'] ?? null);
+        $preamble = str_replace(
+            ['{to}', '{from}'],
+            [$to !== '' ? $to : 'Ad Soyad', $from !== '' ? $from : 'Ad Soyad'],
+            (string) $tpl->preamble
+        );
 
         return Document::create([
             'extra'       => $this->extraFrom($input) ?: null,
             'expires_at'  => $this->expiryFrom($input),
-            'reg_no'      => $this->nextRegNo($templateId),
+            'reg_no'      => $this->nextRegNo($tpl),
             'user_id'     => $user->id,
             'template_id' => $templateId,
-            'title'       => Sanitizer::text($input['title'] ?? null, $limits['title']),
-            'to_name'     => Sanitizer::text($input['to'] ?? null, $limits['name']),
-            'from_name'   => Sanitizer::text($input['from'] ?? null, $limits['name']),
-            'powers'      => Sanitizer::multiline($input['powers'] ?? null, $limits['powers'], $limits['power_lines']),
-            'penalty'     => Sanitizer::text($input['penalty'] ?? null, $limits['penalty']),
-            'preamble'    => Sanitizer::text($input['preamble'] ?? null, $limits['preamble']),
+            'title'       => $this->pickTitle($tpl, $input, $limits),
+            'to_name'     => $to,
+            'from_name'   => $from,
+            'powers'      => $this->pickPowers($tpl, $input, $limits),
+            'penalty'     => $this->pickPenalty($tpl, $input, $limits),
+            'preamble'    => Sanitizer::text(Answers::fill($preamble, $answers), $limits['preamble']),
             'date_label'  => Carbon::now()->format('d.m.Y'),
             'layout'      => Sanitizer::pick($input['layout'] ?? null, config('zarafat.layouts'), 'notarial'),
             'palette'     => Sanitizer::pick($input['palette'] ?? null, config('zarafat.palettes'), 'gold'),
@@ -114,12 +137,56 @@ class DocumentService
             return $document;
         }
 
+        /* Səbəb şablonun siyahısındandır — açılan siyahı yalnız UI-dır.
+           Siyahı yoxdursa yeganə icazəli dəyər defolt mətndir. */
+        $tpl = $document->template_id === null ? null
+            : Template::query()->where('slug', $document->template_id)->first();
+        $reasons = is_array($tpl?->cancel_reasons) ? array_values($tpl->cancel_reasons) : [];
+
         $document->forceFill([
             'cancelled_at'  => Carbon::now(),
-            'cancel_reason' => Sanitizer::text($reason, 60) ?: 'Səbəb göstərilmədi',
+            'cancel_reason' => Sanitizer::pickText($reason, $reasons, 'Səbəb göstərilmədi', 60),
         ])->save();
 
         return $document->refresh();
+    }
+
+    /* ---------------- variant kilidi ----------------
+       Üçü də eyni qaydadadır: siyahı varsa dəyər ondan seçilir, yoxdursa
+       şablonun öz mətni işlənir. Klientin göndərdiyi mətn heç vaxt olduğu
+       kimi saxlanılmır. */
+
+    protected function pickTitle(Template $tpl, array $input, array $limits): string
+    {
+        $opts = is_array($tpl->title_options) ? array_values($tpl->title_options) : [];
+
+        return $opts === []
+            ? Sanitizer::text($tpl->title, $limits['title'])
+            : Sanitizer::pickText($input['title'] ?? null, $opts, (string) $tpl->title, $limits['title']);
+    }
+
+    protected function pickPenalty(Template $tpl, array $input, array $limits): string
+    {
+        $opts = is_array($tpl->penalty_options) ? array_values($tpl->penalty_options) : [];
+
+        return $opts === []
+            ? Sanitizer::text($tpl->penalty, $limits['penalty'])
+            : Sanitizer::pickText($input['penalty'] ?? null, $opts, (string) $tpl->penalty, $limits['penalty']);
+    }
+
+    protected function pickPowers(Template $tpl, array $input, array $limits): string
+    {
+        $opts = is_array($tpl->powers_options) ? array_values($tpl->powers_options) : [];
+        $own  = Sanitizer::multiline($tpl->powers, $limits['powers'], $limits['power_lines']);
+
+        if ($opts === []) {
+            return $own;
+        }
+
+        [$min, $max] = TemplateSchema::pickRange($tpl->powers_min, $tpl->powers_max, count($opts));
+        $picked = Sanitizer::pickList($input['powers'] ?? null, $opts, $min, $max, TemplateSchema::MAX_POWER_LINE);
+
+        return $picked === [] ? $own : implode("\n", $picked);
     }
 
     /** Anket cavabları — `labels` sütunu ilə eyni nümunə. @return array<string, mixed> */
@@ -207,16 +274,12 @@ class DocumentService
      * kataloqdakı `templates.reg_prefix` → `RegistryPrefix::MAP` → qlobal prefiks.
      * İkinci addım arxiv/toxum şablonları üçün qalır.
      */
-    protected function nextRegNo(?string $templateId = null): string
+    protected function nextRegNo(?Template $tpl = null): string
     {
         $fallback = (string) config('zarafat.reg_prefix');
 
-        $fromCatalog = $templateId === null ? null : Template::query()
-            ->where('slug', $templateId)
-            ->value('reg_prefix');
-
         return RegistryNumber::generate(
-            $fromCatalog ?: RegistryPrefix::for($templateId, $fallback),
+            ($tpl?->reg_prefix) ?: RegistryPrefix::for($tpl?->slug, $fallback),
             (int) Carbon::now()->year,
             static fn (string $candidate): bool => Document::query()->where('reg_no', $candidate)->exists(),
         );

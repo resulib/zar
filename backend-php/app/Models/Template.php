@@ -15,7 +15,9 @@ class Template extends Model
         'title', 'tag', 'preamble', 'powers', 'penalty',
         'to_label', 'from_label', 'powers_label', 'penalty_label',
         'reg_prefix', 'sign_title', 'sign_org', 'share',
-        'fields', 'notes', 'cancel_reasons', 'sort', 'is_active',
+        'fields', 'notes', 'cancel_reasons',
+        'title_options', 'powers_options', 'powers_min', 'powers_max', 'penalty_options',
+        'sort', 'is_active',
     ];
 
     protected function casts(): array
@@ -24,6 +26,11 @@ class Template extends Model
             'fields'         => 'array',
             'notes'          => 'array',
             'cancel_reasons' => 'array',
+            'title_options'   => 'array',
+            'powers_options'  => 'array',
+            'penalty_options' => 'array',
+            'powers_min'      => 'integer',
+            'powers_max'      => 'integer',
             'sort'           => 'integer',
             'is_active'      => 'boolean',
         ];
@@ -87,6 +94,22 @@ class Template extends Model
             if ($value !== null && $value !== '' && $value !== []) {
                 $out[$key] = $value;
             }
+        }
+
+        /* Variant siyahıları. `powersMin`/`powersMax` yalnız siyahı ilə birlikdə
+           göndərilir — əks halda 216 şablona mənasız iki açar əlavə olunardı. */
+        if (is_array($this->title_options) && $this->title_options !== []) {
+            $out['titleOptions'] = array_values($this->title_options);
+        }
+
+        if (is_array($this->powers_options) && $this->powers_options !== []) {
+            $out['powersOptions'] = array_values($this->powers_options);
+            $out['powersMin']     = $this->powers_min;
+            $out['powersMax']     = $this->powers_max;
+        }
+
+        if (is_array($this->penalty_options) && $this->penalty_options !== []) {
+            $out['penaltyOptions'] = array_values($this->penalty_options);
         }
 
         return $out;

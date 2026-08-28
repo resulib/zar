@@ -163,6 +163,12 @@ input, textarea, select { font: inherit; }
 .range-val { font: 600 13px/1 var(--mono); color: var(--blue); text-align: right; }
 .field .err { display: block; margin-top: 5px; font-size: 11.5px; color: var(--red); }
 .input.free { margin-top: 6px; }
+
+/* Kilidli sahə: şablonun öz mətni göstərilir, redaktə olunmur. */
+.input[readonly], .textarea[readonly] {
+  background: var(--tint); color: var(--ink-2); border-style: dashed; cursor: default;
+}
+.input[readonly]:focus, .textarea[readonly]:focus { outline: none; border-color: var(--rule-hard); }
 input[type="time"].input, input[type="date"].input,
 input[type="datetime-local"].input, input[type="number"].input { font-family: var(--mono); }
 

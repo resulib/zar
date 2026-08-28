@@ -7,6 +7,9 @@
 @section('tools')<form method="POST" action="{{ route('admin.logout') }}">@csrf<button class="chip" type="submit">Çıxış</button></form>@endsection
 
 @php
+  $linesOf = static function ($value): string {
+      return is_array($value) ? implode("\n", $value) : '';
+  };
   $jsonOf = static function ($value): string {
       return $value === null || $value === []
           ? ''
@@ -152,6 +155,57 @@
           <label class="label" for="penalty_label">Cəza bəndinin başlığı</label>
           <input id="penalty_label" class="input" name="penalty_label" maxlength="40" value="{{ old('penalty_label', $template->penalty_label) }}">
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <div class="panel-head"><span class="label">İstifadəçi seçimləri</span></div>
+    <div class="panel-body">
+      <p class="micro" style="margin-bottom:14px;line-height:1.65">
+        Saytda ziyarətçi yalnız adları sərbəst yazır. Başlıq, bəndlər və cəza bəndi
+        buradakı variantlardan seçilir. Sahəni boş qoysanız, şablonun yuxarıdakı öz mətni
+        ziyarətçiyə <b>dəyişdirilə bilməyən</b> şəkildə göstərilir — sayt beləcə də təhlükəsizdir.
+      </p>
+
+      <div class="field">
+        <label class="label" for="title_options">Başlıq variantları</label>
+        <textarea id="title_options" class="textarea mono" name="title_options" rows="4" spellcheck="false"
+                  placeholder="Hər sətir bir variant">{{ old('title_options', $linesOf($template->title_options)) }}</textarea>
+        <span class="hint">Ən çoxu {{ \App\Support\TemplateSchema::MAX_TITLE_OPTS }} sətir × {{ config('zarafat.limits.title') }} simvol.</span>
+      </div>
+
+      <div class="field">
+        <label class="label" for="powers_options">Bənd variantları</label>
+        <textarea id="powers_options" class="textarea mono" name="powers_options" rows="8" spellcheck="false"
+                  placeholder="Hər sətir bir bənd">{{ old('powers_options', $linesOf($template->powers_options)) }}</textarea>
+        <span class="hint">Ən çoxu {{ \App\Support\TemplateSchema::MAX_POWER_OPTS }} sətir × {{ \App\Support\TemplateSchema::MAX_POWER_LINE }} simvol.</span>
+      </div>
+
+      <div class="cols2">
+        <div class="field">
+          <label class="label" for="powers_min">Ən azı seçilən</label>
+          <input id="powers_min" class="input mono" type="number" name="powers_min"
+                 min="1" max="{{ \App\Support\TemplateSchema::MAX_PICK }}"
+                 value="{{ old('powers_min', $template->powers_min ?? 1) }}">
+        </div>
+        <div class="field">
+          <label class="label" for="powers_max">Ən çoxu seçilən</label>
+          <input id="powers_max" class="input mono" type="number" name="powers_max"
+                 min="1" max="{{ \App\Support\TemplateSchema::MAX_PICK }}"
+                 value="{{ old('powers_max', $template->powers_max ?? \App\Support\TemplateSchema::MAX_PICK) }}">
+          <span class="hint">
+            Ən çoxu {{ \App\Support\TemplateSchema::MAX_PICK }} — bəzi dizaynlar sənəddə yalnız
+            {{ \App\Support\TemplateSchema::MAX_PICK }} bənd göstərir, istifadəçi isə dizaynı dəyişə bilir.
+          </span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:0">
+        <label class="label" for="penalty_options">Cəza bəndi variantları</label>
+        <textarea id="penalty_options" class="textarea mono" name="penalty_options" rows="5" spellcheck="false"
+                  placeholder="Hər sətir bir variant">{{ old('penalty_options', $linesOf($template->penalty_options)) }}</textarea>
+        <span class="hint">Ən çoxu {{ \App\Support\TemplateSchema::MAX_PENALTY_OPTS }} sətir × {{ config('zarafat.limits.penalty') }} simvol.</span>
       </div>
     </div>
   </div>
@@ -320,6 +374,12 @@
     });
   }
 
+  /* Sətir-sətir variant sahəsi. */
+  function lines(id) {
+    return ($(id).value || '').split(/\r?\n/)
+      .map(function (l) { return l.trim(); }).filter(Boolean);
+  }
+
   /* Klient tərəfi sürətli yoxlama — son sözü server `TemplateSchema` deyir. */
   function parseJson(id, label, out) {
     var raw = ($(id).value || '').trim();
@@ -354,6 +414,26 @@
     return keys;
   }
 
+  /* Variant siyahılarının sürətli yoxlaması — serverdəki `optionErrors()` güzgüsü. */
+  function checkOptions(tOpts, pOpts, qOpts, hasFields, out) {
+    [['Başlıq variantları', tOpts, 12, 70], ['Bənd variantları', pOpts, 20, 90],
+     ['Cəza bəndi variantları', qOpts, 10, 300]].forEach(function (x) {
+      var label = x[0], list = x[1], maxN = x[2], maxL = x[3], seen = {};
+      if (list.length > maxN) out.push(label + ': ən çoxu ' + maxN + ' sətir ola bilər, ' + list.length + ' verilib.');
+      list.forEach(function (o, i) {
+        if (o.length > maxL) out.push(label + ': ' + (i + 1) + '-ci sətir ' + maxL + ' simvolu aşır.');
+        if (seen[o]) out.push(label + ': ' + (i + 1) + '-ci sətir təkrarlanır.');
+        seen[o] = 1;
+      });
+    });
+    if (hasFields && (tOpts.length || pOpts.length || qOpts.length))
+      out.push('Anket sxemi olan şablonda variant siyahıları işləmir — biri boş qalmalıdır.');
+    var pMin = parseInt($('powers_min').value, 10) || 1, pMax = parseInt($('powers_max').value, 10) || 4;
+    if (pOpts.length && pMin > pMax) out.push('«Ən azı seçilən» «ən çoxu seçilən»dən böyük ola bilməz.');
+    if (pOpts.length && pMax > pOpts.length)
+      out.push('«Ən çoxu seçilən» variant sayından (' + pOpts.length + ') böyük ola bilməz.');
+  }
+
   function build() {
     var errs = [];
     var fields = parseJson('fields', 'Anket sxemi', errs) || [];
@@ -361,6 +441,11 @@
     parseJson('cancel_reasons', 'Ləğv səbəbləri', errs);
 
     var keys = Array.isArray(fields) ? checkFields(fields, errs) : {};
+
+    /* İstifadəçi ziyarətçinin açılışda gördüyü halı görməlidir: ilk variantlar. */
+    var tOpts = lines('title_options'), pOpts = lines('powers_options'), qOpts = lines('penalty_options');
+    var pMinPick = Math.max(1, Math.min(parseInt($('powers_min').value, 10) || 1, pOpts.length || 1));
+    checkOptions(tOpts, pOpts, qOpts, !!(fields && fields.length), errs);
 
     var vals = {}, data = [], checks = [], scale = null, into = {};
     fields.forEach(function (f) {
@@ -399,10 +484,11 @@
       layout: $('layout').value, palette: $('palette').value,
       toLabel: $('to_label').value || null, fromLabel: $('from_label').value || null,
       powersLabel: $('powers_label').value || null, penaltyLabel: $('penalty_label').value || null,
-      title: into.title || $('title').value || '—',
+      title: into.title || tOpts[0] || $('title').value || '—',
       to: to, from: from,
-      powers: (checks.length ? checks : (notes || [])).join('\n') || $('powers').value,
-      penalty: $('penalty').value,
+      powers: (checks.length ? checks : (notes || [])).join('\n')
+        || (pOpts.length ? pOpts.slice(0, pMinPick).join('\n') : $('powers').value),
+      penalty: qOpts[0] || $('penalty').value,
       preamble: fill(pre, vals),
       data: data.length ? data : null,
       checks: checks.length ? checks : null,

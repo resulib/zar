@@ -18,6 +18,7 @@ require __DIR__ . '/../app/Support/RegistryPrefix.php';
 require __DIR__ . '/../app/Support/Moderation.php';
 require __DIR__ . '/../app/Support/Sanitizer.php';
 require __DIR__ . '/../app/Support/TemplateSchema.php';
+require __DIR__ . '/../app/Support/Answers.php';
 require __DIR__ . '/../app/Support/Payments/PaymentProvider.php';
 require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
@@ -29,6 +30,7 @@ use App\Support\Payments\SimulationProvider;
 use App\Support\RegistryNumber;
 use App\Support\RegistryPrefix;
 use App\Support\Sanitizer;
+use App\Support\Answers;
 use App\Support\TemplateSchema;
 
 $pass = 0;
@@ -169,6 +171,83 @@ check('cədvəl sətirləri iki elementə salınır',
         === [['OYUN', 'FIFA'], ['ETİKET', '']],
     Sanitizer::rows([['OYUN', 'FIFA'], ['', 'boş etiket'], ['ETİKET']], 5, 40, 80));
 check('cədvəl massiv olmayanı rədd edir', Sanitizer::rows('x', 5, 40, 80) === []);
+
+echo "\nVariant siyahıları\n";
+$opts = ['Birinci bənd.', 'İkinci bənd.', 'Üçüncü bənd.', 'Dördüncü bənd.'];
+
+check('üzv variant qəbul olunur', Sanitizer::pickText('İkinci bənd.', $opts, 'Birinci bənd.', 90) === 'İkinci bənd.');
+check('kənar dəyər fallback olur', Sanitizer::pickText('SAXTA MƏTN', $opts, 'Birinci bənd.', 90) === 'Birinci bənd.');
+check('artıq boşluq normallaşır', Sanitizer::pickText('İkinci   bənd.', $opts, 'X', 90) === 'İkinci bənd.');
+check('massiv fallback olur', Sanitizer::pickText(['a'], $opts, 'Birinci bənd.', 90) === 'Birinci bənd.');
+check('boş dəyər fallback olur', Sanitizer::pickText(null, $opts, 'Birinci bənd.', 90) === 'Birinci bənd.');
+
+check('çoxseçim yalnız üzvləri saxlayır',
+    Sanitizer::pickList(['Üçüncü bənd.', 'SAXTA'], $opts, 1, 4, 90) === ['Üçüncü bənd.'],
+    Sanitizer::pickList(['Üçüncü bənd.', 'SAXTA'], $opts, 1, 4, 90));
+check('SIRA variant sırasıdır, klik sırası deyil',
+    Sanitizer::pickList(['Dördüncü bənd.', 'Birinci bənd.'], $opts, 1, 4, 90) === ['Birinci bənd.', 'Dördüncü bənd.'],
+    Sanitizer::pickList(['Dördüncü bənd.', 'Birinci bənd.'], $opts, 1, 4, 90));
+check('təkrar atılır',
+    Sanitizer::pickList(['Birinci bənd.', 'Birinci bənd.'], $opts, 1, 4, 90) === ['Birinci bənd.']);
+check('say həddi gözlənilir',
+    count(Sanitizer::pickList($opts, $opts, 1, 2, 90)) === 2);
+check('min-dən az seçim boş massiv verir',
+    Sanitizer::pickList(['Birinci bənd.'], $opts, 2, 4, 90) === []);
+check('sətirli giriş qəbul olunur',
+    Sanitizer::pickList("Birinci bənd.\nÜçüncü bənd.", $opts, 1, 4, 90) === ['Birinci bənd.', 'Üçüncü bənd.']);
+check('massiv olmayan skalyar olmayan giriş boşdur', Sanitizer::pickList(null, $opts, 1, 4, 90) === []);
+
+check('variantlar sətir-sətir oxunur',
+    TemplateSchema::parseOptions("Bir\n\n  İki  \nBir\nÜç", 10, 90) === ['Bir', 'İki', 'Üç'],
+    TemplateSchema::parseOptions("Bir\n\n  İki  \nBir\nÜç", 10, 90));
+check('boş mətn boş siyahı verir', TemplateSchema::parseOptions('  ', 10, 90) === []);
+check('say həddində kəsilir', count(TemplateSchema::parseOptions("a\nb\nc\nd", 2, 90)) === 2);
+
+check('uzun sətir səhv verir',
+    (bool) preg_grep('/simvolu aşır/u', TemplateSchema::optionErrors('Bənd variantları', str_repeat('a', 100), 10, 90)));
+check('təkrar sətir səhv verir',
+    (bool) preg_grep('/təkrarlanır/u', TemplateSchema::optionErrors('Bənd variantları', "Bir\nBir", 10, 90)));
+check('həddindən çox sətir səhv verir',
+    (bool) preg_grep('/ən çoxu 2 sətir/u', TemplateSchema::optionErrors('Bənd variantları', "a\nb\nc", 2, 90)));
+check('düzgün siyahı səhvsizdir', TemplateSchema::optionErrors('Bənd variantları', "Bir\nİki", 10, 90) === []);
+
+check('aralıq normallaşır', TemplateSchema::pickRange(2, 3, 5) === [2, 3]);
+check('aralıq MAX_PICK-də kəsilir', TemplateSchema::pickRange(1, 9, 8) === [1, 4]);
+check('aralıq variant sayını aşmır', TemplateSchema::pickRange(1, 4, 2) === [1, 2]);
+check('max < min düzəlir', TemplateSchema::pickRange(3, 1, 5) === [3, 3]);
+check('variantsız aralıq [1,1]', TemplateSchema::pickRange(2, 3, 0) === [1, 1]);
+
+echo "\nAnket cavabları (server tərəfi)\n";
+$fields = [
+    ['k' => 'teyinat', 't' => 'select', 'label' => 'Təyinat', 'opts' => ['Çayxana', 'Mangal']],
+    ['k' => 'sərbəst', 't' => 'select', 'label' => 'S', 'free' => true, 'max' => 40, 'opts' => ['Bir']],
+    ['k' => 'ad', 't' => 'text', 'label' => 'Ad', 'person' => true, 'max' => 40],
+    ['k' => 'zeiflik', 't' => 'scale', 'label' => 'Z', 'min' => 1, 'max' => 10],
+    ['k' => 'saat', 't' => 'time', 'label' => 'Saat'],
+    ['k' => 'əlamət', 't' => 'multi', 'label' => 'Ə', 'min' => 1, 'max' => 2, 'opts' => ['Bir', 'İki', 'Üç']],
+    ['k' => 'sabit', 't' => 'text', 'label' => 'X', 'auto' => 'Baş ekspert'],
+];
+/* `k` açarları ASCII olmalıdır — sxem yoxlaması bunu tələb edir; burada
+   yalnız `clean()` məntiqi sınanır, ona görə sxem yoxlaması çağırılmır. */
+$a = Answers::clean($fields, [
+    'teyinat' => 'SAXTA', 'sərbəst' => 'Öz variantım', 'ad' => 'Elvin <b>123</b>',
+    'zeiflik' => '99', 'saat' => '25:00', 'əlamət' => ['Üç', 'SAXTA', 'Bir'],
+    'sabit' => 'dəyişdirmə cəhdi', 'naməlum' => 'oxunmamalıdır',
+]);
+check('select kənar dəyəri ilk variantla əvəzləyir', $a['teyinat'] === 'Çayxana', $a['teyinat']);
+check('free select sərbəst mətn buraxır', $a['sərbəst'] === 'Öz variantım', $a['sərbəst']);
+check('person sahəsi təmizlənir', $a['ad'] === 'Elvin bb', $a['ad']);
+check('şkala aralığa salınır', $a['zeiflik'] === 1, $a['zeiflik']);
+check('yanlış saat boşalır', $a['saat'] === '', $a['saat']);
+check('çoxseçim variant sırasında qayıdır', $a['əlamət'] === ['Bir', 'Üç'], $a['əlamət']);
+check('auto sahəsi dəyişdirilə bilmir', $a['sabit'] === 'Baş ekspert', $a['sabit']);
+check('naməlum açar oxunmur', ! array_key_exists('naməlum', $a), array_keys($a));
+
+check('yer tutucu əvəzlənir',
+    Answers::fill('{{teyinat}} istiqamətində', $a) === 'Çayxana istiqamətində');
+check('boş dəyər tire olur', Answers::fill('{{saat}}-da', $a) === '—-da');
+check('massiv vergüllə birləşir', Answers::fill('{{əlamət}}', $a) === 'Bir, Üç');
+check('naməlum yer tutucu tire olur', Answers::fill('{{yoxdur}}', $a) === '—');
 
 echo "\nAnket sxeminin yoxlanışı\n";
 $ok = [['k' => 'teyinat', 't' => 'select', 'label' => 'Təyinat', 'opts' => ['Bir', 'İki']]];

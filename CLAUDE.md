@@ -234,6 +234,39 @@ validates them.
   `null`, which 500s on insert. Both are coalesced to `''` in the controller — do the same for any
   new non-nullable text column.
 
+### The editor is locked — the server owns the document text
+
+Visitors type **only the two name fields**. Title, the clause list and the penalty clause come
+from admin-authored option lists (`templates.title_options` / `powers_options` +
+`powers_min`/`powers_max` / `penalty_options`, migration `..._000011`). A template with no
+options shows its own text read-only, so the site is safe with zero content work.
+
+**The dropdowns are UX. The control is `DocumentService::create()`**, which resolves the template
+by `templateId` and rebuilds the document from the catalog:
+
+- `pickTitle()` / `pickPenalty()` → `Sanitizer::pickText()`; `pickPowers()` → `Sanitizer::pickList()`
+  bounded by `TemplateSchema::pickRange()`. Off-list values silently fall back to the template's
+  own text — client strings are a *request*, never a value.
+- **`preamble` is never accepted.** The rule is gone from `DocumentController::store()`, so a
+  forged value cannot even reach `$data`. The server rebuilds it: template preamble →
+  `{to}`/`{from}` → `Answers::fill()` → truncate.
+- `templateId` is **required**; an unresolvable slug is a 422 (`bad_template`). Omitting it was the
+  obvious bypass.
+- `cancel()` picks the reason from the template's `cancelReasons` the same way.
+
+`App\Support\Answers` is a **line-by-line mirror of `frontend/app.js`**: `clean()` ↔ `readFields()`
+(`app.js:606-652`), `fill()` ↔ `fill()` (`app.js:536-542`). If they diverge by one character the
+PNG the user downloaded and the registry copy disagree — the one thing the security posture
+forbids. `tests/security.php` guards it with an exact-string preamble comparison.
+
+**`TemplateSchema::MAX_PICK` is 4, not 6.** `doc.js` layouts render 4–7 clauses and five of them
+(`lisenziya`, `arayis`, `teleqram`, `muqavile`, `notarial`) render only 4 — and the visitor can
+change the layout at runtime, so 4 is the only count guaranteed visible everywhere.
+
+Option lists and `fields` are **mutually exclusive** on a template; `templateSave()` rejects the
+combination. `CatalogSeeder` never writes null over an existing option list — a stale
+`catalog.json` would otherwise unlock every template with no error output.
+
 ### `frontend/app.js` — app logic + API layer
 
 The `API` object is the single boundary: each method has an online branch (`fetch('/api/...')`) and an
@@ -307,6 +340,10 @@ occasional runtime wrinkle on first run.
   `REG_PREFIX` ↔ `tools/export-catalog.js` `REG_PREFIX` (three copies of the same five entries;
   they only matter for seeding and the offline branch — live prefixes come from the DB).
 - **Field types**: `TemplateSchema::TYPES` ↔ `app.js` `FIELD_TYPES` ↔ `tools/check-templates.js` `F_TYPES`.
+- **Clause order**: `app.js` `togglePower()` ↔ `Sanitizer::pickList()` — both must emit in the
+  admin's option order, never in click order.
+- **Answer cleaning**: `App\Support\Answers::clean/fill` ↔ `app.js` `readFields()`/`fill()`.
+- **Pick bounds**: `app.js` `powRange()` ↔ `TemplateSchema::pickRange()` (cap `MAX_PICK` = 4).
 - **Document state logic**: `Document::state()` ↔ `frontend/app.js` `docState()` (offline branch).
 - **Palette labels/swatches**: `doc.js` `PALETTES` ↔ `app.js` `PAL_LABEL` / `PAL_SWATCH`.
 - **Counts (216 / 18 / 12 / 6 / 2)**: asserted literally in `tools/check-templates.js`,

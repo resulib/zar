@@ -33,8 +33,10 @@ class DocumentController extends Controller
             'from'         => ['required', 'string', 'max:60'],
             'powers'       => ['nullable', 'string', 'max:2000'],
             'penalty'      => ['nullable', 'string', 'max:1000'],
-            'preamble'     => ['nullable', 'string', 'max:2000'],
-            'templateId'   => ['nullable', 'string', 'max:40'],
+            /* `preamble` QƏBUL OLUNMUR: `validate()` yalnız sadalanan açarları
+               qaytarır, deməli saxta preamble `$data`-ya heç çatmır. Sənədin
+               ən böyük abzasını server şablondan özü qurur. */
+            'templateId'   => ['required', 'string', 'max:40'],
             'layout'       => ['nullable', 'string', 'max:20'],
             'palette'      => ['nullable', 'string', 'max:20'],
             'tone'         => ['nullable', 'string', 'max:10'],
@@ -61,6 +63,12 @@ class DocumentController extends Controller
             'signOrg'      => ['nullable', 'string', 'max:60'],
             'share'        => ['nullable', 'string', 'max:180'],
             'expiresAt'    => ['nullable', 'integer'],
+
+            /* Anket cavabları — preamble-ın `{{açar}}` yer tutucuları serverdə
+               bunlardan doldurulur. Tipini `App\Support\Answers` təyin edir. */
+            'answers'      => ['nullable', 'array', 'max:14'],
+            'answers.*'    => ['nullable'],
+            'answers.*.*'  => ['nullable', 'string', 'max:100'],
         ]);
 
         $moderation = new Moderation(
@@ -74,9 +82,22 @@ class DocumentController extends Controller
             $flat[] = implode(' ', array_map(static fn ($v): string => (string) $v, (array) $row));
         }
 
+        /* Anket cavabları da istifadəçi mətnidir (sərbəst `select` və `text`
+           sahələri) və sənədə düşür. `preamble` siyahıda yoxdur — o artıq
+           admin mətnidir. `title`/`powers`/`penalty` atılsalar da klient
+           sətirləridir; süzgəcdən keçirmək heç nəyə başa gəlmir. */
+        $ans     = [];
+        $answers = $data['answers'] ?? [];
+        array_walk_recursive($answers, static function ($v) use (&$ans): void {
+            if (is_scalar($v)) {
+                $ans[] = (string) $v;
+            }
+        });
+
         $flagged = $moderation->flagged(
             $data['title'], $data['to'], $data['from'],
-            $data['powers'] ?? '', $data['penalty'] ?? '', $data['preamble'] ?? '',
+            $data['powers'] ?? '', $data['penalty'] ?? '',
+            implode(' ', $ans),
             implode(' ', $flat),
             implode(' ', $data['checks'] ?? []),
             implode(' ', $data['notes'] ?? []),
@@ -90,7 +111,14 @@ class DocumentController extends Controller
             ], 422);
         }
 
-        $document = $this->documents->create($user, $data);
+        try {
+            $document = $this->documents->create($user, $data);
+        } catch (\RuntimeException $e) {
+            return response()->json([
+                'error'   => 'bad_template',
+                'message' => 'Şablon tapılmadı — səhifəni yeniləyib yenidən cəhd edin.',
+            ], 422);
+        }
 
         return response()->json($document->toApiArray(withOwner: true));
     }
