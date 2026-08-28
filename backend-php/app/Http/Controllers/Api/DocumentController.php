@@ -37,6 +37,7 @@ class DocumentController extends Controller
             'templateId'   => ['nullable', 'string', 'max:40'],
             'layout'       => ['nullable', 'string', 'max:20'],
             'palette'      => ['nullable', 'string', 'max:20'],
+            'tone'         => ['nullable', 'string', 'max:10'],
             'toLabel'      => ['nullable', 'string', 'max:40'],
             'fromLabel'    => ['nullable', 'string', 'max:40'],
             'powersLabel'  => ['nullable', 'string', 'max:40'],
@@ -66,6 +67,10 @@ class DocumentController extends Controller
 
     public function publish(Request $request, string $regNo): JsonResponse
     {
+        if ($request->visitor()->is_blocked) {
+            return response()->json(['error' => 'blocked', 'message' => 'Hesab məhdudlaşdırılıb.'], 403);
+        }
+
         $regNo = strtoupper($regNo);
 
         if (! RegistryNumber::isValid($regNo)) {

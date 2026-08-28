@@ -33,7 +33,35 @@ class DashboardController extends Controller
             ];
         }
 
+        /* Dərc nisbəti — ödəniş divarının aşılmasına qarşı erkən siqnal.
+           Sənəd brauzerdə render olunduğu üçün konsol vasitəsilə ödənişsiz
+           şəkil almaq mümkündür; belə istifadəçi sənəd yaradır, amma dərc
+           etmir. Son 7 günün nisbəti ümumi nisbətdən kəskin aşağı düşərsə,
+           baxmağa dəyər. Az sayda sənəddə nisbət səs-küylüdür, ona görə
+           xəbərdarlıq üçün minimum həcm şərti var. */
+        $week      = $today->copy()->subDays(6);
+        $madeAll   = Document::query()->visible()->count();
+        $pubAll    = Document::query()->published()->count();
+        $made7     = Document::query()->visible()->whereDate('created_at', '>=', $week)->count();
+        $pub7      = Document::query()->published()->whereDate('created_at', '>=', $week)->count();
+
+        $rateAll = $madeAll > 0 ? $pubAll / $madeAll * 100 : null;
+        $rate7   = $made7 > 0 ? $pub7 / $made7 * 100 : null;
+
+        $rateDrop = $rateAll !== null && $rate7 !== null
+            && $made7 >= 20                       // statistik mənalı həcm
+            && $rate7 < $rateAll - 15;            // faiz bəndi ilə kəskin enmə
+
         return view('admin.dashboard', [
+            'publish' => [
+                'made_all'  => $madeAll,
+                'made_7'    => $made7,
+                'pub_7'     => $pub7,
+                'rate_all'  => $rateAll,
+                'rate_7'    => $rate7,
+                'drop'      => $rateDrop,
+                'thin'      => $made7 < 20,       // həcm azdırsa nisbət etibarsızdır
+            ],
             'stats' => [
                 'documents_total'     => Document::query()->visible()->count(),
                 'documents_published' => Document::query()->published()->count(),

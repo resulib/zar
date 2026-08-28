@@ -146,6 +146,10 @@ class AccountController extends Controller
 
     public function topUp(Request $request): RedirectResponse
     {
+        if ($request->visitor()->is_blocked) {
+            return back()->withErrors(['pack' => 'Hesab məhdudlaşdırılıb.']);
+        }
+
         $packId = (string) $request->input('pack');
 
         if (! $this->payments->packs()->has($packId)) {

@@ -117,6 +117,12 @@ check('CRLF normallaşır', Sanitizer::multiline("Bir\r\nİki", 600, 8) === "Bir
 check('icazəli dəyər seçilir', Sanitizer::pick('blank', ['notarial', 'blank'], 'notarial') === 'blank');
 check('icazəsiz dəyər fallback olur', Sanitizer::pick('hack', ['notarial', 'blank'], 'notarial') === 'notarial');
 
+$tones = ['zarafat', 'xatire'];
+check('ton seçilir', Sanitizer::pick('xatire', $tones, 'zarafat') === 'xatire');
+check('naməlum ton zarafat olur', Sanitizer::pick('parodiya', $tones, 'zarafat') === 'zarafat');
+check('boş ton zarafat olur', Sanitizer::pick(null, $tones, 'zarafat') === 'zarafat');
+check('rose palitrası icazəlidir', Sanitizer::pick('rose', ['gold', 'steel', 'burgundy', 'forest', 'ink', 'rose'], 'gold') === 'rose');
+
 echo "\nSimulyasiya provayderi\n";
 $sim = new SimulationProvider();
 $order = $sim->createOrder([

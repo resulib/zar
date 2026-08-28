@@ -17,7 +17,7 @@ class Document extends Model
 
     protected $fillable = [
         'reg_no', 'user_id', 'template_id', 'title', 'to_name', 'from_name',
-        'powers', 'penalty', 'preamble', 'date_label', 'layout', 'palette',
+        'powers', 'penalty', 'preamble', 'date_label', 'layout', 'palette', 'tone',
         'labels', 'status', 'views', 'published_at',
     ];
 
@@ -70,6 +70,7 @@ class Document extends Model
             'templateId'   => $this->template_id,
             'layout'       => $this->layout,
             'palette'      => $this->palette,
+            'tone'         => $this->tone,
             'toLabel'      => $labels['toLabel'] ?? null,
             'fromLabel'    => $labels['fromLabel'] ?? null,
             'powersLabel'  => $labels['powersLabel'] ?? null,

@@ -34,6 +34,15 @@
 .stats .accent dd { color: var(--blue); }
 .stats .warn dd { color: var(--red); }
 
+/* Göstəricinin altındakı izah — rəqəm deyil, cümlədir, ona görə sans. */
+.stat-note {
+  margin: -14px 0 22px; padding: 11px 14px;
+  border: 1px solid var(--rule); border-left-width: 3px; border-left-color: var(--rule-hard);
+  background: var(--sheet); font: 400 12.5px/1.55 var(--sans); color: var(--ink-2);
+}
+.stat-note.warn { border-left-color: var(--red); background: var(--red-soft); color: var(--red); }
+.stat-note b { font-weight: 600; }
+
 /* ---------- cədvəl ---------- */
 .tbl-wrap { border: 1px solid var(--rule); background: var(--sheet); overflow-x: auto; }
 table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }

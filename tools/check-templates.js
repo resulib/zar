@@ -6,7 +6,9 @@ const ROOT_DIR = path.join(__dirname, '..');
 const sandbox = { window: {} };
 sandbox.globalThis = sandbox;
 vm.createContext(sandbox);
+/* Xatirə kataloqu templates.js-ə əlavə edir — yükləmə sırası vacibdir. */
 vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', 'templates.js'), 'utf8'), sandbox);
+vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', 'templates-xatire.js'), 'utf8'), sandbox);
 const T = sandbox.window.TEMPLATES, C = sandbox.window.CATEGORIES;
 
 /* doc.js-dən layout/palitra siyahısı */
@@ -15,7 +17,7 @@ const s2 = { window: {}, QRZ: null, document: { createElement: () => ({ getConte
              Math, Date, JSON, String, Number, Array, Object, isNaN, parseInt, parseFloat, RegExp };
 s2.globalThis = s2; vm.createContext(s2);
 vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', 'doc.js'), 'utf8'), s2);
-const LAYOUTS = s2.window.DOCGEN.LAYOUTS, PALETTES = s2.window.DOCGEN.PALETTES;
+const LAYOUTS = s2.window.DOCGEN.LAYOUTS, PALETTES = s2.window.DOCGEN.PALETTES, TONES = s2.window.DOCGEN.TONES;
 
 /* Server bu hədləri sükutla kəsir — config/zarafat.php */
 const LIMIT = { title: 120, to: 60, from: 60, preamble: 700, powers: 600, penalty: 300, powerLines: 8, id: 40, label: 40 };
@@ -27,8 +29,14 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
                              : (fail++, console.log('  ✗', n, x === undefined ? '' : JSON.stringify(x)));
 
 console.log('\n1. Say və struktur');
-check('11 kateqoriya', C.length === 11, C.length);
-check('132 şablon', T.length === 132, T.length);
+check('17 kateqoriya', C.length === 17, C.length);
+check('204 şablon', T.length === 204, T.length);
+const catByTone = tone => C.filter(c => c.tone === tone).length;
+const tplByTone = tone => T.filter(t => t.tone === tone).length;
+check('zarafat: 11 kateqoriya · 132 şablon', catByTone('zarafat') === 11 && tplByTone('zarafat') === 132,
+  [catByTone('zarafat'), tplByTone('zarafat')]);
+check('xatire: 6 kateqoriya · 72 şablon', catByTone('xatire') === 6 && tplByTone('xatire') === 72,
+  [catByTone('xatire'), tplByTone('xatire')]);
 const ids = T.map(t => t.id);
 check('id-lər unikaldır', new Set(ids).size === ids.length,
   ids.filter((v, i) => ids.indexOf(v) !== i));
@@ -36,10 +44,19 @@ check('id-lər kebab-case və ≤40', T.every(t => /^[a-z0-9-]{1,40}$/.test(t.id
   T.filter(t => !/^[a-z0-9-]{1,40}$/.test(t.id)).map(t => t.id));
 check('weekend-pass qorunub (testlər ondan asılıdır)', ids.indexOf('weekend-pass') >= 0);
 
-console.log('\n2. Kateqoriya uyğunluğu');
+console.log('\n2. Kateqoriya uyğunluğu və ton');
 const catIds = C.map(c => c.id);
+check('kateqoriya id-ləri unikaldır', new Set(catIds).size === catIds.length,
+  catIds.filter((v, i) => catIds.indexOf(v) !== i));
+check('hər kateqoriyanın tonu tanınır', C.every(c => TONES.indexOf(c.tone) >= 0),
+  C.filter(c => TONES.indexOf(c.tone) < 0).map(c => c.id));
+check('hər şablonun tonu tanınır', T.every(t => TONES.indexOf(t.tone) >= 0),
+  T.filter(t => TONES.indexOf(t.tone) < 0).map(t => t.id));
 check('hər şablonun kateqoriyası mövcuddur', T.every(t => catIds.indexOf(t.cat) >= 0),
   T.filter(t => catIds.indexOf(t.cat) < 0).map(t => t.id));
+check('şablonun tonu kateqoriyasının tonu ilə üst-üstə düşür',
+  T.every(t => { const c = C.filter(x => x.id === t.cat)[0]; return c && c.tone === t.tone; }),
+  T.filter(t => { const c = C.filter(x => x.id === t.cat)[0]; return !c || c.tone !== t.tone; }).map(t => t.id));
 const perCat = {};
 catIds.forEach(c => perCat[c] = T.filter(t => t.cat === c).length);
 check('hər kateqoriyada 12 şablon', catIds.every(c => perCat[c] === 12), perCat);
@@ -54,11 +71,13 @@ const missL = catIds.filter(c => {
   return LAYOUTS.some(l => !used.has(l));
 });
 check('hər kateqoriya 10 dizaynın hamısını əhatə edir', missL.length === 0, missL);
-const missP = catIds.filter(c => {
-  const used = new Set(T.filter(t => t.cat === c).map(t => t.palette));
-  return PALETTES.some(pl => !used.has(pl));
-});
-check('hər kateqoriya 5 palitranın hamısını əhatə edir', missP.length === 0, missP);
+/* Palitra əhatəsi tona bağlı deyil: `rose` yalnız xatirə kataloqunda işlənir,
+   ona görə hər kateqoriyadan ən azı 5 fərqli palitra tələb olunur, qlobal
+   səviyyədə isə hər palitranın işləndiyi yoxlanılır. */
+const thinP = catIds.filter(c => new Set(T.filter(t => t.cat === c).map(t => t.palette)).size < 5);
+check('hər kateqoriya ən azı 5 palitra işlədir', thinP.length === 0, thinP);
+const unusedP = PALETTES.filter(pl => !T.some(t => t.palette === pl));
+check('hər palitra ən azı bir şablonda işlənir', unusedP.length === 0, unusedP);
 
 console.log('\n4. Məcburi sahələr');
 ['cat', 'layout', 'palette', 'title', 'tag', 'preamble', 'powers', 'penalty'].forEach(f => {
@@ -104,6 +123,7 @@ console.log('\n7. Paylanma');
 const cnt = (key, list) => list.map(v => v + ':' + T.filter(t => t[key] === v).length).join('  ');
 console.log('  dizayn:  ' + cnt('layout', LAYOUTS));
 console.log('  palitra: ' + cnt('palette', PALETTES));
+console.log('  ton:     ' + cnt('tone', TONES));
 
 console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz' + (warn ? ', ' + warn + ' xəbərdarlıq' : ''));
 process.exit(fail ? 1 : 0);

@@ -1,12 +1,12 @@
 /* Frontend fayllarını Laravel layihəsinə köçürür və spa.blade.php yaradır. */
-const fs = require('fs'), path = require('path');
+const fs = require('fs'), path = require('path'), crypto = require('crypto');
 
 const FE   = path.join(__dirname, '..', 'frontend');
 const APP  = path.join(__dirname, '..', 'backend-php');
 const OUT  = path.join(APP, 'public', 'assets');
 const VIEW = path.join(APP, 'resources', 'views', 'spa.blade.php');
 
-const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'doc.js', 'app.js'];
+const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js', 'doc.js', 'app.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
@@ -38,9 +38,15 @@ if (hazards.length) {
   process.exit(1);
 }
 
-/* Asset yolları Laravel-in asset() köməkçisinə bağlanır */
+/* Asset yolları Laravel-in asset() köməkçisinə bağlanır və məzmun damğası alır.
+   Damğa olmasa brauzer köhnə app.js/doc.js-i keşdən götürür və dəyişikliklər
+   görünmür — `php artisan serve` statik fayllara keş başlığı göndərmir. */
+function stamp(file) {
+  const p = path.join(OUT, file);
+  return crypto.createHash('sha1').update(fs.readFileSync(p)).digest('hex').slice(0, 8);
+}
 html = html.replace(/(href|src)="\/([a-z0-9._-]+\.(?:css|js))"/g,
-  (_, attr, file) => `${attr}="{{ asset('assets/${file}') }}"`);
+  (_, attr, file) => `${attr}="{{ asset('assets/${file}') }}?v=${stamp(file)}"`);
 
 /* CSRF meta teqi — app.js POST sorğularında bu tokeni göndərir */
 html = html.replace('</head>', `<meta name="csrf-token" content="{{ csrf_token() }}">\n</head>`);

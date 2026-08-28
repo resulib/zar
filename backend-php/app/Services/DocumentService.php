@@ -42,6 +42,7 @@ class DocumentService
             'date_label'  => Carbon::now()->format('d.m.Y'),
             'layout'      => Sanitizer::pick($input['layout'] ?? null, config('zarafat.layouts'), 'notarial'),
             'palette'     => Sanitizer::pick($input['palette'] ?? null, config('zarafat.palettes'), 'gold'),
+            'tone'        => Sanitizer::pick($input['tone'] ?? null, config('zarafat.tones'), 'zarafat'),
             'labels'      => $labels ?: null,
             'status'      => Document::STATUS_DRAFT,
         ]);

@@ -52,6 +52,16 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   await wait(400);
   await p.screenshot({ path: `${out}/06-rules.png` });
 
+  /* xatirə rejimi */
+  await p.click('#modeSwitch button[data-mode="xatire"]'); await wait(900);
+  await p.evaluate(() => window.scrollTo(0, 0)); await wait(400);
+  await p.screenshot({ path: `${out}/07-xatire-hero.png` });
+  await p.fill('#fTo', 'Günel Şəkərova'); await p.fill('#fFrom', 'Elvin Məmmədov'); await wait(600);
+  await p.evaluate(() => document.querySelector('.editor').scrollIntoView());
+  await wait(400);
+  await p.screenshot({ path: `${out}/08-xatire-editor.png` });
+  await p.click('#modeSwitch button[data-mode="zarafat"]'); await wait(600);
+
   /* şrift yoxlaması: bütün Azərbaycan hərfləri */
   await p.setContent(`<style>${fs.readFileSync(ROOT + '/fonts.css','utf8').replace(/url\(fonts\//g,'url(http://localhost:4188/fonts/')}
     body{margin:0;padding:26px;background:#fff}

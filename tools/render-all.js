@@ -1,4 +1,5 @@
-/* Bütün şablonları render edir: 5 tam ölçülü nümunə + 36-lıq kontakt vərəqi */
+/* Bütün şablonları render edir: hər ton üçün tam ölçülü nümunələr + tona görə
+   iki kontakt vərəqi (zarafat və xatirə). */
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const ROOT_DIR = path.join(__dirname, '..');
@@ -27,7 +28,7 @@ const server = http.createServer((req, res) => {
     const t = TEMPLATES.find(x => x.id === id);
     const to = 'Günel Şəkərova', from = 'Elvin Məmmədov';
     const doc = {
-      templateId: t.id, layout: layoutOverride || t.layout, palette: t.palette,
+      templateId: t.id, tone: t.tone, layout: layoutOverride || t.layout, palette: t.palette,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
       title: t.title, to, from, powers: t.powers, penalty: t.penalty,
@@ -43,29 +44,37 @@ const server = http.createServer((req, res) => {
   fs.rmSync(outDir, { recursive: true, force: true }); fs.mkdirSync(outDir, { recursive: true });
 
   const layouts = await page.evaluate(() => DOCGEN.LAYOUTS);
-  const tpls = await page.evaluate(() => TEMPLATES.map(t => ({ id: t.id, layout: t.layout, palette: t.palette, title: t.title })));
+  const tones = await page.evaluate(() => DOCGEN.TONES);
+  const tpls = await page.evaluate(() => TEMPLATES.map(t =>
+    ({ id: t.id, tone: t.tone, layout: t.layout, palette: t.palette, title: t.title })));
 
-  // 1) hər layout üçün bir tam ölçülü nümunə (ödənişli)
-  for (const L of layouts) {
-    const t = tpls.find(x => x.layout === L) || tpls[0];   // hələ şablonu olmayan yeni dizayn
-    const svg = await mk(t.id, true, false, L);
-    await page.setContent('<body style="margin:0;width:794px">' + svg + '</body>');
-    await page.setViewportSize({ width: 794, height: 1123 });
-    await page.screenshot({ path: `${outDir}/full-${L}.png` });
+  // 1) hər ton × hər layout üçün bir tam ölçülü nümunə (ödənişli)
+  for (const tone of tones) {
+    const pool = tpls.filter(t => t.tone === tone);
+    for (const L of layouts) {
+      const t = pool.find(x => x.layout === L) || pool[0];   // hələ şablonu olmayan yeni dizayn
+      const svg = await mk(t.id, true, false, L);
+      await page.setContent('<body style="margin:0;width:794px">' + svg + '</body>');
+      await page.setViewportSize({ width: 794, height: 1123 });
+      await page.screenshot({ path: `${outDir}/full-${tone}-${L}.png` });
+    }
   }
 
-  // 2) kontakt vərəqi: bütün şablonlar kiçik ölçüdə
-  const all = [];
-  for (const t of tpls) all.push(await mk(t.id, true, false));
-  const grid = all.map((svg, i) =>
-    `<div style="width:198px"><div style="border:1px solid #ccc;overflow:hidden">${svg.replace('width="794" height="1123"', 'width="198" height="280"')}</div>` +
-    `<div style="font:10px/1.3 Arial;padding:3px 0 8px">${i + 1}. ${tpls[i].title} <span style="color:#888">· ${tpls[i].layout}/${tpls[i].palette}</span></div></div>`).join('');
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.setContent(`<body style="margin:0;background:#fff;padding:14px"><div style="display:flex;flex-wrap:wrap;gap:12px">${grid}</div></body>`);
-  await page.waitForTimeout(500);
-  await page.screenshot({ path: `${outDir}/contact-sheet.png`, fullPage: true });
+  // 2) kontakt vərəqi: hər ton üçün ayrıca, bütün şablonlar kiçik ölçüdə
+  for (const tone of tones) {
+    const pool = tpls.filter(t => t.tone === tone);
+    const all = [];
+    for (const t of pool) all.push(await mk(t.id, true, false));
+    const grid = all.map((svg, i) =>
+      `<div style="width:198px"><div style="border:1px solid #ccc;overflow:hidden">${svg.replace('width="794" height="1123"', 'width="198" height="280"')}</div>` +
+      `<div style="font:10px/1.3 Arial;padding:3px 0 8px">${i + 1}. ${pool[i].title} <span style="color:#888">· ${pool[i].layout}/${pool[i].palette}</span></div></div>`).join('');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.setContent(`<body style="margin:0;background:#fff;padding:14px"><div style="display:flex;flex-wrap:wrap;gap:12px">${grid}</div></body>`);
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: `${outDir}/contact-sheet-${tone}.png`, fullPage: true });
+  }
 
-  console.log('Render edildi:', layouts.length, 'tam +', tpls.length, 'kiçik');
+  console.log('Render edildi:', tones.length * layouts.length, 'tam +', tpls.length, 'kiçik');
   console.log('Xətalar:', errs.length ? errs : 'yoxdur');
   await b.close(); server.close();
 })();

@@ -29,7 +29,7 @@
           <span class="t">{{ $doc->title }}</span>
           <span class="s">{{ $doc->to_name }} ← {{ $doc->from_name }}</span>
         </td>
-        <td class="mono">{{ $doc->layout }}/{{ $doc->palette }}</td>
+        <td class="mono">{{ $doc->layout }}/{{ $doc->palette }}<br><span class="s">{{ $doc->tone === 'xatire' ? 'Xatirə' : 'Zarafat' }}</span></td>
         <td class="mono">{{ $doc->reg_no }}<br><span class="s">{{ $doc->date_label }}</span></td>
         <td><span class="pill {{ $doc->isPublished() ? 'ok' : 'mute' }}">{{ $doc->isPublished() ? 'Reyestrdə' : 'Qaralama' }}</span></td>
         <td class="num">{{ $doc->views }}</td>

@@ -84,6 +84,21 @@ input, textarea, select { font: inherit; }
 .nav a:hover { color: var(--blue); background: var(--blue-soft); }
 
 /* ==========================================================================
+   Rejim keçidi — Zarafat / Xatirə
+   ========================================================================== */
+.mode-bar { background: var(--tint); border-bottom: 1px solid var(--rule); }
+.mode-bar .wrap {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding-top: 10px; padding-bottom: 10px;
+}
+.mode-switch button {
+  display: inline-flex; align-items: baseline; gap: 7px;
+  font: 600 12px/1 var(--sans); padding: 9px 17px;
+}
+.mode-switch button .g { font: 500 10px/1 var(--mono); letter-spacing: .06em; opacity: .62; }
+.mode-note { font: 400 12.5px/1.5 var(--sans); color: var(--ink-2); flex: 1 1 260px; }
+
+/* ==========================================================================
    Düymələr və sahələr
    ========================================================================== */
 .btn {
@@ -268,6 +283,7 @@ input, textarea, select { font: inherit; }
 .verdict.wait { border-left-color: var(--rule-hard); background: var(--tint); color: var(--ink-2); }
 .verdict strong { display: block; font: 600 13.5px/1.4 var(--sans); }
 .verdict .meta { margin-top: 3px; font: 500 11.5px/1.5 var(--mono); color: var(--ink-2); }
+.verdict .meta.long { font: 400 13px/1.55 var(--sans); letter-spacing: 0; margin-top: 6px; }
 .result { margin-top: 22px; max-width: 640px; }
 
 /* ==========================================================================

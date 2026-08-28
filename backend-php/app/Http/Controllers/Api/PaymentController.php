@@ -22,13 +22,18 @@ class PaymentController extends Controller
             return response()->json(['error' => 'disabled', 'message' => 'Simulyasiya söndürülüb.'], 403);
         }
 
+        $user = $request->visitor();
+
+        if ($user->is_blocked) {
+            return response()->json(['error' => 'blocked', 'message' => 'Hesab məhdudlaşdırılıb.'], 403);
+        }
+
         $packId = (string) $request->input('packId');
 
         if (! $this->payments->packs()->has($packId)) {
             return response()->json(['error' => 'bad_pack'], 400);
         }
 
-        $user   = $request->visitor();
         $result = $this->payments->checkout($user, $packId);
 
         return response()->json([
@@ -42,6 +47,10 @@ class PaymentController extends Controller
     /** Real provayder üçün sifariş — cavabda ödəniş səhifəsinin ünvanı gəlir. */
     public function checkout(Request $request): JsonResponse
     {
+        if ($request->visitor()->is_blocked) {
+            return response()->json(['error' => 'blocked', 'message' => 'Hesab məhdudlaşdırılıb.'], 403);
+        }
+
         $packId = (string) $request->input('packId');
 
         if (! $this->payments->packs()->has($packId)) {
@@ -79,7 +88,12 @@ class PaymentController extends Controller
         }
 
         if ($parsed['status'] === 'paid') {
-            $this->payments->markPaid($parsed['orderId'], $parsed['providerRef'], $parsed['raw']);
+            $this->payments->markPaid(
+                $parsed['orderId'],
+                $parsed['providerRef'],
+                $parsed['raw'],
+                $parsed['amount'] ?? null,
+            );
         } else {
             $this->payments->markFailed($parsed['orderId'], $parsed['raw']);
         }

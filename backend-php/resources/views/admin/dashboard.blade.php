@@ -34,6 +34,34 @@
   <div class="{{ $stats['reports_open'] > 0 ? 'warn' : '' }}"><dt>Açıq şikayət</dt><dd>{{ $stats['reports_open'] }}</dd></div>
 </dl>
 
+{{-- Dərc nisbəti: sənəd brauzerdə render olunduğu üçün ödənişsiz şəkil almaq
+     texniki olaraq mümkündür. Belə istifadəçi sənəd yaradır, amma dərc etmir —
+     nisbətin kəskin enməsi həmin üsulun yayıldığına işarə ola bilər. --}}
+<dl class="stats">
+  <div class="{{ $publish['drop'] ? 'warn' : '' }}">
+    <dt>Dərc nisbəti · 7 gün</dt>
+    <dd>{{ $publish['rate_7'] === null ? '—' : number_format($publish['rate_7'], 0) }}<small>%</small></dd>
+    <div class="sub">{{ $publish['pub_7'] }} / {{ $publish['made_7'] }} sənəd</div>
+  </div>
+  <div>
+    <dt>Dərc nisbəti · ümumi</dt>
+    <dd>{{ $publish['rate_all'] === null ? '—' : number_format($publish['rate_all'], 0) }}<small>%</small></dd>
+    <div class="sub">{{ $publish['made_all'] }} sənəd üzrə</div>
+  </div>
+</dl>
+
+<p class="stat-note {{ $publish['drop'] ? 'warn' : '' }}">
+  @if ($publish['thin'])
+    Son 7 gündə 20-dən az sənəd var — nisbət hələ etibarlı deyil.
+  @elseif ($publish['drop'])
+    <b>Diqqət:</b> son 7 günün dərc nisbəti ümumi nisbətdən 15 faiz bəndindən çox aşağıdır.
+    Sənədlər yaradılır, lakin reyestrə yazılmır. Ödənişsiz yükləmə üsulunun yayılması ola bilər —
+    sənəd brauzerdə render olunur və konsoldan ödəniş bayrağı dəyişdirilə bilər.
+  @else
+    Nisbət sabitdir. Kəskin enmə ödənişsiz yükləmə üsulunun yayıldığına işarə ola bilər.
+  @endif
+</p>
+
 @php
   $maxDocs = max(1, max(array_column($days, 'documents')));
   $maxRev  = max(0.01, max(array_column($days, 'revenue')));

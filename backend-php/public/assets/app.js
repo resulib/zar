@@ -51,9 +51,20 @@
       });
     },
 
+    /* Cavab JSON olmaya bilər: 429 limit səhifəsi, 419 sessiya, proxy xətası.
+       `r.json()` birbaşa çağırılsa səhifə tutulmuş istisna ilə dayanır. */
+    _json: function (url, fallback) {
+      return fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; })
+        .then(function (j) { return j === null ? fallback : j; });
+    },
+
     credits: function () {
       if (!API.online) return Promise.resolve(LS.get('zrf_credits', 0));
-      return fetch('/api/me').then(function (r) { return r.json(); }).then(function (j) { return j.credits; });
+      return API._json('/api/me', null).then(function (j) {
+        return j && typeof j.credits === 'number' ? j.credits : 0;
+      });
     },
     buy: function (packId) {
       if (!API.online) {
@@ -106,8 +117,11 @@
         if (!d || !d.paid || d.deleted) return Promise.resolve(null);
         return Promise.resolve(d);
       }
-      return fetch('/api/registry/' + encodeURIComponent(regNo))
-        .then(function (r) { return r.status === 404 ? null : r.json(); });
+      return fetch('/api/registry/' + encodeURIComponent(regNo), { headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          if (r.status === 429) return Promise.reject({ error: 'rate_limited' });
+          return r.ok ? r.json() : null;
+        });
     },
     mine: function () {
       if (!API.online) {
@@ -115,7 +129,7 @@
         return Promise.resolve(LS.get('zrf_mine', []).map(function (n) { return docs[n]; })
           .filter(function (d) { return d && !d.deleted; }));
       }
-      return fetch('/api/me/documents').then(function (r) { return r.json(); });
+      return API._json('/api/me/documents', []);
     },
     report: function (regNo, reason, note) {
       if (!API.online) {
@@ -204,7 +218,49 @@
   }
 
   /* ---------------- vəziyyət ---------------- */
-  var state = { cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '' };
+  var state = {
+    mode: 'zarafat',          // 'zarafat' | 'xatire' — sənədin tonu
+    cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: ''
+  };
+
+  /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
+  var MODE_COPY = {
+    zarafat: {
+      title:   'Zarafat Notariat Palatası — qeyri-rəsmi sənədlər reyestri',
+      mast:    'Zarafat Notariat Palatası',
+      mastSub: 'Uydurma qurum · qeyri-rəsmi sənədlər reyestri · zarafat.az',
+      govSub:  ' · Qeyri-rəsmi sənədlər vahid reyestri',
+      eyebrow: 'Xidmət 01 — sənədin hazırlanması',
+      h1:      'Rəsmi görünüşlü sənədlər.<br><em>Heç bir hüquqi qüvvəsi yoxdur.</em>',
+      lede:    'Möhürlü, imzalı, ştrix-kodlu sənəd hazırlayın; 1 AZN ödəyib reyestrə yazdırın. ' +
+               'Sənədin üzərindəki QR kod istənilən şəxsin onu yoxlamasına imkan verir — ' +
+               'yoxlama nəticəsi də eyni dərəcədə ciddi görünür.',
+      note:    'Zarafat rejimi: dostlara, cütlüklərə və iş yerinə göndərmək üçün gülməli sənədlər.',
+      specTag: 'cütlüklər, dostlar, iş yeri',
+      specimen: 'always-right'
+    },
+    xatire: {
+      title:   'Xatirə Sənədləri Palatası — səmimi sənədlər reyestri',
+      mast:    'Xatirə Sənədləri Palatası',
+      mastSub: 'Uydurma qurum · xatirə sənədləri reyestri · zarafat.az',
+      govSub:  ' · Xatirə sənədləri reyestri',
+      eyebrow: 'Xidmət 02 — xatirənin rəsmiləşdirilməsi',
+      h1:      'Saxlanılası sənədlər.<br><em>Yenə də hüquqi qüvvəsi yoxdur.</em>',
+      lede:    'Sevgi, təşəkkür, ad günü və ailə üçün möhürlü, imzalı xatirə sənədi hazırlayın; ' +
+               '1 AZN ödəyib reyestrə yazdırın. Quruluş eyni dərəcədə rəsmidir — ' +
+               'yalnız sözlər isti və səmimidir.',
+      note:    'Xatirə rejimi: çərçivəyə salınmaq və hədiyyə edilmək üçün səmimi sənədlər.',
+      specTag: 'sevgi, təşəkkür, ailə, təbriklər',
+      specimen: 'sevgi-etirafnamesi'
+    }
+  };
+
+  function catsOf(mode) {
+    return CATEGORIES.filter(function (c) { return c.tone === mode; });
+  }
+  function tplsOf(mode) {
+    return TEMPLATES.filter(function (t) { return t.tone === mode; });
+  }
 
   var LAYOUT_EDGE = {
     notarial: '#b0882a', blank: '#2f5d8a', diplom: '#8d1d33',
@@ -212,8 +268,8 @@
     arayis: '#2f6d7a', qerar: '#5d2b4a', muqavile: '#6b5539',
     teleqram: '#6f7a2f', vesiqe: '#8a5a2b'
   };
-  var PAL_LABEL = { gold: 'Qızılı', steel: 'Polad', burgundy: 'Bordo', forest: 'Zümrüd', ink: 'Qrafit' };
-  var PAL_SWATCH = { gold: '#b0882a', steel: '#2f5d8a', burgundy: '#8d1d33', forest: '#1f7a52', ink: '#3b4b6b' };
+  var PAL_LABEL = { gold: 'Qızılı', steel: 'Polad', burgundy: 'Bordo', forest: 'Zümrüd', ink: 'Qrafit', rose: 'Çəhrayı' };
+  var PAL_SWATCH = { gold: '#b0882a', steel: '#2f5d8a', burgundy: '#8d1d33', forest: '#1f7a52', ink: '#3b4b6b', rose: '#a8586b' };
 
   /* blank formalarının kiçik sxematik nişanları */
   var LAYOUT_ICON = {
@@ -232,9 +288,56 @@
   function curLayout()  { return state.layout  || (state.tpl && state.tpl.layout)  || 'notarial'; }
   function curPalette() { return state.palette || (state.tpl && state.tpl.palette) || 'gold'; }
 
+  /* ---------------- rejim ---------------- */
+  function renderModeSwitch() {
+    var el = $('#modeSwitch');
+    if (!el) return;
+    el.innerHTML = DOCGEN.TONES.map(function (m) {
+      return '<button type="button" role="tab" data-mode="' + m + '" aria-pressed="' + (state.mode === m) + '">' +
+        esc(DOCGEN.TONE_NAMES[m]) + '<span class="g">' + tplsOf(m).length + '</span></button>';
+    }).join('');
+    $$('#modeSwitch button').forEach(function (b) {
+      b.onclick = function () { setMode(b.dataset.mode); };
+    });
+    var copy = MODE_COPY[state.mode];
+    if ($('#modeNote')) $('#modeNote').textContent = copy.note;
+  }
+
+  /* Rejimə bağlı bütün sayt mətnlərini yeniləyir. */
+  function applyModeCopy() {
+    var c = MODE_COPY[state.mode];
+    document.title = c.title;
+    var set = function (sel, val, html) {
+      var el = $(sel);
+      if (!el) return;
+      if (html) el.innerHTML = val; else el.textContent = val;
+    };
+    set('#mastName', c.mast); set('#mastSub', c.mastSub); set('#govSub', c.govSub);
+    set('#heroEyebrow', c.eyebrow); set('#heroTitle', c.h1, true); set('#heroLede', c.lede);
+    set('#specTemplates', tplsOf(state.mode).length + ' şablon — ' + c.specTag);
+    set('#stepPick', tplsOf(state.mode).length + ' hazır şablondan birini seçin, adları və şərtləri ' +
+      'yazın. Önizləmə hər hərfdən sonra yenilənir.');
+    set('#specLayouts', DOCGEN.LAYOUTS.length + ' blank forması, ' + DOCGEN.PALETTES.length + ' rəng palitrası');
+  }
+
+  function setMode(mode) {
+    if (!MODE_COPY[mode] || mode === state.mode) return;
+    state.mode = mode;
+    LS.set('zrf_mode', mode);
+    state.q = '';
+    if ($('#fSearch')) $('#fSearch').value = '';
+    var first = catsOf(mode)[0];
+    state.cat = first ? first.id : '';
+    state.tpl = null; state.doc = null; state.layout = null; state.palette = null;
+    renderModeSwitch(); applyModeCopy();
+    renderTabs(); renderCards(); renderSpecimen();
+    var t = tplsOf(mode)[0];
+    if (t) pickTemplate(t.id); else { renderDesign(); updatePreview(); }
+  }
+
   /* ---------------- kateqoriya / şablon ---------------- */
   function renderTabs() {
-    $('#tabs').innerHTML = CATEGORIES.map(function (c) {
+    $('#tabs').innerHTML = catsOf(state.mode).map(function (c) {
       var n = TEMPLATES.filter(function (t) { return t.cat === c.id; }).length;
       return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (state.cat === c.id) + '">' +
         esc(c.name) + '<span class="n">' + n + '</span></button>';
@@ -262,7 +365,8 @@
 
   function renderCards() {
     var q = state.q.trim();
-    var list = TEMPLATES.filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
+    /* Axtarış da rejim daxilində işləyir — başqa tonun şablonu siyahıya düşmür. */
+    var list = tplsOf(state.mode).filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
     $('#cardsEmpty').hidden = list.length > 0;
     $('#cards').innerHTML = list.map(function (t, i) {
       var idx = TEMPLATES.indexOf(t) + 1;
@@ -318,6 +422,7 @@
     var pre = (t.preamble || '').replace(/\{to\}/g, to).replace(/\{from\}/g, from);
     return Object.assign({
       templateId: t.id,
+      tone: t.tone || 'zarafat',
       layout: curLayout(), palette: curPalette(),
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
@@ -435,9 +540,10 @@
     if (/^\d{4}$/.test(v)) v = 'ZRF-' + new Date().getFullYear() + '-' + v;
     return v;
   }
-  function verdict(kind, title, meta) {
+  /* `long` — bir neçə cümləlik izah üçün: mono əvəzinə sans, daha rahat sətir hündürlüyü. */
+  function verdict(kind, title, meta, long) {
     return '<div class="verdict ' + kind + '"><strong>' + title + '</strong>' +
-      (meta ? '<div class="meta">' + meta + '</div>' : '') + '</div>';
+      (meta ? '<div class="meta' + (long ? ' long' : '') + '">' + meta + '</div>' : '') + '</div>';
   }
 
   function doSearch() {
@@ -450,8 +556,12 @@
     $('#searchMsg').innerHTML = verdict('wait', 'Reyestrdə axtarılır…', reg);
     API.lookup(reg).then(function (d) {
       if (!d) {
-        $('#searchMsg').innerHTML = verdict('no', 'Reyestrdə belə sənəd tapılmadı',
-          'Yalnız ödənişi tamamlanmış sənədlər reyestrə düşür');
+        /* Bu mətn qəsdən sərtdir: konsolda «düzəldilmiş» sənədin QR kodu məhz
+           buraya düşür və sənədin qeydə alınmadığını özü elan edir. */
+        $('#searchMsg').innerHTML = verdict('no', 'Bu nömrə reyestrdə qeydə alınmayıb',
+          'Əlinizdə bu nömrəni daşıyan sənəd varsa, o, bu reyestrdən çıxarılmayıb: ya heç vaxt ' +
+          'rəsmiləşdirilməyib, ya sonradan dəyişdirilib, ya da sahibi tərəfindən silinib. ' +
+          'Reyestrdə olmayan sənəd bu qurumun verdiyi sənəd sayılmır.', true);
         return;
       }
       $('#searchMsg').innerHTML = verdict('ok', 'Rəsmi təsdiq olunub',
@@ -460,8 +570,10 @@
         '<div class="sheet-wrap"><div class="paper">' + DOCGEN.a4(d, { idPrefix: 'sr', verified: true }) + '</div></div>' +
         '<div style="margin-top:10px"><button id="srReport" class="btn btn-danger btn-sm" type="button">Şikayət et / sil</button></div>';
       $('#srReport').onclick = function () { openReport(d.regNo); };
-    }).catch(function () {
-      $('#searchMsg').innerHTML = verdict('no', 'Axtarış zamanı xəta baş verdi', '');
+    }).catch(function (e) {
+      $('#searchMsg').innerHTML = e && e.error === 'rate_limited'
+        ? verdict('wait', 'Çox sayda sorğu göndərildi', 'Bir dəqiqə gözləyib yenidən yoxlayın.')
+        : verdict('no', 'Axtarış zamanı xəta baş verdi', '');
     });
   }
 
@@ -508,10 +620,11 @@
 
   /* ---------------- hero nümunəsi ---------------- */
   function renderSpecimen() {
-    var t = TEMPLATES.filter(function (x) { return x.id === 'always-right'; })[0] || TEMPLATES[0];
+    var want = MODE_COPY[state.mode].specimen;
+    var t = TEMPLATES.filter(function (x) { return x.id === want; })[0] || tplsOf(state.mode)[0] || TEMPLATES[0];
     var to = 'Günel Şəkərova', from = 'Elvin Məmmədov', reg = 'ZRF-2026-4471';
     var doc = {
-      templateId: t.id, layout: t.layout, palette: t.palette,
+      templateId: t.id, tone: t.tone || 'zarafat', layout: t.layout, palette: t.palette,
       toLabel: t.toLabel || null, fromLabel: t.fromLabel || null,
       powersLabel: t.powersLabel || null, penaltyLabel: t.penaltyLabel || null,
       title: t.title, to: to, from: from, powers: t.powers, penalty: t.penalty,
@@ -525,8 +638,15 @@
 
   /* ---------------- başlanğıc ---------------- */
   function init() {
+    /* Rejim seçimi yaddaşdan bərpa olunur; naməlum dəyər zarafat-a düşür. */
+    var saved = LS.get('zrf_mode', 'zarafat');
+    state.mode = MODE_COPY[saved] ? saved : 'zarafat';
+    var firstCat = catsOf(state.mode)[0];
+    if (firstCat) state.cat = firstCat.id;
+
+    renderModeSwitch(); applyModeCopy();
     renderTabs(); renderCards(); renderDesign();
-    pickTemplate(TEMPLATES[0].id);
+    pickTemplate(tplsOf(state.mode)[0].id);
     renderSpecimen();
 
     var deb;
@@ -564,7 +684,10 @@
       var names = ['Elvin Məmmədov', 'Günel Şəkərova', 'Rəşad Quliyev', 'Aysel Hüseynova', 'Tural Əliyev', 'Nərmin Bağırlı'];
       var pick = function () { return names[Math.floor(Math.random() * names.length)]; };
       var a = pick(), b; do { b = pick(); } while (b === a);
-      var t = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+      /* Yalnız cari rejimin şablonlarından — əks halda state.cat başqa rejimin
+         kateqoriyasına düşüb tabları pozar. */
+      var pool = tplsOf(state.mode);
+      var t = pool[Math.floor(Math.random() * pool.length)];
       state.cat = t.cat; state.q = ''; $('#fSearch').value = '';
       renderTabs(); pickTemplate(t.id);
       $('#fTo').value = a; $('#fFrom').value = b;

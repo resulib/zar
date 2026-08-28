@@ -13,10 +13,23 @@ class SessionController extends Controller
 {
     public function health(PaymentService $payments): JsonResponse
     {
+        /* `provider()` yanlış konfiqurasiyada istisna atır (məs. istehsalatda
+           simulyasiya, yaxud açarsız Epoint). Health endpoint-i buna görə
+           yıxılmamalıdır — frontend yalnız «server var» siqnalını gözləyir. */
+        try {
+            $provider = $payments->provider()->name();
+            $ready    = true;
+        } catch (\Throwable $e) {
+            report($e);
+            $provider = (string) config('zarafat.payment.provider');
+            $ready    = false;
+        }
+
         return response()->json([
-            'ok'       => true,
-            'provider' => $payments->provider()->name(),
-            'time'     => now()->getTimestampMs(),
+            'ok'            => true,
+            'provider'      => $provider,
+            'paymentsReady' => $ready,
+            'time'          => now()->getTimestampMs(),
         ]);
     }
 

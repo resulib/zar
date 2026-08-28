@@ -16,9 +16,10 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
 
   const nTpl = await p.evaluate(() => TEMPLATES.length);
   const nCat = await p.evaluate(() => CATEGORIES.length);
-  check(`${nTpl} şablon yüklənir`, nTpl === 132, nTpl);
-  check(`${nCat} kateqoriya yüklənir`, nCat === 11, nCat);
+  check(`${nTpl} şablon yüklənir`, nTpl === 204, nTpl);
+  check(`${nCat} kateqoriya yüklənir`, nCat === 17, nCat);
   check('10 dizayn mövcuddur', (await p.evaluate(() => DOCGEN.LAYOUTS.length)) === 10);
+  check('6 palitra mövcuddur', (await p.evaluate(() => DOCGEN.PALETTES.length)) === 6);
 
   await p.fill('#fTo', 'Günel Şəkərova'); await p.fill('#fFrom', 'Elvin Məmmədov'); await wait(500);
 
@@ -28,6 +29,16 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
     const n = await p.$eval('#preview svg', e => e.querySelectorAll('text,rect,path').length);
     check(`dizayn "${L}" render olunur (${n} element)`, n > 60, n);
   }
+
+  // rejim keçidi: kateqoriyalar, kartlar və sənədin tonu birdən dəyişir
+  await p.click('#modeSwitch button[data-mode="xatire"]'); await wait(700);
+  check('xatirə rejimində 6 kateqoriya', (await p.$$eval('#tabs button', b => b.length)) === 6);
+  const xTxt = (await p.$eval('#preview', e => e.innerHTML)).replace(/<[^>]*>/g, '');
+  check('xatirə sənədində PARODİYA yoxdur', xTxt.indexOf('PAROD') < 0);
+  check('xatirə sənədində xatirə zolağı var', xTxt.indexOf('XATİRƏ MƏQSƏDLİDİR') >= 0);
+  check('hüquqi qalxan hər iki tonda qalır', xTxt.indexOf('HÜQUQİ QÜVVƏYƏ MALİK DEYİL') >= 0);
+  await p.click('#modeSwitch button[data-mode="zarafat"]'); await wait(700);
+  check('zarafat rejiminə qayıdır', (await p.$$eval('#tabs button', b => b.length)) === 11);
 
   await p.click('[data-tpl="weekend-pass"]'); await wait(300);
   await p.click('#btnCreate'); await wait(700);

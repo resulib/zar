@@ -3,8 +3,16 @@
 Rəsmi görünüşlü, tamamilə əyləncə məqsədli sənəd generatoru. Cütlüklər, dostlar və iş yeri
 üçün möhürlü, imzalı, QR kodlu sənədlər; 1 AZN ödənişlə reyestrdə qeydiyyat.
 
-**132 şablon · 11 kateqoriya · 10 fərqli sənəd dizaynı · 5 rəng palitrası.**
+Sayt **iki tonludur**: «Zarafat» rejimi gülməli sənədlər, «Xatirə» rejimi isə saxlanılası,
+çərçivəyə salınası səmimi sənədlər verir. Quruluş hər iki tonda eyni dərəcədə rəsmidir.
+
+**204 şablon · 17 kateqoriya · 10 fərqli sənəd dizaynı · 6 rəng palitrası.**
 İstifadəçi istənilən şablona istənilən dizaynı və rəngi tətbiq edə bilər.
+
+| Rejim | Şablon | Kateqoriya |
+|---|---|---|
+| Zarafat | 132 | cütlüklər · dostlar · iş yeri · ailə · qohumlar · tələbələr · qonşular · bayram · səyahət · ev heyvanları · oyunçular |
+| Xatirə  | 72  | sevgi · təşəkkür · mərhələ · dostluq · ailə · təbriklər |
 
 ---
 
@@ -58,17 +66,18 @@ frontend/
   site.css        # əl ilə yazılmış üslub sistemi (CSS framework yoxdur)
   fonts.css       # @font-face — lokal IBM Plex
   fonts/          # 8 woff2 faylı, Azərbaycan əlifbasına görə kəsilmiş (cəmi 27 KB)
-  templates.js    # 132 sənəd şablonu (11 kateqoriya, hər birinə dizayn təyin olunub)
+  templates.js    # 132 zarafat şablonu (11 kateqoriya, hər birinə dizayn təyin olunub)
+  templates-xatire.js # 72 xatirə şablonu (6 kateqoriya) — templates.js-dən SONRA yüklənir
   qr.js           # sıfırdan yazılmış QR kodlayıcı (byte mode, ECC M, v1–6)
-  doc.js          # SVG sənəd generatoru: 10 layout + 5 palitra + təhlükəsizlik çapı (A4 + Story)
+  doc.js          # SVG sənəd generatoru: 10 layout + 6 palitra + 2 ton + təhlükəsizlik çapı (A4 + Story)
   app.js          # tətbiq məntiqi, API qatı, localStorage fallback
 backend-php/        # ƏSAS BACKEND — Laravel 13 / PHP 8.4
   app/Support/      # framework-siz məntiq (paketlər, imza, moderasiya, reyestr nömrəsi)
   app/Services/     # kredit ledger-i, sənədlər, ödənişlər, hesablar
   app/Http/         # API, kabinet və admin controller-ləri + middleware
   resources/views/  # əl işi Blade panelləri (sayt üslubunda)
-  database/         # 6 miqrasiya + admin seeder
-  tests/            # logic.php (51 test) və audit.php (statik yoxlama)
+  database/         # 7 miqrasiya + admin seeder
+  tests/            # logic.php (55 test) və audit.php (statik yoxlama)
 backend-node/       # köhnə Fastify + SQLite backend-i (arxiv, eyni API)
 tools/
   verify-qr.js    # QR kodlayıcının referans kitabxana ilə müqayisəsi
@@ -99,6 +108,30 @@ qurulub — zarafat məhz bu ciddi üzlə məzmun arasındakı ziddiyyətdən do
 
 ---
 
+## İki ton — Zarafat və Xatirə
+
+Saytın başında iki düyməli keçid var; seçim `localStorage`-də saxlanılır. Rejim kateqoriyaları,
+şablonları, saytın başlığını və sənədin tonunu birdən dəyişir.
+
+| Element | `zarafat` | `xatire` |
+|---|---|---|
+| Qurum adı | ZARAFAT NOTARİAT PALATASI | XATİRƏ SƏNƏDLƏRİ PALATASI |
+| Möhürün mərkəzi / alt qövsü | PARODİYA · ƏYLƏNCƏ MƏQSƏDLİDİR | XATİRƏ · XATİRƏ SƏNƏDİ |
+| Su nişanı | ZARAFAT + HÜQUQİ QÜVVƏSİ YOXDUR | mətn yoxdur — yalnız çox zəif ornament rozeta |
+| Alt zolaq | BU SƏNƏD TAMAMİLƏ ƏYLƏNCƏ MƏQSƏDİ DAŞIYIR… | BU SƏNƏD XATİRƏ MƏQSƏDLİDİR… |
+| Notarius | Ə. ZARAFATOV (uydurma şəxs) | X. XATİRƏLİ (uydurma şəxs) |
+| MRZ optional-data | `PARODIYA` | `XATIRE` |
+| Cəza qutusunun vurğusu | ştamp qırmızısı | palitranın öz `accent` rəngi |
+
+**«Hüquqi qüvvəyə malik deyil» ifadəsi hər iki tonda qalır** — hüquqi qalxanın əsasıdır.
+Ödənişsiz sənədin «NÜMUNƏ» kafel su nişanı da tondan asılı deyil, paywall vasitəsidir.
+
+Ton `doc.js`-dəki `TONE` cədvəlindədir; layout funksiyalarının quruluşu dəyişmir, yalnız ortaq
+mətnlər oradan oxunur. Sənəd obyektinin `tone` sahəsi backend-də `documents.tone` sütununda
+saxlanılır, ona görə reyestrdən açılan sənəd eyni tonda görünür.
+
+---
+
 ## Sənəd dizaynları
 
 | Dizayn | Görünüş | Nə üçün uyğundur |
@@ -114,7 +147,8 @@ qurulub — zarafat məhz bu ciddi üzlə məzmun arasındakı ziddiyyətdən do
 | `teleqram` | Teletayp lenti: zolaqlı kənarlar, tam böyük hərflər, monospace mətn, cümlə sonu « TCK » | Bildiriş, xəbərdarlıq, təbrik |
 | `vesiqe` | Pasport məlumat səhifəsi: ikidilli sahələr, foto + kölgə portret + holoqram, ICAO TD3 MRZ zolağı | Vəsiqə, şəxsiyyət sənədi |
 
-Palitralar: `gold` (qızılı), `steel` (polad mavi), `burgundy` (bordo), `forest` (zümrüd), `ink` (qrafit).
+Palitralar: `gold` (qızılı), `steel` (polad mavi), `burgundy` (bordo), `forest` (zümrüd),
+`ink` (qrafit), `rose` (çəhrayı).
 
 ### Təhlükəsizlik çapı
 
@@ -155,16 +189,17 @@ substrat üçün `paperBase()`, avadanlıq üçün `pageFurniture()` hazır köm
 |---|---|---|
 | `npm run test:qr` | QR matrisinin `qrcode` kitabxanası ilə bit-bit uyğunluğu | 6/6 |
 | `npm run test:barcode` | Code-39 cədvəlinin invariantları + kodlayıcının geri oxunması | 19/19 |
-| `npm run test:doc` | 10 layout × 5 palitra: `<g>` balansı, parodiya nişanları, element sayı, MRZ | 66/66 |
-| `npm run test:templates` | 132 şablon: unikal id, kateqoriya uyğunluğu, mətn büdcəsi, dizayn paylanması | 22/22 |
+| `npm run test:doc` | 2 ton × 10 layout × 6 palitra: `<g>` balansı, ton nişanları, element sayı, MRZ | 143/143 |
+| `npm run test:templates` | 204 şablon: unikal id, ton uyğunluğu, mətn büdcəsi, dizayn paylanması | 29/29 |
 | `node tools/decode-test.js` | Yaradılan QR-ın `jsQR` ilə real skan olunması | 4/4 |
-| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, reyestr nömrəsi, moderasiya, mətn təmizləmə | 51/51 |
+| `php backend-php/tests/logic.php` | Paketlər, Epoint imzası, reyestr nömrəsi, ton seçimi, moderasiya | 55/55 |
 | `php backend-php/tests/audit.php` | PHP sintaksisi, Blade balansı, route adları, view yolları, PSR-4 | 6/6 |
+| `php backend-php/tests/security.php` | İşləyən serverə qarşı: limitlər, CSRF, admin qorunması, qonaq sətri | 13/13 |
 | `node backend-node/test-api.js` | Köhnə Node API-si: kredit, publish, reyestr, icazələr | 30/30 |
-| `node tools/e2e.js` | Brauzer + backend: dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 14/14 |
-| `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 10 dizaynın hamısı | — |
+| `node tools/e2e.js` | Brauzer + backend: rejim keçidi, dizayn seçimi, axtarış, yaratma → ödəniş → QR → reyestr → silmə | 17/17 |
+| `npm run test:dist` | Tək fayllıq bundle `file://` rejimində, 10 dizayn + rejim keçidi | 22/22 |
 | `node tools/shots.js` | Masaüstü + mobil ekran görüntüləri, şrift yoxlaması (`tools/shots/`) | xətasız |
-| `npm run render` | 10 dizaynın tam ölçülü nümunəsi + 132 şablonluq kontakt vərəqi | xətasız |
+| `npm run render` | Hər tonda 10 dizaynın nümunəsi + tona görə iki kontakt vərəqi (204 şablon) | xətasız |
 
 Eksport edilən PNG-dəki QR kod real decoder ilə oxunur və reyestr linkinə aparır.
 
