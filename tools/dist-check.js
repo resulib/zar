@@ -14,10 +14,14 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   await p.goto('file://' + path.join(ROOT_DIR, 'dist', 'zarafat-mvp.html'));
   await wait(1000);
 
-  const nTpl = await p.evaluate(() => TEMPLATES.length);
+  /* `active: false` — qaralama şablon. `dist` paketində massivdə olur, lakin
+     `tplsOf()` onu süzür; serverli rejimdə isə `CatalogService` heç göndərmir. */
+  const nTpl = await p.evaluate(() => TEMPLATES.filter(t => t.active !== false).length);
+  const nDraft = await p.evaluate(() => TEMPLATES.filter(t => t.active === false).length);
   const nCat = await p.evaluate(() => CATEGORIES.length);
-  check(`${nTpl} şablon yüklənir`, nTpl === 216, nTpl);
+  check(`${nTpl} aktiv şablon yüklənir`, nTpl === 216, nTpl);
   check(`${nCat} kateqoriya yüklənir`, nCat === 18, nCat);
+  if (nDraft) console.log(`  · ${nDraft} qaralama şablon (kartlarda görünməməlidir)`);
   check('12 dizayn mövcuddur', (await p.evaluate(() => DOCGEN.LAYOUTS.length)) === 12);
   check('6 palitra mövcuddur', (await p.evaluate(() => DOCGEN.PALETTES.length)) === 6);
 
@@ -28,6 +32,13 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   check('6 cavab kateqoriyası', (await p.evaluate(() => REPLY_CATEGORIES.length)) === 6);
   check('cavablar ana kataloqa qarışmır',
     (await p.evaluate(() => TEMPLATES.filter(t => t.replyKind).length)) === 0);
+  /* Qaralamalar kartlarda çıxmamalıdır — offline rejimdə süzgəc yalnız
+     `tplsOf()`-dadır, server tərəfi burada iştirak etmir. */
+  const draftShown = await p.evaluate(() => {
+    const ids = TEMPLATES.filter(t => t.active === false).map(t => t.id);
+    return ids.filter(id => document.querySelector('[data-tpl="' + id + '"]')).length;
+  });
+  check('qaralama şablonlar kartlarda görünmür', draftShown === 0, draftShown);
 
   await p.fill('#fTo', 'Günel Şəkərova'); await p.fill('#fFrom', 'Elvin Məmmədov'); await wait(500);
 

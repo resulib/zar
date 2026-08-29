@@ -235,6 +235,27 @@ layout's own text when the field is empty.
 - `signOrg` sits in the always-present part of `formDoc()` in `app.js`, **not** in the questionnaire
   `extra` block; putting it back there would silently drop it for the 211 templates with no `fields`.
 
+### Draft templates (`active: false`)
+
+A template object may carry `active: false`. Such a row is seeded **inactive**, so
+`CatalogService::payload()` never ships it and the live site does not see it — an admin enables it
+with one toggle in `/admin/sablonlar`. Four places make that work:
+
+- `tools/export-catalog.js` emits `is_active: t.active !== false`.
+- `CatalogSeeder` reads it **only on insert** (`$t['is_active'] ?? true`); on an existing row the
+  admin's own toggle is never overwritten, exactly like `sort`.
+- `app.js` `tplsOf()` filters `active !== false` — the `dist` bundle has no server to filter for it.
+- `tools/check-templates.js` splits `A` (active) from `DRAFT`: the structural invariants
+  (216 · 12 per category · the 12-layout bijection · ≥5 palettes) apply to **active only**, while
+  schema, text budget, `signOrg` and `tools/check-copy.js` style rules apply to **all** — a draft is
+  one click away from being live, so its copy must already be finished.
+
+There are currently **60 drafts**, five per `zarafat` category.
+
+> **Array holes are invisible to every other check.** `[{…}, , {…}]` — an elision from a stray comma
+> — is skipped by `filter`/`every` but counted by `length`, so it silently shifts every count by one
+> and passes the whole suite. `check-templates.js` §1 now asserts there are none.
+
 ### The catalog is database-owned
 
 `GET /api/catalog` is the live source of categories and templates; `frontend/templates.js` +

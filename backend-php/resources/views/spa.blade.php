@@ -393,11 +393,11 @@
 <div id="toast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/templates.js') }}?v=78abc20c"></script>
+<script src="{{ asset('assets/templates.js') }}?v=48244b0c"></script>
 <script src="{{ asset('assets/templates-xatire.js') }}?v=ecc1485b"></script>
 <script src="{{ asset('assets/replies.js') }}?v=ec438984"></script>
 <script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
 <script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
-<script src="{{ asset('assets/app.js') }}?v=3ebb1de7"></script>
+<script src="{{ asset('assets/app.js') }}?v=3ebcf161"></script>
 </body>
 </html>
