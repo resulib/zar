@@ -709,7 +709,10 @@
           '<span class="hint">Bu şablonun adı dəyişdirilmir.</span>');
 
     var rng = powRange(t, pOpts.length);
-    state.powerPicks = pOpts.slice(0, rng[0]);
+    /* Defolt seçim MAKSİMUMDUR, minimum deyil: sənəd variantsız şablonlarda
+       olduğu kimi dörd bəndlə açılsın. Minimumla açılsaydı `togglePower()`
+       bəndi çıxarmağa da imkan verməzdi (aşağı hədd artıq tutulmuş olardı). */
+    state.powerPicks = pOpts.slice(0, rng[1]);
 
     $('#fPowersField').innerHTML = '<label class="label" for="fPowers">Səlahiyyətlər və şərtlər</label>' +
       (pOpts.length

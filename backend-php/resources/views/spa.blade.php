@@ -154,7 +154,7 @@
           <div class="panel-body" id="editorForm">
             <div class="field" id="fTitleField">
               <label class="label" for="fTitle">Sənədin adı</label>
-              <input id="fTitle" class="input" maxlength="70" readonly>
+              <input id="fTitle" class="input" maxlength="110" readonly>
             </div>
             <div class="row2" id="fNamesRow">
               <div class="field">
@@ -393,11 +393,11 @@
 <div id="toast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/templates.js') }}?v=4faca11c"></script>
-<script src="{{ asset('assets/templates-xatire.js') }}?v=ed6a5ecf"></script>
-<script src="{{ asset('assets/replies.js') }}?v=5d69c5d8"></script>
-<script src="{{ asset('assets/doc.js') }}?v=5661ded4"></script>
+<script src="{{ asset('assets/templates.js') }}?v=78abc20c"></script>
+<script src="{{ asset('assets/templates-xatire.js') }}?v=ecc1485b"></script>
+<script src="{{ asset('assets/replies.js') }}?v=ec438984"></script>
+<script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
 <script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
-<script src="{{ asset('assets/app.js') }}?v=78364dbb"></script>
+<script src="{{ asset('assets/app.js') }}?v=3ebb1de7"></script>
 </body>
 </html>

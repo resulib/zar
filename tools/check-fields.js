@@ -87,13 +87,47 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   await page.waitForTimeout(400);
   check('köhnə şablonda anket gizlidir', await page.$eval('#fFields', e => e.hidden));
   check('köhnə şablonda mətn sahələri görünür', await page.$eval('#fPowersField', e => !e.hidden));
-  /* Variant siyahısı yoxdursa sahələr kilidlidir — statik kataloqda hamısı belədir. */
-  check('başlıq kilidlidir', await page.$eval('#fTitle', e => e.readOnly));
-  check('bəndlər kilidlidir', await page.$eval('#fPowers', e => e.readOnly));
-  check('cəza bəndi kilidlidir', await page.$eval('#fPenalty', e => e.readOnly));
-  check('kilidli sahə şablonun mətnini göstərir',
+  /* Anketsiz şablonda variant qatı: başlıq və cəza <select>, bəndlər isə
+     seçilə bilən düymələrdir. Defolt seçim `powersMax` qədərdir, yəni sənəd
+     şablonun öz dörd bəndi ilə açılır (app.js renderPicks). */
+  check('başlıq variant siyahısıdır', await page.$eval('#fTitle', e => e.tagName === 'SELECT'));
+  check('cəza bəndi variant siyahısıdır', await page.$eval('#fPenalty', e => e.tagName === 'SELECT'));
+  check('bənd düymələri qurulub', await page.$$eval('#fPowersField [data-pow]', b => b.length >= 4));
+  check('defolt seçim dörd bənddir',
+    (await page.$eval('#fPowers', e => e.value)).split('\n').length === 4);
+  check('defolt bəndlər şablonun öz mətnidir',
     (await page.$eval('#fPowers', e => e.value)).indexOf('Həftədə bir dəfə') >= 0);
   check('köhnə şablonda ZRF prefiksi', /^ZRF-/.test(await page.$eval('#regBadge', e => e.textContent)));
+
+  /* Seçim dəyişdirildikdə sənəd yenilənir. */
+  await page.click('#fPowersField [data-pow="0"]');       /* birinci bəndi çıxar */
+  await page.click('#fPowersField [data-pow="5"]');       /* siyahıdan başqasını əlavə et */
+  await page.waitForTimeout(400);
+  check('seçilmiş bənd sənədə düşdü',
+    (await page.$eval('#preview', e => e.textContent)).indexOf('Görüşün keçirildiyi ünvanı') >= 0);
+  check('çıxarılmış bənd sənəddən getdi',
+    (await page.$eval('#preview', e => e.textContent)).indexOf('ən çoxu dörd saat') < 0);
+
+  /* Variant siyahısı olmayan şablon hələ də kilidli işləməlidir — admin belə
+     şablon yarada bilər və `dist` rejimində köhnə kataloq da belə ola bilər. */
+  await page.evaluate(() => {
+    const t = TEMPLATES.find(x => x.id === 'weekend-pass');
+    TEMPLATES.push(Object.assign({}, t, {
+      id: 'kilidli-sinaq', title: 'Kilidli Sınaq Şablonu',
+      titleOptions: undefined, powersOptions: undefined, penaltyOptions: undefined
+    }));
+  });
+  await page.evaluate(() => document.querySelector('[data-tpl="weekend-pass"]').click());
+  await page.waitForTimeout(200);
+  await page.evaluate(() => {
+    const t = TEMPLATES.find(x => x.id === 'kilidli-sinaq');
+    document.querySelector('[data-tpl="weekend-pass"]').dataset.tpl = 'kilidli-sinaq';
+    void t;
+  });
+  await page.click('[data-tpl="kilidli-sinaq"]');
+  await page.waitForTimeout(400);
+  check('variantsız şablonda başlıq kilidlidir', await page.$eval('#fTitle', e => e.readOnly === true));
+  check('variantsız şablonda bəndlər kilidlidir', await page.$eval('#fPowers', e => e.readOnly === true));
 
   check('brauzer xətası yoxdur', errs.length === 0, errs);
   console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz');

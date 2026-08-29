@@ -33,7 +33,7 @@ const ORG_BAN = ['Nazirliy', 'Nazirlər Kabineti', 'Azərbaycan Respublikası',
                  'Dövlət Agentliyi', 'Dövlət Komitəsi', 'Prezident', 'Prokurorluq',
                  'Polis', 'FIFA', 'UEFA', 'UNESCO', 'Interpol', 'İnterpol'];
 /* Vizual olaraq rahat oxunan diapazon */
-const AIM = { title: 52, tag: 24, preamble: [140, 380], powers: 300, penalty: [65, 240] };
+const AIM = { title: 92, tag: 24, preamble: [140, 380], powers: 300, penalty: [65, 240] };
 
 let pass = 0, fail = 0, warn = 0;
 const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
