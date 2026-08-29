@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Template;
+use App\Services\CatalogService;
 use Illuminate\Database\Seeder;
 
 /**
@@ -117,8 +118,14 @@ class CatalogSeeder extends Seeder
             $tpl->save();
         }
 
+        /* `CatalogService::payload()` `rememberForever` işlədir — keş sıfırlanmasa
+           sayt seed-dən sonra da köhnə kataloqu verməyə davam edər. Admin yazıları
+           bunu özləri edir, seeder isə etmirdi. */
+        CatalogService::forget();
+
         $this->command?->info(
             'Kataloq: ' . Category::query()->count() . ' kateqoriya · ' . Template::query()->count() . ' şablon'
+            . ' · kataloq keşi sıfırlandı'
         );
     }
 }
