@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e2340">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=2bb59107">
+<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=6c442191">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -130,6 +130,9 @@
       <h2>Məlumatların doldurulması</h2>
       <span class="fill"></span>
     </div>
+
+    <!-- Cavab rejimi zolağı — yalnız /?cavab=REG ilə gəlindikdə görünür -->
+    <div class="reply-bar" id="replyBar" hidden></div>
 
     <div class="editor">
       <!-- forma sütunu -->
@@ -392,8 +395,9 @@
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
 <script src="{{ asset('assets/templates.js') }}?v=4faca11c"></script>
 <script src="{{ asset('assets/templates-xatire.js') }}?v=ed6a5ecf"></script>
-<script src="{{ asset('assets/doc.js') }}?v=1634dfa3"></script>
+<script src="{{ asset('assets/replies.js') }}?v=5d69c5d8"></script>
+<script src="{{ asset('assets/doc.js') }}?v=5661ded4"></script>
 <script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
-<script src="{{ asset('assets/app.js') }}?v=dfbdd2a6"></script>
+<script src="{{ asset('assets/app.js') }}?v=78364dbb"></script>
 </body>
 </html>

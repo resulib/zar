@@ -30,7 +30,14 @@
           <span class="s">{{ $doc->to_name }} ← {{ $doc->from_name }}</span>
         </td>
         <td class="mono">{{ $doc->layout }}/{{ $doc->palette }}<br><span class="s">{{ $doc->tone === 'xatire' ? 'Xatirə' : 'Zarafat' }}</span></td>
-        <td class="mono">{{ $doc->reg_no }}<br><span class="s">{{ $doc->date_label }}</span></td>
+        <td class="mono">{{ $doc->reg_no }}<br><span class="s">{{ $doc->date_label }}</span>
+          @if ($doc->replyTo)
+            <br><span class="s">↩ cavab: <a href="/r/{{ $doc->replyTo->reg_no }}">{{ $doc->replyTo->reg_no }}</a></span>
+          @endif
+          @if ($doc->replies_count)
+            <br><span class="s">{{ $doc->replies_count }} cavab alıb</span>
+          @endif
+        </td>
         <td><span class="pill {{ $doc->isPublished() ? 'ok' : 'mute' }}">{{ $doc->isPublished() ? 'Reyestrdə' : 'Qaralama' }}</span></td>
         <td class="num">{{ $doc->views }}</td>
         <td>

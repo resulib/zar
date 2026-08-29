@@ -15,6 +15,10 @@ Zarafat Notariat Palatası — a document generator (Azerbaijani market). Docume
 the browser, exported as PNG via canvas; paying 1 AZN publishes them into a registry and attaches a QR
 code. 216 templates · 18 categories · 12 SVG layouts · 6 palettes · **2 tones**.
 
+On top of that sits the **reply layer**: any published document can be answered with a *cavab sənədi*,
+which gets its own registry number and stays linked to the one it answers. Its catalog is separate —
+71 reply templates · 6 reply categories · 6 intents. See "The reply layer" below.
+
 The site has two modes, switched at the top of the page and persisted in `localStorage`:
 `zarafat` (jokes — 144 templates, 12 categories) and `xatire` (keepsakes — 72 templates,
 6 categories, ids prefixed `x-`). The structure of the document is identical in both; only the
@@ -35,6 +39,8 @@ npm run test:qr          # QR encoder vs the `qrcode` reference library
 npm run test:barcode     # Code-39 table invariants + round-trip decode
 npm run test:doc         # 2 tones × 12 layouts × 6 palettes: <g> balance, tone marks, element counts, MRZ
 npm run test:templates   # 216 templates: unique ids, tone/category match, fields schema, text budgets
+npm run test:replies     # 71 reply templates: intent coverage, replyCats, prefixes, orgs, render
+npm run test:reply-flow  # the SPA reply editor (/?cavab=…) in a real browser (no backend needed)
 node tools/decode-test.js  # real jsQR scan of generated QR
 npm run test:fields      # dynamic questionnaire layer in a real browser (no backend needed)
 npm run test:admin       # admin catalog CRUD end-to-end (needs `php artisan serve` on :8080)
@@ -291,6 +297,75 @@ Option lists and `fields` are **mutually exclusive** on a template; `templateSav
 combination. `CatalogSeeder` never writes null over an existing option list — a stale
 `catalog.json` would otherwise unlock every template with no error output.
 
+### The reply layer (cavab sənədi)
+
+Any **published** document can be answered. The reply is a normal document — own registry number, own
+1-credit publish, own PDF — but it carries `documents.reply_to_id` and shows a diagonal `CAVAB SƏNƏDİ`
+ribbon naming the document it answers. Chains are unbounded up to a depth cap of 12.
+
+**Six intents**, mirrored in three places that must stay in sync — `frontend/replies.js` `REPLY_KINDS`,
+`backend-php/app/Support/ReplyKinds.php`, and the hard-coded card list in `frontend/viewer.js`:
+
+| kind | prefix | layout / palette | kind | prefix | layout / palette |
+|---|---|---|---|---|---|
+| `redd` | `RDD` | qerar / burgundy | `legv` | `LGV` | teleqram / steel |
+| `etiraz` | `ETZ` | blank / ink | `qebul` | `QVD` | sertifikat / gold |
+| `tekrar` | `TKR` | ekspertiza / forest | `xatire` | `XCV` | varied / rose |
+
+Prefixes are **ASCII only** for the same reason as `RegistryPrefix::MAP` — the number goes into the QR
+URL. One prefix per intent also spreads `RegistryNumber`'s 9000-per-year ceiling across six series.
+
+**The reply catalog is a separate global, not part of the 216.** `frontend/replies.js` defines
+`window.REPLY_KINDS` / `REPLY_CATEGORIES` / `REPLIES` and **never pushes onto `CATEGORIES` /
+`TEMPLATES`** — `check-templates.js` demands exactly 18/216, 12 templates per category and full
+12-layout coverage, which is already a bijection (see "the bijection trap"). Keeping replies in
+their own arrays is what lets that file stay untouched. In the **database** they are ordinary
+`categories` / `templates` rows distinguished by `categories.is_reply` and `templates.reply_kind`;
+`CatalogService::payload()` splits the response into four keys — `categories` · `templates` ·
+`replyCategories` · `replies`. Merging them would dump reply templates into the home grid and break
+`catsOf`/`tplsOf`.
+
+`templates.reply_cats` lists which *original* categories a reply answers; empty means universal.
+Every intent has one universal fallback, so the visitor never sees an empty list.
+
+**Registering `replies.js` takes four edits** (it must load *after* `templates-xatire.js`):
+`frontend/index.html`, `build.js`, `tools/build-laravel.js` `ASSETS`, `tools/export-catalog.js`.
+It is deliberately **not** loaded by `viewer.html` — the viewer only needs the six card labels.
+
+**The server owns the link, exactly like the option lock.** The client sends only `replyTo` (a
+registry number); `DocumentService::resolveParent()` resolves it and throws `bad_reply` unless every
+gate passes: a non-reply template may not carry `replyTo`, a reply template may not be used without
+one, the parent must be **published**, tones must match, the intent must cover the chain's topic, and
+`ReplyKinds::nextDepth()` must be under the cap. `reply_root_id` / `reply_depth` / `reply_topic` are
+all computed server-side.
+
+**`reply_topic` is the chain's subject, not the parent's category.** A reply's own category is an
+intent category (`c-redd`), which appears in no `reply_cats` list — so matching against it would make
+replying to a reply impossible and the chain would die at level two. The topic is the *root*
+document's category, denormalised onto every reply so the check costs no query and the client
+(`catOfDoc()` in `app.js`) can mirror it exactly.
+
+**Status (🟢/🟡/🔴/⚫) is derived, never stored.** Writing a verdict onto the original would let a
+stranger mutate someone else's document — replying is open to everyone. `ReplyKinds::VERDICT` maps
+the newest reply's intent to a badge shown **only in the chain widget**, never in the SVG.
+
+**`doc.js` gains one helper and one line.** `replyBand()` draws the corner ribbon and `inner()` calls
+it behind `if (doc.replyTo)`. The corner is deliberate: the bottom of every layout is occupied
+(form/page marks at y = 1046…1084, disclaimer at 1058 / 1074 / `H-26`), while the corner triangle is
+margin in all twelve. Because `hash-layouts.js`'s `mkDoc()` never sets `replyTo`, the byte gate does
+not move — verify with `node tools/hash-layouts.js` before and after any change here.
+
+**Flow:** `/r/{regNo}` shows a six-button bar and a card modal, then hands off to
+`/?cavab=REG&tip=KIND`; `app.js` `enterReplyMode()` loads the original, swaps the category strip for
+an intent strip, pre-fills both names and renders the preview. The viewer stays lean — no catalog, no
+credits, no payment layer. `GET /api/registry/{regNo}/zencir` returns the whole chain in one SELECT
+via `reply_root_id`.
+
+**Analytics.** `document_events` records `reply_click` · `reply_open` · `reply_shared` (client, via
+`POST /api/olcu`, `throttle:events`) and `reply_created` (server-side, in `DocumentService`). The
+endpoint accepts only that **whitelist** — otherwise it would be an open write path. `/admin/statistika`
+reads it: conversion rate, funnel, chain depth, popular intents, per-category rate.
+
 ### Export and the bare document viewer
 
 `frontend/export.js` (`window.ZEXPORT`) owns everything that turns a rendered SVG into a file:
@@ -411,6 +486,12 @@ occasional runtime wrinkle on first run.
 - **Palette labels/swatches**: `doc.js` `PALETTES` ↔ `app.js` `PAL_LABEL` / `PAL_SWATCH`.
 - **Counts (216 / 18 / 12 / 6 / 2)**: asserted literally in `tools/check-templates.js`,
   `tools/check-doc.js`, `tools/dist-check.js`, `tools/e2e.js`.
+- **Reply intents**: `frontend/replies.js` `REPLY_KINDS` ↔ `App\Support\ReplyKinds` (`KINDS`,
+  `LABELS`, `PREFIX`, `VERDICT` — all four keyed in the same order, locked by `tests/logic.php`)
+  ↔ the `KINDS` card list hard-coded in `frontend/viewer.js` (the viewer never loads the catalog).
+- **Chain topic**: `DocumentService::topicOf()` ↔ `app.js` `catOfDoc()` — both must read
+  `reply_topic` first and fall back to the template's own category.
+- **Reply counts (71 / 6 / 6)**: `tools/check-replies.js` and `tools/dist-check.js`.
 
 ## Gotchas
 

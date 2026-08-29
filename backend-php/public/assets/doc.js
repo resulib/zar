@@ -626,6 +626,32 @@ window.DOCGEN = (function () {
       T(CUR.band, x + w / 2, y + 17, { anchor: 'middle', size: 9.2, fam: SANS, fill: '#f3e6bf', ls: 0.7 });
   }
 
+  /* CAVAB SƏNƏDİ lenti — sol yuxarı küncdə diaqonal zolaq.
+
+     `inner()` onu ən sonda əlavə edir, deməli lent hər şeyin üstünə düşür
+     (əsl «CAVAB» ştampı kimi) və 12 dizaynın heç birinə toxunmur.
+
+     Künc qəsdən seçilib: səhifənin altı doludur — dizaynlar blank nömrəsini və
+     səhifə işarəsini y = 1046…1084 aralığında, disclaimer zolağını isə 1058,
+     1074 və H-26-da çəkir. Künc üçbucağı isə bütün dizaynlarda kənar boşluqdur.
+
+     ŞƏRTLİDİR: `doc.replyTo` yoxdursa heç nə emissiya olunmur, deməli mövcud
+     216 şablonun çıxışı bayt-bayt eyni qalır (bax: tools/hash-layouts.js —
+     onun `mkDoc()` funksiyası bu açarı heç vaxt qurmur). */
+  function replyBand(P, reg) {
+    var c = 66, hw = 16, col = penC(P), x0 = c - 132;
+    return '<g data-rp="1" transform="rotate(-45 ' + c + ' ' + c + ')">' +
+      /* Kağız rəngli haşiyə: lent bəzi dizaynlarda masthead-in küncünə düşür,
+         bu xətt onu «zədə» deyil, üstə vurulmuş ştamp kimi oxudur. */
+      '<rect x="' + x0 + '" y="' + (c - hw - 2) + '" width="264" height="' + (hw * 2 + 4) + '" fill="' + P.paper + '"/>' +
+      '<rect x="' + x0 + '" y="' + (c - hw) + '" width="264" height="' + (hw * 2) + '" fill="' + col + '"/>' +
+      '<rect x="' + x0 + '" y="' + (c - hw + 3) + '" width="264" height="0.8" fill="#fff" opacity="0.45"/>' +
+      '<rect x="' + x0 + '" y="' + (c + hw - 3.8) + '" width="264" height="0.8" fill="#fff" opacity="0.45"/>' +
+      T('CAVAB SƏNƏDİ', c, c - 1, { anchor: 'middle', size: 11, fam: SANS, weight: 'bold', fill: '#fff', ls: 2.2 }) +
+      T(reg, c, c + 11, { anchor: 'middle', size: 8, fam: MONO, weight: 'bold', fill: '#fff', ls: 1.1 }) +
+      '</g>';
+  }
+
   /* Diaqonal qutu ştampı — təsdiq, müddət bitməsi, ləğv və dizayna xas ştamplar.
      `verifiedStamp` bunun sabit arqumentli halıdır: defolt dəyərlər hərfi olaraq
      əvvəlki çıxışı verir, ona görə mövcud dizaynların baytı dəyişmir. */
@@ -2190,6 +2216,9 @@ window.DOCGEN = (function () {
     var s = (LAYOUTS[doc.layout] || LAYOUTS.notarial)(doc, C);
     if (s.indexOf('data-wm=') < 0) s += watermark(C.P, doc.paid);
     if (s.indexOf('data-dc=') < 0) s += disclaimer(C.P, 0, H - 26, W);
+    /* Cavab lenti də eyni qapıdan keçir: dizayn müəllifi nə etsə, cavab
+       sənədi öz nişanını alır. Şərt sayəsində adi sənədlərin baytı dəyişmir. */
+    if (doc.replyTo) s += replyBand(C.P, doc.replyTo);
     return s;
   }
 

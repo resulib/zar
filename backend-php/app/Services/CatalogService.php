@@ -13,12 +13,18 @@ use Illuminate\Support\Facades\Cache;
  *
  * Kataloq hər səhifə açılışında oxunur, ona görə keşlənir; admin paneldəki
  * hər dəyişiklik {@see self::forget()} ilə keşi sıfırlayır.
+ *
+ * Yük DÖRD açara bölünür. Cavab şablonları `templates` açarına düşsə,
+ * `applyCatalog()` onları `window.TEMPLATES`-ə tökər, ana səhifənin kateqoriya
+ * zolağı və `catsOf`/`tplsOf` süzgəcləri sınardı. Ayırma məhz bunun üçündür.
  */
 class CatalogService
 {
-    public const CACHE_KEY = 'catalog:v1';
+    /* Yükün forması dəyişdiyi üçün açar da yenilənir — köhnə keşdə
+       `replies` yoxdur və sayt cavab kataloqunu boş görərdi. */
+    public const CACHE_KEY = 'catalog:v2';
 
-    /** @return array{categories: list<array<string, mixed>>, templates: list<array<string, mixed>>} */
+    /** @return array<string, list<array<string, mixed>>> */
     public function payload(): array
     {
         return Cache::rememberForever(self::CACHE_KEY, fn (): array => $this->build());
@@ -27,9 +33,10 @@ class CatalogService
     public static function forget(): void
     {
         Cache::forget(self::CACHE_KEY);
+        Cache::forget('catalog:v1');
     }
 
-    /** @return array{categories: list<array<string, mixed>>, templates: list<array<string, mixed>>} */
+    /** @return array<string, list<array<string, mixed>>> */
     protected function build(): array
     {
         $categories = Category::query()->active()->ordered()->get();
@@ -42,11 +49,25 @@ class CatalogService
             ->ordered()
             ->get();
 
-        return [
-            'categories' => $categories->map(fn (Category $c): array => $c->toCatalogArray())->values()->all(),
-            'templates'  => $templates
+        $cats = function (bool $reply) use ($categories): array {
+            return $categories
+                ->filter(fn (Category $c): bool => $c->is_reply === $reply)
+                ->map(fn (Category $c): array => $c->toCatalogArray())
+                ->values()->all();
+        };
+
+        $tpls = function (bool $reply) use ($templates, $slugs): array {
+            return $templates
+                ->filter(fn (Template $t): bool => $t->isReply() === $reply)
                 ->map(fn (Template $t): array => $t->toCatalogArray($slugs[$t->category_id] ?? null))
-                ->values()->all(),
+                ->values()->all();
+        };
+
+        return [
+            'categories'      => $cats(false),
+            'templates'       => $tpls(false),
+            'replyCategories' => $cats(true),
+            'replies'         => $tpls(true),
         ];
     }
 }

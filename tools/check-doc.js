@@ -142,5 +142,31 @@ console.log('\n7. Naməlum layout notarial-a düşür');
 const unk = D.a4(mkDoc('yoxdur', 'gold'), { idPrefix: 'z' });
 check('naməlum layout render olunur', unk.length > 5000 && depth(unk).end === 0);
 
+/* Cavab lenti `inner()` qapısındadır: hər 12 dizayn onu pulsuz alır,
+   `doc.replyTo` yoxdursa isə çıxış bayt-bayt əvvəlki kimi qalır.
+   Sonuncu şərti `tools/hash-layouts.js` da qoruyur; burada davranış yoxlanılır. */
+console.log('\n8. Cavab lenti (doc.replyTo)');
+for (const tone of D.TONES) {
+  for (const L of D.LAYOUTS) {
+    const plain = D.a4(mkDoc(L, 'gold', true, tone), { idPrefix: 'rp' });
+    const reply = D.a4(Object.assign(mkDoc(L, 'gold', true, tone), { replyTo: 'ZRF-2026-8472' }), { idPrefix: 'rp' });
+    const one = s => (s.match(/data-rp=/g) || []).length;
+
+    if (one(plain) !== 0) { check(tone + '/' + L + ': lentsiz sənəddə lent yoxdur', false, one(plain)); continue; }
+    if (one(reply) !== 1) { check(tone + '/' + L + ': cavab sənədində bir lent', false, one(reply)); continue; }
+    if (reply.indexOf('ZRF-2026-8472') < 0) { check(tone + '/' + L + ': orijinalın nömrəsi', false); continue; }
+    if (reply.replace(/<[^>]*>/g, '').indexOf('CAVAB SƏNƏDİ') < 0) { check(tone + '/' + L + ': lentin mətni', false); continue; }
+    /* Lent qapını sındırmamalıdır: su nişanı və disclaimer yenə birdir. */
+    if ((reply.match(/data-wm=/g) || []).length !== 1) { check(tone + '/' + L + ': su nişanı sayı', false); continue; }
+    if ((reply.match(/data-dc=/g) || []).length !== 1) { check(tone + '/' + L + ': disclaimer sayı', false); continue; }
+    const d = depth(reply);
+    if (d.end !== 0 || d.min < 0) { check(tone + '/' + L + ': <g> balansı', false, d); continue; }
+    check(tone + '/' + L + ' cavab lenti', true);
+  }
+}
+/* Story kartı da `inner()`-dən keçir — lent orada da olmalıdır. */
+const stry = D.story(Object.assign(mkDoc('qerar', 'burgundy'), { replyTo: 'ZRF-2026-8472' }), { idPrefix: 'sr' });
+check('story kartında cavab lenti', (stry.match(/data-rp=/g) || []).length === 1 && depth(stry).end === 0);
+
 console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz');
 process.exit(fail ? 1 : 0);

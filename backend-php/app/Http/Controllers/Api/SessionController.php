@@ -47,9 +47,13 @@ class SessionController extends Controller
 
     public function documents(Request $request): JsonResponse
     {
+        /* `replyTo` olmadan `toApiArray()` hər cavab sənədi üçün ayrıca sorğu
+           açardı — 60 sətirlik siyahıda bu N+1-dir. */
         $docs = $request->visitor()
             ->documents()
             ->visible()
+            ->with('replyTo:id,reg_no,title')
+            ->withCount(['replies' => fn ($q) => $q->published()])
             ->latest()
             ->limit(60)
             ->get()

@@ -38,6 +38,11 @@ Route::prefix('api')->group(function (): void {
     Route::post('/documents/{regNo}/cancel', [Api\DocumentController::class, 'cancel'])->middleware('throttle:documents');
 
     Route::get('/registry/{regNo}', [Api\RegistryController::class, 'show'])->middleware('throttle:registry');
+    // Cavab zənciri — /r/{regNo} səhifəsindəki «Sənəd tarixçəsi» bölməsi.
+    Route::get('/registry/{regNo}/zencir', [Api\RegistryController::class, 'chain'])->middleware('throttle:registry');
+
+    // Cavab döngəsinin ölçülməsi. Hadisə adı ağ siyahıdadır — bax EventController.
+    Route::post('/olcu', [Api\EventController::class, 'store'])->middleware('throttle:events');
 
     Route::post('/payments/simulate', [Api\PaymentController::class, 'simulate'])->middleware('throttle:payments');
     Route::post('/payments/checkout', [Api\PaymentController::class, 'checkout'])->middleware('throttle:payments');
@@ -80,6 +85,9 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/senedler/{regNo}',          [Admin\DocumentController::class, 'show'])->name('documents.show');
         Route::post('/senedler/{regNo}/sil',     [Admin\DocumentController::class, 'remove'])->name('documents.remove');
         Route::post('/senedler/{regNo}/berpa',   [Admin\DocumentController::class, 'restore'])->name('documents.restore');
+
+        // Cavab döngəsinin ölçüləri — dashboard-dan ayrıdır, çünki ayrı sualı cavablandırır
+        Route::get('/statistika',   [Admin\StatsController::class, 'index'])->name('stats');
 
         Route::get('/odenisler',    [Admin\PaymentController::class, 'index'])->name('payments');
         Route::get('/emeliyyatlar', [Admin\PaymentController::class, 'transactions'])->name('transactions');

@@ -21,6 +21,14 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n)) : (fail++, cons
   check('12 dizayn mövcuddur', (await p.evaluate(() => DOCGEN.LAYOUTS.length)) === 12);
   check('6 palitra mövcuddur', (await p.evaluate(() => DOCGEN.PALETTES.length)) === 6);
 
+  /* Cavab kataloqu AYRI qlobal dəyişəndədir — ana kataloqun sayları
+     dəyişmədən qalmalıdır (bax: frontend/replies.js başlığı). */
+  const nRep = await p.evaluate(() => REPLIES.length);
+  check(`${nRep} cavab şablonu yüklənir`, nRep === 71, nRep);
+  check('6 cavab kateqoriyası', (await p.evaluate(() => REPLY_CATEGORIES.length)) === 6);
+  check('cavablar ana kataloqa qarışmır',
+    (await p.evaluate(() => TEMPLATES.filter(t => t.replyKind).length)) === 0);
+
   await p.fill('#fTo', 'Günel Şəkərova'); await p.fill('#fFrom', 'Elvin Məmmədov'); await wait(500);
 
   // hər dizaynı önizləmədə keçir

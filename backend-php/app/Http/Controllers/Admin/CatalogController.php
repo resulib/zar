@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Template;
 use App\Services\CatalogService;
+use App\Support\ReplyKinds;
 use App\Support\TemplateSchema;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -65,11 +66,23 @@ class CatalogController extends Controller
             'blurb'     => ['nullable', 'string', 'max:300'],
             'sort'      => ['required', 'integer', 'min:0', 'max:100000'],
             'is_active' => ['nullable', 'boolean'],
+            'is_reply'  => ['nullable', 'boolean'],
         ], [], ['slug' => 'açar', 'tone' => 'ton', 'name' => 'ad', 'sort' => 'sıra']);
 
         /* `ConvertEmptyStringsToNull` boş sahəni null edir, sütun isə NOT NULL-dur. */
         $data['blurb']     = (string) ($data['blurb'] ?? '');
         $data['is_active'] = $request->boolean('is_active');
+        $data['is_reply']  = $request->boolean('is_reply');
+
+        /* Cavab bayrağı kateqoriya boş DEYİLKƏN dəyişdirilə bilməz: içindəki
+           şablonlar bir anda ana kataloqa tökülər (və ya oradan yox olar). */
+        if ($category->exists && $category->is_reply !== $data['is_reply']
+            && $category->templates()->count() > 0) {
+            return back()->withErrors([
+                'is_reply' => 'Kateqoriyada şablon olduğu müddətdə cavab bayrağı dəyişdirilə bilməz. '
+                    . 'Əvvəlcə şablonları köçürün.',
+            ])->withInput();
+        }
         $wasNew = ! $category->exists;
 
         $category->fill($data)->save();
@@ -158,6 +171,11 @@ class CatalogController extends Controller
             'palettes'   => config('zarafat.palettes'),
             'tones'      => config('zarafat.tones'),
             'types'      => TemplateSchema::TYPES,
+            /* Cavab qatı: niyyət siyahısı və hədəf kateqoriyalar.
+               Hədəflər YALNIZ ana kateqoriyalardır — cavaba cavab zəncirin
+               özü ilə idarə olunur, `reply_cats` ilə deyil. */
+            'replyKinds'   => ReplyKinds::LABELS,
+            'replyTargets' => Category::query()->notReplies()->ordered()->get(['slug', 'name', 'tone']),
         ]);
     }
 
@@ -182,6 +200,10 @@ class CatalogController extends Controller
             'powers_label'  => ['nullable', 'string', 'max:40'],
             'penalty_label' => ['nullable', 'string', 'max:40'],
             'reg_prefix'    => ['nullable', 'string', 'regex:/^[A-Z]{2,4}$/'],
+            /* Cavab qatı. `reply_kind` dolu olan şablon ana kataloqdan çıxır. */
+            'reply_kind'    => ['nullable', Rule::in(ReplyKinds::KINDS)],
+            'reply_cats'    => ['nullable', 'array', 'max:24'],
+            'reply_cats.*'  => ['string', 'max:40'],
             'sign_title'    => ['nullable', 'string', 'max:40'],
             'sign_org'      => ['nullable', 'string', 'max:60'],
             'share'         => ['nullable', 'string', 'max:' . TemplateSchema::MAX_SHARE_LEN],
@@ -270,6 +292,41 @@ class CatalogController extends Controller
 
         $category = Category::query()->findOrFail($data['category_id']);
 
+        /* Cavab şablonu YALNIZ cavab kateqoriyasında yaşayır və əksinə.
+           İkisi ayrılsa `CatalogService::payload()` şablonu bir açara, onun
+           kateqoriyasını isə başqa açara yazar — sayt onu heç vaxt göstərməz. */
+        $kind = $data['reply_kind'] ?? null;
+
+        if ($category->is_reply && $kind === null) {
+            throw ValidationException::withMessages([
+                'reply_kind' => 'Cavab kateqoriyasındakı şablon üçün cavab niyyəti seçilməlidir.',
+            ]);
+        }
+
+        if (! $category->is_reply && $kind !== null) {
+            throw ValidationException::withMessages([
+                'reply_kind' => 'Cavab niyyəti yalnız cavab kateqoriyasındakı şablonda ola bilər.',
+            ]);
+        }
+
+        /* Hədəf kateqoriyalar ana kataloqdan seçilir: cavaba cavab niyyəti
+           `reply_cats` ilə deyil, zəncirin özü ilə idarə olunur. */
+        $cats = array_values(array_unique(array_filter((array) ($data['reply_cats'] ?? []))));
+
+        if ($cats !== []) {
+            $known = Category::query()->notReplies()->pluck('slug')->all();
+            $unknown = array_values(array_diff($cats, $known));
+
+            if ($unknown !== []) {
+                throw ValidationException::withMessages([
+                    'reply_cats' => 'Naməlum kateqoriya: ' . implode(', ', $unknown),
+                ]);
+            }
+        }
+
+        $data['reply_kind'] = $kind;
+        $data['reply_cats'] = $cats ?: null;      // boş = universal
+
         /* Ton kateqoriyadan miras alınır — uyğunsuzluq tab çubuğunu sındırır. */
         $data['tone']           = $category->tone;
         $data['tag']            = (string) ($data['tag'] ?? '');
@@ -341,6 +398,7 @@ class CatalogController extends Controller
             'categories' => $categories->map(fn (Category $c): array => [
                 'slug' => $c->slug, 'tone' => $c->tone, 'name' => $c->name,
                 'icon' => $c->icon, 'blurb' => $c->blurb, 'sort' => $c->sort,
+                'is_reply' => $c->is_reply,
             ])->values(),
             'templates' => Template::query()->orderBy('category_id')->ordered()->get()
                 ->map(fn (Template $t): array => [
@@ -349,7 +407,9 @@ class CatalogController extends Controller
                     'preamble' => $t->preamble, 'powers' => $t->powers, 'penalty' => $t->penalty,
                     'to_label' => $t->to_label, 'from_label' => $t->from_label,
                     'powers_label' => $t->powers_label, 'penalty_label' => $t->penalty_label,
-                    'reg_prefix' => $t->reg_prefix, 'sign_title' => $t->sign_title,
+                    'reg_prefix' => $t->reg_prefix,
+                    'reply_kind' => $t->reply_kind, 'reply_cats' => $t->reply_cats,
+                    'sign_title' => $t->sign_title,
                     'sign_org' => $t->sign_org, 'share' => $t->share,
                     'fields' => $t->fields, 'notes' => $t->notes, 'cancel_reasons' => $t->cancel_reasons,
                     'title_options' => $t->title_options, 'powers_options' => $t->powers_options,
@@ -425,6 +485,13 @@ class CatalogController extends Controller
         $cats = Category::query()->active()->with(['templates' => fn ($q) => $q->where('is_active', true)])->ordered()->get();
 
         foreach ($cats as $c) {
+            /* Cavab kateqoriyaları «12 dizayn · 5 palitra» qaydalarına tabe
+               deyil — onlar bir niyyətin seriyasıdır və qəsdən eyni görünür.
+               `tools/check-replies.js` onları öz qaydaları ilə yoxlayır. */
+            if ($c->is_reply) {
+                continue;
+            }
+
             $n = $c->templates->count();
 
             if ($n === 0) {
@@ -445,7 +512,9 @@ class CatalogController extends Controller
             }
         }
 
-        $dupPrefix = Template::query()->whereNotNull('reg_prefix')
+        /* Cavab şablonları niyyət başına BİR prefiks paylaşır (RDD, ETZ, …) —
+           bu, qəsdən belədir və təkrar xəbərdarlığı yalançı olardı. */
+        $dupPrefix = Template::query()->whereNotNull('reg_prefix')->notReplies()
             ->selectRaw('reg_prefix, count(*) as n')->groupBy('reg_prefix')->havingRaw('count(*) > 1')->pluck('reg_prefix');
 
         foreach ($dupPrefix as $p) {

@@ -15,15 +15,44 @@
 <div class="vw-page">
   <div id="vwState" class="vw-state">Reyestrdən oxunur…</div>
   <div id="vwBanner" class="vw-banner" hidden></div>
+  <div id="vwReplyRef" class="vw-replyref" hidden></div>
   <div id="doc" class="vw-doc" hidden></div>
+
+  <!-- Cavab çağırışı və sənəd tarixçəsi — sənədin altında, sıra ilə -->
+  <div id="vwCta" class="vw-cta" hidden>
+    <b>Bu sənədlə razı deyilsən?</b>
+    <span>Rəsmi cavab hazırla — reyestrdə öz nömrəsini alsın.</span>
+    <button class="vw-btn" id="vwReplyBig" type="button">Cavab sənədi hazırla →</button>
+  </div>
+  <div id="vwChain" class="vw-chain" hidden></div>
 </div>
 
 <div class="vw-bar" id="vwBar" hidden>
+  <button id="vwReply" type="button" class="accent">Cavab ver</button>
   <button id="vwPdf" type="button">PDF</button>
   <button id="vwPng" type="button">PNG</button>
   <button id="vwStory" type="button">Story</button>
   <button id="vwLink" type="button">Link</button>
   <button id="vwRep" type="button" class="danger">Şikayət</button>
+</div>
+
+<!-- Cavab niyyəti seçimi. Kartlar viewer.js-də qurulur: baxış səhifəsinə
+     kataloq yüklənmir, buradan yalnız niyyət seçilir və SPA-ya keçilir. -->
+<div class="vw-modal" id="vwReplyModal">
+  <div class="vw-box wide">
+    <div class="vw-box-head">
+      <h3>Bu sənədə necə cavab verirsən?</h3>
+      <button class="vw-x" id="vwReplyClose" type="button" aria-label="Bağla">×</button>
+    </div>
+    <div class="vw-box-body">
+      <p class="vw-small">Cavab verilən sənəd: <b class="vw-mono" id="vwReplyReg">—</b></p>
+      <div class="vw-reply-grid" id="vwReplyCards"></div>
+    </div>
+    <div class="vw-box-foot spread">
+      <button class="vw-btn ghost" id="vwReplyRandom" type="button">🎲 Mənim yerimə seç</button>
+      <button class="vw-btn ghost" id="vwReplyAny" type="button">Bütün variantlara bax →</button>
+    </div>
+  </div>
 </div>
 
 <div class="vw-modal" id="vwRepModal">

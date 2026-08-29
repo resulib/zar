@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#3a3d42">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
-<link rel="stylesheet" href="{{ asset('assets/viewer.css') }}?v=e185e02b">
+<link rel="stylesheet" href="{{ asset('assets/viewer.css') }}?v=ffa5e763">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zarafat Notariat Palatası">
@@ -22,15 +22,44 @@
 <div class="vw-page">
   <div id="vwState" class="vw-state">Reyestrdən oxunur…</div>
   <div id="vwBanner" class="vw-banner" hidden></div>
+  <div id="vwReplyRef" class="vw-replyref" hidden></div>
   <div id="doc" class="vw-doc" hidden></div>
+
+  <!-- Cavab çağırışı və sənəd tarixçəsi — sənədin altında, sıra ilə -->
+  <div id="vwCta" class="vw-cta" hidden>
+    <b>Bu sənədlə razı deyilsən?</b>
+    <span>Rəsmi cavab hazırla — reyestrdə öz nömrəsini alsın.</span>
+    <button class="vw-btn" id="vwReplyBig" type="button">Cavab sənədi hazırla →</button>
+  </div>
+  <div id="vwChain" class="vw-chain" hidden></div>
 </div>
 
 <div class="vw-bar" id="vwBar" hidden>
+  <button id="vwReply" type="button" class="accent">Cavab ver</button>
   <button id="vwPdf" type="button">PDF</button>
   <button id="vwPng" type="button">PNG</button>
   <button id="vwStory" type="button">Story</button>
   <button id="vwLink" type="button">Link</button>
   <button id="vwRep" type="button" class="danger">Şikayət</button>
+</div>
+
+<!-- Cavab niyyəti seçimi. Kartlar viewer.js-də qurulur: baxış səhifəsinə
+     kataloq yüklənmir, buradan yalnız niyyət seçilir və SPA-ya keçilir. -->
+<div class="vw-modal" id="vwReplyModal">
+  <div class="vw-box wide">
+    <div class="vw-box-head">
+      <h3>Bu sənədə necə cavab verirsən?</h3>
+      <button class="vw-x" id="vwReplyClose" type="button" aria-label="Bağla">×</button>
+    </div>
+    <div class="vw-box-body">
+      <p class="vw-small">Cavab verilən sənəd: <b class="vw-mono" id="vwReplyReg">—</b></p>
+      <div class="vw-reply-grid" id="vwReplyCards"></div>
+    </div>
+    <div class="vw-box-foot spread">
+      <button class="vw-btn ghost" id="vwReplyRandom" type="button">🎲 Mənim yerimə seç</button>
+      <button class="vw-btn ghost" id="vwReplyAny" type="button">Bütün variantlara bax →</button>
+    </div>
+  </div>
 </div>
 
 <div class="vw-modal" id="vwRepModal">
@@ -62,8 +91,8 @@
 <div id="vwToast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/doc.js') }}?v=1634dfa3"></script>
+<script src="{{ asset('assets/doc.js') }}?v=5661ded4"></script>
 <script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
-<script src="{{ asset('assets/viewer.js') }}?v=b169f1dc"></script>
+<script src="{{ asset('assets/viewer.js') }}?v=bb5dcfad"></script>
 </body>
 </html>

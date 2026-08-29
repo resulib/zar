@@ -37,6 +37,37 @@
     $('doc').hidden = true;
     $('vwBanner').hidden = true;
     $('vwBar').hidden = true;
+    $('vwReplyRef').hidden = true;
+    $('vwCta').hidden = true;
+    $('vwChain').hidden = true;
+  }
+
+  /* Cavab niyyətləri. Baxış səhifəsinə `replies.js` yüklənmir — burada
+     yalnız kartların mətni lazımdır, şablonu SPA seçir. Siyahı
+     `frontend/replies.js` REPLY_KINDS və `App\Support\ReplyKinds` ilə
+     eyni açarları daşıyır. */
+  var KINDS = [
+    { k: 'redd',   icon: '❌', name: 'Rədd et',          blurb: 'Bu sənəddə yazılanlarla razı deyiləm.' },
+    { k: 'etiraz', icon: '⚖️', name: 'Etiraz et',        blurb: 'Sənədə rəsmi etiraz bildirirəm.' },
+    { k: 'tekrar', icon: '🔄', name: 'Yenidən baxılsın', blurb: 'Məsələyə yenidən baxılmasını tələb edirəm.' },
+    { k: 'legv',   icon: '🚫', name: 'Ləğv et',          blurb: 'Sənədin qüvvədən düşməsini tələb edirəm.' },
+    { k: 'qebul',  icon: '✅', name: 'Qüvvədə saxla',    blurb: 'Sənəd qüvvədə qalsın — təsdiq edirəm.' }
+  ];
+  var XATIRE_KIND = { k: 'xatire', icon: '💌', name: 'Cavab yaz',
+    blurb: 'Bu xatirəyə öz sənədimlə cavab verirəm.' };
+
+  /* Ölçmə. Səhvi udur və heç nə gözləmir — statistika istifadəçini
+     ləngitməməlidir. `keepalive` sayəsində sorğu səhifədən çıxarkən də çatır
+     (kart kliki dərhal SPA-ya keçid etdiyi üçün bu vacibdir). */
+  function track(event, kind) {
+    if (!doc) return;
+    var body = JSON.stringify({ event: event, regNo: doc.regNo, kind: kind || null });
+    try {
+      fetch('/api/olcu', {
+        method: 'POST', credentials: 'same-origin', headers: csrf(),
+        body: body, keepalive: true
+      }).catch(function () {});
+    } catch (e) { /* ölçmə itir, səhifə işləməyə davam edir */ }
   }
 
   /* ---------------- vəziyyətlər ---------------- */
@@ -86,10 +117,25 @@
       ban.hidden = true;
     }
 
+    /* Sənəd özü cavabdırsa — vərəqin üstündə orijinala kliklənən istinad.
+       Vərəqin künc lenti eyni nömrəni daşıyır, amma SVG-də link olmur. */
+    var ref = $('vwReplyRef');
+    if (d.replyTo) {
+      ref.innerHTML = '<b>Bu sənəd cavab sənədidir</b>' +
+        'Aşağıdakı sənədə cavab olaraq hazırlanıb: <a href="/r/' + esc(d.replyTo) + '">' +
+        esc(d.replyTo) + '</a>' + (d.replyToTitle ? ' — ' + esc(d.replyToTitle) : '');
+      ref.hidden = false;
+    } else {
+      ref.hidden = true;
+    }
+
     $('doc').innerHTML = DOCGEN.a4(d, { idPrefix: 'vw', verified: true });
     $('doc').hidden = false;
     $('vwBar').hidden = false;
+    $('vwCta').hidden = false;
     document.title = d.title + ' — ' + d.regNo;
+
+    loadChain(d.regNo);
 
     /* iOS `navigator.share()` jest tapşırığının içində çağırılmalıdır,
        rasterləşdirmə isə asinxrondur — story şəklini indidən hazırlayırıq. */
@@ -101,6 +147,114 @@
   }
 
   var storyBlob = null;
+
+  /* ---------------- cavab zənciri ----------------
+     Serverdən gələn siyahı `reply_root_id` üzərindən bir SELECT-lə qurulur.
+     Burada da `localStorage` ehtiyatı YOXDUR — zəncir yalnız reyestrin
+     dediyi qədərdir. */
+
+  /* Orijinalın cavablardan sonrakı görünən vəziyyəti (nöqtənin rəngi).
+     Serverdə saxlanılmır: cavab yazmaq hamıya açıqdır, ona görə yad adam
+     sizin sənədinizin sətrini dəyişə bilməməlidir. Bax:
+     backend-php/app/Support/ReplyKinds.php VERDICT. */
+  var VERDICT = {
+    redd: ['bad', 'RƏDD EDİLİB'], legv: ['off', 'LƏĞV EDİLİB'],
+    etiraz: ['wait', 'BAXILMAQDADIR'], tekrar: ['wait', 'BAXILMAQDADIR'],
+    qebul: ['ok', 'QÜVVƏDƏDİR'], xatire: ['ok', 'CAVABLANDIRILIB']
+  };
+
+  function chainDot(it) {
+    if (it.state === 'cancelled') return 'off';
+    if (it.state === 'expired') return 'off';
+    return it.kind ? (VERDICT[it.kind] ? VERDICT[it.kind][0] : 'wait') : 'ok';
+  }
+
+  function loadChain(reg) {
+    var box = $('vwChain');
+    box.hidden = true;
+    fetch('/api/registry/' + encodeURIComponent(reg) + '/zencir',
+      { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.items || j.count < 2) return;
+        renderChain(box, j.items, reg);
+      })
+      .catch(function () { /* zəncir görünmür, sənəd görünməyə davam edir */ });
+  }
+
+  function renderChain(box, items, reg) {
+    /* Cari sənədin BİRBAŞA cavabları — «bu sənədə N cavab var» sətri.
+       Zəncirin ümumi uzunluğu deyil: sənəd öz budağına cavabdehdir. */
+    var me = items.filter(function (i) { return i.regNo === reg; })[0];
+    var kids = me ? items.filter(function (i) { return i.depth === me.depth + 1; }).length : 0;
+
+    var head = '<h4>📂 Sənəd tarixçəsi</h4>';
+    if (kids) {
+      head += '<p>↩ Bu sənədə cavab olaraq hazırlanmış <b>' + kids + '</b> sənəd var.</p>';
+    } else {
+      head += '<p>Bu sənəd ' + items.length + ' sənədlik cavab zəncirinin bir hissəsidir.</p>';
+    }
+
+    box.innerHTML = head + '<ol>' + items.map(function (it) {
+      var cls = chainDot(it) + (it.current ? ' here' : '');
+      var kind = it.kindLabel ? '<span class="vw-chain-k">' + esc(it.kindLabel) + '</span>' : '';
+      var inner = '<span class="vw-chain-n">' + esc(it.regNo) + kind + '</span>' +
+        '<span class="vw-chain-t">' + esc(it.title) + '</span>';
+      /* Cari sənəd öz səhifəsinə link vermir — kliklənəsi yer deyil. */
+      return '<li class="' + cls + '">' +
+        (it.current ? '<div>' + inner + '</div>'
+                    : '<a href="/r/' + esc(it.regNo) + '">' + inner + '</a>') +
+        '</li>';
+    }).join('') + '</ol>';
+    box.hidden = false;
+  }
+
+  /* ---------------- cavab niyyəti seçimi ----------------
+     Modal yalnız niyyəti seçir, sonra SPA redaktoruna ötürür. Kataloq,
+     kredit və ödəniş qatı bura yüklənmir — səhifə yüngül qalır. */
+
+  function replyKinds() {
+    return doc && doc.tone === 'xatire' ? [XATIRE_KIND] : KINDS;
+  }
+
+  function openReplyModal() {
+    $('vwReplyReg').textContent = doc.regNo;
+    $('vwReplyCards').innerHTML = replyKinds().map(function (k) {
+      return '<button class="vw-reply-card" type="button" data-kind="' + k.k + '">' +
+        '<b><i>' + k.icon + '</i>' + esc(k.name) + '</b>' +
+        '<span>' + esc(k.blurb) + '</span></button>';
+    }).join('');
+    $('vwReplyModal').classList.add('open');
+    track('reply_click');
+  }
+
+  function closeReplyModal() { $('vwReplyModal').classList.remove('open'); }
+
+  /* `tip` boş → SPA bütün uyğun variantları göstərir;
+     `random` → SPA uyğun dəstdən təsadüfi birini seçir. */
+  function goReply(kind) {
+    track('reply_open', kind === 'random' ? null : kind);
+    location.href = '/?cavab=' + encodeURIComponent(doc.regNo) +
+      (kind ? '&tip=' + encodeURIComponent(kind) : '');
+  }
+
+  function bindReply() {
+    $('vwReply').onclick = openReplyModal;
+    $('vwReplyBig').onclick = openReplyModal;
+    $('vwReplyClose').onclick = closeReplyModal;
+    $('vwReplyRandom').onclick = function () { goReply('random'); };
+    $('vwReplyAny').onclick = function () { goReply(''); };
+
+    /* Kartlar hər açılışda yenidən qurulur — bir delegasiya dinləyicisi. */
+    $('vwReplyCards').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-kind]') : null;
+      if (b) goReply(b.getAttribute('data-kind'));
+    });
+
+    $('vwReplyModal').addEventListener('click', function (e) {
+      if (e.target === $('vwReplyModal')) closeReplyModal();
+    });
+  }
 
   /* ---------------- yükləmə ---------------- */
 
@@ -130,10 +284,12 @@
 
   function shareMeta() {
     var link = doc.verifyUrl || location.href;
-    return {
-      title: 'Zarafat sənədi ' + doc.regNo,
-      text: (doc.share ? doc.share + '\n' : 'Zarafat Notariat Palatası — ' + doc.regNo + '\n') + link
-    };
+    /* Cavab sənədinin öz paylaşım cümləsi var — viral döngənin mətni budur.
+       Şablonun `share` sahəsi varsa yenə də o üstün gəlir. */
+    var body = doc.share ? doc.share
+      : doc.replyTo ? 'Sənədinizə cavab verildi. Reyestrdə yoxlayın 😂'
+      : 'Zarafat Notariat Palatası — ' + doc.regNo;
+    return { title: 'Zarafat sənədi ' + doc.regNo, text: body + '\n' + link };
   }
 
   function bindBar() {
@@ -153,6 +309,7 @@
 
     $('vwStory').onclick = function () {
       var name = fileName('-story', 'png');
+      if (doc.replyTo) track('reply_shared');
       function fallback(b) { ZEXPORT.saveBlob(b, name); toast('Story şəkli yükləndi'); }
 
       if (storyBlob && ZEXPORT.canShareFiles()) {
@@ -177,6 +334,7 @@
     $('vwLink').onclick = function () {
       var link = doc.verifyUrl || location.href;
       var m = shareMeta();
+      if (doc.replyTo) track('reply_shared');
       /* Fayl olmadığı üçün `url` burada uyğundur — rəqabət yoxdur. */
       if (navigator.share) {
         navigator.share({ title: m.title, text: m.text, url: link }).catch(function (e) {
@@ -224,7 +382,9 @@
       if (e.target === $('vwRepModal')) closeReport();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeReport();
+      if (e.key !== 'Escape') return;
+      closeReport();
+      closeReplyModal();
     });
 
     $('vwRepSend').onclick = function () {
@@ -258,6 +418,7 @@
     showNotFound(location.pathname.replace(/^\/r\//, '') || '—');
   } else {
     bindBar();
+    bindReply();
     bindReport();
     load(m[1].toUpperCase());
   }

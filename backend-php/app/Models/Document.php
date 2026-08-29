@@ -20,6 +20,7 @@ class Document extends Model
         'powers', 'penalty', 'preamble', 'date_label', 'layout', 'palette', 'tone',
         'labels', 'extra', 'status', 'views', 'published_at',
         'expires_at', 'cancelled_at', 'cancel_reason',
+        'reply_to_id', 'reply_root_id', 'reply_depth', 'reply_topic',
     ];
 
     protected function casts(): array
@@ -28,6 +29,7 @@ class Document extends Model
             'labels'       => 'array',
             'extra'        => 'array',
             'views'        => 'integer',
+            'reply_depth'  => 'integer',
             'published_at' => 'datetime',
             'expires_at'   => 'datetime',
             'cancelled_at' => 'datetime',
@@ -42,6 +44,26 @@ class Document extends Model
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
+    }
+
+    /* ---------------- cavab zənciri ----------------
+       `reply_to_id` valideyni, `reply_root_id` isə bütün zəncirin kökünü
+       göstərir. Kökün özündə `reply_root_id` null qalır — «kök mənəm». */
+
+    public function replyTo(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'reply_to_id');
+    }
+
+    public function replies(): HasMany
+    {
+        return $this->hasMany(self::class, 'reply_to_id');
+    }
+
+    /** Bu sənədin daxil olduğu zəncirin kök id-si. */
+    public function chainRootId(): int
+    {
+        return $this->reply_root_id ?? $this->id;
     }
 
     public function isPublished(): bool
@@ -120,6 +142,16 @@ class Document extends Model
             'verifyUrl'    => $this->verifyUrl(),
             'createdAt'    => $this->created_at?->getTimestampMs(),
             'publishedAt'  => $this->published_at?->getTimestampMs(),
+
+            /* Cavab qatı. `replyTo` sənədin üzərinə çıxan yeganə dəyərdir —
+               `doc.js` `inner()` məhz onu oxuyub cavab lentini çəkir.
+               Arxiv `backend-node/` bu sütunları bilmir və oradan gələn
+               sənədlərdə hər üçü null olur; UI qatı sadəcə görünmür. */
+            'replyTo'      => $this->reply_to_id === null ? null : $this->replyTo?->reg_no,
+            'replyToTitle' => $this->reply_to_id === null ? null : $this->replyTo?->title,
+            'replyDepth'   => $this->reply_depth,
+            'replyTopic'   => $this->reply_topic,
+            'replyCount'   => $this->replies_count ?? null,
         ];
 
         if ($withOwner) {
