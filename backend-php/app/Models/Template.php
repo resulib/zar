@@ -15,6 +15,7 @@ class Template extends Model
         'title', 'tag', 'preamble', 'powers', 'penalty',
         'to_label', 'from_label', 'powers_label', 'penalty_label',
         'reg_prefix', 'sign_title', 'sign_org', 'share',
+        'reply_kind', 'reply_cats',
         'fields', 'notes', 'cancel_reasons',
         'title_options', 'powers_options', 'powers_min', 'powers_max', 'penalty_options',
         'sort', 'is_active',
@@ -26,6 +27,7 @@ class Template extends Model
             'fields'         => 'array',
             'notes'          => 'array',
             'cancel_reasons' => 'array',
+            'reply_cats'     => 'array',
             'title_options'   => 'array',
             'powers_options'  => 'array',
             'penalty_options' => 'array',
@@ -49,6 +51,33 @@ class Template extends Model
     public function scopeOrdered(Builder $q): Builder
     {
         return $q->orderBy('sort')->orderBy('id');
+    }
+
+    /** Cavab şablonları ana kataloqdan kənardadır — bax `CatalogService::payload()`. */
+    public function scopeReplies(Builder $q): Builder
+    {
+        return $q->whereNotNull('reply_kind');
+    }
+
+    public function scopeNotReplies(Builder $q): Builder
+    {
+        return $q->whereNull('reply_kind');
+    }
+
+    public function isReply(): bool
+    {
+        return $this->reply_kind !== null && $this->reply_kind !== '';
+    }
+
+    /**
+     * Bu cavab şablonu həmin orijinal kateqoriyaya cavab verirmi?
+     * `reply_cats` boşdursa şablon universaldır və hər kateqoriyaya yarayır.
+     */
+    public function answersCategory(?string $categorySlug): bool
+    {
+        $cats = is_array($this->reply_cats) ? array_values($this->reply_cats) : [];
+
+        return $cats === [] || in_array($categorySlug, $cats, true);
     }
 
     /**
@@ -110,6 +139,16 @@ class Template extends Model
 
         if (is_array($this->penalty_options) && $this->penalty_options !== []) {
             $out['penaltyOptions'] = array_values($this->penalty_options);
+        }
+
+        /* Cavab qatı — yalnız cavab şablonlarında. `replyCats` boşdursa
+           şablon universaldır və açar heç göndərilmir. */
+        if ($this->isReply()) {
+            $out['replyKind'] = $this->reply_kind;
+
+            if (is_array($this->reply_cats) && $this->reply_cats !== []) {
+                $out['replyCats'] = array_values($this->reply_cats);
+            }
         }
 
         return $out;

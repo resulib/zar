@@ -15,6 +15,7 @@ declare(strict_types=1);
 require __DIR__ . '/../app/Support/Packs.php';
 require __DIR__ . '/../app/Support/RegistryNumber.php';
 require __DIR__ . '/../app/Support/RegistryPrefix.php';
+require __DIR__ . '/../app/Support/ReplyKinds.php';
 require __DIR__ . '/../app/Support/Moderation.php';
 require __DIR__ . '/../app/Support/Sanitizer.php';
 require __DIR__ . '/../app/Support/TemplateSchema.php';
@@ -29,6 +30,7 @@ use App\Support\Payments\EpointProvider;
 use App\Support\Payments\SimulationProvider;
 use App\Support\RegistryNumber;
 use App\Support\RegistryPrefix;
+use App\Support\ReplyKinds;
 use App\Support\Sanitizer;
 use App\Support\Answers;
 use App\Support\TemplateSchema;
@@ -378,6 +380,50 @@ try {
     $failed = true;
 }
 check('provayder xətası istisna atır', $failed);
+
+echo "\nCavab niyyətləri\n";
+
+check('6 niyyət var', count(ReplyKinds::KINDS) === 6, ReplyKinds::KINDS);
+check('hər niyyətin etiketi var',
+    array_keys(ReplyKinds::LABELS) === ReplyKinds::KINDS, array_keys(ReplyKinds::LABELS));
+check('hər niyyətin prefiksi var',
+    array_keys(ReplyKinds::PREFIX) === ReplyKinds::KINDS, array_keys(ReplyKinds::PREFIX));
+check('hər niyyətin vəziyyət nişanı var',
+    array_keys(ReplyKinds::VERDICT) === ReplyKinds::KINDS, array_keys(ReplyKinds::VERDICT));
+
+/* Prefiks QR kodun URL-inə düşür: RegistryNumber::PATTERN [A-Z]{2,4}.
+   «TƏK» yazılsaydı nömrə heç vaxt yoxlanmazdı. */
+$badPfx = array_filter(ReplyKinds::PREFIX, static fn (string $p): bool => preg_match('/^[A-Z]{2,4}$/', $p) !== 1);
+check('prefikslər yalnız ASCII böyük hərfdir', $badPfx === [], $badPfx);
+check('prefikslər unikaldır', count(array_unique(ReplyKinds::PREFIX)) === count(ReplyKinds::PREFIX));
+
+foreach (ReplyKinds::PREFIX as $kind => $pfx) {
+    $no = RegistryNumber::format($pfx, 2026, 9482);
+    if (! RegistryNumber::isValid($no)) {
+        check("«{$kind}» prefiksi ilə nömrə etibarlıdır", false, $no);
+        continue;
+    }
+}
+check('hər niyyətin nömrəsi reyestr formatına uyğundur', true);
+
+check('naməlum niyyət rədd edilir', ! ReplyKinds::isValid('silmek'));
+check('boş niyyət rədd edilir', ! ReplyKinds::isValid(null));
+check('massiv niyyət kimi qəbul edilmir', ! ReplyKinds::isValid(['redd']));
+check('tanınan niyyət qəbul edilir', ReplyKinds::isValid('redd'));
+check('etiket naməlum niyyətdə boşdur', ReplyKinds::label('yoxdur') === '');
+check('prefiks naməlum niyyətdə ehtiyata düşür', ReplyKinds::prefix('yoxdur', 'ZRF') === 'ZRF');
+
+/* Zəncir dərinliyi: tavan aşılanda null qayıdır və çağıran onu 422-yə çevirir. */
+check('birinci cavab 1-ci səviyyədir', ReplyKinds::nextDepth(0) === 1);
+check('tavana qədər icazə verilir', ReplyKinds::nextDepth(ReplyKinds::MAX_DEPTH - 1) === ReplyKinds::MAX_DEPTH);
+check('tavandan sonra null qayıdır', ReplyKinds::nextDepth(ReplyKinds::MAX_DEPTH) === null);
+check('tavandan yuxarı da null qayıdır', ReplyKinds::nextDepth(ReplyKinds::MAX_DEPTH + 5) === null);
+
+/* Vəziyyət nişanı yalnız göstəricidir — orijinalın sətri dəyişmir. */
+check('rədd cavabı qırmızı nişan verir', ReplyKinds::verdict('redd')['dot'] === 'bad');
+check('qəbul cavabı yaşıl nişan verir', ReplyKinds::verdict('qebul')['dot'] === 'ok');
+check('etiraz gözləmə nişanı verir', ReplyKinds::verdict('etiraz')['dot'] === 'wait');
+check('naməlum niyyətdə nişan yoxdur', ReplyKinds::verdict('yoxdur') === null);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

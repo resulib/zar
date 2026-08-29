@@ -6,6 +6,14 @@
   'use strict';
 
   var SITE = location.protocol.indexOf('http') === 0 ? location.origin : 'https://zarafat.az';
+
+  /* Cavab kataloqu ayrıca fayldadır (`replies.js`). Fayl hansısa səbəbdən
+     yüklənməyibsə sayt cavab qatı olmadan işləməyə davam etməlidir —
+     `TEMPLATES` kimi məcburi asılılıq deyil. */
+  window.REPLY_KINDS = window.REPLY_KINDS || [];
+  window.REPLY_CATEGORIES = window.REPLY_CATEGORIES || [];
+  window.REPLIES = window.REPLIES || [];
+
   var PACKS = [
     { id: 'p1',  credits: 1,  price: 1, label: '1 sənəd',  note: 'Tək sənəd üçün' },
     { id: 'p3',  credits: 3,  price: 2, label: '3 sənəd',  note: 'Ən çox seçilən', best: true },
@@ -227,7 +235,8 @@
     cat: 'couples', tpl: null, doc: null, credits: 0, layout: null, palette: null, q: '',
     answers: {},              // anket cavabları — yalnız `fields` daşıyan şablonlarda
     powerPicks: [],           // seçilmiş bəndlər — variant sırasında saxlanılır
-    storyBlob: null           // əvvəlcədən hazırlanmış story şəkli (iOS paylaşma jesti üçün)
+    storyBlob: null,          // əvvəlcədən hazırlanmış story şəkli (iOS paylaşma jesti üçün)
+    replyTo: null             // cavab rejimi: {regNo, title, to, from, cat, tone}
   };
 
   /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
@@ -275,6 +284,18 @@
     payload.categories.forEach(function (c) { CATEGORIES.push(c); });
     TEMPLATES.length = 0;
     payload.templates.forEach(function (t) { TEMPLATES.push(t); });
+
+    /* Cavab kataloqu ayrıca açardadır (CatalogService::payload). Ana kataloqla
+       birləşdirilsəydi cavab şablonları ana səhifənin şəbəkəsinə düşərdi.
+       Server bu açarı göndərmirsə statik replies.js olduğu kimi qalır. */
+    if (payload.replies && payload.replies.length) {
+      REPLIES.length = 0;
+      payload.replies.forEach(function (t) { REPLIES.push(t); });
+    }
+    if (payload.replyCategories && payload.replyCategories.length) {
+      REPLY_CATEGORIES.length = 0;
+      payload.replyCategories.forEach(function (c) { REPLY_CATEGORIES.push(c); });
+    }
     return true;
   }
 
@@ -396,6 +417,26 @@
 
   /* ---------------- kateqoriya / şablon ---------------- */
   function renderTabs() {
+    /* Cavab rejimində kateqoriya zolağı niyyət zolağına çevrilir:
+       istifadəçi mövzu deyil, «necə cavab verirəm» seçir. */
+    if (state.replyTo) {
+      var r = state.replyTo;
+      $('#tabs').innerHTML = replyKindsFor(r.tone).map(function (k) {
+        var n = repliesFor(r.cat, r.tone, k.k).length;
+        return '<button type="button" data-kind="' + k.k + '"' +
+          ' aria-pressed="' + (state.cat === k.k) + '">' +
+          k.icon + ' ' + esc(k.name) + '<span class="n">' + n + '</span></button>';
+      }).join('');
+      $('#catBlurb').textContent = 'Cavab növünü seçin — sonra sənəd hazırdır.';
+      $$('#tabs button').forEach(function (b) {
+        b.onclick = function () {
+          state.cat = b.dataset.kind;
+          renderTabs(); renderCards();
+        };
+      });
+      return;
+    }
+
     $('#tabs').innerHTML = catsOf(state.mode).map(function (c) {
       var n = TEMPLATES.filter(function (t) { return t.cat === c.id; }).length;
       return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (state.cat === c.id) + '">' +
@@ -423,16 +464,28 @@
   }
 
   function renderCards() {
-    var q = state.q.trim();
-    /* Axtarış da rejim daxilində işləyir — başqa tonun şablonu siyahıya düşmür. */
-    var list = tplsOf(state.mode).filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
+    var q = state.q.trim(), list, pool = TEMPLATES;
+
+    if (state.replyTo) {
+      /* Cavab rejimi: `state.cat` kateqoriya deyil, seçilmiş niyyətdir.
+         Niyyət seçilməyibsə bütün uyğun cavablar göstərilir («öz cavabımı seç»). */
+      var r = state.replyTo;
+      pool = REPLIES;
+      var kind = replyKindsFor(r.tone).some(function (k) { return k.k === state.cat; }) ? state.cat : null;
+      list = repliesFor(r.cat, r.tone, kind).filter(function (t) { return matches(t, q); });
+    } else {
+      /* Axtarış da rejim daxilində işləyir — başqa tonun şablonu siyahıya düşmür. */
+      list = tplsOf(state.mode).filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
+    }
+
     $('#cardsEmpty').hidden = list.length > 0;
     $('#cards').innerHTML = list.map(function (t, i) {
-      var idx = TEMPLATES.indexOf(t) + 1;
+      var idx = pool.indexOf(t) + 1;
       return '<button type="button" class="tmpl" data-tpl="' + t.id + '"' +
         ' aria-pressed="' + (!!state.tpl && state.tpl.id === t.id) + '"' +
         ' style="border-left-color:' + LAYOUT_EDGE[t.layout] + '">' +
-        '<span class="code">ZNP-' + String(idx).padStart(3, '0') + ' · ' + esc(t.tag) + '</span>' +
+        '<span class="code">' + (state.replyTo ? 'CVB-' : 'ZNP-') +
+          String(idx).padStart(3, '0') + ' · ' + esc(t.tag) + '</span>' +
         '<h3>' + esc(t.title) + '</h3>' +
         '<span class="desc">' + esc(t.powers.split('\n')[0]) + '</span>' +
         '<span class="foot"><span>' + esc(DOCGEN.LAYOUT_NAMES[t.layout]) + '</span></span>' +
@@ -441,8 +494,140 @@
     $$('#cards button').forEach(function (b) { b.onclick = function () { pickTemplate(b.dataset.tpl); }; });
   }
 
+  /* ---------------- cavab rejimi ----------------
+     `/?cavab=REG&tip=KIND` ilə gəlindikdə redaktor cavab sənədi qurur:
+     kart şəbəkəsi uyğun cavab şablonlarını göstərir, adlar orijinaldan
+     doldurulur, `formDoc()` isə `replyTo` açarını əlavə edir.
+
+     Kilid burada DEYİL: server valideyni, tonu və kateqoriya uyğunluğunu
+     özü yoxlayır (`DocumentService::resolveParent`). Bu qat yalnız rahatlıqdır. */
+
+  /* Orijinalın kateqoriyasına və tona uyğun cavab şablonları.
+     `replyCats` yoxdursa şablon universaldır. Mövzuya uyğun şablon tapılmasa
+     universal dəst qaytarılır — istifadəçi heç vaxt boş siyahı görmür. */
+  function repliesFor(cat, tone, kind) {
+    var pool = REPLIES.filter(function (t) {
+      if (t.tone !== tone) return false;
+      return !kind || t.replyKind === kind;
+    });
+    var themed = pool.filter(function (t) {
+      return Array.isArray(t.replyCats) && t.replyCats.indexOf(cat) >= 0;
+    });
+    var universal = pool.filter(function (t) { return !t.replyCats; });
+    return themed.length ? themed.concat(universal) : universal;
+  }
+
+  /* Zəncirin MÖVZU kateqoriyası — serverdəki `DocumentService::topicOf()` güzgüsü.
+     Cavab sənədinin öz kateqoriyası niyyət kateqoriyasıdır (`c-redd`) və mövzunu
+     göstərmir, ona görə server onu `documents.reply_topic` sütununda saxlayır.
+     Adi sənəddə isə mövzu şablonun kateqoriyasıdır. */
+  function catOfDoc(d) {
+    if (d.replyTopic) return d.replyTopic;
+    var t = TEMPLATES.filter(function (x) { return x.id === d.templateId; })[0];
+    return t ? t.cat : null;
+  }
+
+  function replyKindsFor(tone) {
+    return REPLY_KINDS.filter(function (k) { return k.tone === tone; });
+  }
+
+  function renderReplyBar() {
+    var bar = $('#replyBar'), r = state.replyTo;
+    if (!r) { bar.hidden = true; return; }
+    bar.innerHTML =
+      '<div class="reply-bar-main">' +
+        '<b>↩ Cavab sənədi hazırlanır</b>' +
+        '<span>Cavab verilir: <a href="/r/' + esc(r.regNo) + '" class="mono">' + esc(r.regNo) + '</a>' +
+        (r.title ? ' — «' + esc(r.title) + '»' : '') + '</span>' +
+      '</div>' +
+      '<div class="reply-bar-acts">' +
+        '<button type="button" class="chip btn-sm" id="replyDice">🎲 Mənim yerimə seç</button>' +
+        '<button type="button" class="chip btn-sm" id="replyExit">Cavab rejimindən çıx</button>' +
+      '</div>';
+    bar.hidden = false;
+
+    $('#replyDice').onclick = function () {
+      var pool = repliesFor(r.cat, r.tone, null);
+      if (!pool.length) return;
+      pickTemplate(pool[Math.floor(Math.random() * pool.length)].id);
+      $('#preview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    $('#replyExit').onclick = exitReplyMode;
+  }
+
+  function exitReplyMode() {
+    state.replyTo = null;
+    state.doc = null; state.tpl = null; state.layout = null; state.palette = null;
+    renderReplyBar();
+    renderTabs(); renderCards();
+    var t = tplsOf(state.mode)[0];
+    if (t) pickTemplate(t.id); else { renderDesign(); updatePreview(); }
+  }
+
+  /* Ölçmə — `viewer.js` `track()` ilə eyni müqavilə. Səhvi udur. */
+  function track(event, kind, regNo) {
+    if (!API.online) return;
+    API._post('/api/olcu', { event: event, regNo: regNo || null, kind: kind || null })
+      .catch(function () {});
+  }
+
+  function enterReplyMode(reg, kind) {
+    return API.lookup(normReg(reg)).then(function (d) {
+      if (!d || !d.regNo) {
+        toast('Cavab verilən sənəd reyestrdə tapılmadı', 'err');
+        return;
+      }
+
+      var tone = d.tone === 'xatire' ? 'xatire' : 'zarafat';
+      var cat  = catOfDoc(d);
+
+      /* Rejim orijinalın tonuna keçir. `setMode()` yaramır — o, cavab
+         vəziyyətini də sıfırlayıb istifadəçini adi kataloqa qaytarardı. */
+      if (state.mode !== tone && MODE_COPY[tone]) {
+        state.mode = tone;
+        LS.set('zrf_mode', tone);
+        renderModeSwitch(); applyModeCopy(); renderSpecimen();
+      }
+
+      state.replyTo = { regNo: d.regNo, title: d.title, to: d.to, from: d.from, cat: cat, tone: tone };
+      state.q = '';
+      if ($('#fSearch')) $('#fSearch').value = '';
+
+      var pool = repliesFor(cat, tone, kind === 'random' ? null : kind);
+      if (!pool.length) pool = repliesFor(cat, tone, null);
+      if (!pool.length) {
+        state.replyTo = null;
+        toast('Bu sənəd üçün cavab variantı tapılmadı', 'err');
+        return;
+      }
+
+      var chosen = (kind === 'random' || !kind)
+        ? pool[kind === 'random' ? Math.floor(Math.random() * pool.length) : 0]
+        : pool[0];
+
+      renderReplyBar();
+      renderTabs(); renderCards();
+      pickTemplate(chosen.id);
+
+      /* Adlar orijinaldan gəlir — istifadəçi heç nə yazmır (§4).
+         Hər ikisi redaktə oluna bilər. */
+      if (!$('#fNamesRow').hidden) {
+        if (d.to) $('#fTo').value = d.to;
+        if (d.from) $('#fFrom').value = d.from;
+        updatePreview();
+      }
+
+      $('#yarat').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      track('reply_open', kind === 'random' ? null : kind, d.regNo);
+    }).catch(function () {
+      toast('Cavab verilən sənəd yüklənə bilmədi', 'err');
+    });
+  }
+
   function pickTemplate(id) {
-    var t = TEMPLATES.filter(function (x) { return x.id === id; })[0];
+    /* Cavab rejimində şablon cavab kataloqundan da gələ bilər. */
+    var t = TEMPLATES.filter(function (x) { return x.id === id; })[0] ||
+      (state.replyTo ? REPLIES.filter(function (x) { return x.id === id; })[0] : null);
     if (!t) return;
     state.tpl = t; state.doc = null;
     state.layout = null; state.palette = null;
@@ -764,6 +949,9 @@
       /* PHP backend preamble-ı şablondan özü qurur və bu dəyəri oxumur;
          sətir arxiv `backend-node/` üçün saxlanılır. */
       preamble: pre,
+      /* Cavab bağlantısı. `doc.js` `inner()` məhz bu açara baxıb künc lentini
+         çəkir, server isə valideyni bu nömrədən həll edir. */
+      replyTo: state.replyTo ? state.replyTo.regNo : null,
       regNo: regPrefix(t) + '-' + new Date().getFullYear() + '-————',
       date: fmtDate(new Date()),
       paid: false, verifyUrl: ''
@@ -776,6 +964,19 @@
     $('#regBadge').textContent = doc.regNo;
     renderActions();
   }
+
+  /* ---------------- paylaşım mətni ----------------
+     `viewer.js` `shareMeta()` ilə eyni qayda: şablonun öz mətni → cavab
+     sənədinin viral cümləsi → ümumi mətn. */
+  function docLink(d) { return d.verifyUrl || (SITE + '/r/' + d.regNo); }
+
+  function shareLead(d) {
+    if (d.share) return d.share;
+    if (d.replyTo) return 'Sənədinizə cavab verildi. Reyestrdə yoxlayın 😂';
+    return 'Zarafat Notariat Palatası — ' + d.regNo;
+  }
+
+  function shareText(d) { return shareLead(d) + '\n' + docLink(d); }
 
   /* ---------------- əməliyyatlar ---------------- */
   function renderActions() {
@@ -798,7 +999,12 @@
       html += '<button id="aStory" class="btn btn-ghost" type="button">' +
         (ZEXPORT.canShareFiles() ? 'Story paylaş' : 'Story formatı') + '</button>';
       html += '<button id="aLink" class="btn btn-ghost" type="button">Reyestr linki</button>';
-      if (d.share) html += '<button id="aShare" class="btn btn-ghost span2" type="button">Paylaşım mətnini kopyala</button>';
+      /* Mesajlaşma tətbiqlərinə birbaşa keçid. `navigator.share` yalnız
+         telefonlarda var — bu iki düymə masaüstündə də işləyir. */
+      html += '<button id="aWa" class="btn btn-ghost" type="button">WhatsApp</button>';
+      html += '<button id="aTg" class="btn btn-ghost" type="button">Telegram</button>';
+      if (d.share || d.replyTo)
+        html += '<button id="aShare" class="btn btn-ghost span2" type="button">Paylaşım mətnini kopyala</button>';
       /* Ləğv yalnız müddəti olan və hələ ləğv edilməmiş sənəddə mənalıdır.
          Arxiv Node backend-ində bu endpoint yoxdur — offline rejimdə də işləyir. */
       if (d.expiresAt && !d.cancelledAt)
@@ -819,15 +1025,25 @@
     if ((b = $('#aPay')))   b.onclick = function () { payFlow(d); };
     if ((b = $('#aCancel'))) b.onclick = function () { openCancel(d); };
     if ((b = $('#aShare'))) b.onclick = function () {
-      var txt = d.share + '\n' + (d.verifyUrl || (SITE + '/r/' + d.regNo));
-      navigator.clipboard.writeText(txt)
+      navigator.clipboard.writeText(shareText(d))
         .then(function () { toast('Paylaşım mətni kopyalandı'); })
         .catch(function () { toast('Kopyalamaq alınmadı', 'err'); });
     };
     if ((b = $('#aLink')))  b.onclick = function () {
-      navigator.clipboard.writeText(d.verifyUrl || (SITE + '/r/' + d.regNo))
+      navigator.clipboard.writeText(docLink(d))
         .then(function () { toast('Link kopyalandı'); })
         .catch(function () { toast('Kopyalamaq alınmadı', 'err'); });
+    };
+    if ((b = $('#aWa'))) b.onclick = function () {
+      if (d.replyTo) track('reply_shared', null, d.regNo);
+      window.open('https://wa.me/?text=' + encodeURIComponent(shareText(d)), '_blank', 'noopener');
+    };
+    if ((b = $('#aTg'))) b.onclick = function () {
+      if (d.replyTo) track('reply_shared', null, d.regNo);
+      /* Telegram `url` və `text`-i ayrı gözləyir; link `url`-də getdiyi üçün
+         mətnə təkrar salınmır. */
+      window.open('https://t.me/share/url?url=' + encodeURIComponent(docLink(d)) +
+        '&text=' + encodeURIComponent(shareLead(d)), '_blank', 'noopener');
     };
     if ((b = $('#aReport'))) b.onclick = function () { openReport(d.regNo); };
 
@@ -857,11 +1073,8 @@
   /* Mobildə nativ paylaşma vərəqi, masaüstündə yükləmə. */
   function shareStory(doc) {
     var name = 'zarafat-' + ZEXPORT.safeName(doc.regNo) + '-story.png';
-    var link = doc.verifyUrl || (SITE + '/r/' + doc.regNo);
-    var meta = {
-      title: 'Zarafat sənədi ' + doc.regNo,
-      text: (doc.share ? doc.share + '\n' : 'Zarafat Notariat Palatası — ' + doc.regNo + '\n') + link
-    };
+    var meta = { title: 'Zarafat sənədi ' + doc.regNo, text: shareText(doc) };
+    if (doc.replyTo) track('reply_shared', null, doc.regNo);
 
     function fallback(b) { ZEXPORT.saveBlob(b, name); toast('Story şəkli yükləndi'); }
 
@@ -1025,9 +1238,12 @@
       }
       $('#myDocs').innerHTML = list.map(function (d) {
         return '<div class="doc-row">' +
-          '<div><h4>' + esc(d.title) + '</h4>' +
+          '<div><h4>' + (d.replyTo ? '↩ ' : '') + esc(d.title) + '</h4>' +
           '<div class="meta">' + esc(d.regNo) + ' · ' + esc(d.date) +
-            (d.layout ? ' · ' + esc(DOCGEN.LAYOUT_NAMES[d.layout] || d.layout) : '') + '</div></div>' +
+            (d.layout ? ' · ' + esc(DOCGEN.LAYOUT_NAMES[d.layout] || d.layout) : '') +
+            /* Cavab sənədində valideynə keçid — zəncir kabinetdən də görünsün. */
+            (d.replyTo ? ' · cavab: <a href="/r/' + esc(d.replyTo) + '">' + esc(d.replyTo) + '</a>' : '') +
+            (d.replyCount ? ' · ' + d.replyCount + ' cavab' : '') + '</div></div>' +
           '<div class="acts">' +
             '<span class="state ' + (d.state === 'cancelled' ? 'dra' : (d.paid ? 'pub' : 'dra')) + '">' +
               (d.state === 'cancelled' ? 'Ləğv edilib'
@@ -1182,6 +1398,9 @@
       /* `state` və `cancelReason` serverdə hesablanır — göndərilmir. */
       delete payload.state; delete payload.cancelReason;
       delete payload.regPrefix;
+      /* `replyTo` QALIR — server valideyni məhz bu nömrədən həll edir.
+         Adi sənəddə açar boşdur və göndərilmir. */
+      if (!payload.replyTo) delete payload.replyTo;
       $('#btnCreate').disabled = true;
       API.create(payload).then(function (d) {
         state.doc = d; updatePreview(); renderMine();
@@ -1240,12 +1459,18 @@
     var m = location.pathname.match(/\/r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i) || location.hash.match(/#r\/([A-Za-z]{2,4}-\d{4}-\d{4})/i);
     if (m) { deepReg = m[1].toUpperCase(); $('#qReg').value = deepReg; }
 
-    var pay = new URLSearchParams(location.search).get('payment');
+    var qs = new URLSearchParams(location.search);
+    var pay = qs.get('payment');
     if (pay) {
       history.replaceState({}, '', location.pathname + location.hash);
       if (pay === 'success') toast('Ödəniş qəbul olundu — balans yeniləndi');
       else toast('Ödəniş tamamlanmadı', 'err');
     }
+
+    /* `/r/{regNo}` səhifəsindəki cavab modalı bura yönləndirir.
+       Query dərhal təmizlənir — `?payment=` ilə eyni nümunə. */
+    var replyReg = qs.get('cavab'), replyKind = qs.get('tip');
+    if (replyReg) history.replaceState({}, '', location.pathname + location.hash);
 
     API.init().then(function () {
       $('#modeBadge').innerHTML = '<span class="dot' + (API.online ? ' live' : '') + '"></span>' +
@@ -1262,6 +1487,10 @@
       return API._json('/api/catalog', null).then(function (cat) {
         if (applyCatalog(cat)) rebuildCatalogViews();
       });
+    }).then(function () {
+      /* Kataloq oturduqdan SONRA: cavab şablonları və orijinalın kateqoriyası
+         üçün hər ikisi lazımdır. */
+      if (replyReg) return enterReplyMode(replyReg, replyKind);
     }).then(function () {
       return refreshCredits();
     }).then(renderMine).then(function () {

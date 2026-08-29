@@ -7,7 +7,8 @@ const OUT  = path.join(APP, 'public', 'assets');
 const VIEW = path.join(APP, 'resources', 'views', 'spa.blade.php');
 const VIEW_VIEWER = path.join(APP, 'resources', 'views', 'viewer.blade.php');
 
-const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js', 'doc.js', 'export.js', 'app.js',
+const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
+                 'replies.js', 'doc.js', 'export.js', 'app.js',
                  'viewer.css', 'viewer.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });

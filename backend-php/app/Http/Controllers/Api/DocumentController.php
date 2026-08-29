@@ -37,6 +37,12 @@ class DocumentController extends Controller
                qaytarır, deməli saxta preamble `$data`-ya heç çatmır. Sənədin
                ən böyük abzasını server şablondan özü qurur. */
             'templateId'   => ['required', 'string', 'max:40'],
+
+            /* Cavab verilən sənədin qeydiyyat nömrəsi. Yalnız nömrədir —
+               valideyn sətri, zəncirin kökü və dərinlik serverdə həll olunur
+               (`DocumentService::resolveParent`). */
+            'replyTo'      => ['nullable', 'string', 'max:20'],
+
             'layout'       => ['nullable', 'string', 'max:20'],
             'palette'      => ['nullable', 'string', 'max:20'],
             'tone'         => ['nullable', 'string', 'max:10'],
@@ -112,10 +118,15 @@ class DocumentController extends Controller
         try {
             $document = $this->documents->create($user, $data);
         } catch (\RuntimeException $e) {
-            return response()->json([
-                'error'   => 'bad_template',
-                'message' => 'Şablon tapılmadı — səhifəni yeniləyib yenidən cəhd edin.',
-            ], 422);
+            /* Gözlənilməz istisna köhnə davranışa düşür: kod `bad_template`,
+               mətn isə heç vaxt istisnanın öz mesajı olmur. */
+            [$code, $message] = match ($e->getMessage()) {
+                'bad_reply'      => ['bad_reply', 'Cavab verilən sənəd tapılmadı və ya bu cavab ona uyğun deyil.'],
+                'reply_too_deep' => ['reply_too_deep', 'Cavab zənciri çox uzandı — yeni sənəd yaradın.'],
+                default          => ['bad_template', 'Şablon tapılmadı — səhifəni yeniləyib yenidən cəhd edin.'],
+            };
+
+            return response()->json(['error' => $code, 'message' => $message], 422);
         }
 
         return response()->json($document->toApiArray(withOwner: true));

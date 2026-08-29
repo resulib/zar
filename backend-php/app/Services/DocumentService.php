@@ -5,22 +5,36 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Document;
+use App\Models\DocumentEvent;
 use App\Models\Template;
 use App\Models\User;
 use App\Support\Answers;
 use App\Support\RegistryNumber;
 use App\Support\RegistryPrefix;
+use App\Support\ReplyKinds;
 use App\Support\Sanitizer;
 use App\Support\TemplateSchema;
 use Illuminate\Support\Carbon;
 
 class DocumentService
 {
+    /**
+     * Sənəd id → kateqoriya slug-ı. Cavab yaradılarkən eyni dəyər iki dəfə
+     * lazım olur (uyğunluq yoxlaması və hadisə jurnalı) — ikinci sorğu artıqdır.
+     *
+     * @var array<int, string|null>
+     */
+    private array $catCache = [];
+
     public function __construct(private readonly CreditService $credits)
     {
     }
 
-    /** @param array<string, mixed> $input */
+    /**
+     * @param array<string, mixed> $input
+     *
+     * @throws \RuntimeException bad_template | bad_reply | reply_too_deep
+     */
     public function create(User $user, array $input): Document
     {
         $limits = config('zarafat.limits');
@@ -46,6 +60,11 @@ class DocumentService
             throw new \RuntimeException('bad_template');
         }
 
+        /* Cavab bağlantısı. Klient yalnız qeydiyyat nömrəsi göndərir — valideyn
+           sətri, dərinlik və zəncirin kökü burada həll olunur. */
+        $parent = $this->resolveParent($input['replyTo'] ?? null, $tpl);
+        $topic  = $parent === null ? null : $this->topicOf($parent);
+
         $to   = Sanitizer::person($input['to'] ?? null, $limits['name']);
         $from = Sanitizer::person($input['from'] ?? null, $limits['name']);
 
@@ -56,25 +75,135 @@ class DocumentService
             (string) $tpl->preamble
         );
 
-        return Document::create([
-            'extra'       => $this->extraFrom($input, $tpl) ?: null,
-            'expires_at'  => $this->expiryFrom($input),
-            'reg_no'      => $this->nextRegNo($tpl),
-            'user_id'     => $user->id,
-            'template_id' => $templateId,
-            'title'       => $this->pickTitle($tpl, $input, $limits),
-            'to_name'     => $to,
-            'from_name'   => $from,
-            'powers'      => $this->pickPowers($tpl, $input, $limits),
-            'penalty'     => $this->pickPenalty($tpl, $input, $limits),
-            'preamble'    => Sanitizer::text(Answers::fill($preamble, $answers), $limits['preamble']),
-            'date_label'  => Carbon::now()->format('d.m.Y'),
-            'layout'      => Sanitizer::pick($input['layout'] ?? null, config('zarafat.layouts'), 'notarial'),
-            'palette'     => Sanitizer::pick($input['palette'] ?? null, config('zarafat.palettes'), 'gold'),
-            'tone'        => Sanitizer::pick($input['tone'] ?? null, config('zarafat.tones'), 'zarafat'),
-            'labels'      => $labels ?: null,
-            'status'      => Document::STATUS_DRAFT,
+        $document = Document::create([
+            'extra'         => $this->extraFrom($input, $tpl) ?: null,
+            'expires_at'    => $this->expiryFrom($input),
+            'reg_no'        => $this->nextRegNo($tpl),
+            'user_id'       => $user->id,
+            'template_id'   => $templateId,
+            'reply_to_id'   => $parent?->id,
+            'reply_root_id' => $parent?->chainRootId(),
+            'reply_depth'   => $parent === null ? 0 : $parent->reply_depth + 1,
+            'reply_topic'   => $topic,
+            'title'         => $this->pickTitle($tpl, $input, $limits),
+            'to_name'       => $to,
+            'from_name'     => $from,
+            'powers'        => $this->pickPowers($tpl, $input, $limits),
+            'penalty'       => $this->pickPenalty($tpl, $input, $limits),
+            'preamble'      => Sanitizer::text(Answers::fill($preamble, $answers), $limits['preamble']),
+            'date_label'    => Carbon::now()->format('d.m.Y'),
+            'layout'        => Sanitizer::pick($input['layout'] ?? null, config('zarafat.layouts'), 'notarial'),
+            'palette'       => Sanitizer::pick($input['palette'] ?? null, config('zarafat.palettes'), 'gold'),
+            'tone'          => Sanitizer::pick($input['tone'] ?? null, config('zarafat.tones'), 'zarafat'),
+            'labels'        => $labels ?: null,
+            'status'        => Document::STATUS_DRAFT,
         ]);
+
+        if ($parent !== null) {
+            /* Hadisədə də MÖVZU kateqoriyası saxlanılır — «kateqoriya üzrə cavab
+               nisbəti» zəncirin dərinliyindən asılı olmamalıdır. */
+            DocumentEvent::record(
+                $document->id,
+                $user->id,
+                DocumentEvent::CREATED,
+                $tpl->reply_kind,
+                $topic,
+                $document->reply_depth,
+            );
+        }
+
+        return $document;
+    }
+
+    /* ---------------- cavab zənciri ----------------
+       Klient yalnız «hansı sənədə cavab verirəm» deyir. Valideynin özü,
+       zəncirin kökü və dərinliyi burada həll olunur — variant kilidi ilə
+       eyni fəlsəfə: klient sətri sorğudur, dəyər deyil. */
+
+    /**
+     * @throws \RuntimeException bad_reply | reply_too_deep
+     */
+    protected function resolveParent(mixed $regNo, Template $tpl): ?Document
+    {
+        $reg = strtoupper(Sanitizer::text($regNo, 20));
+
+        /* Adi şablon cavab kimi göndərilə bilməz, cavab şablonu isə tək başına
+           işlədilə bilməz. İkinci qayda cavab şablonlarını ana axından tam
+           kənarda saxlayır — kataloq süzgəci yalnız UI-dır, kilid buradadır. */
+        if (! $tpl->isReply()) {
+            if ($reg !== '') {
+                throw new \RuntimeException('bad_reply');
+            }
+
+            return null;
+        }
+
+        if ($reg === '' || ! RegistryNumber::isValid($reg)) {
+            throw new \RuntimeException('bad_reply');
+        }
+
+        /* YALNIZ dərc olunmuş sənədə cavab verilir: qaralama reyestrdə yoxdur,
+           ona cavab isə mövcud olmayan nömrəyə istinad edən sənəd yaradardı. */
+        $parent = Document::query()->published()->where('reg_no', $reg)->first();
+
+        if (! $parent) {
+            throw new \RuntimeException('bad_reply');
+        }
+
+        // Zarafat cavabı xatirə sənədinə (və əksinə) yapışdırıla bilməz.
+        if ($tpl->tone !== $parent->tone) {
+            throw new \RuntimeException('bad_reply');
+        }
+
+        if (! $tpl->answersCategory($this->topicOf($parent))) {
+            throw new \RuntimeException('bad_reply');
+        }
+
+        if (ReplyKinds::nextDepth((int) $parent->reply_depth) === null) {
+            throw new \RuntimeException('reply_too_deep');
+        }
+
+        return $parent;
+    }
+
+    /**
+     * Zəncirin MÖVZU kateqoriyası — kök sənədin kateqoriyası.
+     *
+     * Cavab sənədinin öz kateqoriyası `c-redd` kimi niyyət kateqoriyasıdır və
+     * heç bir `reply_cats` siyahısında yoxdur. Cavaba cavab verilərkən uyğunluq
+     * məhz köke görə yoxlanılmalıdır: zəncir baş-başa eyni mövzudadır —
+     * «cütlüklər» mübahisəsi üçüncü səviyyədə də cütlüklər mübahisəsi qalır.
+     * Bu olmasa §8-dəki çoxsəviyyəli zəncir ikinci addımda dayanardı.
+     */
+    protected function topicOf(Document $document): ?string
+    {
+        /* Cavab sənədində mövzu artıq sətirdə saxlanılıb — sorğu lazım deyil. */
+        if ($document->reply_topic !== null) {
+            return $document->reply_topic;
+        }
+
+        if ($document->reply_root_id === null) {
+            return $this->categorySlugOf($document);
+        }
+
+        $root = Document::query()->find($document->reply_root_id, ['id', 'template_id', 'reply_topic']);
+
+        return $root === null ? null : $this->topicOf($root);
+    }
+
+    /** Sənədin şablonundan kateqoriya slug-ı. Şablon silinibsə null. */
+    protected function categorySlugOf(Document $document): ?string
+    {
+        if (array_key_exists($document->id, $this->catCache)) {
+            return $this->catCache[$document->id];
+        }
+
+        $slug = $document->template_id === null ? null : Template::query()
+            ->where('slug', $document->template_id)
+            ->with('category:id,slug')
+            ->first()?->category?->slug;
+
+        return $this->catCache[$document->id] = $slug;
     }
 
     /**

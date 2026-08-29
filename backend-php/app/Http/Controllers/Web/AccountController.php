@@ -46,7 +46,11 @@ class AccountController extends Controller
     {
         return view('account.documents', [
             'user'      => $request->visitor(),
-            'documents' => $request->visitor()->documents()->visible()->latest()->paginate(20),
+            /* `replyTo` olmadan hər cavab sətri ayrıca sorğu açardı. */
+            'documents' => $request->visitor()->documents()->visible()
+                ->with('replyTo:id,reg_no')
+                ->withCount(['replies' => fn ($q) => $q->published()])
+                ->latest()->paginate(20),
         ]);
     }
 

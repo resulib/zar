@@ -41,6 +41,20 @@
         <div><dt>Yaradılıb</dt><dd>{{ $document->created_at->format('d.m.Y H:i') }}</dd></div>
         <div><dt>Reyestrə düşüb</dt><dd>{{ $document->published_at?->format('d.m.Y H:i') ?: '—' }}</dd></div>
         <div><dt>Baxış sayı</dt><dd>{{ $document->views }}</dd></div>
+        {{-- Cavab zənciri: valideyn və birbaşa cavablar --}}
+        <div><dt>Cavab verdiyi sənəd</dt><dd>
+          @if ($document->replyTo)
+            <a href="{{ route('admin.documents.show', $document->replyTo->reg_no) }}">{{ $document->replyTo->reg_no }}</a>
+            <div class="sub">səviyyə {{ $document->reply_depth }}</div>
+          @else — @endif
+        </dd></div>
+        <div><dt>Ona verilən cavablar</dt><dd>
+          @php($kids = $document->replies()->visible()->orderBy('id')->get(['id', 'reg_no', 'title']))
+          @forelse ($kids as $k)
+            <div><a href="{{ route('admin.documents.show', $k->reg_no) }}">{{ $k->reg_no }}</a>
+              <span class="sub">{{ \Illuminate\Support\Str::limit($k->title, 40) }}</span></div>
+          @empty — @endforelse
+        </dd></div>
         <div><dt>İstifadəçi</dt><dd>
           @if ($document->user)
             <a href="{{ route('admin.users.show', $document->user->uuid) }}">{{ $document->user->displayName() }}</a>

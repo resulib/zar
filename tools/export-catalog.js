@@ -8,10 +8,14 @@ const ROOT_DIR = path.join(__dirname, '..');
 
 const sandbox = { window: {} };
 vm.createContext(sandbox);
-for (const f of ['templates.js', 'templates-xatire.js'])
+for (const f of ['templates.js', 'templates-xatire.js', 'replies.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT_DIR, 'frontend', f), 'utf8'), sandbox);
 
-const CATS = sandbox.window.CATEGORIES, TPLS = sandbox.window.TEMPLATES;
+/* Cavab kataloqu ayrıca qlobal dəyişənlərdədir, amma BAZADA eyni iki cədvəldə
+   yaşayır: fərq yalnız `categories.is_reply` və `templates.reply_kind`
+   sütunlarındadır. Ona görə toxum faylında da eyni massivlərə qoşulur. */
+const CATS = sandbox.window.CATEGORIES.concat(sandbox.window.REPLY_CATEGORIES || []);
+const TPLS = sandbox.window.TEMPLATES.concat(sandbox.window.REPLIES || []);
 
 /* Şablona xas qeydiyyat prefiksi — RegistryPrefix::MAP güzgüsü. */
 const REG_PREFIX = {
@@ -22,7 +26,7 @@ const REG_PREFIX = {
 const out = {
   categories: CATS.map((c, i) => ({
     slug: c.id, tone: c.tone, name: c.name, icon: c.icon || null,
-    blurb: c.blurb || '', sort: (i + 1) * 10
+    blurb: c.blurb || '', sort: (i + 1) * 10, is_reply: !!c.isReply
   })),
   templates: TPLS.map((t, i) => ({
     slug: t.id, category: t.cat, tone: t.tone,
@@ -31,7 +35,8 @@ const out = {
     preamble: t.preamble, powers: t.powers, penalty: t.penalty,
     to_label: t.toLabel || null, from_label: t.fromLabel || null,
     powers_label: t.powersLabel || null, penalty_label: t.penaltyLabel || null,
-    reg_prefix: REG_PREFIX[t.id] || null,
+    reg_prefix: t.regPrefix || REG_PREFIX[t.id] || null,
+    reply_kind: t.replyKind || null, reply_cats: t.replyCats || null,
     sign_title: t.signTitle || null, sign_org: t.signOrg || null, share: t.share || null,
     fields: t.fields || null, notes: t.notes || null, cancel_reasons: t.cancelReasons || null,
     /* İstifadəçi seçimləri — statik kataloqda hələ yoxdur, açarlar admin
@@ -46,4 +51,7 @@ const out = {
 const dest = path.join(ROOT_DIR, 'backend-php', 'database', 'seeders', 'catalog.json');
 fs.writeFileSync(dest, JSON.stringify(out, null, 2) + '\n');
 console.log('Yazıldı: ' + dest);
+const nrc = out.categories.filter(c => c.is_reply).length;
+const nrt = out.templates.filter(t => t.reply_kind).length;
 console.log(out.categories.length + ' kateqoriya · ' + out.templates.length + ' şablon');
+console.log('  bunlardan cavab: ' + nrc + ' kateqoriya · ' + nrt + ' şablon');

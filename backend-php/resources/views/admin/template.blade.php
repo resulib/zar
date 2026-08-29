@@ -58,9 +58,9 @@
           <label class="label" for="category_id">Kateqoriya</label>
           <select id="category_id" class="input" name="category_id" required>
             @foreach ($categories as $c)
-              <option value="{{ $c->id }}" data-tone="{{ $c->tone }}"
+              <option value="{{ $c->id }}" data-tone="{{ $c->tone }}" data-reply="{{ $c->is_reply ? '1' : '' }}"
                       @selected((int) old('category_id', $template->category_id) === $c->id)>
-                {{ $c->name }} ({{ $c->tone === 'xatire' ? 'xatirə' : 'zarafat' }})
+                {{ $c->name }}{{ $c->is_reply ? ' · cavab' : '' }} ({{ $c->tone === 'xatire' ? 'xatirə' : 'zarafat' }})
               </option>
             @endforeach
           </select>
@@ -270,6 +270,39 @@
           <input id="reg_prefix" class="input mono" name="reg_prefix" maxlength="4" pattern="[A-Z]{2,4}"
                  value="{{ old('reg_prefix', $template->reg_prefix) }}" placeholder="CCV">
           <span class="hint">2–4 böyük latın hərfi. Boş qalsa qlobal <code>{{ config('zarafat.reg_prefix') }}</code>.</span>
+        </div>
+
+        {{-- Cavab qatı. Yalnız cavab kateqoriyası seçildikdə mənalıdır;
+             görünürlüyü aşağıdakı skript `data-reply` atributuna görə idarə edir. --}}
+        <div class="field" id="replyKindField">
+          <label class="label" for="reply_kind">Cavab niyyəti</label>
+          <select id="reply_kind" class="input" name="reply_kind">
+            <option value="">— cavab şablonu deyil —</option>
+            @foreach ($replyKinds as $k => $label)
+              <option value="{{ $k }}" @selected(old('reply_kind', $template->reply_kind) === $k)>{{ $label }}</option>
+            @endforeach
+          </select>
+          <span class="hint">
+            Dolu olan şablon ana kataloqdan çıxır və yalnız «Cavab ver» axınında görünür.
+            Cavab kateqoriyasındakı hər şablonda seçilməlidir.
+          </span>
+        </div>
+        <div class="field span2" id="replyCatsField">
+          <label class="label">Hansı kateqoriyalara cavab verir</label>
+          @php($chosen = old('reply_cats', $template->reply_cats ?? []))
+          <div class="opt-grid">
+            @foreach ($replyTargets as $rt)
+              <label class="check">
+                <input type="checkbox" name="reply_cats[]" value="{{ $rt->slug }}"
+                       @checked(in_array($rt->slug, (array) $chosen, true))>
+                <span>{{ $rt->name }} <small class="mono">{{ $rt->tone }}</small></span>
+              </label>
+            @endforeach
+          </div>
+          <span class="hint">
+            Heç biri seçilməsə şablon <b>universaldır</b> — mövzuya uyğun cavab tapılmayanda
+            ehtiyat kimi çıxır. Hər niyyətin ən azı bir universal şablonu olmalıdır.
+          </span>
         </div>
       </div>
     </div>
@@ -524,6 +557,20 @@
         r.errs.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>'
       : '<div class="prev-ok">Sxem qaydasındadır.</div>';
   }
+
+  /* Cavab sahələri yalnız cavab kateqoriyasında mənalıdır. Bu, sadəcə
+     görünürlükdür — həqiqi kilid `CatalogController::templateSave()`-dədir:
+     cavab kateqoriyasındakı şablon niyyətsiz, adi kateqoriyadakı isə
+     niyyətlə yadda saxlanıla bilmir. */
+  function syncReply() {
+    var opt = $('category_id').selectedOptions[0];
+    var isReply = !!(opt && opt.getAttribute('data-reply'));
+    $('replyKindField').hidden = !isReply;
+    $('replyCatsField').hidden = !isReply;
+    if (!isReply) $('reply_kind').value = '';
+  }
+  $('category_id').addEventListener('change', syncReply);
+  syncReply();
 
   var deb;
   function touch() { clearTimeout(deb); deb = setTimeout(render, 200); }

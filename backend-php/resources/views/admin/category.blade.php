@@ -74,6 +74,23 @@
             <span>Saytda görünsün</span>
           </label>
         </div>
+        <div class="field span2">
+          <label class="label">Cavab kateqoriyası</label>
+          <label class="check">
+            <input type="checkbox" name="is_reply" value="1"
+                   @checked(old('is_reply', $category->is_reply))
+                   @if ($category->exists && $category->templates()->count() > 0) disabled @endif>
+            <span>Bu kateqoriya cavab sənədləri üçündür</span>
+          </label>
+          <span class="hint">
+            Cavab kateqoriyası ana səhifənin kateqoriya zolağında görünmür — şablonları yalnız
+            «Cavab ver» axını göstərir. İçindəki hər şablon üçün cavab niyyəti seçilməlidir və
+            «12 dizayn · 5 palitra» xəbərdarlıqları bu kateqoriyalara tətbiq olunmur.
+            @if ($category->exists && $category->templates()->count() > 0)
+              <br><b>Kateqoriyada şablon olduğu üçün bayraq kilidlidir.</b>
+            @endif
+          </span>
+        </div>
       </div>
     </div>
     <div class="panel-foot">

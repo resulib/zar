@@ -67,6 +67,10 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('payments',  fn (Request $r) => Limit::perMinute(12)->by($key($r)));
         RateLimiter::for('reports',   fn (Request $r) => Limit::perMinute(10)->by($key($r)));
 
+        // Ölçmə hadisələri: sənəd yaratmaqdan ucuzdur, amma limitsiz qalsa
+        // document_events cədvəli sadə döngə ilə doldurula bilər.
+        RateLimiter::for('events',    fn (Request $r) => Limit::perMinute(30)->by($key($r)));
+
         // Reyestr açıqdır və qeydiyyat nömrəsi cəmi 4 rəqəmdir — limitsiz qalsa
         // bütün reyestri sadalamaq və baxış sayğacını şişirtmək olar.
         RateLimiter::for('registry', fn (Request $r) => [

@@ -55,7 +55,10 @@ class DocumentController extends Controller
 
     public function show(string $regNo): View
     {
-        $document = Document::query()->with(['user', 'reports'])->where('reg_no', strtoupper($regNo))->firstOrFail();
+        $document = Document::query()
+            ->with(['user', 'reports', 'replyTo:id,reg_no'])
+            ->where('reg_no', strtoupper($regNo))
+            ->firstOrFail();
 
         return view('admin.document', ['document' => $document]);
     }

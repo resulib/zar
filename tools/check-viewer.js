@@ -26,11 +26,42 @@ function fixture(reg) {
   if (reg === 'ZRF-2026-1111') return Object.assign({}, BASE_DOC, { regNo: reg, state: 'expired' });
   if (reg === 'ZRF-2026-2222') return Object.assign({}, BASE_DOC, {
     regNo: reg, state: 'cancelled', cancelReason: 'Cavabsız zəng' });
-  return Object.assign({}, BASE_DOC, { regNo: reg });
+  /* Cavab sənədi: valideynə istinad + zəncirdə ikinci sətir */
+  if (reg === 'RDD-2026-3333') return Object.assign({}, BASE_DOC, {
+    regNo: reg, templateId: 'r-redd-couples', layout: 'qerar', palette: 'burgundy',
+    title: 'Gecikmə Bəhanəsinin Rədd Edilməsi Qərarı',
+    replyTo: 'ZRF-2026-9482', replyToTitle: 'Həftəsonu Çölə Çıxma Etibarnaməsi', replyDepth: 1 });
+  return Object.assign({}, BASE_DOC, { regNo: reg, replyCount: reg === 'ZRF-2026-9482' ? 1 : 0 });
+}
+
+/* `/api/registry/{reg}/zencir` — yalnız iki nömrə üçün zəncir qaytarılır */
+const CHAIN = {
+  'ZRF-2026-9482': 0, 'RDD-2026-3333': 1
+};
+function chainFixture(reg) {
+  if (!(reg in CHAIN)) return { count: 0, items: [] };
+  const items = [
+    { regNo: 'ZRF-2026-9482', title: 'Həftəsonu Çölə Çıxma Etibarnaməsi', date: '26.08.2026',
+      depth: 0, state: 'active', kind: null, kindLabel: '', current: reg === 'ZRF-2026-9482' },
+    { regNo: 'RDD-2026-3333', title: 'Gecikmə Bəhanəsinin Rədd Edilməsi Qərarı', date: '29.08.2026',
+      depth: 1, state: 'active', kind: 'redd', kindLabel: 'Rədd', current: reg === 'RDD-2026-3333' }
+  ];
+  return { count: items.length, items };
 }
 
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
+
+  const chain = url.match(/^\/api\/registry\/(.+)\/zencir$/);
+  if (chain) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(chainFixture(chain[1].toUpperCase())));
+  }
+  /* Ölçmə endpoint-i: baxış səhifəsi onu «unut və davam et» kimi çağırır. */
+  if (url === '/api/olcu') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end('{"ok":true}');
+  }
 
   const api = url.match(/^\/api\/registry\/(.+)$/);
   if (api) {
@@ -81,9 +112,41 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   const bad = reqs.filter(u => /templates(-xatire)?\.js|\/app\.js|site\.css|panel\.css/.test(u));
   check('artıq asset yüklənmir', bad.length === 0, bad.map(u => u.split('/').pop()));
 
-  check('zolaqda 5 düymə var', (await page.$$eval('#vwBar button', b => b.length)) === 5);
+  check('zolaqda 6 düymə var', (await page.$$eval('#vwBar button', b => b.length)) === 6);
   check('şikayət düyməsi var', (await page.$eval('#vwRep', e => e.textContent)).indexOf('Şikayət') >= 0);
+  check('cavab düyməsi var', (await page.$eval('#vwReply', e => e.textContent)).indexOf('Cavab') >= 0);
   check('banner aktiv sənəddə gizlidir', await page.$eval('#vwBanner', e => e.hidden));
+  check('adi sənəddə cavab istinadı yoxdur', await page.$eval('#vwReplyRef', e => e.hidden));
+
+  console.log('\n1b. Cavab qatı');
+  await page.click('#vwReply');
+  check('cavab modalı açılır', await page.$eval('#vwReplyModal', e => e.classList.contains('open')));
+  check('5 niyyət kartı var', (await page.$$eval('#vwReplyCards .vw-reply-card', b => b.length)) === 5);
+  check('modalda sənədin nömrəsi var',
+    (await page.$eval('#vwReplyReg', e => e.textContent)) === 'ZRF-2026-9482');
+  await page.keyboard.press('Escape');
+  check('Escape modalı bağlayır', !(await page.$eval('#vwReplyModal', e => e.classList.contains('open'))));
+
+  /* Zəncir asinxron yüklənir — göründüyünü gözləyirik. */
+  await page.waitForSelector('#vwChain:not([hidden])', { timeout: 4000 });
+  check('zəncirdə 2 sətir var', (await page.$$eval('#vwChain li', e => e.length)) === 2);
+  check('cavab sayı göstərilir',
+    (await page.$eval('#vwChain p', e => e.textContent)).indexOf('1') >= 0);
+  check('cari sənəd vurğulanır',
+    (await page.$$eval('#vwChain li.here', e => e.length)) === 1);
+  check('cavab çağırışı görünür', !(await page.$eval('#vwCta', e => e.hidden)));
+
+  /* Cavab sənədinin öz səhifəsi: künc lenti + valideynə kliklənən istinad */
+  const rp = await b.newPage();
+  await rp.goto('http://localhost:4231/r/RDD-2026-3333', { waitUntil: 'domcontentloaded' });
+  await rp.waitForTimeout(1200);
+  check('cavab sənədində istinad zolağı var', !(await rp.$eval('#vwReplyRef', e => e.hidden)));
+  check('istinad valideynə keçid verir',
+    (await rp.$eval('#vwReplyRef a', e => e.getAttribute('href'))) === '/r/ZRF-2026-9482');
+  const rpSvg = await rp.$eval('#doc', e => e.innerHTML);
+  check('vərəqdə cavab lenti var', rpSvg.indexOf('data-rp=') >= 0);
+  check('lentdə orijinalın nömrəsi var', rpSvg.indexOf('ZRF-2026-9482') >= 0);
+  await rp.close();
 
   console.log('\n2. Çap görünüşü');
   await page.emulateMedia({ media: 'print' });

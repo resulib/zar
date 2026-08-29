@@ -254,5 +254,119 @@ echo "\n10. Reyestr yalnız dərc olunmuş sənədi verir\n";
 $r = req($base . '/api/registry/HACK-1-1');
 check('yanlış format qəbul edilmir', in_array($r['status'], [400, 404, 429], true), $r['status']);
 
+/* Cavab sənədi qapıları. Kilid `DocumentService::resolveParent()`-dədir:
+   klient yalnız nömrə göndərir, valideyni, tonu, mövzunu və dərinliyi server
+   həll edir. Aşağıdakılar həmin qapıların hər birini ayrıca yoxlayır. */
+echo "\n11. Cavab sənədi kilidi\n";
+$s5 = session($base . '/admin/giris');
+
+/* Cookie qabını AD ÜZRƏ birləşdirir. Sadə `a; b` yapışdırması eyni adlı
+   cookie-ni iki dəfə göndərir (Laravel sessiyanı hər cavabda yenidən verir)
+   və curl hansını seçdiyi qeyri-müəyyən olur — kredit başqa qonağa yazılır. */
+$merge = static function (string $jar, string $add): string {
+    $map = [];
+    foreach (explode(';', $jar . ';' . $add) as $kv) {
+        $kv = trim($kv);
+        if ($kv === '') {
+            continue;
+        }
+        [$k, $v] = array_pad(explode('=', $kv, 2), 2, '');
+        if ($k !== '') {
+            $map[$k] = $v;
+        }
+    }
+    $out = [];
+    foreach ($map as $k => $v) {
+        $out[] = $k . '=' . $v;
+    }
+
+    return implode('; ', $out);
+};
+
+/* SIRA VACİBDİR: qonaq sətri ilk sənəd sorğusunda yaranır və `zrf_uid`
+   cookie-si məhz onun cavabında gəlir. Krediti bundan əvvəl alsaq, o, BAŞQA
+   qonağın balansına düşür və dərc «no_credits» verir. */
+$r = req($base . '/api/documents', 'POST', [
+    'templateId' => 'remote-control', 'title' => 'X', 'to' => 'Nurlan Aliyev',
+    'from' => 'Rasad Quliyev', '_token' => $s5['token'],
+], $s5['cookies']);
+$own5 = $merge($s5['cookies'], $r['cookies']);
+$orig = json_decode($r['body'], true)['regNo'] ?? null;
+check('orijinal sənəd yaradıldı', $orig !== null, [$r['status'], substr($r['body'], 0, 120)]);
+
+$r    = req($base . '/api/payments/simulate', 'POST', ['packId' => 'p10', '_token' => $s5['token']], $own5);
+$own5 = $merge($own5, $r['cookies']);
+check('kredit alındı', $r['status'] === 200, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r    = req($base . '/api/documents/' . $orig . '/publish', 'POST', ['_token' => $s5['token']], $own5);
+$own5 = $merge($own5, $r['cookies']);
+check('orijinal dərc olundu', $r['status'] === 200, [$r['status'], substr($r['body'], 0, 120)]);
+
+/* Cavabın özü: nömrə serverdə valideynə çevrilir. */
+$r = req($base . '/api/documents', 'POST', [
+    'templateId' => 'r-redd-couples', 'title' => 'X', 'to' => 'Nurlan Aliyev',
+    'from' => 'Rasad Quliyev', 'replyTo' => $orig, '_token' => $s5['token'],
+], $own5);
+$rep = json_decode($r['body'], true);
+check('cavab sənədi yaradıldı', ($rep['regNo'] ?? null) !== null, [$r['status'], substr($r['body'], 0, 140)]);
+check('cavab orijinala bağlandı', ($rep['replyTo'] ?? null) === $orig, $rep['replyTo'] ?? null);
+check('cavab öz prefiksini aldı', str_starts_with((string) ($rep['regNo'] ?? ''), 'RDD-'), $rep['regNo'] ?? null);
+check('dərinlik serverdə hesablanır', ($rep['replyDepth'] ?? null) === 1, $rep['replyDepth'] ?? null);
+check('zəncirin mövzusu saxlanılır', ($rep['replyTopic'] ?? null) === 'couples', $rep['replyTopic'] ?? null);
+
+$mk = static function (array $extra) use ($base, $s5, $own5): array {
+    return req($base . '/api/documents', 'POST', array_merge([
+        'title' => 'X', 'to' => 'Nurlan Aliyev', 'from' => 'Rasad Quliyev',
+        '_token' => $s5['token'],
+    ], $extra), $own5);
+};
+
+/* Adi şablon cavab kimi göndərilə bilməz — əks halda istənilən sənəd
+   özgəsinin zəncirinə yapışdırılardı. */
+$r = $mk(['templateId' => 'weekend-pass', 'replyTo' => $orig]);
+check('adi şablon + replyTo 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+/* Cavab şablonu tək başına işlədilə bilməz — bu qayda cavab kataloqunu
+   ana axından tam kənarda saxlayır. */
+$r = $mk(['templateId' => 'r-redd-couples']);
+check('cavab şablonu replyTo-suz 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = $mk(['templateId' => 'r-redd-couples', 'replyTo' => 'ZRF-2026-0001']);
+check('mövcud olmayan orijinal 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = $mk(['templateId' => 'r-redd-couples', 'replyTo' => 'HACK-1-1']);
+check('yanlış formatlı nömrə 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+/* Mövzu uyğunluğu: oyunçu cavabı cütlüklər sənədinə düşmür. */
+$r = $mk(['templateId' => 'r-redd-gaming', 'replyTo' => $orig]);
+check('uyğun olmayan kateqoriya 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+/* Ton uyğunluğu: xatirə cavabı zarafat sənədinə yapışdırıla bilməz. */
+$r = $mk(['templateId' => 'r-xatire-tesekkur', 'replyTo' => $orig]);
+check('ton uyğunsuzluğu 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+/* Universal cavab isə hər mövzuya keçir — ehtiyat dəst budur. */
+$r = $mk(['templateId' => 'r-redd-umumi', 'replyTo' => $orig]);
+check('universal cavab qəbul edilir', $r['status'] === 200, [$r['status'], substr($r['body'], 0, 80)]);
+
+/* Dərc olunmamış sənəd reyestrdə yoxdur — ona cavab da yoxdur. */
+$r = $mk(['templateId' => 'remote-control']);
+$draft = json_decode($r['body'], true)['regNo'] ?? null;
+$r = $mk(['templateId' => 'r-redd-umumi', 'replyTo' => $draft]);
+check('dərc olunmamış sənədə cavab 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+echo "\n12. Ölçmə endpoint-i ağ siyahıdadır\n";
+$r = req($base . '/api/olcu', 'POST', ['event' => 'reply_click', 'regNo' => $orig, '_token' => $s5['token']], $own5);
+check('tanınan hadisə qəbul edilir', $r['status'] === 200, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = req($base . '/api/olcu', 'POST', ['event' => 'drop_table', 'regNo' => $orig, '_token' => $s5['token']], $own5);
+check('naməlum hadisə 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = req($base . '/api/olcu', 'POST', ['event' => 'reply_created', 'regNo' => $orig, '_token' => $s5['token']], $own5);
+check('server hadisəsi klientdən qəbul edilmir', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 80)]);
+
+$r = req($base . '/api/olcu', 'POST', ['event' => 'reply_click']);
+check('tokensiz ölçmə 419', $r['status'] === 419, $r['status']);
+
 echo "\n" . $pass . ' keçdi, ' . $fail . " uğursuz\n";
 exit($fail > 0 ? 1 : 0);

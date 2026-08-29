@@ -16,7 +16,7 @@ let fontsCss = F('fonts.css').replace(/url\(fonts\/([^)]+)\)/g, (_, f) => {
 html = html.replace(/<link rel="stylesheet" href="\/fonts\.css">/, () => '<style>\n' + fontsCss + '\n</style>');
 html = html.replace(/<link rel="stylesheet" href="\/site\.css">/,  () => '<style>\n' + F('site.css') + '\n</style>');
 
-['qr.js', 'templates.js', 'templates-xatire.js', 'doc.js', 'export.js', 'app.js'].forEach(f => {
+['qr.js', 'templates.js', 'templates-xatire.js', 'replies.js', 'doc.js', 'export.js', 'app.js'].forEach(f => {
   html = html.replace(new RegExp('<script src="/' + f.replace('.', '\\.') + '"></script>'),
     () => '<script>\n' + F(f) + '\n</script>');
 });
