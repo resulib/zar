@@ -10,3 +10,4 @@ backend-php/.env
 backend-php/database/*.sqlite
 *.log
 .DS_Store
+tools/davet/
