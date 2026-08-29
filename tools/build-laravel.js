@@ -15,7 +15,7 @@ const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', '
                  /* Dəvətnamə bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
                     export.js ortaqdır (kətandan PDF), qalanı bu bölməyə məxsusdur. */
                  'devet.css', 'devet-fonts.css', 'devet-designs.js', 'invite.js', 'devet-app.js',
-                 'devet-view.css', 'devet-view.js'];
+                 'devet-view.css', 'devet-view.js', 'devet-panel.css', 'devet-board.js', 'zip.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });

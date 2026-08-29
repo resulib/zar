@@ -21,7 +21,7 @@
       <span>Dəvətnamə</span>
     </a>
     <nav class="ust-nav">
-      <a href="/kabinet/devetler">Dəvətnamələrim</a>
+      <a href="/devetnamelerim">Dəvətnamələrim</a>
     </nav>
   </div>
 </header>
@@ -211,7 +211,7 @@
 <div id="bildiris" class="bildiris"><span class="mesaj"></span></div>
 
 <script src="{{ asset('assets/devet-designs.js') }}?v=249bedab"></script>
-<script src="{{ asset('assets/invite.js') }}?v=2883d959"></script>
+<script src="{{ asset('assets/invite.js') }}?v=d1cfeca1"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
 <script src="{{ asset('assets/devet-app.js') }}?v=30012663"></script>
 </body>

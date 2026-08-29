@@ -47,6 +47,12 @@ node tools/decode-test.js  # real jsQR scan of generated QR
 npm run test:fields      # dynamic questionnaire layer in a real browser (no backend needed)
 npm run test:admin       # admin catalog CRUD end-to-end (needs `php artisan serve` on :8080)
 npm run test:viewer      # the bare /r/{regNo} document viewer + PDF structure (no backend needed)
+npm run test:fonts       # every shipped woff2 covers the full Azerbaijani alphabet (WOFF2 cmap reader)
+npm run test:devet       # invitation catalog: 11 events × 3 designs, config whitelists, brand-leak scan
+npm run test:devet-flow  # the invitation builder in a real browser (no backend needed)
+npm run test:devet-view  # publish → link → OG image → guest page → RSVP  (needs `php artisan serve --port=8099`)
+npm run test:devet-bulk  # bulk guests, per-guest links, ZIP archive, CSV  (needs the same server)
+npm run render:devet     # every invitation design → tools/davet/ + contact sheet
 npm run test:dist        # dist/zarafat-mvp.html under file:// (build first)
 npm run test:e2e         # Playwright + backend-node end-to-end
 npm run test:api         # backend-node API suite
@@ -379,6 +385,9 @@ their own arrays is what lets that file stay untouched. In the **database** they
 `templates.reply_cats` lists which *original* categories a reply answers; empty means universal.
 Every intent has one universal fallback, so the visitor never sees an empty list.
 
+> A new invitation asset must be added to `tools/build-laravel.js` `ASSETS` **and** to the page's
+> script tags; `build.js` (the single-file zarafat demo) deliberately does not carry them.
+
 **Registering `replies.js` takes four edits** (it must load *after* `templates-xatire.js`):
 `frontend/index.html`, `build.js`, `tools/build-laravel.js` `ASSETS`, `tools/export-catalog.js`.
 It is deliberately **not** loaded by `viewer.html` — the viewer only needs the six card labels.
@@ -416,6 +425,82 @@ via `reply_root_id`.
 `POST /api/olcu`, `throttle:events`) and `reply_created` (server-side, in `DocumentService`). The
 endpoint accepts only that **whitelist** — otherwise it would be an open write path. `/admin/statistika`
 reads it: conversion rate, funnel, chain depth, popular intents, per-category rate.
+
+### The invitations section (Dəvətnamələr) — a separate product
+
+`/devetname` is **not** part of the SPA. Real people send these to real weddings, so a single
+`zarafat` string anywhere in the artefact destroys the product. The separation is physical, not
+a convention:
+
+- Its own pages (`frontend/devet.html`, `devet-view.html`), own CSS (`devet.css`, `devet-view.css`,
+  `devet-panel.css`), own fonts (`devet-fonts.css`), own JS. **`site.css` and `app.js` are never
+  loaded**, and the organiser's board uses `layouts/devet.blade.php`, never `layouts/panel.blade.php`.
+- The only link between the products is one line in the zarafat footer. There is no link back.
+- `tools/check-devet-designs.js` §8 greps every `devet*` file **including comments** for
+  `zarafat · notariat · reyestr · parodiya · znp · möhür · qüvvəsi`; `check-devet.js` and
+  `check-devet-bulk.js` do the same against the rendered DOM, the loaded asset list, the served
+  HTML and the generated PDF's `/Producer`.
+
+**Canvas, not SVG.** `doc.js` renders SVG and rasterises it through `<img>` — a path that
+**drops web fonts**, which is why it uses generic font stacks. On an invitation the font *is* the
+product, so `frontend/invite.js` (`window.DAVET`) draws straight to a `<canvas>`, where
+`fillText` uses the page's real `@font-face` families. Same discipline as `doc.js` otherwise:
+no `Date.now()`, no `Math.random()` — `rng(seed)` only.
+
+**Fonts are verified before they are used.** A decorative font missing `Ə` would force every design
+to be redone, so `tools/woff2-cmap.js` decompresses the WOFF2 body with `zlib.brotliDecompressSync`
+and reads the `cmap` directly (no dependency — same spirit as the hand-rolled PDF/QR/Code-39), and
+`tools/check-fonts.js` demands 90 characters per family, unioning a family's `latin` + `latin-ext`
+files. **`pyftsubset` silently drops code points the source lacks**, so the check runs on the
+shipped output, not the intent. Screening result is recorded in that file: Manrope, Jost,
+Marck Script, Yeseva One, Cinzel, Marcellus, Prata and Fredoka all fail — do not re-try them.
+Shipped: Cormorant Garamond · Playfair Display · Montserrat · Great Vibes · Baloo 2.
+
+**33 designs from 6 style functions.** `frontend/devet-designs.js` is data only: 11 events × 3
+variants, built from 6 styles × 12 palettes × 7 motifs. Layout is elastic — `cizYigin()` shrinks
+every size by one factor when the stack overflows and expands **only the gaps** when it underflows,
+which is what lets one code path serve `kart` (A6), `kvadrat` and `hekaye`. Kids' motifs are a
+closed list of generic themes; no cartoon or brand figures, and `photo` is `false` everywhere.
+
+**Adding a design or event** touches three places: `devet-designs.js` → `config/devet.php`
+whitelists (`Sanitizer::pick` rejects anything else) → `tools/check-devet-designs.js` §6 asserts
+the two lists are byte-identical, so a one-sided edit fails the suite.
+
+**The OG image is uploaded by the browser.** There is no server-side image pipeline and adding one
+would mean re-implementing 33 designs in PHP. At publish time `DAVET.drawOg()` produces a 1200×630
+JPEG and `POST /api/devet/{token}/onizleme` stores it **outside the public root**; the controller
+streams it with a fixed `image/jpeg` + `nosniff`. It is validated by `getimagesizefromstring`
+(exact dimensions, JPEG only, ≤400 KB) and re-encoded through GD when available.
+
+> **Address and phone must never leave the API.** They are absent from `DAVET.drawOg()`, from
+> `Invite::ogMeta()`, and from the server-rendered HTML — the guest page fetches them from
+> `GET /api/devet/{token}` in the browser, exactly like `viewer.js`. A link preview is visible to
+> everyone in a WhatsApp group; the venue is not. `check-devet-view.js` §4 asserts this.
+
+**Privacy is structural.** Invitations live in their own `invites` / `invite_guests` tables — the
+surest way to stay out of the registry, the catalog and `/admin/senedler` is to be absent from the
+table they query. Tokens are 22 base62 chars from `random_int`; the route constraint accepts only
+that length. Every page sends `noindex` as both a meta tag and an `X-Robots-Tag` header, and
+`public/robots.txt` disallows `/d/`, `/devetname` and `/devetnamelerim`. A stranger asking for
+someone else's board gets **404, never 403** — 403 would confirm the token exists.
+
+**The server owns the content**, the same rule as the option lock: `design`/`palette`/`event` go
+through `Sanitizer::pick` against `config/devet.php`; text is truncated to `devet.limits`;
+`map_url` is rejected unless its host is in `devet.map_hosts`, otherwise a search link is built
+from the address — an unchecked paste would turn every invitation into an open redirect.
+
+**Bulk is the section's most valuable part.** A name list becomes one `invite_guests` row per guest
+with its own token, its own `/d/{token}/q/{guest}` link, a ready WhatsApp message and a named PNG.
+`frontend/zip.js` writes a store-only ZIP by hand (CRC-32 + local headers + central directory) —
+PNGs are already compressed, so deflate would only cost time. Cards are rendered **sequentially**
+with a progress bar and a cancel button; 200 canvases at once exhausts a phone. Filenames are
+transliterated to ASCII by `DAVET.asciiAd()` because several unzip implementations still mangle
+`ə`/`ş` — the guest's real name is on the card itself.
+
+**RSVP is open to everyone with the link**, so it is the most tightly limited endpoint
+(`throttle:rsvp`, 8/min per visitor and 20/min per IP) and it can only ever write the guest's own
+row. A guest reached through a named link is already identified; one arriving through the shared
+link must type a name, or the board would fill with anonymous rows.
 
 ### Export and the bare document viewer
 
@@ -543,6 +628,15 @@ occasional runtime wrinkle on first run.
 - **Chain topic**: `DocumentService::topicOf()` ↔ `app.js` `catOfDoc()` — both must read
   `reply_topic` first and fall back to the template's own category.
 - **Reply counts (71 / 6 / 6)**: `tools/check-replies.js` and `tools/dist-check.js`.
+- **Invitation whitelists**: `frontend/devet-designs.js` ↔ `backend-php/config/devet.php`
+  (`designs` · `events` · `palettes` · `motifs` · `styles`) — `tools/check-devet-designs.js` §6
+  compares them element by element.
+- **Invitation counts (11 events / 33 designs / 12 palettes / 7 motifs)**: asserted in
+  `tools/check-devet-designs.js`.
+- **RSVP values**: `App\Support\Devet::RSVP` ↔ `config/devet.php` `rsvp` ↔ the `CAVAB` list in
+  `frontend/devet-view.js`.
+- **OG image size (1200×630)**: `invite.js` `OG` ↔ `config/devet.php` `og` ↔ the
+  `og:image:width/height` tags in `tools/build-laravel.js`.
 
 ## Gotchas
 

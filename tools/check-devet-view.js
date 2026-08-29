@@ -9,6 +9,11 @@ const { chromium } = require('playwright');
 
 const BASE = (process.argv[2] || process.env.DEVET_BASE || 'http://127.0.0.1:8099').replace(/\/$/, '');
 
+/* Linkin bazası `config('devet.public_url')`-dandır, yəni yerləşdirmə
+   parametridir — test onu yoxlamır, sadəcə yol hissəsini işlədir.
+   (Ayrı domenə keçid də məhz buna görə bir .env sətridir.) */
+const yerli = u => BASE + (u || '').replace(/^https?:\/\/[^/]+/, '');
+
 let pass = 0, fail = 0;
 const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
                              : (fail++, console.log('  ✗', n, x === undefined ? '' : JSON.stringify(x).slice(0, 300)));
@@ -70,7 +75,7 @@ const bas = t => console.log('\n' + t);
 
   bas('4. Sosial önizləmə — ünvan və telefon SIZMAMALIDIR');
   await page.waitForTimeout(2500);   /* şəkil yüklənməsi arxa fonda gedir */
-  const html = await (await ctx.request.get(link)).text();
+  const html = await (await ctx.request.get(yerli(link))).text();
   const og = k => (html.match(new RegExp('property="og:' + k + '" content="([^"]*)"')) || [])[1] || '';
   check('og:title dolu', og('title').length > 0, og('title'));
   check('og:image var', /\/on\.jpg$/.test(og('image')), og('image'));
@@ -92,7 +97,7 @@ const bas = t => console.log('\n' + t);
   const qonaq = await ctx.newPage();
   const qerrs = [];
   qonaq.on('pageerror', e => qerrs.push(e.message));
-  await qonaq.goto(link, { waitUntil: 'networkidle' });
+  await qonaq.goto(yerli(link), { waitUntil: 'networkidle' });
   await qonaq.waitForTimeout(1200);
   check('dəvətnamə kartı çəkilir', (await qonaq.$eval('#kart', c => c.width)) > 100);
   /* `hidden` atributuna baxmaq azdır — sinifdəki `display` onu üstələyə bilir,

@@ -60,6 +60,21 @@
     return out;
   }
 
+  /* Fayl adı üçün ASCII qarşılıq. Azərbaycan hərfləri ZIP arxivində və
+     bəzi köhnə fayl sistemlərində pozulur, ona görə fayl adı çevrilir —
+     qonağın əsl adı onsuz da kartın ÜZƏRİNDƏ yazılıdır. */
+  var ASCII = { 'ə': 'e', 'Ə': 'E', 'ğ': 'g', 'Ğ': 'G', 'ı': 'i', 'İ': 'I',
+                'ş': 's', 'Ş': 'S', 'ç': 'c', 'Ç': 'C', 'ö': 'o', 'Ö': 'O',
+                'ü': 'u', 'Ü': 'U' };
+  function asciiAd(s, ehtiyat) {
+    s = String(s == null ? '' : s);
+    var out = '', i, c;
+    for (i = 0; i < s.length; i++) { c = s.charAt(i); out += ASCII[c] || c; }
+    out = out.replace(/\s+/g, '-').replace(/[^A-Za-z0-9-]+/g, '').replace(/-+/g, '-')
+             .replace(/^-|-$/g, '');
+    return out || (ehtiyat || 'devetname');
+  }
+
   /* --- Deterministik təsadüfilik --------------------------------------- */
   function hash(str) {
     var h = 2166136261, i;
@@ -828,6 +843,6 @@
     RATIOS: RATIOS, OG: OG, FONTS: F,
     designOf: designOf, eventOf: eventOf,
     tarixSetri: tarixSetri, saatSetri: saatSetri,
-    upper: upper, MOTIF: MOTIF
+    upper: upper, asciiAd: asciiAd, MOTIF: MOTIF
   };
 })(typeof window !== 'undefined' ? window : this);

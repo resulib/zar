@@ -6,4 +6,5 @@ Disallow: /devetname
 Disallow: /kabinet
 Disallow: /admin
 Disallow: /r/
+Disallow: /devetnamelerim
 Allow: /

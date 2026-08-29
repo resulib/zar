@@ -26,6 +26,14 @@ Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
 */
 Route::get('/devetname', [Web\DevetController::class, 'builder'])->name('devet.builder');
 
+/* Tədbir sahibinin lövhəsi. Kabinetdən ayrıdır və öz görünüş çərçivəsini
+   işlədir — alıcı burada saytın digər məhsulunun adını görməməlidir. */
+Route::get('/devetnamelerim', [Web\DevetAccountController::class, 'index'])->name('devet.list');
+Route::get('/devetnamelerim/{token}', [Web\DevetAccountController::class, 'board'])
+    ->where('token', '[A-Za-z0-9]{22}')->name('devet.board');
+Route::get('/devetnamelerim/{token}/cedvel.csv', [Web\DevetAccountController::class, 'csv'])
+    ->where('token', '[A-Za-z0-9]{22}')->name('devet.csv');
+
 /* Şəkil marşrutu adlı qonaq marşrutundan ƏVVƏL elan olunur, yoxsa
    `/d/{token}/on.jpg` «q» olmayan seqment kimi tutulmazdı. */
 Route::get('/d/{token}/on.jpg', [Web\DevetController::class, 'preview'])

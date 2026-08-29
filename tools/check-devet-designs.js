@@ -125,7 +125,8 @@ const fold = s => String(s)
   .toLowerCase();
 
 const SCAN = ['devet-designs.js', 'invite.js', 'devet.html', 'devet.css', 'devet-app.js',
-              'devet-view.html', 'devet-view.css', 'devet-view.js', 'devet-fonts.css', 'zip.js']
+              'devet-view.html', 'devet-view.css', 'devet-view.js', 'devet-fonts.css', 'zip.js',
+              'devet-panel.css', 'devet-board.js']
   .map(f => path.join(FE, f))
   .concat([path.join(ROOT, 'backend-php', 'config', 'devet.php')])
   .filter(f => fs.existsSync(f));

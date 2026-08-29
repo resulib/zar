@@ -79,7 +79,7 @@
 <div id="bildiris" class="bildiris"><span class="mesaj"></span></div>
 
 <script src="{{ asset('assets/devet-designs.js') }}?v=249bedab"></script>
-<script src="{{ asset('assets/invite.js') }}?v=2883d959"></script>
+<script src="{{ asset('assets/invite.js') }}?v=d1cfeca1"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
 <script src="{{ asset('assets/devet-view.js') }}?v=44b9faaf"></script>
 </body>
