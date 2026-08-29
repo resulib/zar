@@ -38,6 +38,8 @@ npm run catalog:export   # frontend/templates.js → backend-php/database/seeder
 npm run test:qr          # QR encoder vs the `qrcode` reference library
 npm run test:barcode     # Code-39 table invariants + round-trip decode
 npm run test:doc         # 2 tones × 12 layouts × 6 palettes: <g> balance, tone marks, element counts, MRZ
+npm run test:copy        # copy quality: style rules (§9) + option-list schema (§10) — tools/copy-rules.js
+npm run test:title       # longest catalog titles across 12 layouts + story card, in a real browser
 npm run test:templates   # 216 templates: unique ids, tone/category match, fields schema, text budgets
 npm run test:replies     # 71 reply templates: intent coverage, replyCats, prefixes, orgs, render
 npm run test:reply-flow  # the SPA reply editor (/?cavab=…) in a real browser (no backend needed)
@@ -147,6 +149,24 @@ gate would emit a second watermark for every layout in that tone.
 > each category uses each layout exactly once, leaving zero spare slots. A 13th layout therefore
 > forces a decision: either relax one of those two invariants, or grow every category to 13
 > templates (18 × 1 = 18 new templates). Budget for that before adding one.
+
+**Two render traps nothing else documents.** `vesiqe` calls `items()` nowhere — it renders **zero
+`powers` clauses**, so its operative sentence must live in `preamble` + `penalty`. `viza` never
+renders `preamble`; instead it prints `powers` as the numbered «QEYDLƏR» list (`doc.js:2040`).
+Any copy written for those two layouts has to account for that.
+
+**The document type word comes from the LAYOUT, not the template** — `Q Ə R A R` (`doc.js:1596`),
+`SERTİFİKAT` (`:1289`), `TELEQRAM` (`:1807`) and so on are literals. A template expresses its own
+type only through `doc.title`, so the title's final word must match the layout it pins.
+`tools/copy-rules.js` `DOC_TYPE` holds that mapping and `tools/check-copy.js` enforces it for the
+`zarafat` tone. Because every category covers all 12 layouts exactly once, each category
+automatically spans 12 document types.
+
+**Title budget is empirical, not guessed.** `story()` and the single-line `viza`/`ekspertiza`
+headings were the binding constraints; both now wrap. `node tools/check-title-fit.js` renders the
+12 longest catalog titles across all layouts **in a real browser** and fails on any `…` — the Node
+stub (`measureText = length × 6.1`) is useless for this measurement. Safe ceiling measured at
+**93 characters**; `AIM.title` is set to 92.
 
 **Structure blocks** (`kvTable`, `checkList`, `scaleBar`) are called **only** by `viza` and
 `ekspertiza`. The other ten layouts keep their hand-rolled tables on purpose: `zarafat` output
@@ -266,6 +286,16 @@ Visitors type **only the two name fields**. Title, the clause list and the penal
 from admin-authored option lists (`templates.title_options` / `powers_options` +
 `powers_min`/`powers_max` / `penalty_options`, migration `..._000011`). A template with no
 options shows its own text read-only, so the site is safe with zero content work.
+
+**282 of the 287 templates now carry option lists.** Only the five `viral` questionnaire templates
+do not — `fields` and option lists are mutually exclusive (`templateSave()` rejects the pair).
+Three invariants hold across the catalog and are enforced by `tools/check-copy.js` §10:
+`titleOptions[0] === title`, `penaltyOptions[0] === penalty`, and the first `powersMax`
+`powersOptions` are exactly the template's own four `powers` lines — so the document a visitor
+sees by default is the one the catalog card advertises. `powersMin: 2, powersMax: 4` everywhere.
+`app.js renderPicks()` seeds `state.powerPicks` from `rng[1]` (the **max**), not `rng[0]`; seeding
+from the minimum would open every document with two clauses and freeze `togglePower()` at the
+lower bound.
 
 **The dropdowns are UX. The control is `DocumentService::create()`**, which resolves the template
 by `templateId` and rebuilds the document from the catalog:

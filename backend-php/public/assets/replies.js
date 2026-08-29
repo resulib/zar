@@ -60,132 +60,418 @@ window.REPLIES = [
 {
   id: 'r-redd-couples', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['couples'], regPrefix: 'RDD',
-  title: 'Gecikmə Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Ev diplomatiyası',
+  title: 'Gecikmənin Səbəbi kimi Göstərilmiş Halın Rədd Edilməsi haqqında Qərar', tag: 'Ev diplomatiyası',
   signOrg: 'Cütlüklərarası Mübahisələrin Həlli üzrə Ali Şura',
   toLabel: 'BƏHANƏNİ İRƏLİ SÜRƏN', fromLabel: 'QƏRARI QƏBUL EDƏN',
-  preamble: 'Şura {to} adlı şəxsin təqdim etdiyi sənədə baxaraq müəyyən etdi ki, göstərilən səbəb heç bir sənədlə təsdiqlənmir, hadisələrin ardıcıllığı isə əvvəlki üç izahatla ziddiyyət təşkil edir. {from} tərəfindən verilmiş etiraz əsaslı hesab olunur və bəhanə rədd edilir.',
-  powers: 'Təqdim edilmiş bəhanə əsassız hesab edilir və qəbul olunmur.\nEyni səbəbin təkrar irəli sürülməsinə növbəti 30 gün ərzində yol verilmir.\nGecikmə faktı qüvvədə qalır və qeydiyyata alınır.\nQərar imzalandığı andan qüvvəyə minir və şikayət mərhələsindən keçmir.',
-  penalty: 'Qərara əməl edilmədikdə növbəti həftəsonunun proqramını qarşı tərəf müəyyən edir və seçim mübahisə mövzusuna çevrilmir.'
+  preamble: 'Şura {to} adlı şəxsin təqdim etdiyi sənədə baxaraq müəyyən etmişdir ki, gecikmənin səbəbi kimi göstərilən hal heç bir mənbə ilə təsdiqlənmir və hadisələrin ardıcıllığı əvvəlki izahatlarla ziddiyyət təşkil edir. {from} tərəfindən verilmiş etiraz əsaslı hesab olunur.',
+  powers: 'Gecikmənin səbəbi kimi göstərilən hal əsassız hesab edilir.\nEyni izahatın otuz gün ərzində təkrarlanmasına yol verilmir.\nGecikmə faktı qüvvədə qalır və qeydiyyata alınır.\nQərar imzalandığı andan qüvvəyə minir.',
+  penalty: 'Qərara əməl edilmədikdə növbəti həftəsonunun proqramı tam olaraq digər tərəf tərəfindən müəyyən edilir və seçim mübahisə predmetinə çevrilmir.',
+  titleOptions: [
+    'Gecikmənin Səbəbi kimi Göstərilmiş Halın Rədd Edilməsi haqqında Qərar',
+    'Evə Gec Qayıtma Səbəbinin Əsassız Sayılması haqqında Qərar',
+    'Təqdim Edilmiş İzahatın Qəbul Edilməməsi haqqında Yekun Qətnamə',
+    'Həftəsonu Səlahiyyətinin Pozulması Faktının Təsbiti haqqında Qərar'
+  ],
+  powersOptions: [
+    'Gecikmənin səbəbi kimi göstərilən hal əsassız hesab edilir.',
+    'Eyni izahatın otuz gün ərzində təkrarlanmasına yol verilmir.',
+    'Gecikmə faktı qüvvədə qalır və qeydiyyata alınır.',
+    'Qərar imzalandığı andan qüvvəyə minir.',
+    'Telefonun şarj səviyyəsi arqumenti nəzərə alınmır.',
+    'Yol vəziyyəti barədə məlumat sənədlə təsdiqlənməlidir.',
+    'Cavabsız zənglərin sayı ayrıca qeydə alınır.',
+    'Sonradan verilən izahat araşdırmaya daxil edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərara əməl edilmədikdə növbəti həftəsonunun proqramı tam olaraq digər tərəf tərəfindən müəyyən edilir və seçim mübahisə predmetinə çevrilmir.',
+    'Etiraz qeydə alınır, lakin qərarın qüvvəsinə təsir göstərmir.',
+    'Qərar növbəti mübahisəyə qədər dəyişdirilmədən qüvvədə saxlanılır.'
+  ]
 },
 {
   id: 'r-redd-friends', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['friends'], regPrefix: 'RDD',
-  title: 'Borc Bəhanəsinin Rədd Edilməsi Haqqında Qərar', tag: 'Dost borcu',
+  title: 'Borcun Qaytarılmaması üçün Göstərilmiş Səbəbin Rədd Edilməsi haqqında Qərar', tag: 'Borc',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
   toLabel: 'BORCLU TƏRƏF', fromLabel: 'TƏLƏB EDƏN TƏRƏF',
-  preamble: 'Məclis {from} tərəfindən verilmiş müraciəti araşdıraraq müəyyən etdi ki, {to} adlı şəxsin təqdim etdiyi «maaş gecikdi» əsaslandırması altıncı dəfə eyni redaksiyada təkrarlanır. Sənədin mətni dəyişməmiş, yalnız tarixi yenilənmişdir. Bəhanə rədd edilir.',
-  powers: 'Təqdim edilmiş əsaslandırma inandırıcı hesab edilmir.\nBorcun məbləği və verilmə tarixi olduğu kimi qüvvədə qalır.\nYeni möhlət verilmir; əvvəlki möhlətlərin sayı sənədə əlavə olunur.\n«Sabah göndərəcəm» ifadəsi bundan sonra sənəd kimi qəbul edilmir.',
-  penalty: 'Ödəniş növbəti görüşədək həyata keçirilmədikdə həmin görüşün bütün xərcləri borclu tərəfin üzərinə düşür və bölünmür.'
+  preamble: 'Məclis {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, borcun qaytarılmaması üçün göstərilən səbəb əvvəlki üç müraciətdə də eyni formada təqdim edilmişdir. {from} tərəfindən bildirilən etiraz əsaslı hesab olunur.',
+  powers: 'Göstərilən səbəb əsassız hesab edilir və qəbul olunmur.\nBorcun məbləği və tarixi dəyişdirilmədən qüvvədə qalır.\nYeni möhlət müraciətinə otuz gün ərzində baxılmır.\nÖdəniş cədvəli hər iki tərəf tərəfindən imzalanır.',
+  penalty: 'Ödəniş növbəti otuz gün ərzində həyata keçirilmədikdə borc məsələsi ümumi dost qrupunun müzakirəsinə çıxarılır.',
+  titleOptions: [
+    'Borcun Qaytarılmaması üçün Göstərilmiş Səbəbin Rədd Edilməsi haqqında Qərar',
+    'Ödəniş Möhlətinin Uzadılması Müraciətinin Rədd Edilməsi Qərarı',
+    '«Maaşdan sonra verərəm» İzahatının Qəbul Edilməməsi haqqında Qərar',
+    'Borc Öhdəliyinin Qüvvədə Saxlanılması haqqında Yekun Qətnamə'
+  ],
+  powersOptions: [
+    'Göstərilən səbəb əsassız hesab edilir və qəbul olunmur.',
+    'Borcun məbləği və tarixi dəyişdirilmədən qüvvədə qalır.',
+    'Yeni möhlət müraciətinə otuz gün ərzində baxılmır.',
+    'Ödəniş cədvəli hər iki tərəf tərəfindən imzalanır.',
+    'Hissə-hissə ödəniş variantı təklif edilir.',
+    'Qonaqlıq ödənişi borcun bir hissəsi kimi hesablanmır.',
+    'Xatırlatma qaydası əvvəlki kimi saxlanılır.',
+    'Yeni borc müraciətinə baxılması dayandırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ödəniş növbəti otuz gün ərzində həyata keçirilmədikdə borc məsələsi ümumi dost qrupunun müzakirəsinə çıxarılır.',
+    'Etiraz qəbul edilir, lakin ödəniş öhdəliyini dayandırmır.',
+    'Qərar borc tam qaytarılanadək qüvvədə qalır.'
+  ]
 },
 {
   id: 'r-redd-work', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['work'], regPrefix: 'RDD',
-  title: 'İş Bəhanəsinin Rədd Edilməsi Haqqında Qərar', tag: 'Ofis',
+  title: 'Tapşırığın İcra Edilməməsi üçün Göstərilmiş Səbəbin Rədd Edilməsi Qərarı', tag: 'Ofis',
   signOrg: 'Ofisdaxili Münasibətlərin Tənzimlənməsi üzrə Komitə',
   toLabel: 'İZAHAT VERƏN', fromLabel: 'QƏRARI QƏBUL EDƏN',
-  preamble: 'Komitə {to} adlı şəxsin «sistem işləmirdi» izahatını araşdırdı. Müəyyən edildi ki, göstərilən vaxt aralığında sistem bütün digər əməkdaşlar üçün işləmiş, mesajlaşma proqramında isə həmin şəxsin statusu aktiv olmuşdur. {from} tərəfindən qaldırılan məsələ təsdiq olunur.',
-  powers: 'Təqdim edilmiş izahat qənaətbəxş hesab edilmir.\nTapşırığın son müddəti uzadılmır və dəyişmir.\n«Sabah göndərərəm» ifadəsi hesabat sənədi kimi qəbul edilmir.\nQərar həmin gün saat 18:00-dan qüvvəyə minir.',
-  penalty: 'Tapşırıq növbəti iş gününə qədər təhvil verilmədikdə həmin həftənin kofe növbəsi tam olaraq izahat verən tərəfin öhdəsinə keçir.'
+  preamble: 'Komitə {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, tapşırığın icra edilməməsi üçün göstərilən səbəb əvvəlki uzadılmalarla eyni məzmundadır və yeni hal ehtiva etmir. {from} tərəfindən bildirilən mövqe əsaslı hesab olunur.',
+  powers: 'Göstərilən səbəb icra müddətinə təsir göstərmir.\nSon tarix dəyişdirilmədən qüvvədə saxlanılır.\nAralıq nəticə iki iş günü ərzində təqdim edilir.\nYeni uzadılma müraciətinə baxılmır.',
+  penalty: 'Aralıq nəticə də təqdim edilmədikdə tapşırıq başqa icraçıya verilir və müddət uzatma müraciətlərinə növbəti rübdə baxılmır.',
+  titleOptions: [
+    'Tapşırığın İcra Edilməməsi üçün Göstərilmiş Səbəbin Rədd Edilməsi Qərarı',
+    'Müddət Uzatma Müraciətinin Təmin Edilməməsi haqqında Qərar',
+    '«Sabah göndərərəm» İzahatının Qəbul Edilməməsi haqqında Qərar',
+    'İcra Müddətinin Dəyişdirilməməsi haqqında Yekun Qətnamə'
+  ],
+  powersOptions: [
+    'Göstərilən səbəb icra müddətinə təsir göstərmir.',
+    'Son tarix dəyişdirilmədən qüvvədə saxlanılır.',
+    'Aralıq nəticə iki iş günü ərzində təqdim edilir.',
+    'Yeni uzadılma müraciətinə baxılmır.',
+    'Əlavə resurs tələbi ayrıca qiymətləndirilir.',
+    'Tapşırıq başqa icraçıya verilə bilər.',
+    'Gündəlik hesabat rejimi tətbiq olunur.',
+    'Məsələ toplantının gündəliyinə salınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Aralıq nəticə də təqdim edilmədikdə tapşırıq başqa icraçıya verilir və müddət uzatma müraciətlərinə növbəti rübdə baxılmır.',
+    'Etiraz protokola daxil edilir, lakin müddəti dayandırmır.',
+    'Qərar tapşırıq təhvil verilənədək qüvvədə qalır.'
+  ]
 },
 {
   id: 'r-redd-family', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['family'], regPrefix: 'RDD',
-  title: 'Ev Bəhanəsinin Rədd Edilməsi Haqqında Qərar', tag: 'Ailə şurası',
+  title: 'Ev Tapşırığının Yerinə Yetirilməməsi Səbəbinin Rədd Edilməsi Qərarı', tag: 'Ailə',
   signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
   toLabel: 'BƏHANƏ GƏTİRƏN', fromLabel: 'QƏRARI VERƏN',
-  preamble: 'Ali Şura {to} adlı şəxsin «dərsim var idi» əsaslandırmasını araşdırdı və müəyyən etdi ki, həmin saatlarda otaqdan oyun səsləri gəlmiş, dərs dəftəri isə açılmamış qalmışdır. {from} tərəfindən irəli sürülən tələb əsaslı hesab olunur, bəhanə rədd edilir.',
-  powers: 'Təqdim edilmiş bəhanə əsassız hesab edilir.\nEv işlərinin növbəsi dəyişmir və olduğu kimi icra olunur.\nEkran vaxtı bu həftə üçün uzadılmır.\nQərar elan olunduğu andan qüvvəyə minir.',
-  penalty: 'Qərara əməl edilmədikdə həftəsonu ekran vaxtı iki saat azaldılır və azaldılmış müddət növbəti həftəyə keçirilmir.'
+  preamble: 'Şura {to} adlı şəxsin müraciətinə baxmış və müəyyən etmişdir ki, ev tapşırığının yerinə yetirilməməsi üçün göstərilən səbəb yoxlanış zamanı təsdiqlənməmişdir. {from} tərəfindən təqdim edilmiş məlumat əsaslı hesab olunur.',
+  powers: 'Göstərilən səbəb əsassız hesab edilir.\nTapşırıq həmin gün ərzində tamamlanır.\nEkran vaxtı tapşırıq bitənədək başlamır.\nNövbəti yoxlama xəbərdarlıq edilmədən aparılır.',
+  penalty: 'Tapşırıq həmin gün tamamlanmadıqda ekran vaxtı növbəti iki gün üçün dayandırılır və həftəsonu güzəşti ləğv edilir.',
+  titleOptions: [
+    'Ev Tapşırığının Yerinə Yetirilməməsi Səbəbinin Rədd Edilməsi Qərarı',
+    'Ekran Vaxtının Artırılması Müraciətinin Rədd Edilməsi Qərarı',
+    'Dərs Hazırlığından Yayınma Səbəbinin Əsassız Sayılması Qərarı',
+    'Ev Qaydalarına Edilən Etirazın Təmin Edilməməsi Qərarı'
+  ],
+  powersOptions: [
+    'Göstərilən səbəb əsassız hesab edilir.',
+    'Tapşırıq həmin gün ərzində tamamlanır.',
+    'Ekran vaxtı tapşırıq bitənədək başlamır.',
+    'Növbəti yoxlama xəbərdarlıq edilmədən aparılır.',
+    'Dərs hazırlığı cədvəli dəyişdirilmir.',
+    'Yatma saatı əvvəlki qaydada qalır.',
+    'Cib xərcliyinin verilmə tarixi saxlanılır.',
+    'Ailə şurasında məsələ yenidən müzakirə edilə bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Tapşırıq həmin gün tamamlanmadıqda ekran vaxtı növbəti iki gün üçün dayandırılır və həftəsonu güzəşti ləğv edilir.',
+    'Etiraz qeydə alınır, lakin qərarın icrasını dayandırmır.',
+    'Qərar tapşırıq tamamlananadək qüvvədə qalır.'
+  ]
 },
 {
   id: 'r-redd-relatives', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['relatives'], regPrefix: 'RDD',
-  title: 'Ziyarət Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Qohum protokolu',
+  title: 'Qohum Ziyarətindən İmtina Səbəbinin Rədd Edilməsi haqqında Qərar', tag: 'Qohumlar',
   signOrg: 'Qohumluq Münasibətləri üzrə Ali Nəzarət Şurası',
   toLabel: 'ÜZRXAHLIQ EDƏN', fromLabel: 'ETİRAZ EDƏN TƏRƏF',
-  preamble: 'Şura {to} adlı şəxsin bayram ziyarətindən yayınmaq üçün göstərdiyi səbəbi araşdırdı. Müəyyən edildi ki, həmin gün sosial şəbəkədə paylaşılmış şəkil ziyarətin mümkün olduğunu təsdiq edir. {from} tərəfindən bildirilən narazılıq əsaslı sayılır.',
-  powers: 'Göstərilən səbəb üzrlü hesab edilmir.\nZiyarətin tarixi dəyişdirilmir və təxirə salınmır.\nÇıxış siqnalı bu dəfə üç saatdan tez verilə bilməz.\nSüfrədə ikinci dəfə təklif olunan yeməkdən imtina hüququ dayandırılır.',
-  penalty: 'Ziyarətə gəlinmədikdə növbəti bayram süfrəsinin bütün hazırlığı və qonaq siyahısı qarşı tərəf tərəfindən müəyyən edilir.'
+  preamble: 'Nəzarət Şurası {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, ziyarətdən imtina üçün göstərilən səbəb eyni bayram dövründə ikinci dəfə irəli sürülür. {from} tərəfindən bildirilən etiraz əsaslı hesab olunur.',
+  powers: 'İmtina səbəbi əsassız hesab edilir.\nZiyarət növbəsi dəyişdirilmədən qüvvədə qalır.\nZiyarətin tarixi bir həftə əvvəl təsdiqlənir.\nMüddət razılaşdırılmış həddə saxlanılır.',
+  penalty: 'Ziyarət yenidən təxirə salındıqda növbəti bayramda ilk ziyarətin ünvanı tam olaraq digər tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Qohum Ziyarətindən İmtina Səbəbinin Rədd Edilməsi haqqında Qərar',
+    'Ziyarətin Təxirə Salınması Müraciətinin Rədd Edilməsi Qərarı',
+    'Bayram Ziyarəti Növbəsinin Dəyişdirilməməsi haqqında Qərar',
+    'Ziyarətdən Yayınma Səbəbinin Əsassız Sayılması haqqında Qərar'
+  ],
+  powersOptions: [
+    'İmtina səbəbi əsassız hesab edilir.',
+    'Ziyarət növbəsi dəyişdirilmədən qüvvədə qalır.',
+    'Ziyarətin tarixi bir həftə əvvəl təsdiqlənir.',
+    'Müddət razılaşdırılmış həddə saxlanılır.',
+    'Hər iki ailəyə ziyarət bərabər sayda planlaşdırılır.',
+    'Gecikmə barədə əvvəlcədən xəbər verilir.',
+    'Hədiyyə öhdəliyi ayrıca qalır.',
+    'Uzaq qohumlara ziyarət ayrıca müzakirə edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ziyarət yenidən təxirə salındıqda növbəti bayramda ilk ziyarətin ünvanı tam olaraq digər tərəf tərəfindən müəyyən edilir.',
+    'Etiraz qəbul edilir, lakin növbəliliyə təsir göstərmir.',
+    'Qərar növbəti bayram dövrünə qədər qüvvədədir.'
+  ]
 },
 {
   id: 'r-redd-student', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['student'], regPrefix: 'RDD',
-  title: 'Tələbə Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'İmtahan sessiyası',
+  title: 'İmtahana Hazırlaşmamaq üçün Göstərilmiş Səbəbin Rədd Edilməsi Qərarı', tag: 'Tələbə',
   signOrg: 'Tələbə Bəhanələrinin Araşdırılması üzrə Komissiya',
   toLabel: 'BƏHANƏ TƏQDİM EDƏN', fromLabel: 'QƏRARI VERƏN',
-  preamble: 'Komissiya {to} adlı şəxsin «avtobus gecikdi» əsaslandırmasına baxdı. Müəyyən edildi ki, həmin marşrut həmin səhər cədvəl üzrə işləmiş, tələbənin telefonundakı zəngli saat isə heç vaxt qurulmamışdır. {from} tərəfindən qaldırılan məsələ təsdiq edilir.',
-  powers: 'Gecikmənin səbəbi üzrlü hesab edilmir.\nDərsə buraxılış qeydi dəyişdirilmir.\nKonspekt borcu qüvvədə qalır və növbəti həftəyə keçirilmir.\n«Növbəti dəfə mütləq» ifadəsi öhdəlik sənədi kimi qəbul edilmir.',
-  penalty: 'Konspekt borcu bu həftə bağlanmadıqda növbəti dərsin bütün qeydlərini borclu tərəf aparır və qrupla paylaşır.'
+  preamble: 'Komissiya {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, göstərilən səbəb davamiyyət jurnalı ilə uyğun gəlmir və sənədlə təsdiqlənməmişdir. {from} tərəfindən bildirilən mövqe əsaslı hesab olunur.',
+  powers: 'Göstərilən səbəb qəbul edilmir.\nTəhvil müddəti dəyişdirilmədən qüvvədə qalır.\nBuraxılmış saatlar jurnalda saxlanılır.\nYeni möhlət müraciətinə baxılmır.',
+  penalty: 'Müddət pozulduqda iş növbəti semestrə keçirilir və uzatma müraciətlərinə həmin semestr ərzində baxılmır.',
+  titleOptions: [
+    'İmtahana Hazırlaşmamaq üçün Göstərilmiş Səbəbin Rədd Edilməsi Qərarı',
+    'Təhvil Müddətinin Uzadılması Müraciətinin Rədd Edilməsi Qərarı',
+    'Dərsə Gəlməmək Səbəbinin Əsassız Sayılması haqqında Qərar',
+    'Konspekt Borcuna dair İzahatın Qəbul Edilməməsi haqqında Qərar'
+  ],
+  powersOptions: [
+    'Göstərilən səbəb qəbul edilmir.',
+    'Təhvil müddəti dəyişdirilmədən qüvvədə qalır.',
+    'Buraxılmış saatlar jurnalda saxlanılır.',
+    'Yeni möhlət müraciətinə baxılmır.',
+    'Konspekt borcu semestrin sonuna qədər bağlanır.',
+    'Konsultasiya saatlarından istifadə tövsiyə olunur.',
+    'Təkrar imtahan imkanı ayrıca qiymətləndirilir.',
+    'Qrup nümayəndəsi məlumatlandırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Müddət pozulduqda iş növbəti semestrə keçirilir və uzatma müraciətlərinə həmin semestr ərzində baxılmır.',
+    'Etiraz qeydə alınır, lakin müddəti dayandırmır.',
+    'Qərar borc bağlananadək qüvvədə qalır.'
+  ]
 },
 {
   id: 'r-redd-neighbors', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['neighbors'], regPrefix: 'RDD',
-  title: 'Səs-küy Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Həyət nizamı',
+  title: 'Səs-Küy Şikayətinə Verilmiş İzahatın Rədd Edilməsi haqqında Qərar', tag: 'Qonşuluq',
   signOrg: 'Həyətdaxili Nizamın Qorunması üzrə Baş İdarə',
   toLabel: 'İZAHAT VERƏN QONŞU', fromLabel: 'MÜRACİƏT EDƏN QONŞU',
-  preamble: 'Baş İdarə {to} adlı şəxsin «təmir işi gedirdi» izahatını araşdırdı və müəyyən etdi ki, gecə saat 23:40-da eşidilən səs təmir alətinə deyil, musiqi avadanlığına aiddir. {from} tərəfindən verilmiş müraciət əsaslı hesab olunur və izahat rədd edilir.',
-  powers: 'Təqdim edilmiş izahat qəbul edilmir.\nSakitlik rejimi saat 23:00-dan səhər 08:00-a qədər bərpa olunur.\nPark yerinin növbəsi dəyişdirilmir.\nQərarın surəti pilləkən elan lövhəsinə vurulur.',
-  penalty: 'Rejim təkrar pozulduqda növbəti ay ərzində pilləkən təmizliyi növbəsi izahat verən tərəfin üzərində qalır.'
+  preamble: 'Baş İdarə {to} adlı şəxsin izahatına baxaraq müəyyən etmişdir ki, göstərilən səbəb digər sakinlərin müraciətləri ilə uyğun gəlmir və hadisənin vaxtı ilə üst-üstə düşmür. {from} tərəfindən verilmiş şikayət əsaslı hesab olunur.',
+  powers: 'Təqdim edilmiş izahat qəbul edilmir.\nGecə səs rejimi dəyişdirilmədən qüvvədə qalır.\nTəmir işləri yalnız gündüz saatlarında aparılır.\nNövbəti pozuntu ümumi yığıncağa çıxarılır.',
+  penalty: 'Rejim yenidən pozulduqda məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır və qərar səsvermə ilə qəbul edilir.',
+  titleOptions: [
+    'Səs-Küy Şikayətinə Verilmiş İzahatın Rədd Edilməsi haqqında Qərar',
+    'Gecə Rejiminin Pozulması Səbəbinin Əsassız Sayılması Qərarı',
+    'Təmir İşlərinin Davam Etdirilməsi Müraciətinin Rədd Edilməsi Qərarı',
+    'Park Yeri Mübahisəsi üzrə Etirazın Təmin Edilməməsi Qərarı'
+  ],
+  powersOptions: [
+    'Təqdim edilmiş izahat qəbul edilmir.',
+    'Gecə səs rejimi dəyişdirilmədən qüvvədə qalır.',
+    'Təmir işləri yalnız gündüz saatlarında aparılır.',
+    'Növbəti pozuntu ümumi yığıncağa çıxarılır.',
+    'Şikayətlərin sayı qeydə alınır.',
+    'Digər sakinlərin ifadələri protokola əlavə edilir.',
+    'Xəbərdarlıq elan lövhəsində yerləşdirilir.',
+    'Bayram günləri istisna kimi saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejim yenidən pozulduqda məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır və qərar səsvermə ilə qəbul edilir.',
+    'Etiraz qəbul edilir, lakin rejimi dəyişdirmir.',
+    'Qərar bütün mənzillərə eyni qaydada şamil olunur.'
+  ]
 },
 {
   id: 'r-redd-holiday', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['holiday'], regPrefix: 'RDD',
-  title: 'Toy Bəhanəsinin Rədd Edilməsi Haqqında Qərar', tag: 'Toy protokolu',
+  title: 'Mərasimdə Rəqsdən İmtina Səbəbinin Rədd Edilməsi haqqında Qərar', tag: 'Toy',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
   toLabel: 'İMTİNA EDƏN ŞƏXS', fromLabel: 'TƏLƏB EDƏN TƏRƏF',
-  preamble: 'Baş İdarə {to} adlı şəxsin toyda oynamaqdan imtina üçün göstərdiyi «ayaqqabım dardır» səbəbini araşdırdı. Müəyyən edildi ki, həmin şəxs eyni ayaqqabı ilə gecə boyu masadan masaya sərbəst hərəkət etmişdir. {from} tərəfindən bildirilən tələb təsdiqlənir.',
-  powers: 'Göstərilən səbəb üzrlü hesab edilmir.\nOynama öhdəliyi qüvvədə qalır və ən azı iki mahnını əhatə edir.\nMasadan qalxmamaq hüququ dayandırılır.\nQohumların dəvəti rədd edilə bilməz.',
-  penalty: 'Öhdəlik yerinə yetirilmədikdə növbəti toyda yallı sırasının başında durmaq öhdəliyi həmin şəxsin üzərinə düşür.'
+  preamble: 'Baş İdarə {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, mərasimdə rəqsdən imtina üçün göstərilən səbəb həmin axşam çəkilmiş görüntülərlə uyğun gəlmir. {from} tərəfindən bildirilən etiraz əsaslı hesab olunur.',
+  powers: 'Göstərilən səbəb əsassız hesab edilir.\nAilə rəqsində iştirak öhdəliyi qüvvədə qalır.\nMasa nizamı dəyişdirilmir.\nHədiyyə öhdəliyi ayrıca saxlanılır.',
+  penalty: 'Qərara əməl edilmədikdə növbəti mərasimdə masa və yer seçimi hüququ tam olaraq digər tərəfə keçir.',
+  titleOptions: [
+    'Mərasimdə Rəqsdən İmtina Səbəbinin Rədd Edilməsi haqqında Qərar',
+    'Toy Mərasiminə Gəlməmək Səbəbinin Əsassız Sayılması Qərarı',
+    'Hədiyyə Öhdəliyindən Azad Edilmə Müraciətinin Rədd Edilməsi Qərarı',
+    'Masa Dəyişikliyi Tələbinin Təmin Edilməməsi haqqında Qərar'
+  ],
+  powersOptions: [
+    'Göstərilən səbəb əsassız hesab edilir.',
+    'Ailə rəqsində iştirak öhdəliyi qüvvədə qalır.',
+    'Masa nizamı dəyişdirilmir.',
+    'Hədiyyə öhdəliyi ayrıca saxlanılır.',
+    'Mərasimə gəlmə vaxtı əvvəlcədən təsdiqlənir.',
+    'Foto çəkilişində iştirak tələb olunur.',
+    'Erkən ayrılma barədə xəbər verilir.',
+    'Qonaq siyahısı dəyişdirilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərara əməl edilmədikdə növbəti mərasimdə masa və yer seçimi hüququ tam olaraq digər tərəfə keçir.',
+    'Etiraz qeydə alınır, lakin mərasim proqramına təsir etmir.',
+    'Qərar yalnız bir mərasimə şamil edilir.'
+  ]
 },
 {
   id: 'r-redd-travel', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['travel'], regPrefix: 'RDD',
-  title: 'Marşrut Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Yol mübahisəsi',
+  title: 'Marşrutun Dəyişdirilməsi Tələbinin Rədd Edilməsi haqqında Qərar', tag: 'Səfər',
   signOrg: 'Səfər və Marşrut Mübahisələri üzrə Ali Komissiya',
   toLabel: 'YOL GÖSTƏRƏN', fromLabel: 'ETİRAZ EDƏN SƏRNİŞİN',
-  preamble: 'Komissiya {to} adlı şəxsin «bu yol qısadır» iddiasını araşdırdı və müəyyən etdi ki, seçilmiş marşrut naviqasiya tövsiyəsindən 28 dəqiqə uzun olmuş, üstəlik iki dəfə eyni dairədən keçilmişdir. {from} tərəfindən bildirilən etiraz təsdiq edilir.',
-  powers: 'İrəli sürülən əsaslandırma qəbul edilmir.\nNaviqasiya səlahiyyəti bu səfər üçün digər tərəfə keçir.\nMusiqi seçimi gecikmə müddətincə sərnişinə verilir.\nDayanacaq yerini bundan sonra sərnişin müəyyən edir.',
-  penalty: 'Yol yenidən naviqasiyasız seçildikdə həmin səfərin yanacaq və qəhvə xərcləri sürücünün üzərində qalır.'
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən müəyyən edilmişdir ki, {to} adlı şəxsin marşrutun dəyişdirilməsi barədə tələbi real vaxt qazancı yaratmır və yol vəziyyəti ilə təsdiqlənmir. {from} tərəfindən bildirilən mövqe əsaslı hesab olunur.',
+  powers: 'Marşrut razılaşdırılmış formada saxlanılır.\nDayanacaqların sayı və yeri dəyişdirilmir.\nYola çıxma vaxtı qüvvədə qalır.\nBaqaj çəkisi həddi artırılmır.',
+  penalty: 'Marşrutdan icazəsiz kənara çıxıldıqda əlavə yol xərcləri tam olaraq həmin qərarı verən tərəfin üzərinə düşür.',
+  titleOptions: [
+    'Marşrutun Dəyişdirilməsi Tələbinin Rədd Edilməsi haqqında Qərar',
+    'Səfərin Təxirə Salınması Müraciətinin Rədd Edilməsi Qərarı',
+    'Baqaj Çəkisinin Artırılması Tələbinin Təmin Edilməməsi Qərarı',
+    'Sürücülük Növbəsindən İmtina Səbəbinin Rədd Edilməsi Qərarı'
+  ],
+  powersOptions: [
+    'Marşrut razılaşdırılmış formada saxlanılır.',
+    'Dayanacaqların sayı və yeri dəyişdirilmir.',
+    'Yola çıxma vaxtı qüvvədə qalır.',
+    'Baqaj çəkisi həddi artırılmır.',
+    'Sürücülük növbəsi cədvəl üzrə davam edir.',
+    'Yanacaq xərcinin bölgüsü dəyişdirilmir.',
+    'Yemək fasiləsi planda saxlanılır.',
+    'Gəlmə vaxtı barədə məlumat verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Marşrutdan icazəsiz kənara çıxıldıqda əlavə yol xərcləri tam olaraq həmin qərarı verən tərəfin üzərinə düşür.',
+    'Etiraz qəbul edilir, lakin marşruta təsir göstərmir.',
+    'Qərar yalnız cari səfərə şamil edilir.'
+  ]
 },
 {
   id: 'r-redd-pets', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['pets'], regPrefix: 'RDD',
-  title: 'Heyvan Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Divan hüququ',
+  title: 'Ev Heyvanına Aid Edilən Əməlin İnkarının Rədd Edilməsi haqqında Qərar', tag: 'Ev heyvanı',
   signOrg: 'Ev Heyvanları Hüquqları üzrə Xüsusi Şura',
   toLabel: 'BƏHANƏ GƏTİRƏN SAHİB', fromLabel: 'MÜRACİƏT EDƏN TƏRƏF',
-  preamble: 'Şura {to} adlı şəxsin «pişik özü tullandı» izahatını araşdırdı. Müəyyən edildi ki, divandakı yer əvvəlcədən yorğanla hazırlanmış, qapı isə qəsdən açıq saxlanılmışdır. {from} tərəfindən verilmiş müraciət əsaslı hesab olunur və izahat rədd edilir.',
-  powers: 'Təqdim edilmiş izahat qəbul edilmir.\nYemləmə növbəsi dəyişdirilmir və olduğu kimi qalır.\nDivanın yuxarı hissəsi heyvan üçün qadağan zonası kimi qalır.\nGəzinti öhdəliyi səhər saatlarına keçirilir.',
-  penalty: 'Növbə təkrar pozulduqda həftəlik gəzinti və yemləmə öhdəliyinin hamısı izahat verən tərəfin üzərinə keçir.'
+  preamble: 'Xüsusi Şura {to} adlı şəxsin adından təqdim edilmiş izahata baxaraq müəyyən etmişdir ki, hadisə yerində başqa iştirakçının olması ehtimalı sənədlə təsdiqlənmir. {from} tərəfindən verilmiş müraciət əsaslı hesab olunur.',
+  powers: 'Təqdim edilmiş izahat qəbul edilmir.\nZədələnmiş əşyanın bərpası ev sahibinin öhdəsindədir.\nDivan hüququnun sərhədləri dəyişdirilmir.\nGündəlik mükafat norması artırılmır.',
+  penalty: 'Eyni hal təkrarlandıqda mənzil daxilində sərbəst hərəkət sahəsi yenidən müəyyən edilir və istisna zonalar genişləndirilir.',
+  titleOptions: [
+    'Ev Heyvanına Aid Edilən Əməlin İnkarının Rədd Edilməsi haqqında Qərar',
+    'Zədələnmiş Əşya üzrə Verilmiş İzahatın Qəbul Edilməməsi Qərarı',
+    'Divan Hüququnun Genişləndirilməsi Tələbinin Rədd Edilməsi Qərarı',
+    'Əlavə Mükafat Müraciətinin Təmin Edilməməsi haqqında Qərar'
+  ],
+  powersOptions: [
+    'Təqdim edilmiş izahat qəbul edilmir.',
+    'Zədələnmiş əşyanın bərpası ev sahibinin öhdəsindədir.',
+    'Divan hüququnun sərhədləri dəyişdirilmir.',
+    'Gündəlik mükafat norması artırılmır.',
+    'Qiymətli əşyalar daha yüksək rəflərə köçürülür.',
+    'Gəzinti cədvəli əvvəlki qaydada qalır.',
+    'Yemləmə rejimi baytar tövsiyəsi ilə müəyyən edilir.',
+    'Oyuncaqların sayı artırılmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni hal təkrarlandıqda mənzil daxilində sərbəst hərəkət sahəsi yenidən müəyyən edilir və istisna zonalar genişləndirilir.',
+    'Etiraz qeydə alınır, lakin qərarın icrasına təsir etmir.',
+    'Yeni dəlillər aşkarlandıqda məsələyə yenidən baxılır.'
+  ]
 },
 {
   id: 'r-redd-gaming', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['gaming'], regPrefix: 'RDD',
-  title: 'İnternet Bəhanəsinin Rədd Edilməsi Qərarı', tag: 'Ən çox paylaşılan',
+  title: 'Məğlubiyyətin Texniki Səbəblərlə İzah Edilməsinin Rədd Edilməsi Qərarı', tag: 'Oyun',
   signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
   toLabel: 'BƏHANƏNİ İRƏLİ SÜRƏN', fromLabel: 'QALİB TƏRƏF',
-  preamble: 'Komissiya {to} adlı şəxsin «internet zəif idi» əsaslandırmasını araşdırdı. Müəyyən edildi ki, oyun boyu bağlantı sabit qalmış, eyni şəbəkədən yayım fasiləsiz izlənilmiş, gecikmə isə yalnız qol buraxıldıqdan sonra qeyd olunmuşdur. {from} tərəfindən qaldırılan məsələ təsdiqlənir.',
-  powers: 'Bəhanə əsassız hesab edilir və qəbul olunmur.\nOyunun nəticəsi qüvvədə qalır və hesab dəyişdirilmir.\nTəkrar oyun tələbi bu qərarla təmin edilmir.\nQol sevinci arxivdə saxlanılır və istifadəsinə icazə verilir.',
-  penalty: 'Nəticə mübahisə edilməyə davam edildikdə növbəti oyunda komanda seçimi tam olaraq qalib tərəfin ixtiyarına keçir.'
+  preamble: 'Təqdim edilmiş məlumatlar nəzərdən keçirilərək müəyyən edilmişdir ki, {to} adlı şəxsin iştirak etdiyi matç zamanı bağlantı göstəricilərində qeyri-adi dəyişiklik qeydə alınmamışdır. {from} tərəfindən bildirilən etiraz əsaslı hesab olunur.',
+  powers: 'Texniki səbəbə istinad qəbul edilmir.\nMatçın nəticəsi dəyişdirilmədən qüvvədə qalır.\nReytinq düzəlişi aparılmır.\nRevanş matçı ayrıca razılaşdırılır.',
+  penalty: 'Eyni istinad üçüncü dəfə irəli sürüldükdə həmin arqument sonrakı matçlarda ümumiyyətlə nəzərə alınmır.',
+  titleOptions: [
+    'Məğlubiyyətin Texniki Səbəblərlə İzah Edilməsinin Rədd Edilməsi Qərarı',
+    'Bağlantı Gecikməsinə İstinadın Əsassız Sayılması haqqında Qərar',
+    'Matç Nəticəsinin Dəyişdirilməsi Tələbinin Rədd Edilməsi Qərarı',
+    'Hesabdan Üçüncü Şəxsin İstifadəsi İddiasının Rədd Edilməsi Qərarı'
+  ],
+  powersOptions: [
+    'Texniki səbəbə istinad qəbul edilmir.',
+    'Matçın nəticəsi dəyişdirilmədən qüvvədə qalır.',
+    'Reytinq düzəlişi aparılmır.',
+    'Revanş matçı ayrıca razılaşdırılır.',
+    'Bağlantı jurnalı əlavə sübut kimi qəbul edilmir.',
+    'Komanda tərkibi arqumenti nəzərə alınmır.',
+    'Eyni istinad ayda iki dəfədən artıq irəli sürülmür.',
+    'Ekran görüntüsü müstəqil sübut sayılmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni istinad üçüncü dəfə irəli sürüldükdə həmin arqument sonrakı matçlarda ümumiyyətlə nəzərə alınmır.',
+    'Etiraz qəbul edilir, lakin nəticəni dəyişdirmir.',
+    'Qərar mövsümün sonuna qədər qüvvədədir.'
+  ]
 },
 {
   id: 'r-redd-viral', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', replyCats: ['viral'], regPrefix: 'RDD',
-  title: 'Ekspertiza Rəyinin Rədd Edilməsi Qərarı', tag: 'Viral cavab',
+  title: 'Ekspertiza Rəyinə Verilmiş Etirazın Rədd Edilməsi haqqında Qərar', tag: 'Ekspertiza',
   signOrg: 'Bəhanələrin Ekspertizası üzrə Ali Komissiya',
   toLabel: 'RƏY TƏQDİM EDƏN', fromLabel: 'ETİRAZ EDƏN TƏRƏF',
-  preamble: 'Komissiya {to} adlı şəxs tərəfindən təqdim edilmiş sənədə baxdı və müəyyən etdi ki, sənəddəki göstəricilər ölçmə metodikası göstərilmədən qeyd olunmuş, nəticə isə əvvəlcədən yazılmışdır. {from} tərəfindən bildirilən etiraz əsaslı sayılır və rəy rədd edilir.',
-  powers: 'Təqdim edilmiş rəy etibarsız hesab edilir.\nGöstərilən bal və faizlər qüvvədən düşür.\nYeni rəy yalnız hər iki tərəfin iştirakı ilə tərtib edilə bilər.\nQərar dərc olunduğu andan qüvvəyə minir.',
-  penalty: 'Eyni rəy təkrar dövriyyəyə buraxıldıqda növbəti ekspertizanın bütün şərtlərini etiraz edən tərəf müəyyən edir.'
+  preamble: 'Komissiya {to} adlı şəxsin etirazına baxaraq müəyyən etmişdir ki, təqdim edilmiş yeni məlumatlar ilkin rəyin nəticələrini dəyişdirmək üçün kifayət deyil. {from} tərəfindən verilmiş rəy qüvvədə saxlanılır.',
+  powers: 'Etiraz əsassız hesab edilir və təmin olunmur.\nİlkin rəyin nəticələri dəyişdirilmir.\nTəkrar ekspertiza təyin edilmir.\nRəy qəti qüvvəyə minir.',
+  penalty: 'Etirazın təkrarlanması halında rəydəki göstəricilər bir vahid ağırlaşdırılır və müraciət hüququ müvəqqəti dayandırılır.',
+  titleOptions: [
+    'Ekspertiza Rəyinə Verilmiş Etirazın Rədd Edilməsi haqqında Qərar',
+    'Rəyin Nəticələrinin Dəyişdirilməsi Tələbinin Rədd Edilməsi Qərarı',
+    'Təkrar Ekspertiza Müraciətinin Təmin Edilməməsi haqqında Qərar',
+    'Verilmiş Vizanın Şərtlərinə Etirazın Rədd Edilməsi Qərarı'
+  ],
+  powersOptions: [
+    'Etiraz əsassız hesab edilir və təmin olunmur.',
+    'İlkin rəyin nəticələri dəyişdirilmir.',
+    'Təkrar ekspertiza təyin edilmir.',
+    'Rəy qəti qüvvəyə minir.',
+    'Yeni məlumatlar ayrıca qeydə alınır.',
+    'Şahid ifadələri qiymətləndirməyə daxil edilmir.',
+    'Göstəricilər dəyişdirilmədən saxlanılır.',
+    'Növbəti müraciətə altı aydan sonra baxılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etirazın təkrarlanması halında rəydəki göstəricilər bir vahid ağırlaşdırılır və müraciət hüququ müvəqqəti dayandırılır.',
+    'Etiraz protokola daxil edilir, lakin nəticəyə təsir etmir.',
+    'Rəy növbəti qiymətləndirməyə qədər qüvvədədir.'
+  ]
 },
 {
   id: 'r-redd-umumi', cat: 'c-redd', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
   replyKind: 'redd', regPrefix: 'RDD',
-  title: 'Sənədin Rədd Edilməsi Haqqında Qərar', tag: 'Universal',
+  title: 'Təqdim Edilmiş Sənədin Rədd Edilməsi haqqında Yekun Qərar', tag: 'Universal',
   signOrg: 'Sənədlərə Etirazlar üzrə Ali Apellyasiya Şurası',
   toLabel: 'SƏNƏDİ TƏQDİM EDƏN', fromLabel: 'QƏRARI QƏBUL EDƏN',
-  preamble: 'Şura {to} adlı şəxs tərəfindən dövriyyəyə buraxılmış sənədə baxdı və müəyyən etdi ki, sənəd qarşı tərəfin razılığı olmadan tərtib edilmiş, əsaslandırma hissəsi isə tamamilə birtərəflidir. {from} tərəfindən bildirilən etiraz qəbul edilir və sənəd rədd olunur.',
-  powers: 'Sənəddə göstərilən öhdəliklər qəbul edilmir.\nSənədin bəndləri qarşı tərəf üçün heç bir nəticə doğurmur.\nEyni məzmunda yeni sənəd 30 gün ərzində tərtib edilə bilməz.\nQərar dərc olunduğu andan qüvvəyə minir.',
-  penalty: 'Rədd edilmiş sənəd yenidən paylaşıldıqda mövzunun növbəti müzakirəsinin yeri və vaxtı etiraz edən tərəf tərəfindən müəyyən edilir.'
+  preamble: 'Şura {to} adlı şəxsin təqdim etdiyi sənədə baxaraq müəyyən etmişdir ki, orada göstərilən əsaslar kifayət qədər sənədləşdirilməmiş və qarşı tərəflə razılaşdırılmamışdır. {from} tərəfindən verilmiş etiraz əsaslı hesab olunur.',
+  powers: 'Sənəddə göstərilən əsaslar qəbul edilmir.\nSənəd hüquqi nəticə doğurmur.\nEyni məzmunlu müraciətə otuz gün ərzində baxılmır.\nQərar imzalandığı andan qüvvəyə minir.',
+  penalty: 'Rədd edilmiş sənədin yenidən, dəyişiklik edilmədən təqdim olunması halında müraciət baxılmadan qaytarılır.',
+  titleOptions: [
+    'Təqdim Edilmiş Sənədin Rədd Edilməsi haqqında Yekun Qərar',
+    'Sənəddə Göstərilən Əsasların Qəbul Edilməməsi haqqında Qərar',
+    'Müraciətin Təmin Edilməməsi haqqında Yekun Qətnamə',
+    'Sənədin Hüquqi Nəticə Doğurmaması haqqında Qərar'
+  ],
+  powersOptions: [
+    'Sənəddə göstərilən əsaslar qəbul edilmir.',
+    'Sənəd hüquqi nəticə doğurmur.',
+    'Eyni məzmunlu müraciətə otuz gün ərzində baxılmır.',
+    'Qərar imzalandığı andan qüvvəyə minir.',
+    'Sənədin surəti arxivə verilir.',
+    'Razılaşdırılmamış bəndlər ayrıca qeyd olunur.',
+    'Yeni sənəd hər iki tərəfin iştirakı ilə tərtib edilir.',
+    'Etiraz müddəti üç gündür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rədd edilmiş sənədin yenidən, dəyişiklik edilmədən təqdim olunması halında müraciət baxılmadan qaytarılır.',
+    'Etiraz qeydə alınır, lakin qərarın qüvvəsinə təsir göstərmir.',
+    'Qərar yeni razılaşma əldə edilənədək qüvvədədir.'
+  ]
 },
 
 /* ==================== ⚖️ ETİRAZ ====================
@@ -193,145 +479,418 @@ window.REPLIES = [
 {
   id: 'r-etiraz-couples', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['couples'], regPrefix: 'ETZ',
-  title: 'Verilmiş İcazəyə Etiraz Ərizəsi', tag: 'Ev diplomatiyası',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Verilmiş İcazənin Şərtlərinə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Ev diplomatiyası',
   signOrg: 'Cütlüklərarası Mübahisələrin Həlli üzrə Ali Şura',
-  preamble: 'Mən, {to}, verilmiş icazə sənədi ilə tanış oldum və onun şərtləri ilə razılaşmadığımı bildirirəm. Sənəd {from} tərəfindən birtərəfli qaydada tərtib edilmiş, mənim mövqeyim isə heç bir bənddə əks olunmamışdır. Ərizəni baxılmaq üçün təqdim edirəm.',
-  powers: 'Sənəd hazırlanarkən mənim razılığım alınmamışdır.\nŞərtlərin müddəti real vəziyyətlə uyğun gəlmir.\nSənəddə qeyd olunan saat aralığı əvvəlcədən razılaşdırılmamışdı.\nEyni məsələ üzrə əvvəllər başqa razılıq mövcud olmuşdur.',
-  penalty: 'Ərizə baxılmadan qaldıqda sənədin icrası dayandırılır və mübahisə birbaşa şifahi müzakirə mərhələsinə keçir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən verilmiş sənədə etiraz edirəm. Sənəd mənimlə razılaşdırılmadan tərtib edilmiş, şərtlər birtərəfli qaydada müəyyən olunmuş və mənim mövqeyim heç bir bənddə əks etdirilməmişdir.',
+  powers: 'Sənəd hər iki tərəfin iştirakı olmadan tərtib edilib.\nŞərtlər əvvəlcədən müzakirə olunmayıb.\nMüddət birtərəfli qaydada müəyyən edilib.\nSənədin yenidən baxılması tələb olunur.',
+  penalty: 'Etiraz baxılmadan qaytarıldıqda mübahisə predmeti olan məsələ üzrə əvvəlki qaydalar bərpa edilmiş hesab olunur.',
+  titleOptions: [
+    'Verilmiş İcazənin Şərtlərinə Etiraz Bildirilməsi haqqında Ərizə',
+    'İcazənin Müddəti və Hüdudlarına Etiraz haqqında Rəsmi Ərizə',
+    'Sənəddə Göstərilməmiş Şərtlərin Əlavə Edilməsi haqqında Ərizə',
+    'Birtərəfli Qaydada Tərtib Edilmiş Sənədə Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Sənəd hər iki tərəfin iştirakı olmadan tərtib edilib.',
+    'Şərtlər əvvəlcədən müzakirə olunmayıb.',
+    'Müddət birtərəfli qaydada müəyyən edilib.',
+    'Sənədin yenidən baxılması tələb olunur.',
+    'Cəza bəndi mütənasib deyil.',
+    'Əvvəlki razılaşmalar nəzərə alınmayıb.',
+    'Şahid ifadəsi toplanmayıb.',
+    'Etiraz müddəti üç gündür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz baxılmadan qaytarıldıqda mübahisə predmeti olan məsələ üzrə əvvəlki qaydalar bərpa edilmiş hesab olunur.',
+    'Etiraza baxılana qədər sənədin icrası dayandırılır.',
+    'Yeni sənəd hər iki tərəfin imzası ilə tərtib edilir.'
+  ]
 },
 {
   id: 'r-etiraz-friends', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['friends'], regPrefix: 'ETZ',
-  title: 'Borc Sənədinə Etiraz Ərizəsi', tag: 'Dost borcu',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Borc Sənədində Göstərilmiş Məbləğ və Müddətə Etiraz Ərizəsi', tag: 'Borc',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
-  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş borc sənədinə etiraz edirəm. Sənəddə göstərilən məbləğ hesablanarkən mənim ödədiyim hissə nəzərə alınmamış, ortaq xərclər isə tam olaraq bir tərəfin üzərinə yazılmışdır. Yenidən hesablama aparılmasını xahiş edirəm.',
-  powers: 'Göstərilən məbləğ ortaq xərclər çıxılmadan hesablanmışdır.\nƏvvəlki iki ödəniş sənəddə qeyd olunmamışdır.\nBorcun tarixi faktiki tarixdən fərqlidir.\nMöhlət barədə şifahi razılıq sənəddə əks olunmamışdır.',
-  penalty: 'Yenidən hesablama aparılmadıqda məsələ növbəti ortaq görüşdə hər iki tərəfin iştirakı ilə açıq müzakirəyə çıxarılır.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş borc sənədinə etiraz edirəm. Sənəddə göstərilən məbləğ əvvəllər həyata keçirilmiş qismən ödənişləri nəzərə almır və ödəniş cədvəli mənimlə razılaşdırılmamışdır.',
+  powers: 'Göstərilən məbləğ qismən ödənişləri əks etdirmir.\nÖdəniş cədvəli razılaşdırılmayıb.\nFaiz nəzərdə tutulmadığı halda əlavə tələb irəli sürülüb.\nMəbləğin yenidən hesablanması tələb olunur.',
+  penalty: 'Hesablama düzəldilmədikdə ödəniş yalnız təsdiqlənmiş məbləğ həcmində həyata keçirilir və qalan hissə mübahisəli sayılır.',
+  titleOptions: [
+    'Borc Sənədində Göstərilmiş Məbləğ və Müddətə Etiraz Ərizəsi',
+    'Ödəniş Cədvəlinin Birtərəfli Müəyyən Edilməsinə Etiraz Ərizəsi',
+    'Borcun Məbləğinin Dəqiqləşdirilməsi haqqında Rəsmi Ərizə',
+    'Əvvəlki Ödənişlərin Nəzərə Alınmaması haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Göstərilən məbləğ qismən ödənişləri əks etdirmir.',
+    'Ödəniş cədvəli razılaşdırılmayıb.',
+    'Faiz nəzərdə tutulmadığı halda əlavə tələb irəli sürülüb.',
+    'Məbləğin yenidən hesablanması tələb olunur.',
+    'Ödəniş qəbzləri əlavə olunur.',
+    'Qonaqlıq xərcləri ayrıca qeyd edilir.',
+    'Borcun tarixi dəqiqləşdirilir.',
+    'Üçüncü şəxsin şahidliyi təklif olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Hesablama düzəldilmədikdə ödəniş yalnız təsdiqlənmiş məbləğ həcmində həyata keçirilir və qalan hissə mübahisəli sayılır.',
+    'Etiraza baxılana qədər ödəniş müddəti dayandırılır.',
+    'Yekun məbləğ birgə hesablama ilə müəyyən edilir.'
+  ]
 },
 {
   id: 'r-etiraz-work', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['work'], regPrefix: 'ETZ',
-  title: 'Tapşırıq Qərarına Etiraz Ərizəsi', tag: 'Ofis',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Tapşırığın İcra Müddəti və Həcminə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Ofis',
   signOrg: 'Ofisdaxili Münasibətlərin Tənzimlənməsi üzrə Komitə',
-  preamble: 'Mən, {to}, {from} tərəfindən verilmiş tapşırıq sənədi ilə bağlı etirazımı bildirirəm. Tapşırıq iş gününün son on beş dəqiqəsində, əvvəlcədən heç bir xəbərdarlıq olmadan təqdim edilmiş, son müddət isə növbəti səhərə təyin olunmuşdur. Müddətin yenidən müəyyən edilməsini xahiş edirəm.',
-  powers: 'Tapşırıq iş gününün sonunda, xəbərdarlıqsız verilmişdir.\nSon müddət işin real həcmi ilə uyğun gəlmir.\nEyni dövrdə üç ayrı tapşırıq eyni müddətə təyin olunmuşdur.\nTələb olunan məlumatın bir hissəsi hələ təqdim edilməmişdir.',
-  penalty: 'Müddət yenidən müəyyən edilmədikdə tapşırığın təhvil forması və həcmi ərizəçi tərəfindən müstəqil seçilir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən verilmiş tapşırığın müddətinə və həcminə etiraz edirəm. Tapşırıq üçün zəruri olan resurslar ayrılmamış, əlaqədar şöbələrlə razılaşdırma aparılmamışdır.',
+  powers: 'Tapşırıq üçün resurs ayrılmayıb.\nSon tarix real icra müddətinə uyğun deyil.\nƏlaqədar şöbələrlə razılaşdırma aparılmayıb.\nMüddətin yenidən müəyyən edilməsi tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda tapşırıq mövcud resurslar həcmində icra edilir və çatışmazlıqlar protokolda qeyd olunur.',
+  titleOptions: [
+    'Tapşırığın İcra Müddəti və Həcminə Etiraz Bildirilməsi haqqında Ərizə',
+    'Resurs Ayrılmadan Verilmiş Tapşırığa Etiraz haqqında Ərizə',
+    'İş Bölgüsünün Qeyri-bərabərliyi haqqında Rəsmi Ərizə',
+    'Son Tarixin Real Olmaması haqqında Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Tapşırıq üçün resurs ayrılmayıb.',
+    'Son tarix real icra müddətinə uyğun deyil.',
+    'Əlaqədar şöbələrlə razılaşdırma aparılmayıb.',
+    'Müddətin yenidən müəyyən edilməsi tələb olunur.',
+    'İş həcmi digər tapşırıqlarla üst-üstə düşür.',
+    'Texniki dəstək təmin edilməyib.',
+    'Aralıq nəticə üçün vaxt nəzərdə tutulmayıb.',
+    'Toplantıda məsələ qaldırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda tapşırıq mövcud resurslar həcmində icra edilir və çatışmazlıqlar protokolda qeyd olunur.',
+    'Etiraza baxılana qədər son tarix dayandırılır.',
+    'Yeni müddət birgə razılaşdırma ilə müəyyən edilir.'
+  ]
 },
 {
   id: 'r-etiraz-family', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['family'], regPrefix: 'ETZ',
-  title: 'Ev Fərmanına Etiraz Ərizəsi', tag: 'Ailə şurası',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Ev Qaydalarında Edilmiş Dəyişikliyə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Ailə',
   signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
-  preamble: 'Mən, {to}, {from} tərəfindən elan edilmiş ev fərmanına etiraz edirəm. Fərman ailə şurasının iclası çağırılmadan, yalnız bir tərəfin qərarı ilə qüvvəyə minmiş və mənim səsim heç bir bənddə nəzərə alınmamışdır. Fərmana yenidən baxılmasını tələb edirəm.',
-  powers: 'Fərman ailə şurası çağırılmadan qəbul edilmişdir.\nEkran vaxtı ilə bağlı bənd əvvəlki razılığa ziddir.\nEv işlərinin bölgüsü bərabər aparılmamışdır.\nFərmanın müddəti sənəddə ümumiyyətlə göstərilməmişdir.',
-  penalty: 'Şura çağırılmadıqda fərmanın icrası dayandırılır və mövcud qaydalar əvvəlki həftədəki formada qüvvədə qalır.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən ev qaydalarında edilmiş dəyişikliyə etiraz edirəm. Dəyişiklik ailə şurasında müzakirə olunmadan qəbul edilmiş, mənim mövqeyim soruşulmamış və əvvəlki razılaşmanın müddəti hələ başa çatmamışdır.',
+  powers: 'Dəyişiklik ailə şurasında müzakirə olunmayıb.\nƏvvəlki razılaşma müddəti başa çatmayıb.\nÖhdəliklərin icrası nəzərə alınmayıb.\nQaydaların yenidən müzakirəsi tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda yeni qaydalar qüvvədə qalır, lakin növbəti ailə şurasında məsələ mütləq gündəliyə salınır.',
+  titleOptions: [
+    'Ev Qaydalarında Edilmiş Dəyişikliyə Etiraz Bildirilməsi haqqında Ərizə',
+    'Ekran Vaxtı Limitinin Azaldılmasına Etiraz haqqında Ərizə',
+    'Yatma Saatının Dəyişdirilməsinə Etiraz haqqında Rəsmi Ərizə',
+    'Ev Tapşırıqlarının Bölgüsünə Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Dəyişiklik ailə şurasında müzakirə olunmayıb.',
+    'Əvvəlki razılaşma müddəti başa çatmayıb.',
+    'Öhdəliklərin icrası nəzərə alınmayıb.',
+    'Qaydaların yenidən müzakirəsi tələb olunur.',
+    'Tədris nəticələri sabit qalıb.',
+    'Ev tapşırıqları vaxtında yerinə yetirilib.',
+    'Həftəsonu güzəşti ləğv edilib.',
+    'Şuranın növbəti iclası tələb olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda yeni qaydalar qüvvədə qalır, lakin növbəti ailə şurasında məsələ mütləq gündəliyə salınır.',
+    'Etiraza baxılana qədər əvvəlki qaydalar tətbiq olunur.',
+    'Qaydalar hər rübün sonunda yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'r-etiraz-relatives', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['relatives'], regPrefix: 'ETZ',
-  title: 'Ziyarət Protokoluna Etiraz Ərizəsi', tag: 'Qohum protokolu',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Ziyarət Protokolunun Şərtlərinə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Qohumlar',
   signOrg: 'Qohumluq Münasibətləri üzrə Ali Nəzarət Şurası',
-  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş ziyarət protokoluna etirazımı bildirirəm. Protokolda ziyarətlərin sayı bir tərəf üçün ikiqat müəyyən edilmiş, çıxış siqnalının şərtləri isə birtərəfli qaydada dəyişdirilmişdir. Protokolun yenidən razılaşdırılmasını xahiş edirəm.',
-  powers: 'Ziyarətlərin sayı tərəflər arasında bərabər bölünməmişdir.\nÇıxış siqnalının şərtləri razılaşdırılmadan dəyişdirilmişdir.\nProtokolda bayram günləri ayrıca nəzərə alınmamışdır.\nYol müddəti ziyarət müddətinə daxil edilməmişdir.',
-  penalty: 'Protokol yenidən razılaşdırılmadıqda növbəti ziyarətin müddəti və marşrutu ərizəçi tərəfindən müəyyən edilir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş ziyarət protokoluna etiraz edirəm. Protokolda ziyarətlərin sayı bərabər bölünməmiş və hər iki ailənin marşrutu eyni qaydada nəzərə alınmamışdır.',
+  powers: 'Ziyarətlərin sayı bərabər bölünməyib.\nMarşrut yalnız bir tərəfin təklifi ilə qurulub.\nMüddət hüdudları göstərilməyib.\nProtokolun yenidən tərtibi tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda ziyarətlər mövcud protokol üzrə davam edir, lakin növbəti bayramda növbəlilik tərsinə başlayır.',
+  titleOptions: [
+    'Ziyarət Protokolunun Şərtlərinə Etiraz Bildirilməsi haqqında Ərizə',
+    'Ziyarət Növbəsinin Qeyri-bərabər Bölgüsünə Etiraz Ərizəsi',
+    'Ziyarət Müddətinin Uzadılmasına Etiraz haqqında Ərizə',
+    'Bayram Marşrutunun Razılaşdırılmaması haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Ziyarətlərin sayı bərabər bölünməyib.',
+    'Marşrut yalnız bir tərəfin təklifi ilə qurulub.',
+    'Müddət hüdudları göstərilməyib.',
+    'Protokolun yenidən tərtibi tələb olunur.',
+    'Uzaq qohumlara ziyarət planda yoxdur.',
+    'Yol xərcləri bölüşdürülməyib.',
+    'Gecələmə variantı müzakirə olunmayıb.',
+    'Bayram günlərinin sayı nəzərə alınmayıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda ziyarətlər mövcud protokol üzrə davam edir, lakin növbəti bayramda növbəlilik tərsinə başlayır.',
+    'Etiraza baxılana qədər ziyarət növbəsi dayandırılır.',
+    'Yeni protokol hər iki ailənin iştirakı ilə tərtib edilir.'
+  ]
 },
 {
   id: 'r-etiraz-student', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['student'], regPrefix: 'ETZ',
-  title: 'Qiymətləndirməyə Etiraz Ərizəsi', tag: 'İmtahan sessiyası',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Qiymətləndirmənin Nəticələrinə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Tələbə',
   signOrg: 'Tələbə Bəhanələrinin Araşdırılması üzrə Komissiya',
-  preamble: 'Mən, {to}, {from} tərəfindən aparılmış qiymətləndirməyə etiraz edirəm. Konspekt borcunun hesablanması zamanı mənim qrupla paylaşdığım iki dərs qeydi nəzərə alınmamış, davamiyyət isə səhv cədvəl üzrə yoxlanılmışdır. Yenidən baxılmasını xahiş edirəm.',
-  powers: 'Paylaşılmış iki konspekt hesabata daxil edilməmişdir.\nDavamiyyət səhv cədvəl üzrə yoxlanılmışdır.\nQrup işində mənim hissəm ayrıca qeyd olunmamışdır.\nBorc siyahısı sessiyadan sonra dəyişdirilmişdir.',
-  penalty: 'Etiraza baxılmadıqda növbəti qrup işinin mövzusu və bölgüsü ərizəçi tərəfindən təklif olunur.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən aparılmış qiymətləndirmənin nəticələrinə etiraz edirəm. Qiymətləndirmədə iş üzrə təqdim edilmiş bütün materiallar nəzərə alınmamış və aralıq nəticələr hesaba daxil edilməmişdir.',
+  powers: 'Təqdim edilmiş bütün materiallar nəzərə alınmayıb.\nAralıq nəticələr hesaba daxil edilməyib.\nQiymətləndirmə meyarları əvvəlcədən elan olunmayıb.\nNəticənin yenidən baxılması tələb olunur.',
+  penalty: 'Etiraz təmin edilmədikdə nəticə qüvvədə qalır və növbəti müraciətə yalnız yeni materiallar təqdim edildikdə baxılır.',
+  titleOptions: [
+    'Qiymətləndirmənin Nəticələrinə Etiraz Bildirilməsi haqqında Ərizə',
+    'İmtahan Nəticəsinin Yenidən Baxılması haqqında Rəsmi Ərizə',
+    'Davamiyyət Qeydlərinin Dəqiqləşdirilməsi haqqında Ərizə',
+    'Təhvil Müddətinin Qısa Müəyyən Edilməsinə Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Təqdim edilmiş bütün materiallar nəzərə alınmayıb.',
+    'Aralıq nəticələr hesaba daxil edilməyib.',
+    'Qiymətləndirmə meyarları əvvəlcədən elan olunmayıb.',
+    'Nəticənin yenidən baxılması tələb olunur.',
+    'Davamiyyət qeydləri jurnalla uyğun gəlmir.',
+    'Praktiki iş ayrıca qiymətləndirilməyib.',
+    'Konsultasiyada verilən tövsiyələr nəzərə alınmayıb.',
+    'Apellyasiya müddəti pozulmayıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz təmin edilmədikdə nəticə qüvvədə qalır və növbəti müraciətə yalnız yeni materiallar təqdim edildikdə baxılır.',
+    'Etiraza baxılana qədər nəticə ilkin hesab edilir.',
+    'Yenidən baxış üç gün ərzində aparılır.'
+  ]
 },
 {
   id: 'r-etiraz-neighbors', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['neighbors'], regPrefix: 'ETZ',
-  title: 'Həyət Qərarına Etiraz Ərizəsi', tag: 'Həyət nizamı',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Həyət Yığıncağının Qərarına Etiraz Bildirilməsi haqqında Ərizə', tag: 'Qonşuluq',
   signOrg: 'Həyətdaxili Nizamın Qorunması üzrə Baş İdarə',
-  preamble: 'Mən, {to}, {from} tərəfindən qəbul edilmiş həyət qərarına etirazımı bildirirəm. Qərar sakinlərin ümumi yığıncağı keçirilmədən qəbul edilmiş, park yerlərinin bölgüsü isə yalnız bir mərtəbənin xeyrinə aparılmışdır. Qərarın yenidən müzakirəsini tələb edirəm.',
-  powers: 'Qərar ümumi yığıncaq keçirilmədən qəbul edilmişdir.\nPark yerlərinin bölgüsü bərabər aparılmamışdır.\nUşaq meydançasının istifadə saatları razılaşdırılmamışdır.\nElan lövhəsinə vaxtında məlumat yerləşdirilməmişdir.',
-  penalty: 'Yığıncaq çağırılmadıqda park yerlərinin növbəsi əvvəlki aylarda tətbiq olunan qaydada bərpa edilir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən elan edilmiş həyət qərarına etiraz edirəm. Qərar sakinlərin əksəriyyətinin iştirakı olmadan qəbul edilmiş və elan lövhəsində vaxtında yerləşdirilməmişdir.',
+  powers: 'Qərar sakinlərin əksəriyyəti olmadan qəbul edilib.\nElan lövhəsində vaxtında yerləşdirilməyib.\nSəsvermə nəticələri açıqlanmayıb.\nQərarın yenidən müzakirəsi tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda qərar qüvvədə qalır, lakin növbəti ümumi yığıncaqda məsələ mütləq gündəliyə salınır.',
+  titleOptions: [
+    'Həyət Yığıncağının Qərarına Etiraz Bildirilməsi haqqında Ərizə',
+    'Park Yeri Bölgüsünə Etiraz haqqında Rəsmi Ərizə',
+    'Təmizlik Növbəsinin Qeyri-bərabərliyi haqqında Ərizə',
+    'Ümumi Vəsaitin Xərclənməsinə Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Qərar sakinlərin əksəriyyəti olmadan qəbul edilib.',
+    'Elan lövhəsində vaxtında yerləşdirilməyib.',
+    'Səsvermə nəticələri açıqlanmayıb.',
+    'Qərarın yenidən müzakirəsi tələb olunur.',
+    'Park yerlərinin bölgüsü qeyri-bərabərdir.',
+    'Təmizlik növbəsi bəzi mənzilləri əhatə etmir.',
+    'Ümumi vəsaitin xərclənməsi hesabatı verilməyib.',
+    'Yaşlı sakinlərin güzəşti nəzərə alınmayıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda qərar qüvvədə qalır, lakin növbəti ümumi yığıncaqda məsələ mütləq gündəliyə salınır.',
+    'Etiraza baxılana qədər qərarın icrası dayandırılır.',
+    'Yeni səsvermə bütün sakinlərin iştirakı ilə keçirilir.'
+  ]
 },
 {
   id: 'r-etiraz-holiday', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['holiday'], regPrefix: 'ETZ',
-  title: 'Toy Öhdəliyinə Etiraz Ərizəsi', tag: 'Toy protokolu',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Mərasim Öhdəliklərinin Bölgüsünə Etiraz Bildirilməsi haqqında Ərizə', tag: 'Toy',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
-  preamble: 'Mən, {to}, {from} tərəfindən mənim üzərimə qoyulmuş toy öhdəliyinə etiraz edirəm. Öhdəlik mənimlə heç bir razılaşma aparılmadan müəyyən edilmiş, masa yerləşdirilməsi isə əvvəlcədən bildirilmədən dəyişdirilmişdir. Öhdəliyin yenidən müəyyən edilməsini xahiş edirəm.',
-  powers: 'Öhdəlik mənimlə razılaşdırılmadan müəyyən edilmişdir.\nMasa yerləşdirilməsi əvvəlcədən bildirilmədən dəyişdirilmişdir.\nMahnı seçimi üzrə mənim təklifim nəzərə alınmamışdır.\nÇıxış vaxtı sənəddə ümumiyyətlə göstərilməmişdir.',
-  penalty: 'Öhdəlik yenidən müəyyən edilmədikdə ərizəçinin masası və çıxış vaxtı onun öz seçimi ilə təyin olunur.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən müəyyən edilmiş mərasim öhdəliklərinin bölgüsünə etiraz edirəm. Öhdəliklər mənimlə razılaşdırılmadan təyin edilmiş və qonaq siyahısı birtərəfli qaydada tərtib olunmuşdur.',
+  powers: 'Öhdəliklər razılaşdırılmadan təyin edilib.\nQonaq siyahısı birtərəfli tərtib olunub.\nBüdcə hüdudları müzakirə edilməyib.\nBölgünün yenidən aparılması tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda mövcud bölgü qüvvədə qalır, lakin növbəti mərasimdə öhdəliklərin təyini digər tərəfə keçir.',
+  titleOptions: [
+    'Mərasim Öhdəliklərinin Bölgüsünə Etiraz Bildirilməsi haqqında Ərizə',
+    'Qonaq Siyahısının Tərtibinə Etiraz haqqında Rəsmi Ərizə',
+    'Hədiyyə Büdcəsinin Müəyyən Edilməsinə Etiraz Ərizəsi',
+    'Masa Bölgüsünün Razılaşdırılmaması haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Öhdəliklər razılaşdırılmadan təyin edilib.',
+    'Qonaq siyahısı birtərəfli tərtib olunub.',
+    'Büdcə hüdudları müzakirə edilməyib.',
+    'Bölgünün yenidən aparılması tələb olunur.',
+    'Masa nizamı əvvəlcədən bildirilməyib.',
+    'Hədiyyə büdcəsi bərabər bölünməyib.',
+    'Mərasim proqramı razılaşdırılmayıb.',
+    'Foto öhdəliyi tək tərəfə həvalə edilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda mövcud bölgü qüvvədə qalır, lakin növbəti mərasimdə öhdəliklərin təyini digər tərəfə keçir.',
+    'Etiraza baxılana qədər öhdəliklərin icrası dayandırılır.',
+    'Bölgü hər iki tərəfin imzası ilə təsdiqlənir.'
+  ]
 },
 {
   id: 'r-etiraz-travel', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['travel'], regPrefix: 'ETZ',
-  title: 'Marşrut Qərarına Etiraz Ərizəsi', tag: 'Yol mübahisəsi',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Səfər Planında Müəyyən Edilmiş Şərtlərə Etiraz haqqında Ərizə', tag: 'Səfər',
   signOrg: 'Səfər və Marşrut Mübahisələri üzrə Ali Komissiya',
-  preamble: 'Mən, {to}, {from} tərəfindən müəyyən edilmiş marşrut qərarına etirazımı bildirirəm. Marşrut seçilərkən nə naviqasiya tövsiyəsi, nə də sərnişinlərin rəyi nəzərə alınmış, dayanacaq yerləri isə səfər başlayandan sonra dəyişdirilmişdir. Marşrutun yenidən müzakirəsini xahiş edirəm.',
-  powers: 'Marşrut seçilərkən sərnişinlərin rəyi soruşulmamışdır.\nNaviqasiya tövsiyəsi nəzərə alınmamışdır.\nDayanacaq yerləri səfər başlayandan sonra dəyişdirilmişdir.\nSürücülük növbəsi bərabər bölünməmişdir.',
-  penalty: 'Marşrut yenidən müzakirə edilmədikdə növbəti səfərin dayanacaq yerlərini və musiqisini ərizəçi müəyyən edir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş səfər planına etiraz edirəm. Marşrut, dayanacaqlar və növbəlilik mənimlə razılaşdırılmadan müəyyən edilmiş, təkliflərim isə plana daxil edilməmişdir.',
+  powers: 'Marşrut razılaşdırılmadan tərtib edilib.\nDayanacaqların yeri təkbaşına seçilib.\nSürücülük növbəsi qeyri-bərabər bölünüb.\nPlanın yenidən tərtibi tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda səfər mövcud plan üzrə həyata keçirilir, lakin qayıdış marşrutu digər tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Səfər Planında Müəyyən Edilmiş Şərtlərə Etiraz haqqında Ərizə',
+    'Marşrutun Birtərəfli Tərtibinə Etiraz haqqında Rəsmi Ərizə',
+    'Baqaj Bölgüsünün Qeyri-bərabərliyi haqqında Ərizə',
+    'Sürücülük Növbəsinin Təyininə Etiraz Ərizəsi'
+  ],
+  powersOptions: [
+    'Marşrut razılaşdırılmadan tərtib edilib.',
+    'Dayanacaqların yeri təkbaşına seçilib.',
+    'Sürücülük növbəsi qeyri-bərabər bölünüb.',
+    'Planın yenidən tərtibi tələb olunur.',
+    'Baqaj bölgüsü nəzərə alınmayıb.',
+    'Yanacaq xərcinin bölgüsü göstərilməyib.',
+    'Yemək fasilələri planda yoxdur.',
+    'Gəlmə vaxtı real deyil.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda səfər mövcud plan üzrə həyata keçirilir, lakin qayıdış marşrutu digər tərəf tərəfindən müəyyən edilir.',
+    'Etiraza baxılana qədər yola çıxma vaxtı dayandırılır.',
+    'Plan hər iki tərəfin razılığı ilə təsdiqlənir.'
+  ]
 },
 {
   id: 'r-etiraz-pets', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['pets'], regPrefix: 'ETZ',
-  title: 'Heyvan Qaydasına Etiraz Ərizəsi', tag: 'Divan hüququ',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Ev Heyvanına Aid Edilmiş Qaydalara Etiraz Bildirilməsi haqqında Ərizə', tag: 'Ev heyvanı',
   signOrg: 'Ev Heyvanları Hüquqları üzrə Xüsusi Şura',
-  preamble: 'Mən, {to}, {from} tərəfindən müəyyən edilmiş ev qaydasına etiraz edirəm. Qayda tərtib olunarkən heyvanın illər ərzində formalaşmış vərdişləri nəzərə alınmamış, divanın qadağan zonası isə bir gecədə birtərəfli qaydada elan edilmişdir. Qaydanın yenidən baxılmasını xahiş edirəm.',
-  powers: 'Qayda heyvanın mövcud vərdişləri nəzərə alınmadan tərtib edilmişdir.\nQadağan zonası birtərəfli qaydada elan olunmuşdur.\nYemləmə növbəsi bərabər bölünməmişdir.\nGəzinti saatları hava şəraiti nəzərə alınmadan təyin edilmişdir.',
-  penalty: 'Qaydaya yenidən baxılmadıqda gəzinti və yemləmə növbəsi əvvəlki ayda tətbiq olunan formada bərpa edilir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to} adından, {from} tərəfindən müəyyən edilmiş qaydalara etiraz bildirirəm. Qaydalar uzunmüddətli faktiki vəziyyəti nəzərə almadan tərtib edilmiş və mövcud hüquqları məhdudlaşdırmışdır.',
+  powers: 'Qaydalar faktiki vəziyyəti nəzərə almır.\nDivan sahəsi əsassız olaraq daraldılıb.\nMükafat norması baytar rəyi olmadan azaldılıb.\nQaydaların yenidən baxılması tələb olunur.',
+  penalty: 'Etiraz nəzərə alınmadıqda yeni qaydalar qüvvədə qalır, lakin növbəti baytar müayinəsindən sonra mütləq yenidən nəzərdən keçirilir.',
+  titleOptions: [
+    'Ev Heyvanına Aid Edilmiş Qaydalara Etiraz Bildirilməsi haqqında Ərizə',
+    'Divan Hüququnun Məhdudlaşdırılmasına Etiraz haqqında Ərizə',
+    'Mükafat Normasının Azaldılmasına Etiraz Ərizəsi',
+    'Gəzinti Cədvəlinin Dəyişdirilməsinə Etiraz haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Qaydalar faktiki vəziyyəti nəzərə almır.',
+    'Divan sahəsi əsassız olaraq daraldılıb.',
+    'Mükafat norması baytar rəyi olmadan azaldılıb.',
+    'Qaydaların yenidən baxılması tələb olunur.',
+    'Gəzinti müddəti qısaldılıb.',
+    'Yem növü xəbərdarlıq edilmədən dəyişdirilib.',
+    'Oyuncaqların sayı azaldılıb.',
+    'Yataq sahəsi məhdudlaşdırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz nəzərə alınmadıqda yeni qaydalar qüvvədə qalır, lakin növbəti baytar müayinəsindən sonra mütləq yenidən nəzərdən keçirilir.',
+    'Etiraza baxılana qədər əvvəlki qaydalar tətbiq edilir.',
+    'Qaydalar hər mövsüm yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'r-etiraz-gaming', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['gaming'], regPrefix: 'ETZ',
-  title: 'Oyun Nəticəsinə Etiraz Ərizəsi', tag: 'Klassik cavab',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Matçın Nəticəsinin Qeydə Alınması Qaydasına Etiraz Ərizəsi', tag: 'Oyun',
   signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
-  preamble: 'Mən, {to}, {from} tərəfindən rəsmiləşdirilmiş oyun nəticəsinə etiraz edirəm. Oyunun ikinci hissəsində bağlantı iki dəfə kəsilmiş, komanda tərkibi isə oyun başlayandan sonra dəyişdirilmişdir. Nəticəyə yenidən baxılmasını tələb edirəm.',
-  powers: 'Oyun zamanı bağlantı iki dəfə kəsilmişdir.\nKomanda tərkibi oyun başlayandan sonra dəyişdirilmişdir.\nÇətinlik səviyyəsi əvvəlcədən razılaşdırılmamışdı.\nPultun düymələrindən biri bütün oyun boyu işləməmişdir.',
-  penalty: 'Etiraza baxılmadıqda növbəti oyunun komanda seçimi və çətinlik səviyyəsi ərizəçi tərəfindən müəyyən edilir.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən qeydə alınmış matç nəticəsinə etiraz edirəm. Matçın şərtləri başlanğıcda razılaşdırılmamış, xəritə seçimi birtərəfli aparılmış və texniki fasilə nəzərə alınmamışdır.',
+  powers: 'Matçın şərtləri əvvəlcədən razılaşdırılmayıb.\nXəritə seçimi birtərəfli aparılıb.\nTexniki fasilə nəzərə alınmayıb.\nNəticənin yenidən qiymətləndirilməsi tələb olunur.',
+  penalty: 'Etiraz təmin edilmədikdə nəticə qüvvədə qalır, lakin revanş matçının şərtləri tam olaraq etiraz edən tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Matçın Nəticəsinin Qeydə Alınması Qaydasına Etiraz Ərizəsi',
+    'Komanda Tərkibinin Müəyyən Edilməsinə Etiraz haqqında Ərizə',
+    'Reytinq Düzəlişinin Aparılmamasına Etiraz Ərizəsi',
+    'Matçın Şərtlərinin Razılaşdırılmaması haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Matçın şərtləri əvvəlcədən razılaşdırılmayıb.',
+    'Xəritə seçimi birtərəfli aparılıb.',
+    'Texniki fasilə nəzərə alınmayıb.',
+    'Nəticənin yenidən qiymətləndirilməsi tələb olunur.',
+    'Komanda tərkibi matç ərzində dəyişdirilib.',
+    'Bağlantı jurnalı təqdim edilib.',
+    'Şahid oyunçuların ifadəsi əlavə olunur.',
+    'Revanş matçı təklif edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz təmin edilmədikdə nəticə qüvvədə qalır, lakin revanş matçının şərtləri tam olaraq etiraz edən tərəf tərəfindən müəyyən edilir.',
+    'Etiraza baxılana qədər reytinq düzəlişi aparılmır.',
+    'Yeni matç şərtləri birgə razılaşdırılır.'
+  ]
 },
 {
   id: 'r-etiraz-viral', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', replyCats: ['viral'], regPrefix: 'ETZ',
-  title: 'Ekspertiza Rəyinə Etiraz Ərizəsi', tag: 'Viral cavab',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Ekspertiza Rəyinin Metodikasına Etiraz Bildirilməsi haqqında Ərizə', tag: 'Ekspertiza',
   signOrg: 'Bəhanələrin Ekspertizası üzrə Ali Komissiya',
-  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş ekspertiza rəyinə etirazımı bildirirəm. Rəydə göstərilən bal ölçmə metodikası açıqlanmadan verilmiş, müşahidə müddəti isə cəmi bir epizodu əhatə etmişdir. Təkrar ekspertiza keçirilməsini xahiş edirəm.',
-  powers: 'Ölçmə metodikası rəydə açıqlanmamışdır.\nMüşahidə müddəti nəticə çıxarmaq üçün kifayət etmir.\nRəy yalnız bir tərəfin iştirakı ilə tərtib olunmuşdur.\nƏks arqumentlər sənədə ümumiyyətlə daxil edilməmişdir.',
-  penalty: 'Təkrar ekspertiza keçirilmədikdə mövcud rəyin nəticələri istinad kimi istifadə edilə bilməz.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş ekspertiza rəyinin metodikasına etiraz edirəm. Müşahidə müddəti qısa olmuş, nümunə sayı kifayət etməmiş və nəticələr tək epizod üzərində qurulmuşdur.',
+  powers: 'Müşahidə müddəti qısa olub.\nNümunə sayı kifayət etməyib.\nNəticələr tək epizod üzərində qurulub.\nTəkrar ekspertizanın təyini tələb olunur.',
+  penalty: 'Etiraz təmin edilmədikdə rəy qüvvədə qalır, lakin göstəricilər növbəti qiymətləndirmədə mütləq yenidən ölçülür.',
+  titleOptions: [
+    'Ekspertiza Rəyinin Metodikasına Etiraz Bildirilməsi haqqında Ərizə',
+    'Rəydəki Göstəricilərin Dəqiqləşdirilməsi haqqında Rəsmi Ərizə',
+    'Müşahidə Müddətinin Qısa Olmasına Etiraz Ərizəsi',
+    'Təkrar Ekspertiza Təyin Edilməsi haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Müşahidə müddəti qısa olub.',
+    'Nümunə sayı kifayət etməyib.',
+    'Nəticələr tək epizod üzərində qurulub.',
+    'Təkrar ekspertizanın təyini tələb olunur.',
+    'Müqayisə üçün kontrol qrup götürülməyib.',
+    'Xarici amillər qiymətləndirməyə daxil edilməyib.',
+    'Göstəricilərin hesablanma qaydası açıqlanmayıb.',
+    'Yeni məlumatlar əlavə edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz təmin edilmədikdə rəy qüvvədə qalır, lakin göstəricilər növbəti qiymətləndirmədə mütləq yenidən ölçülür.',
+    'Etiraza baxılana qədər rəy ilkin hesab edilir.',
+    'Təkrar ekspertiza müstəqil ekspert tərəfindən aparılır.'
+  ]
 },
 {
   id: 'r-etiraz-umumi', cat: 'c-etiraz', tone: 'zarafat', layout: 'blank', palette: 'ink',
   replyKind: 'etiraz', regPrefix: 'ETZ',
-  title: 'Sənədə Etiraz Ərizəsi', tag: 'Universal',
-  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır',
-  powersLabel: 'Etirazın əsasları',
+  title: 'Təqdim Edilmiş Sənədə Rəsmi Etiraz Bildirilməsi haqqında Ərizə', tag: 'Universal',
   signOrg: 'Sənədlərə Etirazlar üzrə Ali Apellyasiya Şurası',
-  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş sənədə etiraz edirəm. Sənəd mənim iştirakım olmadan hazırlanmış, şərtləri isə yalnız bir tərəfin xeyrinə formalaşdırılmışdır. Sənədə yenidən, hər iki tərəfin iştirakı ilə baxılmasını xahiş edirəm.',
-  powers: 'Sənəd mənim iştirakım olmadan tərtib edilmişdir.\nŞərtlər yalnız bir tərəfin xeyrinə formalaşdırılmışdır.\nSənədin qüvvədə olma müddəti göstərilməmişdir.\nƏvvəlki razılıqlar sənəddə nəzərə alınmamışdır.',
-  penalty: 'Ərizəyə baxılmadıqda sənədin bəndləri ərizəçi üçün heç bir öhdəlik yaratmır və icrası dayandırılır.'
+  toLabel: 'Ərizəçi', fromLabel: 'Ərizə ünvanlanır', powersLabel: 'Etirazın əsasları',
+  preamble: 'Mən, {to}, {from} tərəfindən tərtib edilmiş sənədə rəsmi etiraz bildirirəm. Sənəd mənimlə razılaşdırılmadan hazırlanmış, şərtləri birtərəfli müəyyən edilmiş və mənim mövqeyim heç bir bənddə əks olunmamışdır.',
+  powers: 'Sənəd razılaşdırılmadan tərtib edilib.\nŞərtlər birtərəfli müəyyən olunub.\nMövqeyim sənəddə əks etdirilməyib.\nSənədin yenidən tərtibi tələb olunur.',
+  penalty: 'Etiraza baxılmadıqda sənəd qüvvədə qalır, lakin onun əsasında irəli sürülən tələblər mübahisəli hesab edilir.',
+  titleOptions: [
+    'Təqdim Edilmiş Sənədə Rəsmi Etiraz Bildirilməsi haqqında Ərizə',
+    'Sənədin Razılaşdırılmadan Tərtibinə Etiraz haqqında Ərizə',
+    'Sənəddəki Şərtlərin Yenidən Baxılması haqqında Ərizə',
+    'Bir Tərəfin Mövqeyinin Əks Etdirilməməsi haqqında Ərizə'
+  ],
+  powersOptions: [
+    'Sənəd razılaşdırılmadan tərtib edilib.',
+    'Şərtlər birtərəfli müəyyən olunub.',
+    'Mövqeyim sənəddə əks etdirilməyib.',
+    'Sənədin yenidən tərtibi tələb olunur.',
+    'Cəza bəndi mütənasib deyil.',
+    'Müddət hüdudları göstərilməyib.',
+    'Əvvəlki razılaşmalar nəzərə alınmayıb.',
+    'Etiraz müddəti üç gündür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraza baxılmadıqda sənəd qüvvədə qalır, lakin onun əsasında irəli sürülən tələblər mübahisəli hesab edilir.',
+    'Etiraza baxılana qədər sənədin icrası dayandırılır.',
+    'Yeni sənəd hər iki tərəfin imzası ilə tərtib edilir.'
+  ]
 },
 
 /* ==================== 🔄 TƏKRAR BAXIŞ ====================
@@ -339,132 +898,418 @@ window.REPLIES = [
 {
   id: 'r-tekrar-couples', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['couples'], regPrefix: 'TKR',
-  title: 'Münasibətlər üzrə Təkrar Baxış Qərarı', tag: 'Ev diplomatiyası',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Ev Daxilində Qüvvədə Olan Razılaşmanın Yenidən Qiymətləndirilməsi Rəyi', tag: 'Ev diplomatiyası',
   signOrg: 'Cütlüklərarası Mübahisələrin Həlli üzrə Ali Şura',
-  preamble: 'Şura {from} tərəfindən daxil olmuş müraciətə əsasən {to} adlı şəxsə aid sənəd üzrə təkrar baxış təyin edir. İlkin qərar yalnız bir tərəfin izahatı əsasında qəbul edilmiş, ikinci tərəfin arqumentləri isə dinlənilməmişdir. Məsələ yenidən araşdırılacaq.',
-  powers: 'Sənədin icrası təkrar baxış başa çatanadək dayandırılır.\nHər iki tərəf öz izahatını yazılı formada təqdim edir.\nƏvvəlki razılıqlar və mesaj tarixçəsi araşdırmaya daxil edilir.\nYekun qərar hər iki tərəfin iştirakı ilə elan olunur.',
-  penalty: 'Tərəflərdən biri izahat təqdim etmədikdə qərar mövcud materiallar əsasında, onun mövqeyi nəzərə alınmadan çıxarılır.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Məsələyə dair aparılmış təkrar qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında qüvvədə olan razılaşma tərtib edildiyi vaxtdan bəri dəyişmiş şəraiti əks etdirmir. Sənədin yenidən nəzərdən keçirilməsi məqsədəuyğun hesab olunur.',
+  powers: 'Razılaşmanın şərtləri hazırkı şəraitə uyğun deyil.\nTərəflərin gündəlik cədvəli dəyişib.\nƏvvəlki cəza bəndi mütənasibliyini itirib.\nSənədin yeni redaksiyada tərtibi tövsiyə olunur.',
+  penalty: 'Təkrar baxış nəticəsində yeni sənəd tərtib edilməzsə, əvvəlki razılaşma dəyişdirilmədən qüvvədə qalır.',
+  titleOptions: [
+    'Ev Daxilində Qüvvədə Olan Razılaşmanın Yenidən Qiymətləndirilməsi Rəyi',
+    'Tərəflərin Mövqelərində Baş Vermiş Dəyişikliyə dair Ekspert Rəyi',
+    'Əvvəlki Sənədin Aktuallığının Yoxlanılmasına dair Yekun Rəy',
+    'Razılaşmanın Şərtlərinin Təkrar Araşdırılmasına dair Rəy'
+  ],
+  powersOptions: [
+    'Razılaşmanın şərtləri hazırkı şəraitə uyğun deyil.',
+    'Tərəflərin gündəlik cədvəli dəyişib.',
+    'Əvvəlki cəza bəndi mütənasibliyini itirib.',
+    'Sənədin yeni redaksiyada tərtibi tövsiyə olunur.',
+    'Qüvvədəolma müddəti uzun müəyyən edilib.',
+    'Bəzi bəndlər praktikada tətbiq olunmayıb.',
+    'Yeni hallar sənəddə əks olunmayıb.',
+    'Hər iki tərəf yenidən baxışa razıdır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar baxış nəticəsində yeni sənəd tərtib edilməzsə, əvvəlki razılaşma dəyişdirilmədən qüvvədə qalır.',
+    'Rəy tərəflərin razılığı ilə istənilən vaxt yenilənə bilər.',
+    'Yeni sənəd hər iki tərəfin imzası ilə qüvvəyə minir.'
+  ]
 },
 {
   id: 'r-tekrar-friends', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['friends'], regPrefix: 'TKR',
-  title: 'Borc Məsələsinə Təkrar Baxış Qərarı', tag: 'Dost borcu',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Borc Öhdəliyinin Şərtlərinin Təkrar Araşdırılmasına dair Rəy', tag: 'Borc',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
-  preamble: 'Məclis {from} tərəfindən verilmiş ərizəyə əsasən {to} adlı şəxslə bağlı borc məsələsinə təkrar baxış təyin edir. İlkin hesablamada ortaq xərclər və qismən ödənişlər nəzərə alınmamış, məbləğ isə yuvarlaqlaşdırılmış formada göstərilmişdir.',
-  powers: 'Bütün ortaq xərclər sıfırdan hesablanır.\nQismən ödənişlər tarix ardıcıllığı ilə siyahıya salınır.\nMəbləğ yuvarlaqlaşdırılmadan, dəqiq göstərilir.\nYeni hesablama hər iki tərəf tərəfindən imzalanır.',
-  penalty: 'Hesablama üçün lazım olan çeklər təqdim edilmədikdə həmin xərclər ümumi məbləğdən tam olaraq çıxarılır.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Təqdim edilmiş məlumatlar nəzərdən keçirilərək müəyyən edilmişdir ki, {to} və {from} arasındakı borc öhdəliyi üzrə qismən ödənişlər aparılmış, lakin cədvəldə əks etdirilməmişdir. Məsələnin təkrar araşdırılması zəruri hesab olunur.',
+  powers: 'Qismən ödənişlər cədvəldə əks olunmayıb.\nQalıq məbləğ yenidən hesablanmalıdır.\nÖdəniş tarixləri dəqiqləşdirilir.\nYeni cədvəl hər iki tərəflə razılaşdırılır.',
+  penalty: 'Təkrar araşdırma başa çatanadək əvvəlki ödəniş cədvəli qüvvədə qalır və gecikmə hesablanmır.',
+  titleOptions: [
+    'Borc Öhdəliyinin Şərtlərinin Təkrar Araşdırılmasına dair Rəy',
+    'Ödəniş Cədvəlinin Yenidən Qurulması İmkanlarına dair Rəy',
+    'Borcun Qalıq Məbləğinin Dəqiqləşdirilməsinə dair Yekun Rəy',
+    'Möhlət Müddətinin Yenidən Hesablanmasına dair Ekspert Rəyi'
+  ],
+  powersOptions: [
+    'Qismən ödənişlər cədvəldə əks olunmayıb.',
+    'Qalıq məbləğ yenidən hesablanmalıdır.',
+    'Ödəniş tarixləri dəqiqləşdirilir.',
+    'Yeni cədvəl hər iki tərəflə razılaşdırılır.',
+    'Qəbzlər araşdırmaya daxil edilib.',
+    'Hissə-hissə ödəniş variantı qiymətləndirilir.',
+    'Faiz tətbiq edilmədiyi təsdiqlənib.',
+    'Üçüncü şəxsin şahidliyi nəzərə alınıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar araşdırma başa çatanadək əvvəlki ödəniş cədvəli qüvvədə qalır və gecikmə hesablanmır.',
+    'Yekun məbləğ birgə hesablama ilə təsdiqlənir.',
+    'Rəy yeni cədvəl imzalananadək qüvvədədir.'
+  ]
 },
 {
   id: 'r-tekrar-work', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['work'], regPrefix: 'TKR',
-  title: 'Tapşırıq üzrə Təkrar Araşdırma Qərarı', tag: 'Ofis',
-  powersLabel: 'ARAŞDIRMANIN ŞƏRTLƏRİ',
+  title: 'Tapşırığın İcra Şərtlərinin Təkrar Qiymətləndirilməsinə dair Rəy', tag: 'Ofis',
   signOrg: 'Ofisdaxili Münasibətlərin Tənzimlənməsi üzrə Komitə',
-  preamble: 'Komitə {from} tərəfindən qaldırılan məsələ üzrə {to} adlı şəxsə aid tapşırıq sənədinə təkrar baxış təyin edir. İlkin qiymətləndirmə tapşırığın həcmi və verilmə vaxtı nəzərə alınmadan aparılmışdır. Araşdırma beş iş günü ərzində tamamlanacaq.',
-  powers: 'Tapşırığın real həcmi saatla ölçülür və sənədə yazılır.\nVerilmə vaxtı mesajlaşma tarixçəsi ilə dəqiqləşdirilir.\nParalel tapşırıqların sayı hesabata daxil edilir.\nYekun müddət araşdırmadan sonra yenidən təyin olunur.',
-  penalty: 'Araşdırma müddətində yeni tapşırıq verildikdə həmin tapşırığın müddəti avtomatik olaraq bir iş günü uzadılır.'
+  powersLabel: 'ARAŞDIRMANIN ŞƏRTLƏRİ',
+  preamble: 'Aparılmış təkrar qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxsə həvalə edilmiş tapşırığın həcmi ilə ayrılmış resurslar arasında uyğunsuzluq mövcuddur. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib olunmuşdur.',
+  powers: 'Tapşırığın həcmi ilə resurslar uyğun gəlmir.\nSon tarix real icra müddətindən qısadır.\nƏlaqədar şöbələrin yükü nəzərə alınmayıb.\nŞərtlərin yenidən müəyyən edilməsi tövsiyə olunur.',
+  penalty: 'Təkrar qiymətləndirmənin nəticələri qəbul edilmədikdə tapşırıq mövcud şərtlərlə icra edilir və çatışmazlıqlar protokolda göstərilir.',
+  titleOptions: [
+    'Tapşırığın İcra Şərtlərinin Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Resurs Təminatının Yenidən Araşdırılmasına dair Ekspert Rəyi',
+    'İş Bölgüsünün Bərabərliyinin Qiymətləndirilməsinə dair Rəy',
+    'Son Tarixin Real Olub-Olmamasına dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Tapşırığın həcmi ilə resurslar uyğun gəlmir.',
+    'Son tarix real icra müddətindən qısadır.',
+    'Əlaqədar şöbələrin yükü nəzərə alınmayıb.',
+    'Şərtlərin yenidən müəyyən edilməsi tövsiyə olunur.',
+    'Aralıq nəticə mərhələləri təklif edilir.',
+    'Texniki dəstək zərurəti qeyd olunur.',
+    'Digər tapşırıqlarla üst-üstə düşmə aşkarlanıb.',
+    'İcraçıların sayının artırılması müzakirə edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar qiymətləndirmənin nəticələri qəbul edilmədikdə tapşırıq mövcud şərtlərlə icra edilir və çatışmazlıqlar protokolda göstərilir.',
+    'Rəy yeni müddət təsdiqlənənədək qüvvədədir.',
+    'Şərtlər toplantıda yenidən müzakirə olunur.'
+  ]
 },
 {
   id: 'r-tekrar-family', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['family'], regPrefix: 'TKR',
-  title: 'Ev Qaydalarına Təkrar Baxış Qərarı', tag: 'Ailə şurası',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Ev Qaydalarının Aktuallığının Təkrar Qiymətləndirilməsinə dair Rəy', tag: 'Ailə',
   signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
-  preamble: 'Ali Şura {from} tərəfindən daxil olmuş müraciətə əsasən {to} adlı şəxsə şamil edilən ev qaydalarına təkrar baxış təyin edir. Qaydalar bir tərəfin qərarı ilə müəyyən edilmiş, dərs cədvəli və ev işlərinin real həcmi isə nəzərə alınmamışdır.',
-  powers: 'Ev işlərinin bölgüsü hər iki tərəfin cədvəli əsasında yenidən qurulur.\nEkran vaxtı dərs yükü nəzərə alınmaqla müəyyən edilir.\nHəftəsonu rejimi ayrıca bənd kimi razılaşdırılır.\nYeni qaydalar ailə şurasının iclasında təsdiqlənir.',
-  penalty: 'İclas iki həftə ərzində keçirilmədikdə əvvəlki qaydalar avtomatik olaraq qüvvədən düşür və yenisi tətbiq olunmur.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Mövcud vəziyyət qiymətləndirildikdən sonra müəyyən edilmişdir ki, {to} adlı şəxsə tətbiq olunan ev qaydaları son aylarda dəyişmiş tədris yükünü nəzərə almır. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib olunmuşdur.',
+  powers: 'Qaydalar dəyişmiş tədris yükünü nəzərə almır.\nEkran vaxtı limiti yenidən hesablanmalıdır.\nÖhdəliklərin icrası müsbət qiymətləndirilir.\nQaydaların yeni redaksiyası tövsiyə olunur.',
+  penalty: 'Təkrar baxış nəticəsində yeni qaydalar qəbul edilməzsə, mövcud rejim dəyişdirilmədən qüvvədə qalır.',
+  titleOptions: [
+    'Ev Qaydalarının Aktuallığının Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Ekran Vaxtı Limitinin Yenidən Hesablanmasına dair Rəy',
+    'Yatma Saatı Rejiminin Uyğunluğuna dair Ekspert Rəyi',
+    'Ev Tapşırıqları Bölgüsünün Təkrar Baxışına dair Rəy'
+  ],
+  powersOptions: [
+    'Qaydalar dəyişmiş tədris yükünü nəzərə almır.',
+    'Ekran vaxtı limiti yenidən hesablanmalıdır.',
+    'Öhdəliklərin icrası müsbət qiymətləndirilir.',
+    'Qaydaların yeni redaksiyası tövsiyə olunur.',
+    'Yatma saatı yaşa uyğun dəqiqləşdirilir.',
+    'Həftəsonu rejimi ayrıca müəyyən edilir.',
+    'Cib xərcliyinin məbləği yenidən baxılır.',
+    'Ailə şurasının iclası təklif olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar baxış nəticəsində yeni qaydalar qəbul edilməzsə, mövcud rejim dəyişdirilmədən qüvvədə qalır.',
+    'Rəy növbəti ailə şurasınadək qüvvədədir.',
+    'Qaydalar hər tədris rübünün sonunda yenilənir.'
+  ]
 },
 {
   id: 'r-tekrar-relatives', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['relatives'], regPrefix: 'TKR',
-  title: 'Ziyarət Rejiminə Təkrar Baxış Qərarı', tag: 'Qohum protokolu',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Ziyarət Rejiminin Təkrar Araşdırılması və Yenidən Qurulmasına dair Rəy', tag: 'Qohumlar',
   signOrg: 'Qohumluq Münasibətləri üzrə Ali Nəzarət Şurası',
-  preamble: 'Şura {from} tərəfindən verilmiş ərizəyə əsasən {to} adlı şəxsə aid ziyarət protokoluna təkrar baxış təyin edir. Mövcud protokolda ziyarətlərin sayı və müddəti tərəflər arasında bərabər bölünməmiş, yol vaxtı isə ümumiyyətlə hesablanmamışdır.',
-  powers: 'Ziyarətlərin sayı hər iki ailə üçün bərabər müəyyən edilir.\nYol vaxtı ziyarət müddətindən ayrıca hesablanır.\nBayram günləri üçün xüsusi cədvəl tərtib olunur.\nÇıxış siqnalının şərtləri yenidən razılaşdırılır.',
-  penalty: 'Yeni cədvəl razılaşdırılmadıqda növbəti ziyarətin müddəti üç saatla məhdudlaşdırılır və uzadılmır.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən müəyyən edilmişdir ki, {to} və {from} arasındakı ziyarət rejimi son bir ildə bərabər tətbiq olunmamışdır. Məsələnin təkrar araşdırılması məqsədəuyğun hesab edilir.',
+  powers: 'Ziyarətlərin sayı bərabər bölünməyib.\nBir ailəyə ziyarətlər üstünlük təşkil edib.\nMarşrut yol vaxtını nəzərə almır.\nRejimin yenidən qurulması tövsiyə olunur.',
+  penalty: 'Təkrar araşdırma nəticəsində yeni cədvəl razılaşdırılmazsa, növbəlilik növbəti bayramda tərsinə başlayır.',
+  titleOptions: [
+    'Ziyarət Rejiminin Təkrar Araşdırılması və Yenidən Qurulmasına dair Rəy',
+    'Bayram Növbəliliyinin Bərabərliyinin Qiymətləndirilməsinə dair Rəy',
+    'Ziyarət Müddətlərinin Yenidən Müəyyən Edilməsinə dair Rəy',
+    'Marşrutun Optimallaşdırılması İmkanlarına dair Ekspert Rəyi'
+  ],
+  powersOptions: [
+    'Ziyarətlərin sayı bərabər bölünməyib.',
+    'Bir ailəyə ziyarətlər üstünlük təşkil edib.',
+    'Marşrut yol vaxtını nəzərə almır.',
+    'Rejimin yenidən qurulması tövsiyə olunur.',
+    'Gecələmə variantı ayrıca planlaşdırılır.',
+    'Uzaq qohumlar cədvələ daxil edilir.',
+    'Yol xərclərinin bölgüsü dəqiqləşdirilir.',
+    'Bayram günlərinin sayı yenidən hesablanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar araşdırma nəticəsində yeni cədvəl razılaşdırılmazsa, növbəlilik növbəti bayramda tərsinə başlayır.',
+    'Rəy hər bayram dövründən sonra yenilənir.',
+    'Yeni cədvəl hər iki ailənin razılığı ilə təsdiqlənir.'
+  ]
 },
 {
   id: 'r-tekrar-student', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['student'], regPrefix: 'TKR',
-  title: 'Konspekt Borcuna Təkrar Baxış Qərarı', tag: 'İmtahan sessiyası',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Akademik Borcun Bağlanması İmkanlarının Təkrar Qiymətləndirilməsi Rəyi', tag: 'Tələbə',
   signOrg: 'Tələbə Bəhanələrinin Araşdırılması üzrə Komissiya',
-  preamble: 'Komissiya {from} tərəfindən daxil olmuş ərizəyə əsasən {to} adlı tələbənin konspekt borcuna təkrar baxış təyin edir. İlkin hesabatda qrupla paylaşılmış qeydlər nəzərə alınmamış, davamiyyət isə köhnə cədvəl üzrə yoxlanılmışdır.',
-  powers: 'Paylaşılmış bütün qeydlər borc hesabatına daxil edilir.\nDavamiyyət cari semestrin cədvəli üzrə yenidən yoxlanılır.\nQrup işində hər iştirakçının payı ayrıca göstərilir.\nYekun siyahı sessiyadan əvvəl dəyişməz elan olunur.',
-  penalty: 'Təkrar baxış nəticəsində borc təsdiqlənərsə, həmin fənn üzrə növbəti dərsin konspekti tam olaraq tələbənin öhdəsinə keçir.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Müvafiq hallar nəzərə alınaraq müəyyən edilmişdir ki, {to} adlı şəxsin akademik borcu qalan müddət ərzində bağlana bilər. Rəy {from} tərəfindən verilmiş müraciət və konsultasiya qeydləri əsasında tərtib olunmuşdur.',
+  powers: 'Borcun bağlanması üçün vaxt kifayətdir.\nZəif mövzuların siyahısı müəyyən edilib.\nHazırlıq planı iki həftəyə hesablanıb.\nTəkrar imtahan tarixi təklif olunur.',
+  penalty: 'Hazırlıq planına əməl edilmədikdə rəy qüvvədən düşür və fənn növbəti semestrə keçirilir.',
+  titleOptions: [
+    'Akademik Borcun Bağlanması İmkanlarının Təkrar Qiymətləndirilməsi Rəyi',
+    'Konspekt Borcunun Vəziyyətinin Yenidən Araşdırılmasına dair Rəy',
+    'Təhvil Müddətinin Yenidən Hesablanmasına dair Ekspert Rəyi',
+    'Təkrar İmtahan İmkanlarının Qiymətləndirilməsinə dair Rəy'
+  ],
+  powersOptions: [
+    'Borcun bağlanması üçün vaxt kifayətdir.',
+    'Zəif mövzuların siyahısı müəyyən edilib.',
+    'Hazırlıq planı iki həftəyə hesablanıb.',
+    'Təkrar imtahan tarixi təklif olunur.',
+    'Konsultasiya saatlarından istifadə tövsiyə edilir.',
+    'Qrup yoldaşlarının köməyi nəzərdə tutulur.',
+    'Digər fənlərə təsir minimaldır.',
+    'Davamiyyət göstəricisi bərpa oluna bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Hazırlıq planına əməl edilmədikdə rəy qüvvədən düşür və fənn növbəti semestrə keçirilir.',
+    'Rəy yalnız cari semestrə aiddir.',
+    'Nəticələr hər iki həftədən bir yoxlanılır.'
+  ]
 },
 {
   id: 'r-tekrar-neighbors', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['neighbors'], regPrefix: 'TKR',
-  title: 'Həyət Nizamına Təkrar Baxış Qərarı', tag: 'Həyət nizamı',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Həyət Nizamı üzrə Qəbul Edilmiş Qaydaların Təkrar Baxışına dair Rəy', tag: 'Qonşuluq',
   signOrg: 'Həyətdaxili Nizamın Qorunması üzrə Baş İdarə',
-  preamble: 'Baş İdarə {from} tərəfindən verilmiş müraciətə əsasən {to} adlı şəxsə aid həyət qərarına təkrar baxış təyin edir. Qərar ümumi yığıncaq keçirilmədən qəbul edilmiş, park yerlərinin bölgüsü isə mərtəbələr üzrə qeyri-bərabər aparılmışdır.',
-  powers: 'Park yerləri mənzil sayına görə yenidən bölünür.\nSakitlik rejiminin saatları açıq səsvermə ilə müəyyən edilir.\nUşaq meydançasının istifadə cədvəli tərtib olunur.\nYeni qərar elan lövhəsində yeddi gün saxlanılır.',
-  penalty: 'Yığıncaq bir ay ərzində keçirilmədikdə park yerlərinin növbəsi əvvəlki qaydada bərpa olunur.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Daxil olmuş müraciətlərə baxılaraq müəyyən edilmişdir ki, {to} və {from} arasında mübahisə doğuran həyət qaydaları sakinlərin sayındakı dəyişikliyi əks etdirmir. Qaydaların təkrar baxışı zəruri hesab olunur.',
+  powers: 'Qaydalar sakinlərin sayındakı dəyişikliyi əks etdirmir.\nPark yerlərinin bölgüsü yenidən aparılmalıdır.\nTəmizlik növbəsi bəzi mənzilləri əhatə etmir.\nQaydaların yeni redaksiyası tövsiyə olunur.',
+  penalty: 'Təkrar baxış nəticəsində yeni qaydalar qəbul edilməzsə, mövcud nizam dəyişdirilmədən qüvvədə qalır.',
+  titleOptions: [
+    'Həyət Nizamı üzrə Qəbul Edilmiş Qaydaların Təkrar Baxışına dair Rəy',
+    'Park Yerlərinin Bölgüsünün Yenidən Araşdırılmasına dair Rəy',
+    'Təmizlik Növbəsinin Bərabərliyinin Qiymətləndirilməsinə dair Rəy',
+    'Səs Rejiminin Aktuallığının Təkrar Yoxlanılmasına dair Rəy'
+  ],
+  powersOptions: [
+    'Qaydalar sakinlərin sayındakı dəyişikliyi əks etdirmir.',
+    'Park yerlərinin bölgüsü yenidən aparılmalıdır.',
+    'Təmizlik növbəsi bəzi mənzilləri əhatə etmir.',
+    'Qaydaların yeni redaksiyası tövsiyə olunur.',
+    'Yaşlı sakinlər üçün güzəşt nəzərdə tutulur.',
+    'Ümumi vəsaitin hesabatı tələb edilir.',
+    'Elan lövhəsinin yenilənməsi təklif olunur.',
+    'Səsvermə qaydası dəqiqləşdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar baxış nəticəsində yeni qaydalar qəbul edilməzsə, mövcud nizam dəyişdirilmədən qüvvədə qalır.',
+    'Rəy növbəti ümumi yığıncağadək qüvvədədir.',
+    'Qaydalar hər il yenidən nəzərdən keçirilir.'
+  ]
 },
 {
   id: 'r-tekrar-holiday', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['holiday'], regPrefix: 'TKR',
-  title: 'Toy Öhdəliyinə Təkrar Baxış Qərarı', tag: 'Toy protokolu',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Mərasim Öhdəliklərinin Bölgüsünün Təkrar Qiymətləndirilməsinə dair Rəy', tag: 'Toy',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
-  preamble: 'Baş İdarə {from} tərəfindən daxil olmuş ərizəyə əsasən {to} adlı şəxsin toy öhdəliyinə təkrar baxış təyin edir. Öhdəlik razılaşdırılmadan müəyyən edilmiş, masa yerləşdirilməsi və çıxış vaxtı isə sənəddə ümumiyyətlə göstərilməmişdir.',
-  powers: 'Oynama öhdəliyinin həcmi hər iki tərəflə razılaşdırılır.\nMasa yerləşdirilməsi əvvəlcədən yazılı formada təsdiqlənir.\nMahnı seçimi üzrə hər qonağa bir təklif hüququ verilir.\nÇıxış vaxtı sənədə ayrıca bənd kimi əlavə olunur.',
-  penalty: 'Şərtlər toydan əvvəl razılaşdırılmadıqda öhdəliyin həcmini və çıxış vaxtını ərizəçi özü müəyyən edir.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla müəyyən edilmişdir ki, {to} və {from} arasında mərasim öhdəliklərinin bölgüsü qonaqların faktiki sayına uyğun gəlmir. Bölgünün təkrar qiymətləndirilməsi məqsədəuyğun hesab olunur.',
+  powers: 'Öhdəliklərin bölgüsü qonaq sayına uyğun deyil.\nBüdcə hüdudları yenidən hesablanmalıdır.\nMasa nizamı dəyişdirilməlidir.\nYeni bölgünün razılaşdırılması tövsiyə olunur.',
+  penalty: 'Təkrar qiymətləndirmə nəticəsində yeni bölgü razılaşdırılmazsa, mövcud öhdəliklər dəyişdirilmədən icra edilir.',
+  titleOptions: [
+    'Mərasim Öhdəliklərinin Bölgüsünün Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Qonaq Siyahısının Yenidən Tərtibi İmkanlarına dair Rəy',
+    'Hədiyyə Büdcəsinin Yenidən Hesablanmasına dair Ekspert Rəyi',
+    'Masa Bölgüsünün Təkrar Araşdırılmasına dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Öhdəliklərin bölgüsü qonaq sayına uyğun deyil.',
+    'Büdcə hüdudları yenidən hesablanmalıdır.',
+    'Masa nizamı dəyişdirilməlidir.',
+    'Yeni bölgünün razılaşdırılması tövsiyə olunur.',
+    'Foto öhdəliyi ayrıca müzakirə edilir.',
+    'Hədiyyə siyahısı yenidən tərtib olunur.',
+    'Mərasim proqramı dəqiqləşdirilir.',
+    'Ehtiyat yerlərin sayı artırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar qiymətləndirmə nəticəsində yeni bölgü razılaşdırılmazsa, mövcud öhdəliklər dəyişdirilmədən icra edilir.',
+    'Rəy yalnız cari mərasimə aiddir.',
+    'Bölgü hər iki tərəfin imzası ilə təsdiqlənir.'
+  ]
 },
 {
   id: 'r-tekrar-travel', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['travel'], regPrefix: 'TKR',
-  title: 'Marşrut üzrə Təkrar Araşdırma Qərarı', tag: 'Yol mübahisəsi',
-  powersLabel: 'ARAŞDIRMANIN ŞƏRTLƏRİ',
+  title: 'Səfər Marşrutunun və Növbəliliyin Təkrar Araşdırılmasına dair Rəy', tag: 'Səfər',
   signOrg: 'Səfər və Marşrut Mübahisələri üzrə Ali Komissiya',
-  preamble: 'Komissiya {from} tərəfindən verilmiş müraciətə əsasən {to} adlı şəxsin seçdiyi marşrut üzrə təkrar araşdırma təyin edir. İlkin qərar naviqasiya məlumatı olmadan qəbul edilmiş, gecikmənin səbəbləri isə dəqiqləşdirilməmişdir.',
-  powers: 'Marşrutun uzunluğu və müddəti naviqasiya tarixçəsi ilə yoxlanılır.\nGecikmənin səbəbləri ayrı-ayrılıqda qeyd olunur.\nSürücülük növbəsi səfərin müddətinə görə yenidən bölünür.\nDayanacaq yerləri hər iki tərəfin razılığı ilə müəyyən edilir.',
-  penalty: 'Araşdırma tamamlanana qədər naviqasiya səlahiyyəti müvəqqəti olaraq sərnişində qalır.'
+  powersLabel: 'ARAŞDIRMANIN ŞƏRTLƏRİ',
+  preamble: 'Uzunmüddətli müşahidə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında razılaşdırılmış marşrut faktiki yol şəraitini əks etdirmir. Marşrutun və növbəliliyin təkrar araşdırılması tövsiyə olunur.',
+  powers: 'Marşrut faktiki yol şəraitini əks etdirmir.\nDayanacaqların sayı artırılmalıdır.\nSürücülük növbəsi qeyri-bərabər bölünüb.\nYeni planın tərtibi tövsiyə olunur.',
+  penalty: 'Təkrar araşdırma nəticəsində yeni plan razılaşdırılmazsa, səfər mövcud marşrut üzrə həyata keçirilir.',
+  titleOptions: [
+    'Səfər Marşrutunun və Növbəliliyin Təkrar Araşdırılmasına dair Rəy',
+    'Dayanacaqların Sayının Yenidən Müəyyən Edilməsinə dair Rəy',
+    'Sürücülük Növbəsinin Bərabərliyinin Qiymətləndirilməsinə dair Rəy',
+    'Yol Xərclərinin Bölgüsünün Təkrar Baxışına dair Ekspert Rəyi'
+  ],
+  powersOptions: [
+    'Marşrut faktiki yol şəraitini əks etdirmir.',
+    'Dayanacaqların sayı artırılmalıdır.',
+    'Sürücülük növbəsi qeyri-bərabər bölünüb.',
+    'Yeni planın tərtibi tövsiyə olunur.',
+    'Yanacaq xərcinin bölgüsü dəqiqləşdirilir.',
+    'Yemək fasilələri plana salınır.',
+    'Gecə sürüşü ayrıca müzakirə edilir.',
+    'Gəlmə vaxtı yenidən hesablanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar araşdırma nəticəsində yeni plan razılaşdırılmazsa, səfər mövcud marşrut üzrə həyata keçirilir.',
+    'Rəy yalnız cari səfərə aiddir.',
+    'Yeni plan hər iki tərəfin razılığı ilə təsdiqlənir.'
+  ]
 },
 {
   id: 'r-tekrar-pets', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['pets'], regPrefix: 'TKR',
-  title: 'Ev Heyvanı Rejiminə Təkrar Baxış', tag: 'Divan hüququ',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Ev Heyvanına Tətbiq Olunan Rejimin Təkrar Qiymətləndirilməsinə dair Rəy', tag: 'Ev heyvanı',
   signOrg: 'Ev Heyvanları Hüquqları üzrə Xüsusi Şura',
-  preamble: 'Şura {from} tərəfindən daxil olmuş müraciətə əsasən {to} adlı şəxsin müəyyən etdiyi ev rejiminə təkrar baxış təyin edir. Rejim heyvanın mövcud vərdişləri öyrənilmədən tərtib edilmiş, qadağan zonaları isə bir gecədə elan olunmuşdur.',
-  powers: 'Heyvanın gündəlik vərdişləri bir həftə müşahidə olunur.\nQadağan zonaları müşahidə nəticəsinə görə yenidən müəyyən edilir.\nYemləmə növbəsi ev üzvləri arasında bərabər bölünür.\nGəzinti saatları hava şəraitinə uyğunlaşdırılır.',
-  penalty: 'Müşahidə aparılmadıqda mövcud rejim qüvvədən düşür və heyvanın əvvəlki vərdişləri bərpa olunmuş sayılır.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Aparılmış baytar müayinəsinin nəticələri nəzərə alınaraq müəyyən edilmişdir ki, {to} adlı şəxsə tətbiq olunan rejim cari sağlamlıq göstəricilərinə uyğun gəlmir. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib olunmuşdur.',
+  powers: 'Rejim cari sağlamlıq göstəricilərinə uyğun deyil.\nGündəlik hərəkət həcmi artırılmalıdır.\nMükafat norması yenidən müəyyən edilir.\nYeni cədvəlin tərtibi tövsiyə olunur.',
+  penalty: 'Təkrar qiymətləndirmənin tövsiyələrinə əməl edilmədikdə növbəti müayinədə əlavə tədbirlər zəruri hesab ediləcəkdir.',
+  titleOptions: [
+    'Ev Heyvanına Tətbiq Olunan Rejimin Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Yemləmə və Gəzinti Cədvəlinin Yenidən Baxışına dair Rəy',
+    'Divan və Yataq Hüquqlarının Təkrar Araşdırılmasına dair Rəy',
+    'Mükafat Normasının Yenidən Müəyyən Edilməsinə dair Ekspert Rəyi'
+  ],
+  powersOptions: [
+    'Rejim cari sağlamlıq göstəricilərinə uyğun deyil.',
+    'Gündəlik hərəkət həcmi artırılmalıdır.',
+    'Mükafat norması yenidən müəyyən edilir.',
+    'Yeni cədvəlin tərtibi tövsiyə olunur.',
+    'Yem növü tədricən dəyişdirilir.',
+    'Gəzinti müddəti uzadılır.',
+    'Çəki nəzarəti gücləndirilir.',
+    'Növbəti müayinə tarixi təyin edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar qiymətləndirmənin tövsiyələrinə əməl edilmədikdə növbəti müayinədə əlavə tədbirlər zəruri hesab ediləcəkdir.',
+    'Rəy növbəti baytar müayinəsinədək qüvvədədir.',
+    'Cədvəl hər mövsüm yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'r-tekrar-gaming', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['gaming'], regPrefix: 'TKR',
-  title: 'Təkrar Oyun Keçirilməsi Haqqında Qərar', tag: 'Ən çox tələb olunan',
-  powersLabel: 'TƏKRAR OYUNUN ŞƏRTLƏRİ',
+  title: 'Matçın Nəticəsinin və Şərtlərinin Təkrar Qiymətləndirilməsinə dair Rəy', tag: 'Oyun',
   signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
-  preamble: 'Komissiya {from} tərəfindən verilmiş ərizəyə baxaraq {to} adlı şəxslə keçirilmiş oyun üzrə təkrar görüş təyin edir. Bağlantı kəsintisi qeydə alınmış, lakin nəticəyə təsiri sübuta yetirilməmişdir. Məsələ meydanda həll ediləcək.',
-  powers: 'Təkrar oyun yeddi gün ərzində keçirilir.\nHər iki tərəf eyni şəbəkəyə kabellə qoşulur.\nKomanda seçimi oyundan əvvəl yazılı şəkildə təsbit olunur.\nİkinci oyunun nəticəsi yekun sayılır və mübahisə edilmir.',
-  penalty: 'Təkrar oyuna çıxmayan tərəf məğlub sayılır və ilkin nəticə avtomatik olaraq qüvvəyə minir.'
+  powersLabel: 'TƏKRAR OYUNUN ŞƏRTLƏRİ',
+  preamble: 'Məsələyə dair aparılmış təkrar araşdırma nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında keçirilmiş matçda şərtlər hər iki tərəf üçün eyni olmamışdır. Təkrar matçın keçirilməsi məqsədəuyğun hesab olunur.',
+  powers: 'Matçın şərtləri hər iki tərəf üçün eyni olmayıb.\nXəritə seçimi birtərəfli aparılıb.\nTexniki fasilə qeydə alınıb.\nTəkrar matçın keçirilməsi tövsiyə olunur.',
+  penalty: 'Təkrar matç keçirilmədikdə əvvəlki nəticə qəti qüvvəyə minir və mövzu üzrə yeni müraciətlərə baxılmır.',
+  titleOptions: [
+    'Matçın Nəticəsinin və Şərtlərinin Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Təkrar Matçın Keçirilməsi Zərurətinə dair Ekspert Rəyi',
+    'Bağlantı Göstəricilərinin Yenidən Araşdırılmasına dair Rəy',
+    'Komanda Tərkibinin Təsirinin Qiymətləndirilməsinə dair Rəy'
+  ],
+  powersOptions: [
+    'Matçın şərtləri hər iki tərəf üçün eyni olmayıb.',
+    'Xəritə seçimi birtərəfli aparılıb.',
+    'Texniki fasilə qeydə alınıb.',
+    'Təkrar matçın keçirilməsi tövsiyə olunur.',
+    'Bağlantı jurnalı araşdırmaya daxil edilib.',
+    'Komanda tərkibi matç ərzində dəyişib.',
+    'Reytinq düzəlişi təxirə salınıb.',
+    'Yeni matçın tarixi razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar matç keçirilmədikdə əvvəlki nəticə qəti qüvvəyə minir və mövzu üzrə yeni müraciətlərə baxılmır.',
+    'Rəy yalnız bir təkrar matça əsas verir.',
+    'Yeni matçın şərtləri birgə müəyyən edilir.'
+  ]
 },
 {
   id: 'r-tekrar-viral', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', replyCats: ['viral'], regPrefix: 'TKR',
-  title: 'Təkrar Ekspertiza Təyin Edilməsi Qərarı', tag: 'Viral cavab',
-  powersLabel: 'TƏKRAR EKSPERTİZANIN ŞƏRTLƏRİ',
+  title: 'Təkrar Ekspertizanın Təyin Edilməsi Zərurətinə dair Yekun Rəy', tag: 'Ekspertiza',
   signOrg: 'Bəhanələrin Ekspertizası üzrə Ali Komissiya',
-  preamble: 'Komissiya {from} tərəfindən daxil olmuş etiraza əsasən {to} adlı şəxs barəsində verilmiş rəy üzrə təkrar ekspertiza təyin edir. İlkin rəy bir epizod əsasında tərtib edilmiş, ölçmə metodikası isə sənədə əlavə olunmamışdır.',
-  powers: 'Müşahidə müddəti ən azı üç epizodu əhatə edir.\nÖlçmə metodikası rəyin ayrılmaz hissəsi kimi əlavə olunur.\nHər iki tərəf ekspertiza zamanı iştirak edir.\nYekun bal əvvəlki rəydən asılı olmayaraq müəyyən edilir.',
-  penalty: 'Təkrar ekspertiza keçirilmədikdə ilkin rəy istinad sənədi kimi istifadə edilə bilməz və arxivə verilir.'
+  powersLabel: 'TƏKRAR EKSPERTİZANIN ŞƏRTLƏRİ',
+  preamble: 'Təqdim edilmiş yeni materiallar nəzərdən keçirilərək müəyyən edilmişdir ki, {to} barəsində verilmiş ilkin rəy qısa müşahidə dövrünə əsaslanmışdır. {from} tərəfindən təkrar ekspertizanın təyin edilməsi tələbi əsaslı hesab olunur.',
+  powers: 'İlkin rəy qısa müşahidə dövrünə əsaslanıb.\nNümunə sayı statistik həddə çatmayıb.\nXarici amillər qiymətləndirməyə daxil edilməyib.\nTəkrar ekspertizanın təyini tövsiyə olunur.',
+  penalty: 'Təkrar ekspertiza keçirilmədikdə ilkin rəy qəti qüvvəyə minir və göstəricilər dəyişdirilmədən saxlanılır.',
+  titleOptions: [
+    'Təkrar Ekspertizanın Təyin Edilməsi Zərurətinə dair Yekun Rəy',
+    'İlkin Rəyin Metodikasının Yenidən Yoxlanılmasına dair Rəy',
+    'Müşahidə Müddətinin Uzadılması Zərurətinə dair Ekspert Rəyi',
+    'Göstəricilərin Yenidən Ölçülməsinə dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'İlkin rəy qısa müşahidə dövrünə əsaslanıb.',
+    'Nümunə sayı statistik həddə çatmayıb.',
+    'Xarici amillər qiymətləndirməyə daxil edilməyib.',
+    'Təkrar ekspertizanın təyini tövsiyə olunur.',
+    'Müşahidə müddəti iki həftəyə uzadılır.',
+    'Kontrol qrup müəyyən edilir.',
+    'Göstəricilərin hesablanma qaydası açıqlanır.',
+    'Müstəqil ekspert cəlb olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar ekspertiza keçirilmədikdə ilkin rəy qəti qüvvəyə minir və göstəricilər dəyişdirilmədən saxlanılır.',
+    'Rəy təkrar ekspertiza başa çatanadək qüvvədədir.',
+    'Nəticələr hər iki tərəfə eyni gün çatdırılır.'
+  ]
 },
 {
   id: 'r-tekrar-umumi', cat: 'c-tekrar', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
   replyKind: 'tekrar', regPrefix: 'TKR',
-  title: 'Sənədə Təkrar Baxış Haqqında Qərar', tag: 'Universal',
-  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  title: 'Sənədin Şərtlərinin Yenidən Baxılması Zərurətinə dair Yekun Rəy', tag: 'Universal',
   signOrg: 'Sənədlərə Etirazlar üzrə Ali Apellyasiya Şurası',
-  preamble: 'Şura {from} tərəfindən verilmiş müraciətə əsasən {to} adlı şəxs tərəfindən tərtib edilmiş sənəd üzrə təkrar baxış təyin edir. Sənəd bir tərəfin iştirakı ilə hazırlanmış, əks arqumentlər isə mətnə daxil edilməmişdir.',
-  powers: 'Sənədin icrası təkrar baxış müddətində dayandırılır.\nHər iki tərəf öz mövqeyini yazılı şəkildə təqdim edir.\nSənədin bütün bəndləri ayrı-ayrılıqda müzakirə olunur.\nYekun redaksiya hər iki tərəf tərəfindən təsdiqlənir.',
-  penalty: 'Baxış on dörd gün ərzində tamamlanmadıqda sənəd qüvvədən düşür və yeni sənəd tərtib edilir.'
+  powersLabel: 'TƏKRAR BAXIŞIN ŞƏRTLƏRİ',
+  preamble: 'Mövcud vəziyyət qiymətləndirildikdən sonra müəyyən edilmişdir ki, {to} və {from} arasında qüvvədə olan sənəd tərtib olunduğu vaxtdan bəri dəyişmiş halları əks etdirmir. Şərtlərin yenidən baxılması məqsədəuyğun hesab olunur.',
+  powers: 'Sənəd dəyişmiş halları əks etdirmir.\nBəzi bəndlər praktikada tətbiq olunmayıb.\nMüddət hüdudları dəqiqləşdirilməlidir.\nYeni redaksiyanın tərtibi tövsiyə olunur.',
+  penalty: 'Təkrar baxış nəticəsində yeni sənəd tərtib edilməzsə, mövcud şərtlər dəyişdirilmədən qüvvədə qalır.',
+  titleOptions: [
+    'Sənədin Şərtlərinin Yenidən Baxılması Zərurətinə dair Yekun Rəy',
+    'Sənədin Aktuallığının Təkrar Qiymətləndirilməsinə dair Rəy',
+    'Şəraitin Dəyişməsinin Sənədə Təsirinə dair Ekspert Rəyi',
+    'Sənədin Yeni Redaksiyada Tərtibi Zərurətinə dair Rəy'
+  ],
+  powersOptions: [
+    'Sənəd dəyişmiş halları əks etdirmir.',
+    'Bəzi bəndlər praktikada tətbiq olunmayıb.',
+    'Müddət hüdudları dəqiqləşdirilməlidir.',
+    'Yeni redaksiyanın tərtibi tövsiyə olunur.',
+    'Cəza bəndinin mütənasibliyi yoxlanılır.',
+    'Tərəflərin mövqeyi yenidən soruşulur.',
+    'Əvvəlki razılaşmalar arxivə salınır.',
+    'Yeni sənədin layihəsi hazırlanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar baxış nəticəsində yeni sənəd tərtib edilməzsə, mövcud şərtlər dəyişdirilmədən qüvvədə qalır.',
+    'Rəy yeni sənəd imzalananadək qüvvədədir.',
+    'Yenidən baxış hər iki tərəfin iştirakı ilə aparılır.'
+  ]
 },
 
 /* ==================== 🚫 LƏĞV ====================
@@ -472,119 +1317,405 @@ window.REPLIES = [
 {
   id: 'r-legv-couples', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['couples'], regPrefix: 'LGV',
-  title: 'İcazənin Ləğv Edilməsi Haqqında Bildiriş', tag: 'Ev diplomatiyası',
+  title: 'Verilmiş İcazənin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq', tag: 'Ev diplomatiyası',
   signOrg: 'Cütlüklərarası Mübahisələrin Həlli üzrə Ali Şura',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş icazənin ləğv edildiyini rəsmi qaydada elan edir. Ləğvin əsası sənəddə göstərilmiş şərtlərin ardıcıl olaraq üç dəfə pozulmasıdır. Bildiriş çatdırıldığı andan icazə qüvvədən düşür.',
-  powers: 'İcazə bildirişin çatdırıldığı andan qüvvədən düşür.\nSənəddə göstərilən bütün güzəştlər eyni anda dayandırılır.\nYeni icazə üçün müraciət ən tezi yeddi gündən sonra mümkündür.\nƏvvəlki icazənin nüsxələri etibarsız sayılır.',
-  penalty: 'Ləğv edilmiş icazəyə istinad davam etdikdə növbəti iki həftəsonunun proqramı tam olaraq bildirişi verən tərəf tərəfindən müəyyən edilir.'
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsə verilmiş icazənin şərtləri pozulmuş və sənəd qüvvədən düşmüş hesab edilir. {from} tərəfindən qərar qəbul edilmiş, icazənin bərpası üçün yeni yazılı müraciət tələb olunur.',
+  powers: 'İcazə qüvvədən düşmüş hesab edilir.\nŞərtlərin pozulma vaxtı qeydə alınıb.\nYeni icazə ən tezi bir həftədən sonra verilir.\nBərpa üçün yazılı müraciət tələb olunur.',
+  penalty: 'Ləğv qərarına etiraz üç gün ərzində bildirilə bilər; etiraz baxılana qədər icazə bərpa edilmir.',
+  titleOptions: [
+    'Verilmiş İcazənin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq',
+    'Həftəsonu Səlahiyyətinin Dayandırılması haqqında Teleqram',
+    'Sənədin Şərtlərinin Pozulması Səbəbindən Ləğvi haqqında Bildiriş',
+    'İcazənin Müddətindən Əvvəl Dayandırılması haqqında Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'İcazə qüvvədən düşmüş hesab edilir.',
+    'Şərtlərin pozulma vaxtı qeydə alınıb.',
+    'Yeni icazə ən tezi bir həftədən sonra verilir.',
+    'Bərpa üçün yazılı müraciət tələb olunur.',
+    'Cavabsız zənglərin sayı əsas götürülüb.',
+    'Qayıdış saatı bir saatdan artıq aşılıb.',
+    'Əvvəlcədən xəbərdarlıq edilməyib.',
+    'Sənədin surəti arxivə verilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ləğv qərarına etiraz üç gün ərzində bildirilə bilər; etiraz baxılana qədər icazə bərpa edilmir.',
+    'Bərpa yalnız yeni şərtlərin qəbulu ilə mümkündür.',
+    'Ləğv qərarı imzalandığı andan qüvvəyə minir.'
+  ]
 },
 {
   id: 'r-legv-friends', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['friends'], regPrefix: 'LGV',
-  title: 'Möhlətin Ləğv Edilməsi Haqqında Bildiriş', tag: 'Dost borcu',
+  title: 'Ödəniş Möhlətinin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq', tag: 'Borc',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş ödəniş möhlətinin ləğv edildiyini elan edir. Möhlət yaxşı niyyət əsasında verilmiş, lakin razılaşdırılmış tarixdə heç bir ödəniş və ya izahat daxil olmamışdır. Borc dərhal tələb olunan hala keçir.',
-  powers: 'Möhlət bildirişin çatdırıldığı andan qüvvədən düşür.\nBorcun tam məbləği dərhal tələb olunan hala keçir.\nYeni möhlət yalnız yazılı formada və şahid iştirakı ilə verilir.\nHissə-hissə ödəniş razılığı ayrıca sənədləşdirilir.',
-  penalty: 'Ödəniş yeddi gün ərzində həyata keçirilmədikdə borcun məbləği növbəti ortaq görüşün hesabı qədər artırılmış sayılır.'
+  preamble: 'Bununla məlumat verilir ki, {to} adlı şəxsə verilmiş ödəniş möhləti razılaşdırılmış cədvəlin iki dəfə pozulması səbəbindən qüvvədən düşmüşdür. {from} tərəfindən borcun tam məbləğinin qaytarılması tələb olunur.',
+  powers: 'Ödəniş möhləti qüvvədən düşür.\nBorcun tam məbləği tələb olunur.\nYeni möhlət müraciətinə baxılmır.\nÖdəniş tarixi yenidən müəyyən edilir.',
+  penalty: 'Ödəniş yeddi gün ərzində həyata keçirilmədikdə məsələ ümumi dost qrupunun müzakirəsinə çıxarılır.',
+  titleOptions: [
+    'Ödəniş Möhlətinin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq',
+    'Borc üzrə Verilmiş Güzəştin Ləğvi haqqında Teleqram',
+    'Möhlətin Müddətindən Əvvəl Dayandırılması haqqında Bildiriş',
+    'Ödəniş Cədvəlinin Qüvvədən Düşməsi haqqında Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Ödəniş möhləti qüvvədən düşür.',
+    'Borcun tam məbləği tələb olunur.',
+    'Yeni möhlət müraciətinə baxılmır.',
+    'Ödəniş tarixi yenidən müəyyən edilir.',
+    'Razılaşdırılmış cədvəl iki dəfə pozulub.',
+    'Xatırlatmalar cavabsız qalıb.',
+    'Qismən ödəniş qeydə alınıb.',
+    'Yeni borc verilməsi dayandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ödəniş yeddi gün ərzində həyata keçirilmədikdə məsələ ümumi dost qrupunun müzakirəsinə çıxarılır.',
+    'Ləğv qərarına etiraz ödəniş öhdəliyini dayandırmır.',
+    'Möhlət yalnız tam ödənişdən sonra yenidən verilə bilər.'
+  ]
 },
 {
   id: 'r-legv-work', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['work'], regPrefix: 'LGV',
-  title: 'Tapşırıq Möhlətinin Ləğvi Bildirişi', tag: 'Ofis',
+  title: 'Tapşırıq üzrə Verilmiş Müddət Uzadılmasının Ləğvi haqqında Xəbərdarlıq', tag: 'Ofis',
   signOrg: 'Ofisdaxili Münasibətlərin Tənzimlənməsi üzrə Komitə',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş əlavə müddətin ləğv edildiyini elan edir. Müddət bir dəfə uzadılmış, ikinci uzatma isə əsaslandırılmadan tələb olunmuşdur. Tapşırıq ilkin cədvəl üzrə təhvil verilməlidir.',
-  powers: 'Əlavə müddət bildirişin çatdırıldığı andan qüvvədən düşür.\nTapşırıq ilkin cədvəl üzrə təhvil verilir.\n«Az qalıb» ifadəsi hesabat kimi qəbul edilmir.\nTəhvil forması dəyişdirilə bilməz.',
-  penalty: 'Tapşırıq ilkin cədvəl üzrə təhvil verilmədikdə növbəti həftənin toplantı protokolunu aparmaq öhdəliyi həmin şəxsin üzərinə düşür.'
+  preamble: 'Təcili qaydada bildirilir ki, {to} adlı şəxsə verilmiş müddət uzadılması aralıq nəticənin təqdim edilməməsi səbəbindən ləğv edilmişdir. {from} tərəfindən ilkin son tarixin bərpası barədə qərar qəbul olunmuşdur.',
+  powers: 'Müddət uzadılması ləğv edilir.\nİlkin son tarix bərpa olunur.\nAralıq nəticə dərhal təqdim edilir.\nYeni uzadılma müraciətinə baxılmır.',
+  penalty: 'Bərpa edilmiş müddət də pozulduqda tapşırıq tam olaraq başqa icraçıya verilir və nəticə protokolda göstərilir.',
+  titleOptions: [
+    'Tapşırıq üzrə Verilmiş Müddət Uzadılmasının Ləğvi haqqında Xəbərdarlıq',
+    'İcra Müddətinin Bərpa Edilməsi haqqında Təcili Teleqram',
+    'Güzəştli Rejimin Dayandırılması haqqında Rəsmi Bildiriş',
+    'Tapşırığın Başqa İcraçıya Verilməsi haqqında Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Müddət uzadılması ləğv edilir.',
+    'İlkin son tarix bərpa olunur.',
+    'Aralıq nəticə dərhal təqdim edilir.',
+    'Yeni uzadılma müraciətinə baxılmır.',
+    'Gündəlik hesabat rejimi tətbiq olunur.',
+    'Məsələ toplantının gündəliyinə salınır.',
+    'Tapşırıq başqa icraçıya verilə bilər.',
+    'Əlaqədar şöbələr məlumatlandırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bərpa edilmiş müddət də pozulduqda tapşırıq tam olaraq başqa icraçıya verilir və nəticə protokolda göstərilir.',
+    'Ləğvə etiraz protokola daxil edilir, lakin müddəti dayandırmır.',
+    'Uzadılma yalnız yeni əsaslar təqdim edildikdə bərpa olunur.'
+  ]
 },
 {
   id: 'r-legv-family', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['family'], regPrefix: 'LGV',
-  title: 'Ev Fərmanının Ləğvi Haqqında Bildiriş', tag: 'Ailə şurası',
+  title: 'Ev Qaydaları üzrə Verilmiş Güzəştin Ləğvi haqqında Bildiriş', tag: 'Ailə',
   signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
-  preamble: '{from} bu bildirişlə {to} adlı şəxs tərəfindən elan edilmiş ev fərmanının ləğv edildiyini bildirir. Fərman ailə şurası çağırılmadan qüvvəyə minmiş və digər ev üzvlərinin razılığını almamışdır. Fərman bu andan etibarsızdır.',
-  powers: 'Fərman bildirişin elan olunduğu andan qüvvədən düşür.\nPult və kanal seçimi üzrə əvvəlki qayda bərpa olunur.\nEv işlərinin bölgüsü şuraya qədər dəyişmir.\nYeni fərman yalnız şura iclasında elan edilə bilər.',
-  penalty: 'Ləğv edilmiş fərmana istinad davam etdikdə həmin həftənin bütün ev işləri fərmanı elan edən tərəfin üzərinə keçir.'
+  preamble: 'Nəzərinizə çatdırılır ki, {to} adlı şəxsə verilmiş güzəşt öhdəliklərin yerinə yetirilməməsi səbəbindən ləğv edilmişdir. {from} tərəfindən əvvəlki rejimin bərpası barədə qərar qəbul olunmuşdur.',
+  powers: 'Güzəşt ləğv edilir.\nƏvvəlki rejim bərpa olunur.\nEkran vaxtı limiti azaldılır.\nBərpa öhdəliklərin icrasından sonra mümkündür.',
+  penalty: 'Güzəşt üç gün ardıcıl olaraq öhdəliklərin icrasından sonra yenidən verilə bilər.',
+  titleOptions: [
+    'Ev Qaydaları üzrə Verilmiş Güzəştin Ləğvi haqqında Bildiriş',
+    'Ekran Vaxtı Güzəştinin Dayandırılması haqqında Teleqram',
+    'Həftəsonu Rejiminin Qüvvədən Düşməsi haqqında Xəbərdarlıq',
+    'Verilmiş İcazənin Müddətindən Əvvəl Ləğvi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Güzəşt ləğv edilir.',
+    'Əvvəlki rejim bərpa olunur.',
+    'Ekran vaxtı limiti azaldılır.',
+    'Bərpa öhdəliklərin icrasından sonra mümkündür.',
+    'Ev tapşırıqları vaxtında yerinə yetirilməyib.',
+    'Dərs hazırlığı cədvəli pozulub.',
+    'Xəbərdarlıq iki dəfə edilib.',
+    'Ailə şurası məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Güzəşt üç gün ardıcıl olaraq öhdəliklərin icrasından sonra yenidən verilə bilər.',
+    'Ləğvə etiraz ailə şurasında müzakirə edilir.',
+    'Bərpa avtomatik həyata keçirilmir.'
+  ]
 },
 {
   id: 'r-legv-relatives', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['relatives'], regPrefix: 'LGV',
-  title: 'Ziyarət Möhlətinin Ləğvi Bildirişi', tag: 'Qohum protokolu',
+  title: 'Ziyarətin Təxirə Salınması Güzəştinin Ləğvi haqqında Bildiriş', tag: 'Qohumlar',
   signOrg: 'Qohumluq Münasibətləri üzrə Ali Nəzarət Şurası',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş ziyarət təxirinin ləğv edildiyini elan edir. Təxir bir dəfə verilmiş, lakin sonrakı iki bayramda da eyni səbəb təkrarlanmışdır. Ziyarət bu ay ərzində baş tutmalıdır.',
-  powers: 'Ziyarət təxiri bildirişin çatdırıldığı andan qüvvədən düşür.\nZiyarətin tarixi qarşı tərəf tərəfindən müəyyən edilir.\nYol vaxtı bəhanə kimi qəbul edilmir.\nYeni təxir üçün müraciət bu il qəbul olunmur.',
-  penalty: 'Ziyarət bu ay baş tutmadıqda növbəti bayram süfrəsinin hazırlığı və qonaq siyahısı təxir istəyən tərəfin öhdəsinə keçir.'
+  preamble: 'Rəsmi qaydada xəbər verilir ki, {to} adlı şəxsə verilmiş ziyarət möhləti müddətin ikinci dəfə uzadılması səbəbindən ləğv edilmişdir. {from} tərəfindən ziyarətin cari bayram dövründə həyata keçirilməsi tələb olunur.',
+  powers: 'Ziyarət möhləti ləğv edilir.\nZiyarət cari bayram dövründə həyata keçirilir.\nTarix bir həftə əvvəl təsdiqlənir.\nYeni möhlət verilmir.',
+  penalty: 'Ziyarət yenidən təxirə salındıqda növbəti bayramda ilk ziyarətin ünvanı digər tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Ziyarətin Təxirə Salınması Güzəştinin Ləğvi haqqında Bildiriş',
+    'Ziyarət Növbəsinin Bərpası haqqında Təcili Teleqram',
+    'Verilmiş Möhlətin Qüvvədən Düşməsi haqqında Xəbərdarlıq',
+    'Bayram Ziyarəti Öhdəliyinin Bərpası haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Ziyarət möhləti ləğv edilir.',
+    'Ziyarət cari bayram dövründə həyata keçirilir.',
+    'Tarix bir həftə əvvəl təsdiqlənir.',
+    'Yeni möhlət verilmir.',
+    'Əvvəlki iki möhlət qeydə alınıb.',
+    'Marşrut dəyişdirilmir.',
+    'Hədiyyə öhdəliyi qüvvədə qalır.',
+    'Hər iki ailə məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ziyarət yenidən təxirə salındıqda növbəti bayramda ilk ziyarətin ünvanı digər tərəf tərəfindən müəyyən edilir.',
+    'Ləğvə etiraz növbəliliyə təsir göstərmir.',
+    'Möhlət yalnız fövqəladə hallarda bərpa olunur.'
+  ]
 },
 {
   id: 'r-legv-student', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['student'], regPrefix: 'LGV',
-  title: 'Konspekt Möhlətinin Ləğvi Bildirişi', tag: 'İmtahan sessiyası',
+  title: 'Konspekt Borcu üzrə Verilmiş Möhlətin Ləğvi haqqında Bildiriş', tag: 'Tələbə',
   signOrg: 'Tələbə Bəhanələrinin Araşdırılması üzrə Komissiya',
-  preamble: '{from} bu bildirişlə {to} adlı tələbəyə verilmiş konspekt möhlətinin ləğv edildiyini elan edir. Möhlət sessiyaya qədər verilmiş, lakin bu müddətdə heç bir qeyd qrupla paylaşılmamışdır. Borc dərhal bağlanmalıdır.',
-  powers: 'Möhlət bildirişin elan olunduğu andan qüvvədən düşür.\nBütün konspektlər növbəti dərsə qədər qrupla paylaşılır.\nFoto şəklində göndərilən oxunmaz qeydlər qəbul edilmir.\nYeni möhlət bu semestrdə verilmir.',
-  penalty: 'Borc növbəti dərsə qədər bağlanmadıqda həmin fənn üzrə bütün semestrin qeydləri tələbənin öhdəsinə keçir.'
+  preamble: 'Daxil olmuş məlumata əsasən bildirilir ki, {to} adlı şəxsə verilmiş möhlət imtahan dövrünün yaxınlaşması səbəbindən ləğv edilmişdir. {from} tərəfindən materialın dərhal qaytarılması tələb olunur.',
+  powers: 'Möhlət ləğv edilir.\nMaterial dərhal qaytarılır.\nYeni möhlət verilmir.\nQaytarılma faktı yazışma ilə təsdiqlənir.',
+  penalty: 'Material qaytarılmadıqda növbəti semestrdə konspekt istifadəyə verilmir və müraciətə baxılmır.',
+  titleOptions: [
+    'Konspekt Borcu üzrə Verilmiş Möhlətin Ləğvi haqqında Bildiriş',
+    'Təhvil Müddəti Güzəştinin Dayandırılması haqqında Teleqram',
+    'Materialın Dərhal Qaytarılması Tələbi haqqında Xəbərdarlıq',
+    'Verilmiş Möhlətin Qüvvədən Düşməsi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Möhlət ləğv edilir.',
+    'Material dərhal qaytarılır.',
+    'Yeni möhlət verilmir.',
+    'Qaytarılma faktı yazışma ilə təsdiqlənir.',
+    'İmtahan tarixi yaxınlaşıb.',
+    'Materialın surəti çıxarıla bilər.',
+    'Çatışmayan mövzular ayrıca qeyd olunub.',
+    'Növbəti semestrdə material verilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Material qaytarılmadıqda növbəti semestrdə konspekt istifadəyə verilmir və müraciətə baxılmır.',
+    'Ləğvə etiraz qaytarılma öhdəliyini dayandırmır.',
+    'Möhlət yalnız imtahandan sonra yenidən verilə bilər.'
+  ]
 },
 {
   id: 'r-legv-neighbors', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['neighbors'], regPrefix: 'LGV',
-  title: 'Həyət İcazəsinin Ləğvi Bildirişi', tag: 'Həyət nizamı',
+  title: 'Həyətdə Verilmiş İcazənin Qüvvədən Düşməsi haqqında Bildiriş', tag: 'Qonşuluq',
   signOrg: 'Həyətdaxili Nizamın Qorunması üzrə Baş İdarə',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş həyət icazəsinin ləğv edildiyini elan edir. İcazə müvəqqəti verilmiş, lakin park yeri razılaşdırılmış müddətdən artıq tutulmuş və sakitlik rejimi iki dəfə pozulmuşdur.',
-  powers: 'İcazə bildirişin elan olunduğu andan qüvvədən düşür.\nPark yeri növbə cədvəlinə qaytarılır.\nSakitlik rejimi saat 23:00-dan bərpa olunur.\nBildirişin surəti pilləkən elan lövhəsinə vurulur.',
-  penalty: 'İcazə ləğv edildikdən sonra park yeri boşaldılmadıqda həmin yer növbəti ay üçün digər sakinə təhkim olunur.'
+  preamble: 'Diqqətinizə çatdırırıq ki, {to} adlı şəxsə verilmiş icazə sakinlərdən daxil olmuş müraciətlər əsasında ləğv edilmişdir. {from} tərəfindən vəziyyətin üç gün ərzində bərpası tələb olunur.',
+  powers: 'İcazə qüvvədən düşür.\nİşlər dərhal dayandırılır.\nVəziyyət üç gün ərzində bərpa edilir.\nYeni icazə ümumi razılıqla verilir.',
+  penalty: 'Vəziyyət bərpa edilmədikdə məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+  titleOptions: [
+    'Həyətdə Verilmiş İcazənin Qüvvədən Düşməsi haqqında Bildiriş',
+    'Təmir İşləri İcazəsinin Ləğvi haqqında Təcili Teleqram',
+    'Park Yeri Səlahiyyətinin Dayandırılması haqqında Xəbərdarlıq',
+    'Verilmiş Güzəştin Müddətindən Əvvəl Ləğvi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'İcazə qüvvədən düşür.',
+    'İşlər dərhal dayandırılır.',
+    'Vəziyyət üç gün ərzində bərpa edilir.',
+    'Yeni icazə ümumi razılıqla verilir.',
+    'Sakinlərin müraciətləri protokola əlavə edilib.',
+    'Pozuntu vaxtı dəqiqləşdirilib.',
+    'Elan lövhəsində məlumat yerləşdirilib.',
+    'Ümumi yığıncaq məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəziyyət bərpa edilmədikdə məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+    'Ləğvə etiraz üç gün ərzində bildirilə bilər.',
+    'İcazə yalnız yeni şərtlərlə bərpa olunur.'
+  ]
 },
 {
   id: 'r-legv-holiday', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['holiday'], regPrefix: 'LGV',
-  title: 'Toy İcazəsinin Ləğvi Haqqında Bildiriş', tag: 'Toy protokolu',
+  title: 'Mərasimlə Bağlı Verilmiş İcazənin Ləğvi haqqında Bildiriş', tag: 'Toy',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş «oynamamaq» icazəsinin ləğv edildiyini elan edir. İcazə bir toy üçün verilmiş, lakin sonrakı üç mərasimdə də istifadə olunmuşdur. Bundan sonra icazə qüvvədə deyil.',
-  powers: 'İcazə bildirişin çatdırıldığı andan qüvvədən düşür.\nOynama öhdəliyi bərpa olunur və ən azı iki mahnını əhatə edir.\nMasadan qalxmamaq hüququ dayandırılır.\nQohumların dəvəti rədd edilə bilməz.',
-  penalty: 'Öhdəlik yerinə yetirilmədikdə həmin şəxs növbəti mərasimin bütün fotolarında ön sırada durmaq öhdəliyi daşıyır.'
+  preamble: 'Bununla xəbər verilir ki, {to} adlı şəxsə verilmiş icazə mərasimin proqramında baş vermiş dəyişiklik səbəbindən ləğv edilmişdir. {from} tərəfindən yeni şərtlərin mərasimdən əvvəl qəbulu tələb olunur.',
+  powers: 'İcazə ləğv edilir.\nAilə rəqsində iştirak öhdəliyi bərpa olunur.\nYeni şərtlər mərasimdən əvvəl bildirilir.\nGüzəşt yenidən verilmir.',
+  penalty: 'Yeni şərtlər qəbul edilmədikdə mərasimdə iştirak qaydası tam olaraq təşkilatçılar tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Mərasimlə Bağlı Verilmiş İcazənin Ləğvi haqqında Bildiriş',
+    'Rəqsdən Azad Edilmə İcazəsinin Dayandırılması haqqında Teleqram',
+    'Öhdəlikdən Azad Edilmənin Qüvvədən Düşməsi haqqında Xəbərdarlıq',
+    'Mərasim Güzəştinin Ləğvi haqqında Rəsmi Bildiriş'
+  ],
+  powersOptions: [
+    'İcazə ləğv edilir.',
+    'Ailə rəqsində iştirak öhdəliyi bərpa olunur.',
+    'Yeni şərtlər mərasimdən əvvəl bildirilir.',
+    'Güzəşt yenidən verilmir.',
+    'Mərasim proqramı dəyişdirilib.',
+    'Qonaq sayı artıb.',
+    'Masa nizamı yenidən qurulub.',
+    'Foto öhdəliyi ayrıca müəyyən edilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Yeni şərtlər qəbul edilmədikdə mərasimdə iştirak qaydası tam olaraq təşkilatçılar tərəfindən müəyyən edilir.',
+    'Ləğvə etiraz mərasim günü baxılmır.',
+    'İcazə yalnız növbəti mərasim üçün bərpa oluna bilər.'
+  ]
 },
 {
   id: 'r-legv-travel', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['travel'], regPrefix: 'LGV',
-  title: 'Naviqasiya Səlahiyyətinin Ləğvi Bildirişi', tag: 'Yol mübahisəsi',
+  title: 'Marşrut üzrə Verilmiş Səlahiyyətin Ləğvi haqqında Bildiriş', tag: 'Səfər',
   signOrg: 'Səfər və Marşrut Mübahisələri üzrə Ali Komissiya',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş naviqasiya səlahiyyətinin ləğv edildiyini elan edir. Səlahiyyət etibar əsasında verilmiş, lakin son üç səfərdə ümumi gecikmə bir saatı keçmişdir. Səlahiyyət bu andan qüvvədə deyil.',
-  powers: 'Naviqasiya səlahiyyəti bildirişin anından digər tərəfə keçir.\nMarşrut bundan sonra naviqasiya tövsiyəsi ilə seçilir.\nMusiqi seçimi səfər müddətincə sərnişində qalır.\nDayanacaq yerlərini sərnişin müəyyən edir.',
-  penalty: 'Səlahiyyət ləğv edildikdən sonra yenidən istifadə edildikdə həmin səfərin bütün xərcləri sürücünün üzərində qalır.'
+  preamble: 'Təcili məlumat verilir ki, {to} adlı şəxsə verilmiş marşrut səlahiyyəti yolun əsassız uzadılması səbəbindən ləğv edilmişdir. {from} tərəfindən səlahiyyətin digər tərəfə keçməsi barədə qərar qəbul olunmuşdur.',
+  powers: 'Marşrut səlahiyyəti ləğv edilir.\nSəlahiyyət digər tərəfə keçir.\nMarşrut naviqasiya üzrə müəyyən edilir.\nDayanacaqlar plan üzrə saxlanılır.',
+  penalty: 'Səlahiyyət növbəti səfərdə, yalnız naviqasiyanın göstərişlərinə tam əməl edilməsi şərti ilə bərpa olunur.',
+  titleOptions: [
+    'Marşrut üzrə Verilmiş Səlahiyyətin Ləğvi haqqında Bildiriş',
+    'Naviqasiya Səlahiyyətinin Dayandırılması haqqında Teleqram',
+    'Sürücülük Növbəsinin Yenidən Bölüşdürülməsi haqqında Xəbərdarlıq',
+    'Səfər Planının Qüvvədən Düşməsi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Marşrut səlahiyyəti ləğv edilir.',
+    'Səlahiyyət digər tərəfə keçir.',
+    'Marşrut naviqasiya üzrə müəyyən edilir.',
+    'Dayanacaqlar plan üzrə saxlanılır.',
+    'Yolun uzanma müddəti qeydə alınıb.',
+    'Alternativ yol real üstünlük verməyib.',
+    'Yanacaq sərfiyyatı artıb.',
+    'Gəlmə vaxtı pozulub.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Səlahiyyət növbəti səfərdə, yalnız naviqasiyanın göstərişlərinə tam əməl edilməsi şərti ilə bərpa olunur.',
+    'Ləğvə etiraz cari səfərdə baxılmır.',
+    'Səlahiyyət qayıdış yolunda bərpa edilmir.'
+  ]
 },
 {
   id: 'r-legv-pets', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['pets'], regPrefix: 'LGV',
-  title: 'Divan Hüququnun Ləğvi Haqqında Bildiriş', tag: 'Divan hüququ',
+  title: 'Ev Heyvanına Verilmiş Güzəştin Qüvvədən Düşməsi haqqında Bildiriş', tag: 'Ev heyvanı',
   signOrg: 'Ev Heyvanları Hüquqları üzrə Xüsusi Şura',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsin ev heyvanına verilmiş divan hüququnun ləğv edildiyini elan edir. Hüquq şərti qaydada verilmiş, lakin yastıq üç dəfə zədələnmiş və qadağan zonası müntəzəm pozulmuşdur.',
-  powers: 'Divan hüququ bildirişin elan olunduğu andan qüvvədən düşür.\nHeyvanın öz yatağı otağın əvvəlki küncünə qaytarılır.\nYemləmə növbəsi sahibin üzərində qalır.\nYeni hüquq üçün müraciət bir aydan sonra mümkündür.',
-  penalty: 'Qadağan zonası yenidən pozulduqda bütün həftəlik gəzinti öhdəliyi heyvanın sahibinin üzərinə keçir.'
+  preamble: 'Məlumat üçün bildirilir ki, {to} adlı şəxsə verilmiş güzəşt şərtlərin pozulması səbəbindən qüvvədən düşmüşdür. {from} tərəfindən əvvəlki qaydaların tam həcmdə bərpası barədə qərar qəbul olunmuşdur.',
+  powers: 'Güzəşt qüvvədən düşür.\nƏvvəlki qaydalar bərpa edilir.\nİstisna zonalar genişləndirilir.\nBərpa baytar rəyindən sonra mümkündür.',
+  penalty: 'Güzəşt növbəti baytar müayinəsinin nəticələri müsbət olduqda yenidən verilə bilər.',
+  titleOptions: [
+    'Ev Heyvanına Verilmiş Güzəştin Qüvvədən Düşməsi haqqında Bildiriş',
+    'Divan Hüququnun Müvəqqəti Dayandırılması haqqında Teleqram',
+    'Mükafat Normasının Ləğvi haqqında Rəsmi Xəbərdarlıq',
+    'Yataq Sahəsi İcazəsinin Dayandırılması haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Güzəşt qüvvədən düşür.',
+    'Əvvəlki qaydalar bərpa edilir.',
+    'İstisna zonalar genişləndirilir.',
+    'Bərpa baytar rəyindən sonra mümkündür.',
+    'Zədələnmə halı qeydə alınıb.',
+    'Xəbərdarlıq iki dəfə edilib.',
+    'Gəzinti cədvəli dəyişdirilib.',
+    'Çəki nəzarəti gücləndirilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Güzəşt növbəti baytar müayinəsinin nəticələri müsbət olduqda yenidən verilə bilər.',
+    'Ləğvə etiraz qaydaların bərpasını dayandırmır.',
+    'Bərpa avtomatik həyata keçirilmir.'
+  ]
 },
 {
   id: 'r-legv-gaming', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['gaming'], regPrefix: 'LGV',
-  title: 'Qələbənin Qüvvədən Düşməsi Bildirişi', tag: 'Rəqəmsal sülh',
+  title: 'Matç Nəticəsinin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq', tag: 'Oyun',
   signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsin elan etdiyi qələbənin qüvvədən düşdüyünü bildirir. Oyun razılaşdırılmamış çətinlik səviyyəsində keçirilmiş, komanda tərkibi isə matç başladıqdan sonra dəyişdirilmişdir. Nəticə arxivə verilir.',
-  powers: 'Elan edilmiş nəticə bildirişin anından qüvvədən düşür.\nHesab arxivə verilir və istinad kimi işlədilmir.\nQol sevincinin videosu paylaşıla bilməz.\nYeni matç yalnız razılaşdırılmış şərtlərlə keçirilir.',
-  penalty: 'Qüvvədən düşmüş nəticə yenidən xatırladıldıqda növbəti matçın komanda seçimi bildirişi verən tərəfə keçir.'
+  preamble: 'Xəbərdarlıq qaydasında bildirilir ki, {to} adlı şəxsin xeyrinə qeydə alınmış matç nəticəsi şərtlərin pozulması səbəbindən qüvvədən düşmüşdür. {from} tərəfindən matçın etibarsız sayılması barədə qərar qəbul olunmuşdur.',
+  powers: 'Matç nəticəsi qüvvədən düşür.\nReytinq düzəlişi geri alınır.\nMatç etibarsız sayılır.\nTəkrar matç razılaşdırılır.',
+  penalty: 'Təkrar matç yeddi gün ərzində keçirilmədikdə nəticə bərabərlik kimi qeydə alınır.',
+  titleOptions: [
+    'Matç Nəticəsinin Qüvvədən Düşməsi haqqında Təcili Xəbərdarlıq',
+    'Qeydə Alınmış Qələbənin Ləğvi haqqında Teleqram',
+    'Reytinq Düzəlişinin Geri Alınması haqqında Xəbərdarlıq',
+    'Matçın Etibarsız Sayılması haqqında Rəsmi Bildiriş'
+  ],
+  powersOptions: [
+    'Matç nəticəsi qüvvədən düşür.',
+    'Reytinq düzəlişi geri alınır.',
+    'Matç etibarsız sayılır.',
+    'Təkrar matç razılaşdırılır.',
+    'Şərtlərin pozulma anı qeydə alınıb.',
+    'Komanda tərkibi matç ərzində dəyişib.',
+    'Xəritə seçimi razılaşdırılmayıb.',
+    'Şahid oyunçular məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar matç yeddi gün ərzində keçirilmədikdə nəticə bərabərlik kimi qeydə alınır.',
+    'Ləğvə etiraz reytinqi bərpa etmir.',
+    'Yeni matçın şərtləri birgə müəyyən edilir.'
+  ]
 },
 {
   id: 'r-legv-viral', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', replyCats: ['viral'], regPrefix: 'LGV',
-  title: 'Vizanın Qüvvədən Düşməsi Bildirişi', tag: 'Viral cavab',
+  title: 'Verilmiş Sənədin Şərtlərinin Pozulması Səbəbindən Ləğvi haqqında Bildiriş', tag: 'Ekspertiza',
   signOrg: 'Bəhanələrin Ekspertizası üzrə Ali Komissiya',
-  preamble: '{from} bu bildirişlə {to} adlı şəxsə verilmiş sənədin qüvvədən düşdüyünü elan edir. Sənəddə göstərilmiş qayıdış vaxtı keçmiş, radius isə iki dəfə aşılmışdır. Sənəd bu andan etibarsız hesab olunur.',
-  powers: 'Sənəd bildirişin çatdırıldığı andan qüvvədən düşür.\nGöstərilmiş radius və müddət bərpa olunmur.\nMüşayiət siyahısı ləğv edilir.\nYeni sənəd üçün müraciət yalnız yazılı formada qəbul olunur.',
-  penalty: 'Qüvvədən düşmüş sənədlə çölə çıxılması halında növbəti həftəsonu üçün heç bir yeni sənəd verilmir.'
+  preamble: 'İşbu teleqramla bildirilir ki, {to} adlı şəxsə verilmiş sənədin şərtləri pozulmuş və sənəd müddətindən əvvəl qüvvədən düşmüşdür. {from} tərəfindən yeni müraciətin ayrıca qaydada verilməsi tələb olunur.',
+  powers: 'Sənəd müddətindən əvvəl qüvvədən düşür.\nPozuntunun vaxtı qeydə alınıb.\nYeni sənəd ayrıca müraciətlə verilir.\nBərpa avtomatik həyata keçirilmir.',
+  penalty: 'Yeni müraciət ən tezi yeddi gündən sonra, əvvəlki pozuntunun izahı təqdim edildikdən sonra qəbul edilir.',
+  titleOptions: [
+    'Verilmiş Sənədin Şərtlərinin Pozulması Səbəbindən Ləğvi haqqında Bildiriş',
+    'Vizanın Müddətindən Əvvəl Qüvvədən Düşməsi haqqında Teleqram',
+    'Toxunulmazlıq Müddətinin Dayandırılması haqqında Xəbərdarlıq',
+    'Ekspertiza Rəyinin Etibarsız Sayılması haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Sənəd müddətindən əvvəl qüvvədən düşür.',
+    'Pozuntunun vaxtı qeydə alınıb.',
+    'Yeni sənəd ayrıca müraciətlə verilir.',
+    'Bərpa avtomatik həyata keçirilmir.',
+    'Sosial şəbəkədə paylaşım aşkarlanıb.',
+    'Şərtlərdən biri açıq şəkildə pozulub.',
+    'Xəbərdarlıq əvvəlcədən edilib.',
+    'Sənədin surəti arxivə verilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Yeni müraciət ən tezi yeddi gündən sonra, əvvəlki pozuntunun izahı təqdim edildikdən sonra qəbul edilir.',
+    'Ləğvə etiraz üç gün ərzində bildirilə bilər.',
+    'Sənəd yalnız yeni şərtlərlə bərpa olunur.'
+  ]
 },
 {
   id: 'r-legv-umumi', cat: 'c-legv', tone: 'zarafat', layout: 'teleqram', palette: 'steel',
   replyKind: 'legv', regPrefix: 'LGV',
-  title: 'Sənədin Qüvvədən Düşməsi Bildirişi', tag: 'Universal',
+  title: 'Verilmiş Sənədin Qüvvədən Düşməsi haqqında Rəsmi Xəbərdarlıq', tag: 'Universal',
   signOrg: 'Sənədlərə Etirazlar üzrə Ali Apellyasiya Şurası',
-  preamble: '{from} bu bildirişlə {to} adlı şəxs tərəfindən dövriyyəyə buraxılmış sənədin qüvvədən düşdüyünü elan edir. Sənəd qarşı tərəfin razılığı olmadan tərtib edilmiş və heç bir mərhələdə təsdiqlənməmişdir. Sənəd etibarsızdır.',
-  powers: 'Sənəd bildirişin elan olunduğu andan qüvvədən düşür.\nSənəddə göstərilən öhdəliklər heç bir nəticə doğurmur.\nSənədin paylaşılmış nüsxələri etibarsız sayılır.\nYeni sənəd yalnız qarşılıqlı razılıqla tərtib edilə bilər.',
-  penalty: 'Qüvvədən düşmüş sənəd yenidən paylaşıldıqda mövzunun növbəti müzakirəsinin şərtlərini bildirişi verən tərəf müəyyən edir.'
+  preamble: 'Bildirişlə məlumat verilir ki, {to} adlı şəxsə verilmiş sənəd şərtlərin pozulması səbəbindən qüvvədən düşmüş hesab edilir. {from} tərəfindən sənədin hüquqi nəticə doğurmaması barədə qərar qəbul olunmuşdur.',
+  powers: 'Sənəd qüvvədən düşmüş hesab edilir.\nOnun əsasında irəli sürülən tələblər dayandırılır.\nYeni sənəd ayrıca razılaşdırılır.\nQərar imzalandığı andan qüvvəyə minir.',
+  penalty: 'Ləğv qərarına etiraz üç gün ərzində bildirilə bilər; etiraz baxılana qədər sənəd bərpa edilmir.',
+  titleOptions: [
+    'Verilmiş Sənədin Qüvvədən Düşməsi haqqında Rəsmi Xəbərdarlıq',
+    'Sənədin Müddətindən Əvvəl Ləğv Edilməsi haqqında Təcili Teleqram',
+    'Verilmiş Səlahiyyətin Dayandırılması haqqında Rəsmi Bildiriş',
+    'Sənədin Hüquqi Nəticə Doğurmaması haqqında Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Sənəd qüvvədən düşmüş hesab edilir.',
+    'Onun əsasında irəli sürülən tələblər dayandırılır.',
+    'Yeni sənəd ayrıca razılaşdırılır.',
+    'Qərar imzalandığı andan qüvvəyə minir.',
+    'Pozuntunun vaxtı və məzmunu qeydə alınıb.',
+    'Xəbərdarlıq əvvəlcədən edilib.',
+    'Sənədin surəti arxivə verilib.',
+    'Hər iki tərəf məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ləğv qərarına etiraz üç gün ərzində bildirilə bilər; etiraz baxılana qədər sənəd bərpa edilmir.',
+    'Bərpa yalnız yeni razılaşma ilə mümkündür.',
+    'Qərar hər iki tərəfə eyni gün çatdırılır.'
+  ]
 },
 
 /* ==================== ✅ QÜVVƏDƏ SAXLAMA ====================
@@ -592,132 +1723,418 @@ window.REPLIES = [
 {
   id: 'r-qebul-couples', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['couples'], regPrefix: 'QVD',
-  title: 'İcazənin Qüvvədə Saxlanılması Qərarı', tag: 'Ev diplomatiyası',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Verilmiş İcazənin Qüvvədə Saxlanılmasını Təsdiq edən Sertifikat', tag: 'Ev diplomatiyası',
   signOrg: 'Cütlüklərarası Mübahisələrin Həlli üzrə Ali Şura',
-  preamble: 'Şura {to} adlı şəxsə verilmiş icazə sənədinə baxdı və onun bütün bəndlərini qüvvədə saxlamaq qərarına gəldi. {from} tərəfindən bildirilən narazılıq əsaslı hesab edilmədi: sənəd qarşılıqlı razılıqla tərtib olunmuş və şərtləri hər iki tərəf üçün bərabərdir.',
-  powers: 'İcazə tam həcmdə qüvvədə saxlanılır.\nSənəddə göstərilən saat aralığı dəyişdirilmir.\nGüzəştlərin sayı azaldılmır.\nEyni məsələ üzrə yeni etiraz 30 gün ərzində qəbul edilmir.',
-  penalty: 'Təsdiqlənmiş icazəyə maneə törədildikdə növbəti həftəsonunun proqramını icazə sahibi müəyyən edir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxsə verilmiş sənədin şərtləri {from} tərəfindən tam həcmdə qəbul edilmişdir. Sənəd üzrə heç bir etiraz daxil olmamış, şərtlər dəyişdirilmədən qüvvədə saxlanılmışdır.',
+  powers: 'Sənədin şərtləri tam həcmdə qəbul edilir.\nHeç bir bəndə etiraz bildirilmir.\nSənəd müddəti bitənədək qüvvədə qalır.\nŞərtlər birtərəfli qaydada dəyişdirilmir.',
+  penalty: 'Sertifikat verildikdən sonra sənədin şərtlərinə etiraz yalnız hər iki tərəfin razılığı ilə mümkündür.',
+  titleOptions: [
+    'Verilmiş İcazənin Qüvvədə Saxlanılmasını Təsdiq edən Sertifikat',
+    'Sənədin Şərtlərinin Tam Qəbul Edilməsini Təsdiq edən Sertifikat',
+    'Razılaşmanın Dəyişdirilmədən Qüvvədə Qalması Sertifikatı',
+    'Tərəflərin Mövqelərinin Üst-üstə Düşməsinə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Sənədin şərtləri tam həcmdə qəbul edilir.',
+    'Heç bir bəndə etiraz bildirilmir.',
+    'Sənəd müddəti bitənədək qüvvədə qalır.',
+    'Şərtlər birtərəfli qaydada dəyişdirilmir.',
+    'Cəza bəndi də qəbul edilmiş sayılır.',
+    'Müddət uzadılması ayrıca razılaşdırılır.',
+    'Sənədin surəti hər iki tərəfdə saxlanılır.',
+    'Yeni hallar yarandıqda əlavə tərtib edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat verildikdən sonra sənədin şərtlərinə etiraz yalnız hər iki tərəfin razılığı ilə mümkündür.',
+    'Sertifikat sənədin müddəti ilə birlikdə qüvvədən düşür.',
+    'Şərtlərin dəyişdirilməsi yeni sənəd tələb edir.'
+  ]
 },
 {
   id: 'r-qebul-friends', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['friends'], regPrefix: 'QVD',
-  title: 'Borcun Qüvvədə Saxlanılması Qərarı', tag: 'Dost borcu',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Borc Öhdəliyinin Şərtlərinin Təsdiq Edilməsi haqqında Sertifikat', tag: 'Borc',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
-  preamble: 'Məclis {to} adlı şəxsə aid borc sənədini araşdırdı və onun qüvvədə saxlanılmasını qərara aldı. {from} tərəfindən təqdim edilmiş etiraz sənədlə təsdiqlənmədi: göstərilən məbləğ ortaq xərclər çıxıldıqdan sonra hesablanmışdır.',
-  powers: 'Borcun məbləği və tarixi olduğu kimi qüvvədə qalır.\nHesablama düzgün aparılmış hesab edilir.\nMövcud möhlət pozulmadan davam edir.\nYeni etiraz yalnız çeklə birlikdə qəbul olunur.',
-  penalty: 'Ödəniş razılaşdırılmış tarixdə həyata keçirilmədikdə möhlət avtomatik olaraq ləğv edilir və borc tam tələb olunur.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Təqdim edilmiş hesablama əsasında təsdiq olunur ki, {to} adlı şəxs borc öhdəliyini və ödəniş cədvəlini tam həcmdə tanıyır. {from} ilə razılaşma əldə edilmiş, məbləğ üzrə mübahisə qalmamışdır.',
+  powers: 'Borcun məbləği mübahisəsiz tanınır.\nÖdəniş cədvəli qəbul edilir.\nFaiz tətbiq edilmir.\nÖdəniş razılaşdırılmış tarixdə həyata keçirilir.',
+  penalty: 'Ödəniş cədvəlinə əməl edildiyi müddətdə borc üzrə heç bir əlavə tələb irəli sürülmür.',
+  titleOptions: [
+    'Borc Öhdəliyinin Şərtlərinin Təsdiq Edilməsi haqqında Sertifikat',
+    'Ödəniş Cədvəlinin Qəbul Edilməsini Təsdiq edən Sertifikat',
+    'Borcun Məbləğinin Tanınmasına dair Rəsmi Şəhadətnamə',
+    'Öhdəliyin Mübahisəsiz Qəbulunu Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Borcun məbləği mübahisəsiz tanınır.',
+    'Ödəniş cədvəli qəbul edilir.',
+    'Faiz tətbiq edilmir.',
+    'Ödəniş razılaşdırılmış tarixdə həyata keçirilir.',
+    'Hissə-hissə ödəniş variantı saxlanılır.',
+    'Qismən ödənişlər cədvəldə əks olunub.',
+    'Xatırlatma qaydası dəyişdirilmir.',
+    'Ödəniş qəbzləri saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ödəniş cədvəlinə əməl edildiyi müddətdə borc üzrə heç bir əlavə tələb irəli sürülmür.',
+    'Sertifikat borc tam ödənilənədək qüvvədədir.',
+    'Yeni möhlət ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'r-qebul-work', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['work'], regPrefix: 'QVD',
-  title: 'Tapşırıq Qərarının Təsdiqi Sertifikatı', tag: 'Ofis',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Tapşırıq üzrə Qəbul Edilmiş Qərarın Təsdiqi haqqında Sertifikat', tag: 'Ofis',
   signOrg: 'Ofisdaxili Münasibətlərin Tənzimlənməsi üzrə Komitə',
-  preamble: 'Komitə {to} adlı şəxsə ünvanlanmış tapşırıq sənədini araşdırdı və onu qüvvədə saxladı. {from} tərəfindən verilmiş etirazda göstərilən səbəblər tapşırığın həcmi ilə mütənasib hesab edilmədi. Sənəd ilkin redaksiyada qalır.',
-  powers: 'Tapşırığın son müddəti dəyişdirilmir.\nİşin həcmi düzgün qiymətləndirilmiş hesab edilir.\nTəhvil forması sənəddə göstərildiyi kimi qalır.\nƏlavə müddət üçün yeni müraciət qəbul olunmur.',
-  penalty: 'Tapşırıq müddətində təhvil verilmədikdə növbəti həftənin toplantı gündəliyini həmin şəxs hazırlayır.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Bununla təsdiq olunur ki, {to} adlı şəxs tapşırıq üzrə qəbul edilmiş qərarı və icra müddətini şərtsiz qəbul edir. {from} tərəfindən müəyyən edilmiş şərtlərə etiraz bildirilməmişdir.',
+  powers: 'Tapşırığın həcmi və müddəti qəbul edilir.\nAralıq nəticə cədvəl üzrə təqdim olunur.\nƏlavə resurs tələbi irəli sürülmür.\nNəticə son tarixədək təhvil verilir.',
+  penalty: 'Şərtlərə əməl edildiyi müddətdə tapşırıq üzrə əlavə nəzarət tədbirləri tətbiq edilmir.',
+  titleOptions: [
+    'Tapşırıq üzrə Qəbul Edilmiş Qərarın Təsdiqi haqqında Sertifikat',
+    'İcra Müddətinin Qəbul Edilməsini Təsdiq edən Sertifikat',
+    'İş Bölgüsünün Razılaşdırıldığına dair Şəhadətnamə',
+    'Tapşırığın Şərtsiz Qəbulunu Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Tapşırığın həcmi və müddəti qəbul edilir.',
+    'Aralıq nəticə cədvəl üzrə təqdim olunur.',
+    'Əlavə resurs tələbi irəli sürülmür.',
+    'Nəticə son tarixədək təhvil verilir.',
+    'İcra planı yazılı formada razılaşdırılıb.',
+    'Əlaqədar şöbələr məlumatlandırılıb.',
+    'Gündəlik hesabat tələb olunmur.',
+    'Toplantıda məsələ qapadılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şərtlərə əməl edildiyi müddətdə tapşırıq üzrə əlavə nəzarət tədbirləri tətbiq edilmir.',
+    'Sertifikat tapşırıq təhvil verilənədək qüvvədədir.',
+    'Müddət dəyişikliyi yeni razılaşma tələb edir.'
+  ]
 },
 {
   id: 'r-qebul-family', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['family'], regPrefix: 'QVD',
-  title: 'Ev Fərmanının Qüvvədə Saxlanılması', tag: 'Ailə şurası',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Ev Qaydalarının Qüvvədə Saxlanılmasını Təsdiq edən Sertifikat', tag: 'Ailə',
   signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
-  preamble: 'Ali Şura {to} adlı şəxs tərəfindən elan edilmiş ev fərmanını müzakirə etdi və onu qüvvədə saxlamaq qərarına gəldi. {from} tərəfindən bildirilən etiraz baxıldı, lakin fərmanın bəndləri ailənin mövcud cədvəli ilə uyğun tapıldı.',
-  powers: 'Fərman tam həcmdə qüvvədə saxlanılır.\nEv işlərinin bölgüsü dəyişdirilmir.\nEkran vaxtı mövcud formada qalır.\nFərmana yeni etiraz növbəti şura iclasında baxılır.',
-  penalty: 'Fərmana əməl edilmədikdə həftəsonu proqramının seçimi bir həftəlik digər ev üzvünə keçir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Ailə şurasının qərarı ilə təsdiq olunur ki, {to} adlı şəxs qüvvədə olan ev qaydalarını və öhdəlikləri könüllü qaydada qəbul edir. {from} tərəfindən müəyyən edilmiş rejimə etiraz bildirilməmişdir.',
+  powers: 'Ev qaydaları dəyişdirilmədən qəbul edilir.\nEkran vaxtı limiti tanınır.\nDərs hazırlığı cədvəli saxlanılır.\nYatma saatı rejimi qüvvədə qalır.',
+  penalty: 'Qaydalara ardıcıl əməl edildikdə növbəti ailə şurasında güzəştlərin genişləndirilməsi müzakirə edilir.',
+  titleOptions: [
+    'Ev Qaydalarının Qüvvədə Saxlanılmasını Təsdiq edən Sertifikat',
+    'Rejimin Dəyişdirilmədən Qəbul Edilməsi Sertifikatı',
+    'Ailə Şurasının Qərarının Təsdiqinə dair Şəhadətnamə',
+    'Öhdəliklərin Könüllü Qəbulunu Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Ev qaydaları dəyişdirilmədən qəbul edilir.',
+    'Ekran vaxtı limiti tanınır.',
+    'Dərs hazırlığı cədvəli saxlanılır.',
+    'Yatma saatı rejimi qüvvədə qalır.',
+    'Həftəsonu güzəşti saxlanılır.',
+    'Ev tapşırıqları cədvəl üzrə icra olunur.',
+    'Cib xərcliyinin tarixi dəyişmir.',
+    'Şurada məsələ qapadılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qaydalara ardıcıl əməl edildikdə növbəti ailə şurasında güzəştlərin genişləndirilməsi müzakirə edilir.',
+    'Sertifikat tədris rübünün sonuna qədər qüvvədədir.',
+    'Qaydaların dəyişdirilməsi şura qərarı tələb edir.'
+  ]
 },
 {
   id: 'r-qebul-relatives', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['relatives'], regPrefix: 'QVD',
-  title: 'Ziyarət Protokolunun Təsdiqi Qərarı', tag: 'Qohum protokolu',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Ziyarət Protokolunun Şərtlərinin Təsdiqi haqqında Sertifikat', tag: 'Qohumlar',
   signOrg: 'Qohumluq Münasibətləri üzrə Ali Nəzarət Şurası',
-  preamble: 'Şura {to} adlı şəxs tərəfindən təqdim edilmiş ziyarət protokolunu araşdırdı və onu qüvvədə saxladı. {from} tərəfindən bildirilən etirazda göstərilən bölgü fərqi hesablamada təsdiqlənmədi: ziyarətlərin sayı hər iki ailə üçün bərabərdir.',
-  powers: 'Protokol tam həcmdə qüvvədə saxlanılır.\nZiyarətlərin sayı və müddəti dəyişdirilmir.\nÇıxış siqnalının şərtləri olduğu kimi qalır.\nBayram cədvəli əlavə razılaşma tələb etmir.',
-  penalty: 'Protokola əməl edilmədikdə növbəti ziyarətin marşrutunu və müddətini qarşı tərəf müəyyən edir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Hər iki ailənin razılığı ilə təsdiq edilir ki, {to} adlı şəxs ziyarət protokolunun şərtlərini tam qəbul edir. {from} tərəfindən tərtib edilmiş növbəlilik və marşrut üzrə heç bir etiraz daxil olmamışdır.',
+  powers: 'Ziyarət növbəliliyi qəbul edilir.\nMarşrut razılaşdırılmış formada saxlanılır.\nMüddət hüdudları tanınır.\nHədiyyə öhdəliyi qüvvədə qalır.',
+  penalty: 'Protokola əməl edildiyi müddətdə növbəlilik dəyişdirilmir və əlavə ziyarət tələb olunmur.',
+  titleOptions: [
+    'Ziyarət Protokolunun Şərtlərinin Təsdiqi haqqında Sertifikat',
+    'Ziyarət Növbəliliyinin Qəbul Edilməsi Sertifikatı',
+    'Bayram Marşrutunun Razılaşdırıldığına dair Şəhadətnamə',
+    'Protokolun Mübahisəsiz Qəbulunu Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Ziyarət növbəliliyi qəbul edilir.',
+    'Marşrut razılaşdırılmış formada saxlanılır.',
+    'Müddət hüdudları tanınır.',
+    'Hədiyyə öhdəliyi qüvvədə qalır.',
+    'Gecələmə variantı planda saxlanılır.',
+    'Yol xərcləri bərabər bölünür.',
+    'Uzaq qohumlar cədvələ daxildir.',
+    'Hər iki ailə məlumatlandırılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Protokola əməl edildiyi müddətdə növbəlilik dəyişdirilmir və əlavə ziyarət tələb olunmur.',
+    'Sertifikat bayram dövrü başa çatanadək qüvvədədir.',
+    'Növbəlilik növbəti ildə yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'r-qebul-student', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['student'], regPrefix: 'QVD',
-  title: 'Tələbə Bəhanəsinin Qəbul Edilməsi Qərarı', tag: 'Nadir hal',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Təqdim Edilmiş İzahatın Əsaslı Sayılması haqqında Sertifikat', tag: 'Tələbə',
   signOrg: 'Tələbə Bəhanələrinin Araşdırılması üzrə Komissiya',
-  preamble: 'Komissiya {to} adlı tələbənin təqdim etdiyi əsaslandırmaya baxdı və onu — nadir hal olaraq — üzrlü hesab etdi. {from} tərəfindən qaldırılan məsələ öz həllini tapdı: göstərilən səbəb sənədlə təsdiqləndi və qeyd dəyişdirildi.',
-  powers: 'Gecikmənin səbəbi üzrlü hesab edilir.\nDavamiyyət qeydi düzəldilir və borc siyahısından çıxarılır.\nKonspekt öhdəliyi bir həftə uzadılır.\nQərar yalnız bu epizoda şamil olunur və nümunə yaratmır.',
-  penalty: 'Eyni səbəb bu semestrdə təkrar göstərildikdə həmin əsaslandırma avtomatik olaraq əsassız sayılır.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Bu sənədlə təsdiq olunur ki, {to} adlı şəxsin təqdim etdiyi izahat əsaslı hesab edilir. {from} tərəfindən aparılmış yoxlama nəticəsində göstərilən səbəb sənədlə təsdiqlənmiş və jurnala müvafiq qeyd salınmışdır.',
+  powers: 'Təqdim edilmiş izahat əsaslı hesab edilir.\nBuraxılmış saatlar üzrlü sayılır.\nDavamiyyət göstəricisi bərpa olunur.\nİmtahana buraxılış şərti pozulmur.',
+  penalty: 'Sertifikat yalnız göstərilən tarixlərə şamil edilir; sonrakı buraxılışlar ayrıca əsaslandırma tələb edir.',
+  titleOptions: [
+    'Təqdim Edilmiş İzahatın Əsaslı Sayılması haqqında Sertifikat',
+    'Buraxılmış Saatların Üzrlü Sayılması Sertifikatı',
+    'Təhvil Müddətinin Qəbul Edilməsinə dair Şəhadətnamə',
+    'İzahatın Sənədlə Təsdiqləndiyini Bildirən Sertifikat'
+  ],
+  powersOptions: [
+    'Təqdim edilmiş izahat əsaslı hesab edilir.',
+    'Buraxılmış saatlar üzrlü sayılır.',
+    'Davamiyyət göstəricisi bərpa olunur.',
+    'İmtahana buraxılış şərti pozulmur.',
+    'Təsdiqedici sənəd jurnala əlavə edilib.',
+    'Konspekt borcu ayrıca qeyd olunub.',
+    'Qrup nümayəndəsi məlumatlandırılıb.',
+    'Konsultasiya saatı təyin edilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat yalnız göstərilən tarixlərə şamil edilir; sonrakı buraxılışlar ayrıca əsaslandırma tələb edir.',
+    'Sertifikat cari semestrə aiddir.',
+    'Yeni izahat ayrıca qaydada təqdim olunur.'
+  ]
 },
 {
   id: 'r-qebul-neighbors', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['neighbors'], regPrefix: 'QVD',
-  title: 'Həyət Qərarının Qüvvədə Saxlanılması', tag: 'Həyət nizamı',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Həyət Yığıncağının Qərarının Təsdiqi haqqında Sertifikat', tag: 'Qonşuluq',
   signOrg: 'Həyətdaxili Nizamın Qorunması üzrə Baş İdarə',
-  preamble: 'Baş İdarə {to} adlı şəxs tərəfindən təqdim edilmiş həyət qərarını araşdırdı və onu qüvvədə saxladı. {from} tərəfindən verilmiş etirazda göstərilən bölgü fərqi mənzil sayı ilə müqayisədə təsdiqlənmədi. Qərar dəyişməz qalır.',
-  powers: 'Qərar tam həcmdə qüvvədə saxlanılır.\nPark yerlərinin bölgüsü dəyişdirilmir.\nSakitlik rejiminin saatları olduğu kimi qalır.\nQərarın surəti elan lövhəsində saxlanılır.',
-  penalty: 'Qərara əməl edilmədikdə növbəti ay üçün park yeri növbəsi qərara etiraz edən tərəfin sonuna keçirilir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Sakinlərin mövqeyi nəzərə alınmaqla təsdiq edilir ki, {to} adlı şəxs həyət yığıncağının qərarını tam qəbul edir. {from} tərəfindən elan olunmuş qaydalar üzrə heç bir etiraz daxil olmamışdır.',
+  powers: 'Yığıncağın qərarı tam qəbul edilir.\nSəs rejimi tanınır və pozulmur.\nTəmizlik növbəsi cədvəl üzrə icra olunur.\nPark yeri bölgüsü qüvvədə qalır.',
+  penalty: 'Qaydalara əməl edildiyi müddətdə əlavə nəzarət tədbirləri tətbiq olunmur və məsələ yığıncağa çıxarılmır.',
+  titleOptions: [
+    'Həyət Yığıncağının Qərarının Təsdiqi haqqında Sertifikat',
+    'Qaydaların Bütün Sakinlər Tərəfindən Qəbulu Sertifikatı',
+    'Park Yeri Bölgüsünün Təsdiqinə dair Şəhadətnamə',
+    'Səs Rejiminin Qəbul Edilməsini Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Yığıncağın qərarı tam qəbul edilir.',
+    'Səs rejimi tanınır və pozulmur.',
+    'Təmizlik növbəsi cədvəl üzrə icra olunur.',
+    'Park yeri bölgüsü qüvvədə qalır.',
+    'Ümumi vəsait vaxtında ödənilir.',
+    'Elan lövhəsindəki məlumat oxunub.',
+    'Yaşlı sakinlərin güzəşti saxlanılır.',
+    'Nasazlıq barədə məlumat verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qaydalara əməl edildiyi müddətdə əlavə nəzarət tədbirləri tətbiq olunmur və məsələ yığıncağa çıxarılmır.',
+    'Sertifikat növbəti ümumi yığıncağadək qüvvədədir.',
+    'Qaydalar hər il yenidən təsdiqlənir.'
+  ]
 },
 {
   id: 'r-qebul-holiday', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['holiday'], regPrefix: 'QVD',
-  title: 'Toy İcazəsinin Təsdiq Edilməsi Qərarı', tag: 'Toy protokolu',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Mərasim Öhdəliklərinin Qəbul Edilməsi haqqında Sertifikat', tag: 'Toy',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
-  preamble: 'Baş İdarə {to} adlı şəxsə verilmiş icazəni araşdırdı və onu qüvvədə saxlamaq qərarına gəldi. {from} tərəfindən bildirilən etiraz baxıldı, lakin icazənin şərtləri mərasimin proqramı ilə ziddiyyət təşkil etmir. İcazə dəyişməz qalır.',
-  powers: 'İcazə tam həcmdə qüvvədə saxlanılır.\nOynama öhdəliyi bu mərasim üçün tətbiq olunmur.\nMasa yerləşdirilməsi dəyişdirilmir.\nQohumların təkrar dəvəti bir dəfə rədd edilə bilər.',
-  penalty: 'İcazəyə baxmayaraq təzyiq davam etdikdə növbəti mərasimin masa bölgüsünü icazə sahibi müəyyən edir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'İşbu sənədlə təsdiq olunur ki, {to} adlı şəxs mərasim öhdəliklərini, qonaq siyahısını və masa bölgüsünü tam qəbul edir. {from} tərəfindən müəyyən edilmiş bölgüyə etiraz bildirilməmişdir.',
+  powers: 'Mərasim öhdəlikləri tam qəbul edilir.\nQonaq siyahısı təsdiqlənir.\nMasa nizamı dəyişdirilmir.\nHədiyyə büdcəsi razılaşdırılmış həcmdə saxlanılır.',
+  penalty: 'Öhdəliklərə əməl edildiyi müddətdə bölgü dəyişdirilmir və əlavə tələb irəli sürülmür.',
+  titleOptions: [
+    'Mərasim Öhdəliklərinin Qəbul Edilməsi haqqında Sertifikat',
+    'Qonaq Siyahısının Təsdiqinə dair Rəsmi Sertifikat',
+    'Masa Bölgüsünün Qəbul Edilməsi Sertifikatı',
+    'Mərasim Proqramının Razılaşdırıldığına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Mərasim öhdəlikləri tam qəbul edilir.',
+    'Qonaq siyahısı təsdiqlənir.',
+    'Masa nizamı dəyişdirilmir.',
+    'Hədiyyə büdcəsi razılaşdırılmış həcmdə saxlanılır.',
+    'Foto öhdəliyi bölüşdürülüb.',
+    'Mərasim proqramı təsdiqlənib.',
+    'Ehtiyat yerlərin sayı müəyyən edilib.',
+    'Dəvətnamələr eyni gün göndərilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Öhdəliklərə əməl edildiyi müddətdə bölgü dəyişdirilmir və əlavə tələb irəli sürülmür.',
+    'Sertifikat mərasim başa çatanadək qüvvədədir.',
+    'Dəyişikliklər hər iki tərəfin razılığı ilə edilir.'
+  ]
 },
 {
   id: 'r-qebul-travel', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['travel'], regPrefix: 'QVD',
-  title: 'Marşrut Qərarının Təsdiqi Sertifikatı', tag: 'Yol mübahisəsi',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Səfər Planının və Marşrutun Təsdiqi haqqında Sertifikat', tag: 'Səfər',
   signOrg: 'Səfər və Marşrut Mübahisələri üzrə Ali Komissiya',
-  preamble: 'Komissiya {to} adlı şəxsin seçdiyi marşrutu araşdırdı və qərarı qüvvədə saxladı. {from} tərəfindən bildirilən etiraz naviqasiya məlumatı ilə təsdiqlənmədi: seçilmiş yol həqiqətən qısa olmuş, gecikmə isə tıxacdan qaynaqlanmışdır.',
-  powers: 'Marşrut seçimi düzgün hesab edilir.\nNaviqasiya səlahiyyəti sürücüdə qalır.\nDayanacaq yerləri dəyişdirilmir.\nGecikmə sürücünün üzərinə yazılmır.',
-  penalty: 'Növbəti səfərdə gecikmə yenidən 25 dəqiqəni aşdıqda naviqasiya səlahiyyəti avtomatik olaraq sərnişinə keçir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Səfər iştirakçılarının razılığı ilə təsdiq edilir ki, {to} adlı şəxs səfər planını, marşrutu və sürücülük növbəliliyini tam qəbul edir. {from} tərəfindən tərtib edilmiş plana etiraz bildirilməmişdir.',
+  powers: 'Səfər planı və marşrut qəbul edilir.\nSürücülük növbəsi cədvəl üzrə icra olunur.\nYanacaq xərci bərabər bölünür.\nBaqaj kvotası tanınır.',
+  penalty: 'Plana əməl edildiyi müddətdə marşrut dəyişdirilmir və əlavə dayanacaq tələb olunmur.',
+  titleOptions: [
+    'Səfər Planının və Marşrutun Təsdiqi haqqında Sertifikat',
+    'Sürücülük Növbəsinin Qəbul Edilməsi Sertifikatı',
+    'Yol Xərclərinin Bölgüsünün Təsdiqinə dair Şəhadətnamə',
+    'Baqaj Kvotasının Razılaşdırıldığına dair Sertifikat'
+  ],
+  powersOptions: [
+    'Səfər planı və marşrut qəbul edilir.',
+    'Sürücülük növbəsi cədvəl üzrə icra olunur.',
+    'Yanacaq xərci bərabər bölünür.',
+    'Baqaj kvotası tanınır.',
+    'Dayanacaqların yeri təsdiqlənib.',
+    'Yemək fasilələri plana daxildir.',
+    'Yola çıxma vaxtı razılaşdırılıb.',
+    'Gəlmə vaxtı bildirilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Plana əməl edildiyi müddətdə marşrut dəyişdirilmir və əlavə dayanacaq tələb olunmur.',
+    'Sertifikat cari səfərə aiddir.',
+    'Qayıdış marşrutu ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'r-qebul-pets', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['pets'], regPrefix: 'QVD',
-  title: 'Divan Hüququnun Təsdiqi Sertifikatı', tag: 'Divan hüququ',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Ev Heyvanına Tanınmış Hüquqların Təsdiqi haqqında Sertifikat', tag: 'Ev heyvanı',
   signOrg: 'Ev Heyvanları Hüquqları üzrə Xüsusi Şura',
-  preamble: 'Şura {to} adlı şəxsin ev heyvanına aid sənədi araşdırdı və divan hüququnu qüvvədə saxladı. {from} tərəfindən bildirilən etirazda göstərilən zədə müşahidə zamanı təsdiqlənmədi. Hüquq mövcud şərtlərlə davam edir.',
-  powers: 'Divan hüququ tam həcmdə qüvvədə saxlanılır.\nHeyvanın yeri dəyişdirilmir.\nYemləmə növbəsi mövcud formada qalır.\nGəzinti saatları hava şəraitinə görə tənzimlənir.',
-  penalty: 'Yastıq növbəti ay ərzində zədələndikdə divan hüququ avtomatik olaraq bir həftəlik dayandırılır.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Baytar tövsiyələri nəzərə alınmaqla təsdiq olunur ki, {to} adlı şəxsə tanınmış hüquqlar {from} tərəfindən tam həcmdə qəbul edilir. Mövcud sərhədlərə və rejimə heç bir etiraz bildirilməmişdir.',
+  powers: 'Tanınmış hüquqlar tam həcmdə qəbul edilir.\nDivan və yataq sahələri dəyişdirilmir.\nYemləmə rejimi saxlanılır.\nMükafat norması tanınır.',
+  penalty: 'Rejimə əməl edildiyi müddətdə hüquqların həcmi azaldılmır və əlavə məhdudiyyət tətbiq olunmur.',
+  titleOptions: [
+    'Ev Heyvanına Tanınmış Hüquqların Təsdiqi haqqında Sertifikat',
+    'Divan və Yataq Hüquqlarının Təsdiqinə dair Sertifikat',
+    'Yemləmə Rejiminin Qəbul Edilməsi Sertifikatı',
+    'Mükafat Normasının Təsdiqinə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Tanınmış hüquqlar tam həcmdə qəbul edilir.',
+    'Divan və yataq sahələri dəyişdirilmir.',
+    'Yemləmə rejimi saxlanılır.',
+    'Mükafat norması tanınır.',
+    'Gəzinti cədvəli qüvvədə qalır.',
+    'İstisna zonalar genişləndirilmir.',
+    'Baytar tövsiyələri əsas götürülür.',
+    'Oyuncaqların sayı saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejimə əməl edildiyi müddətdə hüquqların həcmi azaldılmır və əlavə məhdudiyyət tətbiq olunmur.',
+    'Sertifikat növbəti baytar müayinəsinədək qüvvədədir.',
+    'Hüquqlar ailənin bütün üzvləri tərəfindən tanınır.'
+  ]
 },
 {
   id: 'r-qebul-gaming', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['gaming'], regPrefix: 'QVD',
-  title: 'Məğlubiyyətin Qüvvədə Saxlanılması Qərarı', tag: 'Klassik cavab',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Matçın Nəticəsinin Şərtsiz Qəbul Edilməsi haqqında Sertifikat', tag: 'Oyun',
   signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
-  preamble: 'Komissiya {to} adlı şəxsin oyun nəticəsi ilə bağlı müraciətinə baxdı və nəticəni olduğu kimi qüvvədə saxladı. {from} tərəfindən elan edilmiş qələbə təsdiqlənir. Bağlantı ilə bağlı iddia yoxlanıldı və nəticəyə təsiri müəyyən edilmədi.',
-  powers: 'Oyunun hesabı olduğu kimi qüvvədə qalır.\nQələbə rəsmi qeydə alınır və arxivdə saxlanılır.\nTəkrar oyun tələbi təmin edilmir.\nQol sevincinin videosu paylaşıla bilər.',
-  penalty: 'Nəticə mübahisə edilməyə davam edildikdə növbəti üç matçda komanda seçimi qalib tərəfin ixtiyarına keçir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Matç tarixçəsinə istinadən təsdiq edilir ki, {to} adlı şəxs nəticəni şərtsiz qəbul edir və heç bir texniki səbəbə istinad etmir. {from} tərəfindən göstərilən üstünlük tam və mübahisəsiz hesab olunur.',
+  powers: 'Matçın nəticəsi şərtsiz qəbul edilir.\nTexniki səbəbə istinad edilmir.\nReytinq düzəlişi tələb olunmur.\nKomanda tərkibi bəhanə kimi göstərilmir.',
+  penalty: 'Sertifikat verildikdən sonra həmin matçla bağlı hər hansı etiraz və ya izahat qəbul edilmir.',
+  titleOptions: [
+    'Matçın Nəticəsinin Şərtsiz Qəbul Edilməsi haqqında Sertifikat',
+    'Məğlubiyyətin Etirazsız Tanınmasını Təsdiq edən Sertifikat',
+    'Reytinq Göstəricisinin Qəbul Edilməsi Sertifikatı',
+    'Qarşı Tərəfin Üstünlüyünün Tanınmasına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Matçın nəticəsi şərtsiz qəbul edilir.',
+    'Texniki səbəbə istinad edilmir.',
+    'Reytinq düzəlişi tələb olunmur.',
+    'Komanda tərkibi bəhanə kimi göstərilmir.',
+    'Qarşı tərəfin strategiyası uğurlu sayılır.',
+    'Səhvlər öz üzərinə götürülür.',
+    'Revanş matçı ayrıca razılaşdırılır.',
+    'Nəticə tarixçədə saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat verildikdən sonra həmin matçla bağlı hər hansı etiraz və ya izahat qəbul edilmir.',
+    'Sertifikat yalnız bir matça aiddir.',
+    'Revanş matçının şərtləri birgə müəyyən edilir.'
+  ]
 },
 {
   id: 'r-qebul-viral', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', replyCats: ['viral'], regPrefix: 'QVD',
-  title: 'Ekspertiza Rəyinin Təsdiqi Sertifikatı', tag: 'Viral cavab',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Ekspertiza Rəyinin Nəticələrinin Təsdiqi haqqında Sertifikat', tag: 'Ekspertiza',
   signOrg: 'Bəhanələrin Ekspertizası üzrə Ali Komissiya',
-  preamble: 'Komissiya {to} adlı şəxs barəsində verilmiş rəyi yenidən araşdırdı və onu qüvvədə saxladı. {from} tərəfindən təqdim edilmiş etirazda göstərilən arqumentlər ölçmə nəticələrini dəyişdirmədi. Rəy ilkin redaksiyada təsdiqlənir.',
-  powers: 'Rəydə göstərilən bal və faizlər dəyişdirilmir.\nÖlçmə metodikası düzgün tətbiq edilmiş hesab olunur.\nRəy istinad sənədi kimi istifadə edilə bilər.\nTəkrar ekspertiza üçün yeni müraciət qəbul edilmir.',
-  penalty: 'Rəyə etiraz davam etdikdə növbəti ekspertizanın bütün şərtlərini rəyi təqdim edən tərəf müəyyən edir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Aparılmış yoxlama əsasında təsdiq olunur ki, {to} adlı şəxs ekspertiza rəyinin nəticələrini tam qəbul edir. {from} tərəfindən tətbiq edilmiş metodikaya və göstəricilərə etiraz bildirilməmişdir.',
+  powers: 'Rəyin nəticələri tam qəbul edilir.\nGöstəricilər dəyişdirilmədən tanınır.\nTəkrar ekspertiza tələb olunmur.\nRəy qəti qüvvəyə minir.',
+  penalty: 'Sertifikat verildikdən sonra rəyin nəticələrinə etiraz yalnız yeni materiallar təqdim edildikdə mümkündür.',
+  titleOptions: [
+    'Ekspertiza Rəyinin Nəticələrinin Təsdiqi haqqında Sertifikat',
+    'Rəydəki Göstəricilərin Qəbul Edilməsi Sertifikatı',
+    'Ekspertiza Metodikasının Tanınmasına dair Şəhadətnamə',
+    'Rəyin Qəti Qüvvəyə Minməsini Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Rəyin nəticələri tam qəbul edilir.',
+    'Göstəricilər dəyişdirilmədən tanınır.',
+    'Təkrar ekspertiza tələb olunmur.',
+    'Rəy qəti qüvvəyə minir.',
+    'Metodika və nümunə sayı qəbul edilib.',
+    'Müşahidə müddəti kifayət sayılıb.',
+    'Tövsiyələr icraya qəbul olunub.',
+    'Növbəti qiymətləndirmə tarixi təyin edilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat verildikdən sonra rəyin nəticələrinə etiraz yalnız yeni materiallar təqdim edildikdə mümkündür.',
+    'Sertifikat növbəti qiymətləndirməyədək qüvvədədir.',
+    'Tövsiyələrin icrası ayrıca yoxlanılır.'
+  ]
 },
 {
   id: 'r-qebul-umumi', cat: 'c-qebul', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
   replyKind: 'qebul', regPrefix: 'QVD',
-  title: 'Sənədin Qüvvədə Saxlanılması Qərarı', tag: 'Universal',
-  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  title: 'Təqdim Edilmiş Sənədin Qüvvədə Saxlanılması haqqında Sertifikat', tag: 'Universal',
   signOrg: 'Sənədlərə Etirazlar üzrə Ali Apellyasiya Şurası',
-  preamble: 'Şura {to} adlı şəxs tərəfindən tərtib edilmiş sənədə baxdı və onu tam həcmdə qüvvədə saxladı. {from} tərəfindən bildirilən etirazda göstərilən əsaslar sənədin məzmunu ilə təsdiqlənmədi. Sənəd ilkin redaksiyada qalır.',
-  powers: 'Sənəd tam həcmdə qüvvədə saxlanılır.\nBütün bəndlər ilkin redaksiyada qalır.\nSənədin müddəti uzadılmır və qısaldılmır.\nEyni əsaslarla yeni etiraz 30 gün ərzində qəbul edilmir.',
-  penalty: 'Təsdiqlənmiş sənədin şərtləri pozulduqda mövzunun növbəti müzakirəsinin yerini və vaxtını sənəd sahibi müəyyən edir.'
+  powersLabel: 'TƏSDİQLƏNƏN ŞƏRTLƏR',
+  preamble: 'Hər iki tərəfin mövqeyi əsasında təsdiq edilir ki, {to} adlı şəxs təqdim edilmiş sənədin şərtlərini tam həcmdə qəbul edir. {from} tərəfindən tərtib olunmuş sənəd üzrə heç bir etiraz daxil olmamışdır.',
+  powers: 'Sənədin şərtləri tam həcmdə qəbul edilir.\nHeç bir bəndə etiraz bildirilmir.\nSənəd müddəti bitənədək qüvvədə qalır.\nŞərtlər birtərəfli dəyişdirilmir.',
+  penalty: 'Sertifikat verildikdən sonra sənədin şərtlərinə etiraz yalnız hər iki tərəfin razılığı ilə mümkündür.',
+  titleOptions: [
+    'Təqdim Edilmiş Sənədin Qüvvədə Saxlanılması haqqında Sertifikat',
+    'Sənədin Şərtlərinin Tam Qəbulunu Təsdiq edən Sertifikat',
+    'Tərəflər Arasında Mübahisənin Qalmadığına dair Şəhadətnamə',
+    'Sənədin Etirazsız Qəbul Edilməsi Sertifikatı'
+  ],
+  powersOptions: [
+    'Sənədin şərtləri tam həcmdə qəbul edilir.',
+    'Heç bir bəndə etiraz bildirilmir.',
+    'Sənəd müddəti bitənədək qüvvədə qalır.',
+    'Şərtlər birtərəfli dəyişdirilmir.',
+    'Cəza bəndi də qəbul edilmiş sayılır.',
+    'Sənədin surəti hər iki tərəfdə saxlanılır.',
+    'Yeni hallar üçün əlavə tərtib edilir.',
+    'Müddət uzadılması ayrıca razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat verildikdən sonra sənədin şərtlərinə etiraz yalnız hər iki tərəfin razılığı ilə mümkündür.',
+    'Sertifikat sənədin müddəti ilə birlikdə qüvvədən düşür.',
+    'Şərtlərin dəyişdirilməsi yeni sənəd tələb edir.'
+  ]
 },
 
 /* ==================== 💌 XATİRƏ CAVABI ====================
@@ -726,61 +2143,193 @@ window.REPLIES = [
 {
   id: 'r-xatire-tesekkur', cat: 'c-xatire', tone: 'xatire', layout: 'diplom', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Təşəkkür Cavabı', tag: 'Ən çox seçilən',
-  powersLabel: 'TƏŞƏKKÜRÜN SƏBƏBLƏRİ',
+  title: 'Alınmış Xatirə Sənədinə Cavab olaraq Verilmiş Təşəkkürnamə', tag: 'Ən çox seçilən',
   signOrg: 'Xatirələrin Qeydiyyatı üzrə Səmimi Şura',
-  preamble: 'Bu sənədlə {to} adlı şəxs {from} tərəfindən verilmiş xatirə sənədini aldığını və oxuduğunu təsdiq edir. Yazılanlar gözlənilməz oldu, bir neçə dəfə təkrar oxundu və saxlanılmaq üçün kənara qoyuldu. Cavab olaraq bu təşəkkür sənədi tərtib edilir.',
-  powers: 'Sənəd oxundu və qəbul edildi.\nYazılanların səmimiliyinə heç bir şübhə bildirilmir.\nSənəd saxlanılacaq və illər sonra yenidən oxunacaq.\nBu təşəkkür qarşılıqlı və müddətsizdir.',
-  penalty: 'Bu sənəd heç bir öhdəlik yaratmır. Yeganə xahiş — belə sənədləri yazmağa davam etməkdir.'
+  powersLabel: 'TƏŞƏKKÜRÜN SƏBƏBLƏRİ',
+  preamble: 'Bu sənədlə {to} adlı şəxs {from} tərəfindən verilmiş xatirə sənədini aldığını və oxuduğunu təsdiq edir. Yazılanlar gözlənilməz oldu, bir neçə dəfə təkrar oxundu və saxlanılmaq üçün kənara qoyuldu.',
+  powers: 'Sənəd oxundu və qəbul edildi.\nYazılanların səmimiliyinə şübhə bildirilmir.\nSənəd saxlanılacaq və illər sonra yenidən oxunacaq.\nBu təşəkkür qarşılıqlı və müddətsizdir.',
+  penalty: 'Bu sənəd heç bir öhdəlik yaratmır. Yeganə xahiş — belə sənədləri yazmağa davam etməkdir.',
+  titleOptions: [
+    'Alınmış Xatirə Sənədinə Cavab olaraq Verilmiş Təşəkkürnamə',
+    'Yazılanların Oxunduğunu və Saxlanıldığını Bildirən Təşəkkürnamə',
+    'Gözlənilməz Sənədə Cavab olaraq Bildirilən Minnətdarlıq',
+    'Sözlərin Yerinə Çatdığını Təsdiq edən Təşəkkürnamə'
+  ],
+  powersOptions: [
+    'Sənəd oxundu və qəbul edildi.',
+    'Yazılanların səmimiliyinə şübhə bildirilmir.',
+    'Sənəd saxlanılacaq və illər sonra yenidən oxunacaq.',
+    'Bu təşəkkür qarşılıqlı və müddətsizdir.',
+    'Sözlər gözlənilmədən gəldi.',
+    'Cavab yazmaq üçün vaxt lazım oldu.',
+    'Sənəd ailə arxivinə əlavə edildi.',
+    'Eyni sözlər şəxsən də deyiləcək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bu sənəd heç bir öhdəlik yaratmır. Yeganə xahiş — belə sənədləri yazmağa davam etməkdir.',
+    'Təşəkkür müddətsizdir və geri götürülmür.',
+    'Sənəd hər iki tərəfin arxivində saxlanılır.'
+  ]
 },
 {
   id: 'r-xatire-qebul', cat: 'c-xatire', tone: 'xatire', layout: 'sertifikat', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Qəbul Edildi Sertifikatı', tag: 'Qısa cavab',
-  powersLabel: 'QƏBULUN ŞƏRTLƏRİ',
+  title: 'Bəyan Edilmiş Hisslərin Qəbul Edildiyini Təsdiq edən Sertifikat', tag: 'Qəbul',
   signOrg: 'Səmimi Bəyanatların Qeydiyyatı üzrə Palata',
-  preamble: 'Bu sertifikat {from} tərəfindən {to} adlı şəxsə ünvanlanmış sənədin qəbul edildiyini təsdiq edir. Sənədin məzmunu ilə tam razılıq bildirilir, əlavə şərt irəli sürülmür və heç bir bəndə etiraz edilmir.',
-  powers: 'Sənədin bütün bəndləri qəbul edilir.\nHeç bir bəndə etiraz bildirilmir.\nƏlavə şərt irəli sürülmür.\nQəbul geri götürülmür.',
-  penalty: 'Bu sertifikat müddətsizdir. Yalnız bir şərt var: sənədin əsli çərçivəyə salınıb görünən yerdə saxlanılmalıdır.'
+  powersLabel: 'QƏBULUN ŞƏRTLƏRİ',
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs {from} tərəfindən bəyan edilmiş hissləri tam və şərtsiz qəbul edir. Sənəddə yazılanlara heç bir etiraz bildirilmir, əksinə, eyni hisslər qarşılıqlı olaraq təsdiqlənir.',
+  powers: 'Yazılanlar tam və şərtsiz qəbul edilir.\nHeç bir bəndə etiraz bildirilmir.\nEyni hisslər qarşılıqlı olaraq təsdiqlənir.\nSənəd müddətsiz qüvvədə saxlanılır.',
+  penalty: 'Sertifikat müddətsizdir. Onun qüvvədən düşməsi yalnız hər iki tərəfin razılığı ilə mümkündür.',
+  titleOptions: [
+    'Bəyan Edilmiş Hisslərin Qəbul Edildiyini Təsdiq edən Sertifikat',
+    'Yazılanların Şərtsiz Qəbulunu Təsdiq edən Sertifikat',
+    'Sənədin Etirazsız Qəbul Edilməsinə dair Şəhadətnamə',
+    'Deyilənlərin Eyni Formada Qarşılıqlı Olduğunu Bildirən Sertifikat'
+  ],
+  powersOptions: [
+    'Yazılanlar tam və şərtsiz qəbul edilir.',
+    'Heç bir bəndə etiraz bildirilmir.',
+    'Eyni hisslər qarşılıqlı olaraq təsdiqlənir.',
+    'Sənəd müddətsiz qüvvədə saxlanılır.',
+    'Cavab gecikdi, lakin dəyişmədi.',
+    'Sözlər üçün uyğun an gözlənildi.',
+    'Sənəd bir neçə dəfə oxundu.',
+    'Nüsxə hər iki tərəfdə saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat müddətsizdir. Onun qüvvədən düşməsi yalnız hər iki tərəfin razılığı ilə mümkündür.',
+    'Qəbul geri götürülmür.',
+    'Sənəd ildönümlərində yenidən oxunur.'
+  ]
 },
 {
   id: 'r-xatire-qarsiliqli', cat: 'c-xatire', tone: 'xatire', layout: 'notarial', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Qarşılıqlı Etirafnamə', tag: 'Cavab etirafı',
-  powersLabel: 'QARŞILIQLI ETİRAFLAR',
+  title: 'Eyni Hisslərin Qarşılıqlı Bəyanına dair Cavab Etirafnaməsi', tag: 'Qarşılıqlı',
   signOrg: 'Qarşılıqlı Etirafların Təsdiqi üzrə Şura',
-  preamble: '{to} adlı şəxs {from} tərəfindən verilmiş etirafnaməyə cavab olaraq bildirir ki, orada yazılanların hamısı qarşılıqlıdır. Bu sənəd həmin sözlərin eyni ilə, eyni səmimiliklə geri qaytarıldığını təsdiq edir və əvvəlki sənədin ayrılmaz hissəsi sayılır.',
-  powers: 'Əvvəlki sənəddə yazılanların hamısı qarşılıqlı hesab olunur.\nHər iki sənəd birlikdə saxlanılır.\nSözlər geri götürülmür və dəyişdirilmir.\nSənəd illər sonra yenidən oxunmaq üçün verilir.',
-  penalty: 'Bu sənədin qüvvədə olması üçün heç bir şərt yoxdur. O, yazıldığı gündən etibarən müddətsizdir.'
+  powersLabel: 'QARŞILIQLI ETİRAFLAR',
+  preamble: 'Bu sənədlə təsdiq olunur ki, {to} adlı şəxs {from} tərəfindən verilmiş etirafa cavab olaraq eyni hissləri bəyan edir. Hər iki tərəf uzun müddət susmuş, lakin heç biri fikrini dəyişməmişdir.',
+  powers: 'Eyni hisslər qarşılıqlı olaraq bəyan edilir.\nSusmaq heç nəyi dəyişməmişdi.\nHər iki tərəf eyni anı gözləyirdi.\nEtiraf könüllüdür və geri götürülmür.',
+  penalty: 'Bu etirafnamə illər sonra tapılanda eyni sözlərin yenidən deyilməsi şərti ilə qüvvədə qalır.',
+  titleOptions: [
+    'Eyni Hisslərin Qarşılıqlı Bəyanına dair Cavab Etirafnaməsi',
+    'Alınmış Etirafa Cavab olaraq Verilmiş Etirafnamə',
+    'Hisslərin Hər İki Tərəfdən Təsdiqinə dair Sənəd',
+    'Susmaqla Keçən İllərin Qarşılıqlı Etirafnaməsi'
+  ],
+  powersOptions: [
+    'Eyni hisslər qarşılıqlı olaraq bəyan edilir.',
+    'Susmaq heç nəyi dəyişməmişdi.',
+    'Hər iki tərəf eyni anı gözləyirdi.',
+    'Etiraf könüllüdür və geri götürülmür.',
+    'İlk addımı atmaq çətin oldu.',
+    'Sözlər çoxdan hazır idi.',
+    'Şahid tələb olunmadı.',
+    'Sənəd birgə arxivə verildi.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bu etirafnamə illər sonra tapılanda eyni sözlərin yenidən deyilməsi şərti ilə qüvvədə qalır.',
+    'Etiraf müddətsizdir və dəyişdirilmir.',
+    'Sənəd hər iki tərəfdə saxlanılır.'
+  ]
 },
 {
   id: 'r-xatire-tesdiq', cat: 'c-xatire', tone: 'xatire', layout: 'arayis', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Xatirənin Təsdiqi Arayışı', tag: 'Birlikdə xatırlanan',
-  powersLabel: 'TƏSDİQLƏNƏN XATİRƏLƏR',
+  title: 'Sənəddə Göstərilən Xatirənin Doğruluğunu Təsdiq edən Arayış', tag: 'Təsdiq',
   signOrg: 'Ortaq Xatirələrin Qeydiyyatı üzrə Baş İdarə',
-  preamble: 'Bu arayış {to} adlı şəxsin {from} tərəfindən təqdim edilmiş sənəddə göstərilən hadisələri təsdiq etdiyini bildirir. Hadisələr həqiqətən baş vermiş, tarixlər düzgün göstərilmiş, təfərrüatlar isə hər iki tərəfin yaddaşında eyni cür qalmışdır.',
-  powers: 'Sənəddə göstərilən hadisələr təsdiq edilir.\nTarixlər və təfərrüatlar düzgün hesab olunur.\nXatirə hər iki tərəfin arxivinə daxil edilir.\nƏlavə şahid tələb olunmur.',
-  penalty: 'Bu arayış heç bir öhdəlik yaratmır. Şərt yalnız odur ki, xatirə hər il ən azı bir dəfə xatırlansın.'
+  powersLabel: 'TƏSDİQLƏNƏN XATİRƏLƏR',
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, {from} tərəfindən təqdim edilmiş sənəddə göstərilən xatirə doğrudur. Təfərrüatlar yoxlanılmış, kiçik fərqlər aşkarlansa da, mahiyyət tam üst-üstə düşmüşdür.',
+  powers: 'Xatirənin mahiyyəti tam təsdiqlənir.\nTarix və yer düzgün göstərilib.\nKiçik təfərrüat fərqləri əhəmiyyət daşımır.\nXatirə ortaq arxivə daxil edilir.',
+  penalty: 'Arayış müddətsizdir. Xatirənin təfərrüatları illər keçdikcə dəyişə bilər, mahiyyəti isə dəyişməz qalır.',
+  titleOptions: [
+    'Sənəddə Göstərilən Xatirənin Doğruluğunu Təsdiq edən Arayış',
+    'Ortaq Xatirənin Hər İki Tərəf Tərəfindən Təsdiqi Arayışı',
+    'Yazılanların Faktlara Uyğunluğu haqqında Arayış',
+    'Xatirənin Təfərrüatlarının Dəqiqləşdirilməsi haqqında Arayış'
+  ],
+  powersOptions: [
+    'Xatirənin mahiyyəti tam təsdiqlənir.',
+    'Tarix və yer düzgün göstərilib.',
+    'Kiçik təfərrüat fərqləri əhəmiyyət daşımır.',
+    'Xatirə ortaq arxivə daxil edilir.',
+    'Şəkillər sənədə əlavə olunub.',
+    'Hava şəraiti də eyni xatırlanır.',
+    'İştirakçıların siyahısı dəqiqləşdirilib.',
+    'Xatirə hər il yenidən danışılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Arayış müddətsizdir. Xatirənin təfərrüatları illər keçdikcə dəyişə bilər, mahiyyəti isə dəyişməz qalır.',
+    'Arayış ortaq arxivdə saxlanılır.',
+    'Yeni təfərrüatlar sənədə əlavə edilə bilər.'
+  ]
 },
 {
   id: 'r-xatire-mektub', cat: 'c-xatire', tone: 'xatire', layout: 'teleqram', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Cavab Məktubu', tag: 'Teleqram formasında',
+  title: 'Alınmış Sənədə Cavab olaraq Göndərilmiş Səmimi Teleqram', tag: 'Cavab məktubu',
   signOrg: 'Səmimi Məktubların Çatdırılması üzrə İdarə',
-  preamble: '{from} tərəfindən göndərilmiş sənəd {to} adlı şəxsə çatdırıldı və eyni gün cavablandırıldı. Cavab qısadır, çünki deyiləsi hər şey artıq bir dəfə deyilmişdir. Bu məktub yalnız onu təsdiq edir ki, sözlər ünvanına çatdı.',
-  powers: 'Sənəd çatdırıldı və oxundu.\nCavab eyni gün, gecikdirilmədən verildi.\nSözlər ünvanına çatdı və orada qaldı.\nMəktubun surəti hər iki tərəfdə saxlanılır.',
-  penalty: 'Məktub müddətsizdir. Geri qaytarılmır, düzəliş edilmir və başqa formada təkrar göndərilmir.'
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxs {from} tərəfindən göndərilmiş sənədi almışdır. Cavab qısadır, çünki deyiləcək sözlərin çoxu artıq həmin sənəddə yazılıb və təkrar izahat tələb etmir.',
+  powers: 'Sənəd alındı və oxundu.\nSözlər yerinə çatdı.\nCavab qısadır, lakin səmimidir.\nQalanı görüşdə danışılacaq.',
+  penalty: 'Teleqram heç bir öhdəlik yaratmır. Onun yeganə məqsədi sənədin yerinə çatdığını bildirməkdir.',
+  titleOptions: [
+    'Alınmış Sənədə Cavab olaraq Göndərilmiş Səmimi Teleqram',
+    'Qısa Sözlərlə Verilmiş Cavab Teleqramı',
+    'Sənədin Alındığını Bildirən Səmimi Teleqram',
+    'Cavabın Təxirəsalınmaz Çatdırılması haqqında Teleqram'
+  ],
+  powersOptions: [
+    'Sənəd alındı və oxundu.',
+    'Sözlər yerinə çatdı.',
+    'Cavab qısadır, lakin səmimidir.',
+    'Qalanı görüşdə danışılacaq.',
+    'Sənəd bir neçə dəfə oxundu.',
+    'Cavab yazmaq üçün vaxt lazım oldu.',
+    'Nüsxə saxlanılır.',
+    'Görüş tarixi razılaşdırılacaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Teleqram heç bir öhdəlik yaratmır. Onun yeganə məqsədi sənədin yerinə çatdığını bildirməkdir.',
+    'Teleqram xatirə arxivində saxlanılır.',
+    'Mesaj olduğu kimi qorunur.'
+  ]
 },
 {
   id: 'r-xatire-ohdelik', cat: 'c-xatire', tone: 'xatire', layout: 'muqavile', palette: 'rose',
   replyKind: 'xatire', regPrefix: 'XCV',
-  title: 'Öhdəliyin Qəbulu Haqqında Sənəd', tag: 'Qarşılıqlı söz',
-  powersLabel: 'QƏBUL EDİLƏN ÖHDƏLİKLƏR',
+  title: 'Sənəddə Göstərilən Öhdəliyin Qəbul Edilməsi üzrə Cavab Sazişi', tag: 'Öhdəlik',
   signOrg: 'Verilmiş Sözlərin Qeydiyyatı üzrə Palata',
-  preamble: 'Bu sənədlə {to} adlı şəxs {from} tərəfindən təqdim edilmiş sənəddəki öhdəlikləri qəbul etdiyini və eyni öhdəlikləri öz üzərinə götürdüyünü bildirir. Öhdəliklər könüllü qaydada, heç bir təzyiq olmadan qəbul edilir.',
-  powers: 'Sənəddə göstərilən öhdəliklər tam qəbul edilir.\nEyni öhdəliklər qarşı tərəf üçün də qüvvəyə minir.\nÖhdəliklərin müddəti göstərilmir — deməli müddətsizdir.\nSənəd hər iki tərəfdə bir nüsxə saxlanılır.',
-  penalty: 'Öhdəliklərin pozulması halında nəzərdə tutulan yeganə nəticə budur: mövzu açıq danışılır və sənəd yenidən yazılır.'
+  powersLabel: 'QƏBUL EDİLƏN ÖHDƏLİKLƏR',
+  preamble: 'Bu sazişlə {to} adlı şəxs {from} tərəfindən təqdim edilmiş sənəddə göstərilən öhdəliyi qəbul edir və eyni öhdəliyi öz üzərinə götürür. Saziş hər iki tərəfə bərabər şərtlərlə şamil olunur.',
+  powers: 'Öhdəlik tam və şərtsiz qəbul edilir.\nEyni öhdəlik qarşılıqlı olaraq götürülür.\nŞərtlər hər iki tərəf üçün eynidir.\nSaziş müddətsizdir.',
+  penalty: 'Saziş yalnız hər iki tərəfin razılığı ilə dəyişdirilə bilər. İndiyədək belə bir müraciət daxil olmayıb.',
+  titleOptions: [
+    'Sənəddə Göstərilən Öhdəliyin Qəbul Edilməsi üzrə Cavab Sazişi',
+    'Verilmiş Sözün Qarşılıqlı Təsdiqinə dair Saziş',
+    'Öhdəliyin Hər İki Tərəf Tərəfindən Qəbulu Sazişi',
+    'Alınmış Sənədə Cavab olaraq Bağlanmış Saziş'
+  ],
+  powersOptions: [
+    'Öhdəlik tam və şərtsiz qəbul edilir.',
+    'Eyni öhdəlik qarşılıqlı olaraq götürülür.',
+    'Şərtlər hər iki tərəf üçün eynidir.',
+    'Saziş müddətsizdir.',
+    'Söz yazılı formada təsdiqləndi.',
+    'Şahid tələb olunmadı.',
+    'Nüsxə hər iki tərəfdə saxlanılır.',
+    'Şərtlər əlavə müzakirə tələb etmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Saziş yalnız hər iki tərəfin razılığı ilə dəyişdirilə bilər. İndiyədək belə bir müraciət daxil olmayıb.',
+    'Saziş xatirə arxivində saxlanılır.',
+    'Öhdəlik hər il yenidən təsdiqlənir.'
+  ]
 },
 
 ];

@@ -26,1137 +26,4041 @@ window.TEMPLATES = [
 /* ==================== CÜTLÜKLƏR ==================== */
 {
   id: 'weekend-pass', cat: 'couples', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Həftəsonu Çölə Çıxma Etibarnaməsi', tag: 'Ən çox paylaşılan',
-  signOrg: 'Gecikmə və İcazələr üzrə Ali Şura',
-  preamble: 'Bu etibarnamə ilə təsdiq olunur ki, {from} tərəfindən {to} adlı şəxsə həftəsonu evdən kənara çıxmaq, dostları ilə görüşmək və müəyyən edilmiş saatda geri qayıtmaq səlahiyyəti verilmişdir. Etibarnamə yalnız telefonun şarj səviyyəsi 40%-dən yuxarı olduğu müddətdə qüvvədədir.',
-  powers: 'Həftədə bir dəfə, maksimum 4 saat müddətinə evdən çıxmaq.\nHər 45 dəqiqədən bir sağ-salamat olduğunu bildirən mesaj göndərmək.\nQayıdarkən əli boş qayıtmamaq — şirniyyat və ya çiçək məcburi hesab olunur.\nSəsli mesaja ən geci 3 dəqiqə ərzində cavab vermək.',
-  penalty: 'Şərtlərin pozulması halında sənəd sahibi növbəti iki həftəsonu qab-qacaq yumaq öhdəliyi daşıyır və pultdan istifadə hüququndan müvəqqəti məhrum edilir.'
+  title: 'Həftəsonu Evdən Kənara Çıxma Səlahiyyətinin Verilməsi haqqında Etibarnamə', tag: 'Ən çox paylaşılan',
+  signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Şura',
+  preamble: 'Tərəflər arasında həftəsonu vaxtının bölüşdürülməsi ilə bağlı yaranmış müzakirə nəzərə alınaraq, {from} tərəfindən {to} adlı şəxsə evdən kənara çıxmaq və müəyyən edilmiş saatda geri qayıtmaq səlahiyyəti verilmişdir. Səlahiyyət telefonun şarj səviyyəsi 40 faizdən yuxarı olduğu müddətdə qüvvədə hesab edilir.',
+  powers: 'Həftədə bir dəfə, ən çoxu dörd saat müddətinə evdən kənara çıxmaq.\nHər 45 dəqiqədən bir sağ-salamat olduğunu bildirən mesaj göndərmək.\nQayıdarkən əliboş qayıtmamaq: şirniyyat və ya çiçək məcburi hesab edilir.\nSəsli mesaja ən geci üç dəqiqə ərzində cavab vermək.',
+  penalty: 'Şərtlərin pozulması halında səlahiyyət növbəti həftəsonu üçün dayandırılır və sənəd sahibi qab-qacaq yuma öhdəliyini öz üzərinə götürmüş hesab edilir.',
+  titleOptions: [
+    'Həftəsonu Evdən Kənara Çıxma Səlahiyyətinin Verilməsi haqqında Etibarnamə',
+    'Həftəsonu Vaxtından Sərbəst İstifadə Səlahiyyəti haqqında Etibarnamə',
+    'Dostlarla Görüş Məqsədilə Evdən Kənara Çıxma haqqında Etibarnamə',
+    'Müəyyən Saatadək Evə Qayıtmaq Şərti ilə Verilmiş Çıxış Etibarnaməsi'
+  ],
+  powersOptions: [
+    'Həftədə bir dəfə, ən çoxu dörd saat müddətinə evdən kənara çıxmaq.',
+    'Hər 45 dəqiqədən bir sağ-salamat olduğunu bildirən mesaj göndərmək.',
+    'Qayıdarkən əliboş qayıtmamaq: şirniyyat və ya çiçək məcburi hesab edilir.',
+    'Səsli mesaja ən geci üç dəqiqə ərzində cavab vermək.',
+    'Qayıdış saatını yalnız bir dəfə və əvvəlcədən xəbər verməklə dəyişmək.',
+    'Görüşün keçirildiyi ünvanı tələb olunduqda təsdiq etmək.',
+    'Yola düşməzdən əvvəl «çıxıram» ifadəsini səsləndirmək.',
+    'Evə qayıdanda gecikmənin səbəbini yazılı izah etməmək hüququ.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şərtlərin pozulması halında səlahiyyət növbəti həftəsonu üçün dayandırılır və sənəd sahibi qab-qacaq yuma öhdəliyini öz üzərinə götürmüş hesab edilir.',
+    'Növbəti həftəsonunun proqramı tam olaraq digər tərəf tərəfindən müəyyən edilir.',
+    'Pultdan istifadə hüququ yeddi gün müddətinə dayandırılır.'
+  ]
 },
 {
   id: 'always-right', cat: 'couples', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
-  title: 'Həmişə Haqlı Olma Fərmanı', tag: 'Klassik',
-  signOrg: 'Cütlüklərin Hüquq və Öhdəlikləri üzrə Ali Məclis',
-  preamble: '{from} bu fərmanla {to} adlı şəxsi, mübahisənin mövzusundan və nəticəsindən asılı olmayaraq, ömürlük haqlı elan edir. Qərar geriyə şamil olunur və bugünədək baş vermiş bütün mübahisələri əhatə edir. Fərman imzalandığı andan qüvvəyə minir.',
-  powers: 'İstənilən mübahisədə son sözü demək hüququ.\n«Mən sənə demişdim» ifadəsini limitsiz istifadə etmək.\nXəritəyə baxmadan yol göstərmək və səhv çıxdıqda məsuliyyət daşımamaq.\nSoyuducunun qapısını açıb «yemək yoxdur» demək hüququ.',
-  penalty: 'Bu fərmana etiraz edən tərəf 7 gün müddətinə serial seçimi hüququndan məhrum edilir və həmin müddətdə seçim tam olaraq digər tərəfə keçir.'
+  title: 'Mübahisələrdə Daimi Haqlılıq Statusunun Tanınması haqqında Qərar', tag: 'Klassik',
+  signOrg: 'Məişət Mübahisələri üzrə Arbitraj Kollegiyası',
+  preamble: 'Kollegiya {to} adlı şəxsin iştirak etdiyi mübahisələrin uzunmüddətli statistikasını araşdıraraq müəyyən etmişdir ki, yekun nəticə mövzudan asılı olmayaraq həmişə eyni olmuşdur. {from} tərəfindən bildirilən razılıq nəzərə alınmaqla məsələ üzrə yekun qərar qəbul edilmişdir.',
+  powers: 'İstənilən mübahisədə son sözü demək səlahiyyəti tanınsın.\n«Mən sənə demişdim» ifadəsinin istifadəsinə məhdudiyyət qoyulmasın.\nXəritəyə baxmadan yol göstərmək halı səhv hesab edilməsin.\nQərar geriyə şamil edilsin və keçmiş mübahisələri əhatə etsin.',
+  penalty: 'Qərardan narazı tərəfin etirazı qəbul edilir, lakin baxılmaya bilər. Etirazın təkrarlanması halında serial seçimi hüququ yeddi gün müddətinə digər tərəfə keçir.',
+  titleOptions: [
+    'Mübahisələrdə Daimi Haqlılıq Statusunun Tanınması haqqında Qərar',
+    'Ailədaxili Mübahisələr üzrə Son Sözün Bir Tərəfə Verilməsi haqqında Qərar',
+    'Keçmiş Mübahisələrə Yenidən Baxılmasının Dayandırılması haqqında Qərar',
+    'Haqlılıq Statusunun Müddətsiz Tanınmasına dair Yekun Qətnamə'
+  ],
+  powersOptions: [
+    'İstənilən mübahisədə son sözü demək səlahiyyəti tanınsın.',
+    '«Mən sənə demişdim» ifadəsinin istifadəsinə məhdudiyyət qoyulmasın.',
+    'Xəritəyə baxmadan yol göstərmək halı səhv hesab edilməsin.',
+    'Qərar geriyə şamil edilsin və keçmiş mübahisələri əhatə etsin.',
+    'Soyuducunu açıb «yemək yoxdur» demək hüququ qorunsun.',
+    'Alış-verişdə seçilmiş rəngin uğursuz olması müzakirə predmeti sayılmasın.',
+    'Yolun qısa variantı barədə fikir yekun hesab edilsin.',
+    'Serialın sonunu əvvəlcədən demək halı pozuntu kimi qiymətləndirilməsin.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərardan narazı tərəfin etirazı qəbul edilir, lakin baxılmaya bilər. Etirazın təkrarlanması halında serial seçimi hüququ yeddi gün müddətinə digər tərəfə keçir.',
+    'Etiraz qeydə alınır, lakin qərarın qüvvəsinə təsir göstərmir.',
+    'Qərar növbəti mübahisəyə qədər dəyişdirilmədən qüvvədə saxlanılır.'
+  ]
 },
 {
   id: 'remote-control', cat: 'couples', tone: 'zarafat', layout: 'sertifikat', palette: 'steel',
-  title: 'Pult Üzərində Müstəsna Nəzarət Sertifikatı', tag: 'Ev müharibəsi',
-  signOrg: 'Pult və Televiziya Səlahiyyətləri üzrə Ali Şura',
-  preamble: 'Bu sertifikat {to} adlı şəxsin televizor pultu üzərində müstəsna və mübahisəsiz nəzarət hüququnu təsdiq edir. Hüquq {from} tərəfindən könüllü şəkildə, heç bir təzyiq olmadan (iddia edildiyinə görə) verilmişdir.',
-  powers: 'Kanalı xəbərdarlıq etmədən dəyişmək.\nSerialın növbəti seriyasını tək baxmamaq öhdəliyi ilə seçim etmək.\nReklam zamanı səsi tam söndürmək.\nPultun harada olduğunu bilməmək hüququ (ayda 2 dəfə).',
-  penalty: 'Pultun 24 saatdan artıq itkin düşməsi halında nəzarət hüququ avtomatik olaraq digər tərəfə keçir və bərpa olunmur.'
+  title: 'Televiziya Pultu üzərində Müstəsna Nəzarət Hüququnun Sertifikatı', tag: 'Ev müharibəsi',
+  signOrg: 'Ev Rejimi və Daxili Nizam üzrə Baş İdarə',
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxsin televiziya pultu üzərində nəzarəti uzun müddət ərzində fasiləsiz davam etmiş və mübahisə predmetinə çevrilməmişdir. Hüquq {from} tərəfindən könüllü şəkildə, heç bir təzyiq olmadan tanınmışdır.',
+  powers: 'Kanalı əvvəlcədən xəbərdarlıq etmədən dəyişmək.\nReklam fasiləsində səsi tam söndürmək.\nSerialın növbəti hissəsini tək baxmamaq öhdəliyi ilə seçmək.\nPultun harada olduğunu bilməmək hüququ — ayda iki dəfə.',
+  penalty: 'Pultun 24 saatdan artıq itkin qalması halında nəzarət hüququ avtomatik olaraq digər tərəfə keçir və sertifikat bərpa edilmir.',
+  titleOptions: [
+    'Televiziya Pultu üzərində Müstəsna Nəzarət Hüququnun Sertifikatı',
+    'Axşam Saatlarında Kanal Seçimi Səlahiyyətini Təsdiq edən Sertifikat',
+    'Pultun Saxlanma Yeri üzərində Nəzarətin Tanınması Sertifikatı',
+    'Baxış Cədvəlinin Müəyyən Edilməsi Səlahiyyətinə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Kanalı əvvəlcədən xəbərdarlıq etmədən dəyişmək.',
+    'Reklam fasiləsində səsi tam söndürmək.',
+    'Serialın növbəti hissəsini tək baxmamaq öhdəliyi ilə seçmək.',
+    'Pultun harada olduğunu bilməmək hüququ — ayda iki dəfə.',
+    'Axşam saat 21:00-dan sonra baxış cədvəlini müəyyən etmək.',
+    'İdman yayımı zamanı kanalın dəyişdirilməsinə etiraz etmək.',
+    'Pultun batareyasını dəyişmək öhdəliyini üzərinə götürməmək.',
+    'Qonaq gəldikdə nəzarəti müvəqqəti olaraq həvalə etmək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Pultun 24 saatdan artıq itkin qalması halında nəzarət hüququ avtomatik olaraq digər tərəfə keçir və sertifikat bərpa edilmir.',
+    'Sertifikat qonaqların iştirakı ilə keçirilən baxışlara şamil edilmir.',
+    'Hüquq yalnız pultun saxlanma yerinin açıqlanması şərti ilə qüvvədədir.'
+  ]
 },
 {
   id: 'dessert-amnesty', cat: 'couples', tone: 'zarafat', layout: 'blank', palette: 'forest',
-  title: 'Şirniyyat Oğurluğuna Görə Amnistiya Aktı', tag: 'Bayram üçün',
-  signOrg: 'Mətbəx və Şirniyyat Məsələləri üzrə Komissiya',
+  title: 'Soyuducuda Saxlanılan Şirniyyat Epizodlarına Görə Amnistiya Bəyannaməsi', tag: 'Bayram üçün',
+  signOrg: 'Ev Rejimi və Daxili Nizam üzrə Baş İdarə',
   toLabel: 'Amnistiya olunan', fromLabel: 'Amnistiya verən',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə, soyuducuda saxlanılan şirniyyat məhsulları ilə bağlı keçmişdə törədilmiş bütün əməllərə görə tam və qeyd-şərtsiz amnistiya elan olunur. Amnistiya paylaşılmamış son dilim də daxil olmaqla bütün epizodları əhatə edir.',
-  powers: 'Gecə saat 00:00-dan sonra soyuducuya sərbəst giriş.\nSon dilimi soruşmadan götürmək (ayda 1 dəfə).\n«Mən götürməmişəm» ifadəsindən istifadə hüququ.\nBayram şirniyyatını qonaqlardan əvvəl dadmaq.',
-  penalty: 'Amnistiya yalnız keçmişə şamil olunur. Yeni əməllər aşkarlandıqda sənəd sahibi növbəti şirniyyatı öz vəsaiti hesabına almaq öhdəliyi daşıyır.'
+  preamble: 'Uzunmüddətli müşahidə nəticəsində soyuducuda saxlanılan şirniyyat məhsulları ilə bağlı bir sıra izah edilməmiş epizodlar qeydə alınmışdır. {from} tərəfindən {to} adlı şəxsə həmin epizodların hamısına, o cümlədən paylaşılmamış son dilimə görə tam və qeyd-şərtsiz amnistiya elan olunur.',
+  powers: 'Gecə saat 00:00-dan sonra soyuducuya sərbəst giriş.\nSon dilimi soruşmadan götürmək — ayda bir dəfə.\n«Mən götürməmişəm» ifadəsindən istifadə hüququ.\nBayram şirniyyatını qonaqlardan əvvəl dadmaq.',
+  penalty: 'Amnistiya yalnız keçmişə şamil edilir. Elan edildiyi tarixdən sonra aşkarlanan yeni epizodlarda sənəd sahibi növbəti şirniyyatı öz vəsaiti hesabına almaq öhdəliyi daşıyır.',
+  titleOptions: [
+    'Soyuducuda Saxlanılan Şirniyyat Epizodlarına Görə Amnistiya Bəyannaməsi',
+    'Paylaşılmamış Son Dilim üzrə Keçmiş Əməllərin Bağışlanması Bəyannaməsi',
+    'Gecə Saatlarında Soyuducuya Müraciət Hallarına dair Amnistiya Bildirişi',
+    'Mətbəx Sahəsində Törədilmiş Əməllərə Görə Ümumi Amnistiya Bəyannaməsi'
+  ],
+  powersOptions: [
+    'Gecə saat 00:00-dan sonra soyuducuya sərbəst giriş.',
+    'Son dilimi soruşmadan götürmək — ayda bir dəfə.',
+    '«Mən götürməmişəm» ifadəsindən istifadə hüququ.',
+    'Bayram şirniyyatını qonaqlardan əvvəl dadmaq.',
+    'Alınmış şirniyyatın miqdarını yuvarlaqlaşdıraraq bildirmək.',
+    'Boş qabı soyuducuda saxlamağa görə izahat verməmək.',
+    'Çayın yanına götürülən dilimi hesaba daxil etməmək.',
+    'Şirniyyatın harada gizlədildiyini açıqlamamaq hüququ.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Amnistiya yalnız keçmişə şamil edilir. Elan edildiyi tarixdən sonra aşkarlanan yeni epizodlarda sənəd sahibi növbəti şirniyyatı öz vəsaiti hesabına almaq öhdəliyi daşıyır.',
+    'Yeni epizodların təkrarı halında soyuducuya gecə girişi dayandırılır.',
+    'Amnistiya bayram süfrəsində qoyulmuş məhsullara şamil edilmir.'
+  ]
 },
 {
   id: 'snoring-license', cat: 'couples', tone: 'zarafat', layout: 'lisenziya', palette: 'ink',
-  title: 'Xoruldama Lisenziyası', tag: 'Gecə növbəsi',
-  signOrg: 'Gecə Rejimi və Yataq Otağı Məsələləri üzrə Komitə',
+  title: 'Gecə Saatlarında Səs Effektlərinin Yaradılmasına dair Xüsusi İcazə', tag: 'Gecə növbəsi',
+  signOrg: 'Ev Rejimi və Daxili Nizam üzrə Baş İdarə',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ HALLAR',
-  preamble: '{from} uzun illik müşahidə və nəticəsiz mübarizədən sonra {to} adlı şəxsin gecə saatlarında xoruldamaq hüququnu rəsmi olaraq tanıyır. Lisenziya bütün yataq otaqlarında və uzun avtomobil yollarında qüvvədədir.',
-  powers: 'Gecə saat 23:00-dan səhər 07:00-a qədər sərbəst xoruldamaq.\nSəhər «mən xoruldamıram» demək hüququ.\nDivana sürgün edilməyə etiraz etmək.\nQulaq tıxacının qiymətini ödəməmək.',
-  penalty: 'Səs həddi qonşuların şikayət etdiyi səviyyəni keçdikdə lisenziya bir gecəlik dayandırılır və sahib divana köçürülür.'
+  preamble: 'Uzunillik müşahidə və nəticəsiz mübarizədən sonra {from} tərəfindən {to} adlı şəxsin gecə saatlarında səs effektləri yaratmaq hüququ rəsmi qaydada tanınmışdır. İcazə bütün yataq otaqlarında və uzunmüddətli avtomobil yollarında qüvvədə hesab edilir.',
+  powers: 'Gecə saat 23:00-dan səhər 07:00-dək sərbəst xoruldamaq.\nSəhər «mən xoruldamıram» demək hüququ.\nDivana köçürülmə tədbirinə etiraz etmək.\nQulaq tıxacının dəyərini ödəməmək.',
+  penalty: 'Səs həddi qonşuların müraciət etdiyi səviyyəni keçdikdə icazə bir gecəlik dayandırılır və sahib müvəqqəti olaraq divana köçürülür.',
+  titleOptions: [
+    'Gecə Saatlarında Səs Effektlərinin Yaradılmasına dair Xüsusi İcazə',
+    'Yataq Otağında Akustik Fəaliyyətin Rəsmiləşdirilməsi haqqında Lisenziya',
+    'Xoruldama Halının Qanuni Fəaliyyət kimi Tanınmasına dair İcazə',
+    'Gecə Rejimində Səs Həddinin Aşılmasına dair Müddətsiz Lisenziya'
+  ],
+  powersOptions: [
+    'Gecə saat 23:00-dan səhər 07:00-dək sərbəst xoruldamaq.',
+    'Səhər «mən xoruldamıram» demək hüququ.',
+    'Divana köçürülmə tədbirinə etiraz etmək.',
+    'Qulaq tıxacının dəyərini ödəməmək.',
+    'Yatmazdan əvvəl çevrilmə tələbini nəzərə almamaq.',
+    'Səs yazısının sübut kimi təqdim edilməsinə etiraz bildirmək.',
+    'Yol boyu avtomobildə yuxuya getmək hüququ.',
+    'Qonaqlıqda yuxuya getmə halını müzakirəyə çıxarmamaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Səs həddi qonşuların müraciət etdiyi səviyyəni keçdikdə icazə bir gecəlik dayandırılır və sahib müvəqqəti olaraq divana köçürülür.',
+    'İcazə yalnız yastığın öz yerində saxlanılması şərti ilə qüvvədədir.',
+    'Səs yazısının üç gecə ardıcıl təkrarı icazəni qüvvədən salır.'
+  ]
 },
 {
   id: 'ideal-partner', cat: 'couples', tone: 'zarafat', layout: 'diplom', palette: 'burgundy',
-  title: 'İdeal Həyat Yoldaşı Diplomu', tag: 'İldönümü',
-  signOrg: 'Cütlüklərarası Münasibətlərin Tənzimlənməsi Komitəsi',
-  preamble: 'Zarafat Notariat Palatası təsdiq edir ki, bu şəxs uzun müddət ərzində səbir, dözüm və vaxtında gətirilmiş çay sahəsində müstəsna nəticələr göstərmişdir. Diplom {from} tərəfindən təqdim olunur.',
-  powers: 'Səhər qəhvəsini yataqda təqdim etmək.\nUnudulmuş tarixləri xatırlatmaq.\nMübahisədən sonra ilk addımı atmaq.\nAilə fotolarında həmişə gülümsəmək.',
-  penalty: 'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə sürpriz təşkil etmək öhdəliyi daşıyır.'
+  title: 'Səbir və Dözüm Sahəsində Göstərilmiş Nəticələrə Görə Fəxri Diplom', tag: 'İldönümü',
+  signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin uzun müddət ərzində səbir, dözüm və vaxtında gətirilmiş çay sahəsində göstərdiyi nəticələri qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur və geri alınmır.',
+  powers: 'Səhər qəhvəsini yataqda təqdim etmək.\nUnudulmuş tarixləri vaxtında xatırlatmaq.\nMübahisədən sonra ilk addımı atmaq.\nAilə fotolarında həmişə gülümsəmək.',
+  penalty: 'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə əvvəlcədən xəbər verilməyən sürpriz təşkil etmək öhdəliyi daşıyır.',
+  titleOptions: [
+    'Səbir və Dözüm Sahəsində Göstərilmiş Nəticələrə Görə Fəxri Diplom',
+    'Vaxtında Gətirilmiş Çay Sahəsindəki Nailiyyətlərə Görə Fəxri Diplom',
+    'Uzunmüddətli Birgə Həyatda Nümunəvi Davranışa Görə Fəxri Diplom',
+    'Mübahisədən Sonra İlk Addımı Atmaq Sahəsində Fəxri Diplom'
+  ],
+  powersOptions: [
+    'Səhər qəhvəsini yataqda təqdim etmək.',
+    'Unudulmuş tarixləri vaxtında xatırlatmaq.',
+    'Mübahisədən sonra ilk addımı atmaq.',
+    'Ailə fotolarında həmişə gülümsəmək.',
+    'Uzun söhbəti sona qədər dinləmək.',
+    'Alış-veriş siyahısını itirmədən saxlamaq.',
+    'Qonaqlar gələnə qədər evi nizama salmaq.',
+    'Səhv olduqda bunu birinci etiraf etmək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə əvvəlcədən xəbər verilməyən sürpriz təşkil etmək öhdəliyi daşıyır.',
+    'Təltif növbəti ildönümünə qədər yenidən nəzərdən keçirilmir.',
+    'Diplom ailə arxivində saxlanılır və mübahisədə sübut kimi istifadə edilə bilər.'
+  ]
 },
 {
   id: 'shopping-power', cat: 'couples', tone: 'zarafat', layout: 'viza', palette: 'steel',
-  title: 'Alış-veriş Səlahiyyətnaməsi', tag: 'Büdcə',
-  signOrg: 'Ailə Büdcəsi və Alış-veriş Məsələləri üzrə Baş İdarə',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə ailə büdcəsi hesabına alış-veriş etmək səlahiyyəti verilir. Səlahiyyət yalnız siyahıda yazılmış məhsullara şamil olunur; siyahıdan kənar alışlar ayrıca izahat tələb edir.',
-  powers: 'Siyahıdakı məhsulları müstəqil seçmək.\nEndirimli məhsulu siyahıya sonradan əlavə etmək (1 ədəd).\nÇek itdikdə məbləği yuvarlaqlaşdırmaq.\n«Lazım olacaq» arqumentindən həftədə bir dəfə istifadə etmək.',
-  penalty: 'Siyahıdan kənar üç və daha çox məhsul aşkarlandıqda səlahiyyət növbəti ay üçün dayandırılır və alış-veriş birgə həyata keçirilir.'
+  title: 'Ailə Büdcəsi Hesabına Alış-veriş Əməliyyatlarının Aparılmasına İcazə', tag: 'Büdcə',
+  signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Şura',
+  preamble: '{from} tərəfindən {to} adlı şəxsə ailə büdcəsi hesabına alış-veriş etmək səlahiyyəti verilir. Səlahiyyət yalnız əvvəlcədən razılaşdırılmış siyahıya şamil olunur; siyahıdan kənar alışlar ayrıca izahat tələb edir.',
+  powers: 'Siyahıda göstərilən məhsulları müstəqil seçmək səlahiyyəti verilir.\nEndirimli bir məhsulu siyahıya sonradan əlavə etmək icazəlidir.\nÇek itdikdə məbləğin yuvarlaqlaşdırılması pozuntu sayılmır.\n«Lazım olacaq» arqumenti həftədə bir dəfə tətbiq edilə bilər.',
+  penalty: 'Siyahıdan kənar üç və daha çox məhsul aşkarlandıqda icazə növbəti ay üçün dayandırılır və alış-veriş birgə həyata keçirilir.',
+  titleOptions: [
+    'Ailə Büdcəsi Hesabına Alış-veriş Əməliyyatlarının Aparılmasına İcazə',
+    'Siyahı Üzrə Alış-verişin Müstəqil Həyata Keçirilməsinə dair İcazə',
+    'Endirim Dövründə Büdcədən İstifadəyə dair Məhdud Müddətli İcazə',
+    'Market Ziyarəti Zamanı Seçim Səlahiyyətinin Verilməsinə dair İcazə'
+  ],
+  powersOptions: [
+    'Siyahıda göstərilən məhsulları müstəqil seçmək səlahiyyəti verilir.',
+    'Endirimli bir məhsulu siyahıya sonradan əlavə etmək icazəlidir.',
+    'Çek itdikdə məbləğin yuvarlaqlaşdırılması pozuntu sayılmır.',
+    '«Lazım olacaq» arqumenti həftədə bir dəfə tətbiq edilə bilər.',
+    'Növbədə dayanarkən əlavə məhsul götürmək icazəlidir.',
+    'Uşaq bölməsindən keçmək tələb olunmur.',
+    'Alınmış məhsulun qiyməti soruşulduqda təxmini rəqəm göstərilə bilər.',
+    'Siyahıda olmayan şirniyyat bir ədəd hüdudunda alına bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Siyahıdan kənar üç və daha çox məhsul aşkarlandıqda icazə növbəti ay üçün dayandırılır və alış-veriş birgə həyata keçirilir.',
+    'İcazə yalnız çekin saxlanılması şərti ilə qüvvədə hesab edilir.',
+    'Büdcənin aşılması halında növbəti alış-veriş siyahısı digər tərəf tərəfindən tərtib edilir.'
+  ]
 },
 {
   id: 'late-reply', cat: 'couples', tone: 'zarafat', layout: 'vesiqe', palette: 'steel',
-  title: 'Mesaja Gec Cavab Vermə Vəsiqəsi', tag: 'Rəqəmsal sülh',
-  signOrg: 'Mesajlaşma və Cavab Gecikmələri üzrə Xüsusi Komissiya',
+  title: 'Mesajı Oxuduqdan Sonra Cavab Verməmək Hüququnu Təsdiq edən Vəsiqə', tag: 'Rəqəmsal sülh',
+  signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Şura',
   toLabel: 'VƏSİQƏ SAHİBİ',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin mesajları görüb dərhal cavab verməmək hüququnu tanıyır. Vəsiqə {from} tərəfindən, «onlayn» statusunun mübahisə mövzusu olmaması şərti ilə verilmişdir.',
-  powers: 'Mesajı oxuyub 30 dəqiqə ərzində cavab verməmək.\n«Telefonu görmədim» ifadəsindən istifadə etmək.\nSəsli mesajı iki dəfə sürətlə dinləmək.\nQrup çatındakı sualı görməzdən gəlmək.',
-  penalty: 'Cavabsızlıq 6 saatı aşdıqda vəsiqə müvəqqəti dayandırılır və sahib növbəti görüşün yerini digər tərəfin seçməsinə razılıq verir.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin mesajı oxuduqdan sonra dərhal cavab verməmək hüququnu təsdiq edir. Sənəd {from} tərəfindən, «onlayn» statusunun mübahisə mövzusuna çevrilməməsi şərti ilə verilmişdir və rəqəmsal ünsiyyətin bütün formalarına şamil olunur.',
+  powers: 'Mesajı görüb sonra cavablandırmaq hüququ tanınır.\n«Onlayn» statusu izahat tələb edən hal sayılmır.\nSəsli mesaja yazılı cavab vermək icazəlidir.\nCavab müddəti gündəlik məşğulluğa uyğun müəyyən edilir.',
+  penalty: 'Vəsiqə sosial şəbəkədə paylaşım edildiyi anda müvəqqəti olaraq qüvvədən düşür və cavab öhdəliyi həmin gün ərzində bərpa olunur.',
+  titleOptions: [
+    'Mesajı Oxuduqdan Sonra Cavab Verməmək Hüququnu Təsdiq edən Vəsiqə',
+    'Onlayn Görünmə Halının Mübahisə Predmeti Sayılmamasına dair Vəsiqə',
+    'Rəqəmsal Ünsiyyətdə Fasilə Hüququnu Təsdiq edən Şəhadətnamə',
+    'Cavab Müddətinin Sərbəst Müəyyən Edilməsinə dair Vəsiqə'
+  ],
+  powersOptions: [
+    'Mesajı görüb sonra cavablandırmaq hüququ tanınır.',
+    '«Onlayn» statusu izahat tələb edən hal sayılmır.',
+    'Səsli mesaja yazılı cavab vermək icazəlidir.',
+    'Cavab müddəti gündəlik məşğulluğa uyğun müəyyən edilir.',
+    'Qrup söhbətindəki mesajlara cavab vermək öhdəliyi yaranmır.',
+    'Bildirişlərin söndürülməsi pozuntu kimi qiymətləndirilmir.',
+    'Şəkil və video mesajlar ayrıca cavab tələb etmir.',
+    'Gecə saatlarında yazılmış mesaj səhər cavablandırıla bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə sosial şəbəkədə paylaşım edildiyi anda müvəqqəti olaraq qüvvədən düşür və cavab öhdəliyi həmin gün ərzində bərpa olunur.',
+    'Üç ardıcıl cavabsız gün vəsiqənin yenidən baxılmasına əsas verir.',
+    'Vəsiqə təcili hesab edilən mesajlara şamil edilmir.'
+  ]
 },
 {
   id: 'family-visit', cat: 'couples', tone: 'zarafat', layout: 'arayis', palette: 'ink',
-  title: 'Qohum Ziyarəti Protokolu', tag: 'Diplomatiya',
-  signOrg: 'Qohum Ziyarətlərinin Tənzimlənməsi üzrə Baş İdarə',
+  title: 'Qohum Ziyarətinin Müddəti və Şərtlərinin Müəyyən Edilməsi haqqında Arayış', tag: 'Diplomatiya',
+  signOrg: 'Məişət Mübahisələri üzrə Arbitraj Kollegiyası',
   powersLabel: 'PROTOKOLUN ŞƏRTLƏRİ',
-  preamble: 'Tərəflər — {from} və {to} — qohum ziyarətlərinin təşkili, müddəti və çıxış vaxtı barədə aşağıdakı şərtlərlə razılığa gəlmişlər. Protokol hər iki tərəfin ailəsinə bərabər şamil olunur.',
-  powers: 'Ziyarətin müddəti 3 saatı keçmir.\nÇıxış siqnalı razılaşdırılmış jestlə verilir və mübahisə edilmir.\nSüfrədə üçüncü dəfə təklif olunan yeməkdən imtina etmək hüququ tanınır.\nYolda mövzu müzakirəsi ən azı 10 dəqiqə təxirə salınır.',
-  penalty: 'Çıxış siqnalına iki dəfə əməl edilmədikdə növbəti ziyarətin marşrutunu digər tərəf müəyyən edir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, qohum ziyarətlərinin müddəti və şərtləri {from} ilə birgə müzakirə edilmiş və razılaşdırılmışdır. Arayış hər iki tərəfin ziyarətlərinə bərabər şəkildə şamil olunur.',
+  powers: 'Ziyarətin müddəti üç saatı keçmir.\nAyrılma vaxtı əvvəlcədən elan edilir və uzadılmır.\nMaaş və evlilik mövzuları müzakirəyə çıxarılmır.\nHər iki ailəyə ziyarət növbə ilə həyata keçirilir.',
+  penalty: 'Razılaşdırılmış müddətin bir saatdan artıq aşılması halında növbəti ziyarətin təşkili tam olaraq digər tərəfin səlahiyyətinə keçir.',
+  titleOptions: [
+    'Qohum Ziyarətinin Müddəti və Şərtlərinin Müəyyən Edilməsi haqqında Arayış',
+    'Bayram Ziyarətlərinin Növbəliliyinin Təsdiqi haqqında Arayış',
+    'Ziyarət Zamanı Söhbət Mövzularının Məhdudlaşdırılması haqqında Arayış',
+    'Qonaqlıqdan Ayrılma Vaxtının Razılaşdırılması haqqında Arayış'
+  ],
+  powersOptions: [
+    'Ziyarətin müddəti üç saatı keçmir.',
+    'Ayrılma vaxtı əvvəlcədən elan edilir və uzadılmır.',
+    'Maaş və evlilik mövzuları müzakirəyə çıxarılmır.',
+    'Hər iki ailəyə ziyarət növbə ilə həyata keçirilir.',
+    'Süfrə arxasında müqayisə aparılması qadağandır.',
+    'Ziyarətdən əvvəl gedişin dəqiq saatı bildirilir.',
+    'Ev sahibinin təklif etdiyi ikinci boşqab rədd edilə bilər.',
+    'Gözlənilməz ziyarət ən azı bir saat əvvəl xəbər verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Razılaşdırılmış müddətin bir saatdan artıq aşılması halında növbəti ziyarətin təşkili tam olaraq digər tərəfin səlahiyyətinə keçir.',
+    'Müddətin aşılması növbəti bayram ziyarətinin ləğvinə əsas verir.',
+    'Şərtlərin pozulması halında ziyarət növbəsi bir dövr üçün dayandırılır.'
+  ]
 },
 {
   id: 'sock-treaty', cat: 'couples', tone: 'zarafat', layout: 'muqavile', palette: 'forest',
-  title: 'Corab Müqaviləsi', tag: 'Ev qaydası',
-  signOrg: 'Məişət Öhdəlikləri üzrə Xüsusi Komissiya',
-  preamble: 'Bu müqavilə ilə {to} adlı şəxs yerə atılmış corabların taleyi ilə bağlı öhdəlik götürür. {from} isə həmin corabları tapdıqda dərhal qeyd etməmək öhdəliyini qəbul edir. Müqavilə bütün otaqlara şamil olunur.',
-  powers: 'Corabı çıxardığı yerdə maksimum 30 dəqiqə saxlamaq.\nCüt tapılmadıqda oxşar rəngdən istifadə etmək.\nQonaq gələnə qədər yığışdırmağı təxirə salmaq.\nAyda bir dəfə «bu mənim deyil» demək.',
-  penalty: 'Eyni corab üç gün ardıcıl eyni yerdə qaldıqda sahibi həmin həftənin bütün paltar yumasını öz üzərinə götürür.'
+  title: 'Corabların Saxlanma Yeri və Cütləşdirilməsi üzrə Birgə Müqavilə', tag: 'Ev qaydası',
+  signOrg: 'Ev Rejimi və Daxili Nizam üzrə Baş İdarə',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında corabların saxlanma yeri, cütləşdirilməsi və itkin düşmüş nüsxələrin axtarışı üzrə məsuliyyətin bölüşdürülməsi barədə razılıq əldə edilmişdir. Müqavilə imzalandığı gündən qüvvəyə minir.',
+  powers: 'Corablar yalnız müəyyən edilmiş yerdə saxlanılır.\nCütləşdirmə paltarın qurudulmasından sonra dərhal aparılır.\nİtkin düşmüş nüsxənin axtarışı birgə həyata keçirilir.\nDivanın altından çıxan corab mübahisə predmeti sayılmır.',
+  penalty: 'Müqavilənin şərtləri iki dəfə pozulduqda corabların cütləşdirilməsi öhdəliyi növbəti ay üçün tam olaraq pozuntuya yol vermiş tərəfə keçir.',
+  titleOptions: [
+    'Corabların Saxlanma Yeri və Cütləşdirilməsi üzrə Birgə Müqavilə',
+    'Ev Şəraitində Paltarların Yerləşdirilməsi Qaydaları üzrə Müqavilə',
+    'İtmiş Corabların Axtarışı üzrə Məsuliyyətin Bölüşdürülməsi Müqaviləsi',
+    'Paltaryuyan Maşının Boşaldılması Növbəsi üzrə Saziş'
+  ],
+  powersOptions: [
+    'Corablar yalnız müəyyən edilmiş yerdə saxlanılır.',
+    'Cütləşdirmə paltarın qurudulmasından sonra dərhal aparılır.',
+    'İtkin düşmüş nüsxənin axtarışı birgə həyata keçirilir.',
+    'Divanın altından çıxan corab mübahisə predmeti sayılmır.',
+    'Paltaryuyan maşın növbə ilə boşaldılır.',
+    'Cütü tapılmayan corab bir ay saxlanılır, sonra çıxarılır.',
+    'Yeni corab alınması barədə qərar birgə qəbul edilir.',
+    'Qonaq qarşısında corabın rəngi müzakirə edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Müqavilənin şərtləri iki dəfə pozulduqda corabların cütləşdirilməsi öhdəliyi növbəti ay üçün tam olaraq pozuntuya yol vermiş tərəfə keçir.',
+    'Pozuntu halında paltaryuyan maşının boşaldılması növbəsi ikiqat hesablanır.',
+    'Müqavilə yalnız hər iki tərəfin razılığı ilə ləğv edilə bilər.'
+  ]
 },
 {
   id: 'gps-authority', cat: 'couples', tone: 'zarafat', layout: 'teleqram', palette: 'gold',
-  title: 'Yol Göstərmə Səlahiyyəti', tag: 'Avtomobil',
-  signOrg: 'Yol Göstərmə Mübahisələri üzrə Xüsusi Komitə',
-  preamble: 'Bu sertifikat {to} adlı şəxsin avtomobildə naviqasiya üzrə son sözü demək səlahiyyətini təsdiq edir. Səlahiyyət {from} tərəfindən, uzun mübahisələrdən yorulduqdan sonra verilmişdir.',
-  powers: 'Xəritəyə baxmadan istiqamət seçmək.\n«Bu yol qısadır» ifadəsini sübutsuz istifadə etmək.\nNavigatoru söndürmək.\nYanlış dönüşdən sonra mövzunu dəyişmək.',
-  penalty: 'Gecikmə 25 dəqiqəni aşdıqda səlahiyyət həmin səfər üçün ləğv olunur və naviqasiya digər tərəfə keçir.'
+  title: 'Avtomobildə Yol Göstərmə Səlahiyyətinin Dayandırılması haqqında Xəbərdarlıq', tag: 'Avtomobil',
+  signOrg: 'Məişət Mübahisələri üzrə Arbitraj Kollegiyası',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin naviqasiya göstərişlərinə etinasızlıq halları qeydə alınmış və marşrutun uzanmasına səbəb olmuşdur. {from} tərəfindən verilmiş məlumat əsasında yol göstərmə səlahiyyəti müvəqqəti olaraq dayandırılır.',
+  powers: 'Marşrut yalnız naviqasiya sistemi üzrə müəyyən edilir.\nŞifahi qısa yol təklifi qəbul edilmir.\nDöngə barədə məlumat üç saniyə əvvəl verilir.\nSəhv döngəyə görə müzakirə açılmır.',
+  penalty: 'Səlahiyyət növbəti səyahətdə, yalnız naviqasiyanın göstərişlərinə tam əməl edilməsi şərti ilə bərpa olunur.',
+  titleOptions: [
+    'Avtomobildə Yol Göstərmə Səlahiyyətinin Dayandırılması haqqında Xəbərdarlıq',
+    'Naviqasiya Göstərişlərinə Etinasızlıq Halı haqqında Təcili Xəbərdarlıq',
+    'Marşrutun Şifahi Dəyişdirilməsinin Qadağan Edilməsi haqqında Teleqram',
+    'Sükan Arxasında Məsləhət Verilməsinin Məhdudlaşdırılması haqqında Teleqram'
+  ],
+  powersOptions: [
+    'Marşrut yalnız naviqasiya sistemi üzrə müəyyən edilir.',
+    'Şifahi qısa yol təklifi qəbul edilmir.',
+    'Döngə barədə məlumat üç saniyə əvvəl verilir.',
+    'Səhv döngəyə görə müzakirə açılmır.',
+    'Musiqi seçimi sürücünün səlahiyyətindədir.',
+    'Park yeri barədə məsləhət tələb olunduqda verilir.',
+    'Yanacaq dayanacağı birgə müəyyən edilir.',
+    'Gecikməyə görə məsuliyyət tərəflər arasında bölüşdürülür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Səlahiyyət növbəti səyahətdə, yalnız naviqasiyanın göstərişlərinə tam əməl edilməsi şərti ilə bərpa olunur.',
+    'İkinci pozuntu halında səlahiyyət bir ay müddətinə dayandırılır.',
+    'Xəbərdarlıq qeydə alınır və növbəti səyahətdə nəzərə alınır.'
+  ]
 },
 {
   id: 'peace-treaty', cat: 'couples', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
-  title: 'Barışıq Sazişi', tag: 'Sülh',
-  signOrg: 'Sevgi və Barışıq Məsələləri üzrə Dövlət Şurası',
-  preamble: 'Tərəflər aralarında baş vermiş mübahisəni tam və qeyd-şərtsiz bağlanmış elan edirlər. Saziş {from} tərəfindən təklif olunmuş, {to} tərəfindən qəbul edilmişdir. Keçmiş epizodlar müzakirə mövzusu ola bilməz.',
-  powers: 'Mübahisə mövzusuna bir daha qayıtmamaq.\nKöhnə epizodları arqument kimi istifadə etməmək.\nBarışıq şirniyyatını birlikdə bölüşmək.\nGecə yatmazdan əvvəl mövzunu təzələməmək.',
-  penalty: 'Saziş pozulduqda pozan tərəf növbəti həftəsonu proqramının tam təşkilini öz üzərinə götürür.'
+  title: 'Mübahisənin Səbəbləri və Aradan Qaldırılması Yolları haqqında Rəy', tag: 'Sülh',
+  signOrg: 'Məişət Mübahisələri üzrə Arbitraj Kollegiyası',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında yaranmış mübahisənin predmeti ilkin ehtimal edildiyindən xeyli kiçikdir. Tərəflərin hər ikisinin qismən haqlı olduğu qənaətinə gəlinmişdir.',
+  powers: 'Mübahisənin predmeti əhəmiyyətsiz kateqoriyaya aid edilir.\nHər iki tərəfin qismən haqlı olduğu qeydə alınır.\nSəsin tonu münaqişəni ağırlaşdıran amil kimi qiymətləndirilir.\nBarışıq üçün əlavə tədbirlərə ehtiyac olmadığı müəyyən edilir.',
+  penalty: 'Eyni mövzunun otuz gün ərzində yenidən qaldırılması halında rəy qüvvədən düşür və məsələyə yenidən baxılması tələb olunur.',
+  titleOptions: [
+    'Mübahisənin Səbəbləri və Aradan Qaldırılması Yolları haqqında Rəy',
+    'Tərəflər Arasında Yaranmış Gərginliyin Qiymətləndirilməsinə dair Rəy',
+    'Barışıq Prosesinin Nəticələrinin Təsdiqi haqqında Yekun Rəy',
+    'Mübahisə Predmetinin Əhəmiyyət Dərəcəsinə dair Ekspert Rəyi'
+  ],
+  powersOptions: [
+    'Mübahisənin predmeti əhəmiyyətsiz kateqoriyaya aid edilir.',
+    'Hər iki tərəfin qismən haqlı olduğu qeydə alınır.',
+    'Səsin tonu münaqişəni ağırlaşdıran amil kimi qiymətləndirilir.',
+    'Barışıq üçün əlavə tədbirlərə ehtiyac olmadığı müəyyən edilir.',
+    'Keçmiş epizodların xatırladılması təkrar gərginlik yaradan amildir.',
+    'Susqunluq mövqe bildirmə forması kimi qəbul edilmir.',
+    'Üçüncü şəxslərin rəyi qiymətləndirməyə daxil edilmir.',
+    'Barışıq şirniyyat gətirilməsi ilə sürətləndirilə bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni mövzunun otuz gün ərzində yenidən qaldırılması halında rəy qüvvədən düşür və məsələyə yenidən baxılması tələb olunur.',
+    'Rəy tərəflərin razılığı ilə istənilən vaxt yenidən nəzərdən keçirilə bilər.',
+    'Barışıq şərtləri pozulduqda məsələ təkrar araşdırmaya göndərilir.'
+  ]
 },
 
 /* ==================== DOSTLAR ==================== */
 {
   id: 'friend-traitor', cat: 'friends', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
-  title: 'Dost Satqını Sertifikatı', tag: 'Hit',
+  title: 'Dostluq Öhdəliklərinin Pozulması Faktının Təsbit Edilməsi haqqında Qərar', tag: 'Hit',
   signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
   powersLabel: 'TƏSDİQLƏNMİŞ HALLAR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, dostluq öhdəliklərini planlı və təkrarlanan şəkildə pozduğuna görə rəsmi «Dost Satqını» statusu verilir. Status Zarafat Reyestrində əbədi saxlanılır və silinmə müraciəti qəbul edilmir.',
-  powers: 'Söz verib gəlməmək — çoxsaylı təsdiqlənmiş epizod.\n«5 dəqiqəyə gəlirəm» deyib iki saat gecikmək.\nOrtaq sirri üçüncü şəxsə «təsadüfən» ötürmək.\nQrup çatında sual verib cavabları oxumadan yox olmaq.',
-  penalty: 'Növbəti üç görüşün hesabını tam ödəmək. Ödəniş nağd və ya kartla mümkündür; bəhanə, hekayə və emosional çıxış qəbul edilmir.'
+  preamble: 'Məclis {to} adlı şəxsin son üç ay ərzindəki davranışını araşdıraraq müəyyən etmişdir ki, birgə razılaşdırılmış planlardan son anda imtina halları sistemli xarakter almışdır. {from} tərəfindən verilmiş müraciət əsaslı hesab edilir.',
+  powers: 'Plandan imtina ən azı bir gün əvvəl bildirilməlidir.\nSon anda göstərilən səbəb yazılı formada təqdim edilir.\nEyni səbəb ayda iki dəfədən artıq irəli sürülmür.\nNövbəti görüşün yeri zərərçəkmiş tərəf tərəfindən seçilir.',
+  penalty: 'Qərarın icra edilməməsi halında növbəti üç görüşün yeri, vaxtı və ödəniş qaydası tam olaraq digər tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Dostluq Öhdəliklərinin Pozulması Faktının Təsbit Edilməsi haqqında Qərar',
+    'Söz Verib Gəlməmək Halının Dostluq Pozuntusu Sayılması haqqında Qərar',
+    'Birgə Plandan Son Anda İmtina Edilməsi haqqında Yekun Qətnamə',
+    'Dostluq Statusunun Müvəqqəti Aşağı Salınması haqqında Qərar'
+  ],
+  powersOptions: [
+    'Plandan imtina ən azı bir gün əvvəl bildirilməlidir.',
+    'Son anda göstərilən səbəb yazılı formada təqdim edilir.',
+    'Eyni səbəb ayda iki dəfədən artıq irəli sürülmür.',
+    'Növbəti görüşün yeri zərərçəkmiş tərəf tərəfindən seçilir.',
+    'Qrup söhbətində susmaq razılıq kimi qiymətləndirilmir.',
+    'Yolda olduğunu bildirən mesaj yerin göstərilməsi ilə təsdiqlənir.',
+    'Bilet alınıbsa imtina maliyyə öhdəliyi yaradır.',
+    'Üzrxahlıq şirniyyat gətirilməsi ilə müşayiət olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərarın icra edilməməsi halında növbəti üç görüşün yeri, vaxtı və ödəniş qaydası tam olaraq digər tərəf tərəfindən müəyyən edilir.',
+    'Statusun bərpası üçün ardıcıl üç dəfə vaxtında gəlmək tələb olunur.',
+    'Etiraz qəbul edilir, lakin qərarın qüvvəsinə təsir göstərmir.'
+  ]
 },
 {
   id: 'debt-license', cat: 'friends', tone: 'zarafat', layout: 'lisenziya', palette: 'gold',
-  title: 'Borc Qaytarmamaq Lisenziyası', tag: 'Təhlükəli',
-  signOrg: 'Hesablaşmalar və Unudulmuş Borclar üzrə Ali Məclis',
+  title: 'Dostlararası Borcun Qaytarılma Müddətinin Uzadılmasına dair Lisenziya', tag: 'Təhlükəli',
+  signOrg: 'Dostlararası Maliyyə Münasibətləri üzrə Şura',
   toLabel: 'LİSENZİYA SAHİBİ', fromLabel: 'BORC VERƏN',
-  preamble: 'Bu lisenziya {to} adlı şəxsə {from} tərəfindən verilmiş borcu qaytarmamaq üçün rəsmi əsas yaradır. Lisenziya yalnız borcun dəqiq məbləği hər iki tərəf tərəfindən unudulduğu halda etibarlıdır.',
-  powers: 'Borcun məbləğini yadda saxlamamaq.\n«Bu həftə mütləq» ifadəsini müddətsiz istifadə etmək.\nMövzu açılanda söhbəti hava haqqına yönəltmək.\nQarşı tərəfin mesajını görüb 24 saat cavab verməmək.',
-  penalty: 'Borc mövzusu üçüncü şəxs tərəfindən ictimai şəkildə xatırladıldıqda lisenziya dərhal ləğv olunur və ödəmə öhdəliyi bərpa edilir.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə verilmiş borcun qaytarılma müddətinin uzadılmasına icazə verilir. Lisenziya məbləğin ilkin razılaşdırılmış həddi aşmaması şərti ilə qüvvədədir, faiz nəzərdə tutmur və üçüncü şəxslərə ötürülmür.',
+  powers: 'Borc barədə xatırlatma ayda bir dəfədən artıq edilmir.\nQaytarılma müddəti bir dəfə uzadıla bilər.\nMəbləğ yuvarlaqlaşdırıldıqda fərq tələb olunmur.\nBorc üçüncü şəxslərlə müzakirə edilmir.',
+  penalty: 'Borc üç aydan artıq qaytarılmadıqda lisenziya qüvvədən düşür və yeni borc müraciətinə baxılması dayandırılır.',
+  titleOptions: [
+    'Dostlararası Borcun Qaytarılma Müddətinin Uzadılmasına dair Lisenziya',
+    'Borcun Qaytarılmasının Təxirə Salınmasına dair Müddətli Lisenziya',
+    '«Maaşdan sonra verərəm» Şərtli Ödəniş Rejiminə dair Lisenziya',
+    'Kiçik Məbləğli Borcun Unudulmasına dair Xüsusi İcazə'
+  ],
+  powersOptions: [
+    'Borc barədə xatırlatma ayda bir dəfədən artıq edilmir.',
+    'Qaytarılma müddəti bir dəfə uzadıla bilər.',
+    'Məbləğ yuvarlaqlaşdırıldıqda fərq tələb olunmur.',
+    'Borc üçüncü şəxslərlə müzakirə edilmir.',
+    'Hissə-hissə ödəniş qəbul edilir.',
+    'Qonaqlıq ödənişi borcun bir hissəsi kimi hesablana bilər.',
+    'Yeni borc əvvəlki bağlanmadan verilmir.',
+    'Ödəniş tarixi hər iki tərəf tərəfindən qeyd edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Borc üç aydan artıq qaytarılmadıqda lisenziya qüvvədən düşür və yeni borc müraciətinə baxılması dayandırılır.',
+    'Məbləğin razılaşdırılmış həddi aşması lisenziyanı dərhal ləğv edir.',
+    'Lisenziya yalnız ödəniş cədvəlinə əməl edildiyi müddətdə qüvvədədir.'
+  ]
 },
 {
   id: 'secret-keeper', cat: 'friends', tone: 'zarafat', layout: 'blank', palette: 'steel',
-  title: 'Sirr Saxlama Öhdəliyi', tag: 'Rəsmi',
-  signOrg: 'Dostluq Öhdəlikləri üzrə Xüsusi Komitə',
+  title: 'Etibar Edilmiş Məlumatın Açıqlanmaması Barədə Rəsmi Bəyannamə', tag: 'Rəsmi',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
   toLabel: 'Öhdəlik götürən', fromLabel: 'Sirri açıqlayan',
-  preamble: 'Bu öhdəliklə {to} adlı şəxs, {from} tərəfindən ona etibar edilmiş məlumatları üçüncü şəxslərə açıqlamamağı öhdəsinə götürür. Öhdəlik səsli mesajlara, ekran şəkillərinə və «mən heç kimə demərəm» vədlərinə də şamil olunur.',
-  powers: 'Sirri eşitmək və uyğun reaksiya vermək.\nMəsləhət vermək (istənilib-istənilməməsindən asılı olmayaraq).\nMövzunu bir ay sonra yenidən açmaq.\nDetalları xatırlamamaq hüququ.',
-  penalty: 'Sirrin açıqlanması halında öhdəlik sahibi bir aylıq qəhvə xərclərini öz üzərinə götürür və növbəti sirrdən məhrum edilir.'
+  preamble: 'Bu bəyannamə ilə {to} adlı şəxs {from} tərəfindən ona etibar edilmiş məlumatı üçüncü şəxslərə açıqlamayacağını bəyan edir. Öhdəlik müddətsizdir, məlumatın aktuallığını itirməsi ilə sona çatmır və yaxın qohumlara da şamil olunur.',
+  powers: 'Məlumat heç bir formada üçüncü şəxsə ötürülmür.\nSöhbətin ekran görüntüsü saxlanılmır.\nYaxın qohumlar da üçüncü şəxs sayılır.\n«Bir nəfərə dedim» ifadəsi pozuntu hesab edilir.',
+  penalty: 'Bəyannamənin pozulması halında pozuntuya yol vermiş tərəf gələcəkdə heç bir məxfi məlumata etibar edilməyən şəxslər siyahısına daxil edilir.',
+  titleOptions: [
+    'Etibar Edilmiş Məlumatın Açıqlanmaması Barədə Rəsmi Bəyannamə',
+    'Sirrin Üçüncü Şəxslərə Ötürülməməsi Barədə Müddətsiz Bəyannamə',
+    'Məxfi Söhbətin Qrup Çatına Çıxarılmaması Barədə Bəyannamə',
+    'Etibar Rejiminin Müddətsiz Saxlanılması Barədə Bildiriş'
+  ],
+  powersOptions: [
+    'Məlumat heç bir formada üçüncü şəxsə ötürülmür.',
+    'Söhbətin ekran görüntüsü saxlanılmır.',
+    'Yaxın qohumlar da üçüncü şəxs sayılır.',
+    '«Bir nəfərə dedim» ifadəsi pozuntu hesab edilir.',
+    'Məlumatın işarə ilə bildirilməsi də açıqlama sayılır.',
+    'Söhbətin mövzusu qrup çatına çıxarılmır.',
+    'Sirri bilən şəxslərin siyahısı genişləndirilmir.',
+    'Öhdəlik məlumatın köhnəlməsi ilə sona çatmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bəyannamənin pozulması halında pozuntuya yol vermiş tərəf gələcəkdə heç bir məxfi məlumata etibar edilməyən şəxslər siyahısına daxil edilir.',
+    'Pozuntu halında etibar rejimi bir il müddətinə dayandırılır.',
+    'Öhdəliyin qüvvəsi hər iki tərəfə bərabər şəkildə şamil olunur.'
+  ]
 },
 {
   id: 'late-pass', cat: 'friends', tone: 'zarafat', layout: 'vesiqe', palette: 'burgundy',
-  title: 'Daimi Gecikmə Vəsiqəsi', tag: 'Sevimli',
-  signOrg: 'Dostlararası Gecikmələr üzrə Baş İdarə',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin bütün görüşlərə gecikmək hüququnu rəsmi olaraq tanıyır. Vəsiqə {from} tərəfindən uzun illik müşahidə nəticəsində, mübarizənin faydasız olduğu qənaətinə gəlindikdən sonra verilmişdir.',
-  powers: 'Hər görüşə 40 dəqiqəyədək gecikmək.\n«Yoldayam» yazıb hələ evdə olmaq.\nTrafik, taksi və hava şəraitinə istinad etmək.\nGecikmənin səbəbini izah etməmək.',
-  penalty: 'Gecikmə 90 dəqiqəni aşdıqda vəsiqə müvəqqəti dayandırılır və sahib növbəti görüşün yerini digər tərəfin seçməsinə razılıq verir.'
+  title: 'Görüşlərə Sistemli Gecikmə Halının Rəsmiləşdirilməsinə dair Vəsiqə', tag: 'Sevimli',
+  signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
+  preamble: 'Bu vəsiqə {to} adlı şəxsin görüşlərə mütəmadi olaraq gecikməsi faktını rəsmiləşdirir. Sənəd {from} tərəfindən, uzunmüddətli müşahidə nəticəsində gecikmənin artıq təsadüf deyil, sabit xarakteristika olduğu qənaətinə gəlindikdən sonra verilmişdir.',
+  powers: 'Görüş saatı təyin edilərkən iyirmi dəqiqə ehtiyat nəzərə alınır.\n«Yoldayam» ifadəsi yerin göstərilməsi ilə təsdiqlənir.\nGecikmənin səbəbi hər dəfə yenidən izah edilmir.\nVaxtında gəlmək halı ayrıca qeydə alınır.',
+  penalty: 'Vəsiqə uçuş, qatar və kinoteatr seansı kimi vaxta bağlı hallara şamil edilmir; həmin hallarda gecikmə tam məsuliyyət doğurur.',
+  titleOptions: [
+    'Görüşlərə Sistemli Gecikmə Halının Rəsmiləşdirilməsinə dair Vəsiqə',
+    'Gecikmə Vaxtının Əvvəlcədən Nəzərə Alınmasına dair Vəsiqə',
+    'Görüş Saatının Fərdi Qaydada Hesablanmasına dair Şəhadətnamə',
+    '«Yoldayam» İfadəsinin Statusunu Təsbit edən Vəsiqə'
+  ],
+  powersOptions: [
+    'Görüş saatı təyin edilərkən iyirmi dəqiqə ehtiyat nəzərə alınır.',
+    '«Yoldayam» ifadəsi yerin göstərilməsi ilə təsdiqlənir.',
+    'Gecikmənin səbəbi hər dəfə yenidən izah edilmir.',
+    'Vaxtında gəlmək halı ayrıca qeydə alınır.',
+    'Kinoteatr və uçuş kimi hallar vəsiqədən kənardadır.',
+    'İlk gələn masa və yer seçimi hüququ qazanır.',
+    'Yarım saatdan artıq gecikmə xəbərdarlıq tələb edir.',
+    'Gecikmə müddəti növbəti hesabın ödənilməsində nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə uçuş, qatar və kinoteatr seansı kimi vaxta bağlı hallara şamil edilmir; həmin hallarda gecikmə tam məsuliyyət doğurur.',
+    'Bir saatdan artıq gecikmə vəsiqəni həmin gün üçün qüvvədən salır.',
+    'Ardıcıl üç dəfə vaxtında gəlmək vəsiqənin ləğvinə əsas verir.'
+  ]
 },
 {
   id: 'best-friend-diploma', cat: 'friends', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'Ən Yaxşı Dost Diplomu', tag: 'Hədiyyə',
-  signOrg: 'Qardaşlararası Münasibətlər üzrə Ali Şura',
-  preamble: 'Zarafat Notariat Palatası təsdiq edir ki, bu şəxs gecə saat 03:00-da zəngə cavab vermək, səbəbsiz dəstək olmaq və pis fikirdən vaxtında saxlamaq sahəsində müstəsna xidmətlər göstərmişdir. Diplom {from} tərəfindən təqdim olunur.',
-  powers: 'İstənilən saatda zəngə cavab vermək.\nPis qərardan vaxtında saxlamaq.\nHekayəni ikinci dəfə də səbirlə dinləmək.\nHeç bir səbəb olmadan yanında olmaq.',
-  penalty: 'Diplom geri alınmır. Sahibi yalnız ildə bir dəfə səbəbsiz zəng etmək öhdəliyi daşıyır.'
+  title: 'Uzunillik Dostluq və Sədaqətə Görə Verilmiş Fəxri Diplom', tag: 'Hədiyyə',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
+  preamble: 'Komissiya {to} adlı şəxsin uzun illər ərzində göstərdiyi sədaqəti və çətin anlarda nümayiş etdirdiyi mövqeyi qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur, müddətsizdir və geri alınmır.',
+  powers: 'Gecə saatlarında edilən zəngə cavab vermək.\nXoşagəlməz həqiqəti üzə demək bacarığı.\nHeç bir izahat tələb etmədən köməyə gəlmək.\nİllər keçsə də münasibəti dəyişməmək.',
+  penalty: 'Diplom geri alınmır və müddətsizdir. Təltif olunan şəxs bu sənədə istinad edərək istənilən vaxt kömək tələb edə bilər.',
+  titleOptions: [
+    'Uzunillik Dostluq və Sədaqətə Görə Verilmiş Fəxri Diplom',
+    'Çətin Anlarda Yanında Olmaq Sahəsindəki Nəticələrə Görə Diplom',
+    'Dostluq Öhdəliklərinin Nümunəvi İcrasına Görə Fəxri Diplom',
+    'İllər Ərzində Dəyişməyən Münasibətə Görə Verilmiş Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Gecə saatlarında edilən zəngə cavab vermək.',
+    'Xoşagəlməz həqiqəti üzə demək bacarığı.',
+    'Heç bir izahat tələb etmədən köməyə gəlmək.',
+    'İllər keçsə də münasibəti dəyişməmək.',
+    'Uzun səsli mesajı sona qədər dinləmək.',
+    'Köhnə söhbətləri lazım olmayanda xatırlatmamaq.',
+    'Uğur xəbərini birinci bölüşmək hüququ.',
+    'Mübahisədən sonra ilk addımı atmaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır və müddətsizdir. Təltif olunan şəxs bu sənədə istinad edərək istənilən vaxt kömək tələb edə bilər.',
+    'Diplom yalnız hər iki tərəfin razılığı ilə arxivə verilir.',
+    'Təltif ildönümlərində yenidən təsdiq edilir.'
+  ]
 },
 {
   id: 'group-chat', cat: 'friends', tone: 'zarafat', layout: 'teleqram', palette: 'ink',
-  title: 'Qrup Çatında Susma Aktı', tag: 'Rəqəmsal',
-  signOrg: 'Qrup Çatı Qaydaları üzrə Xüsusi Komissiya',
+  title: 'Qrup Söhbətində Uzunmüddətli Susqunluq Halı haqqında Xəbərdarlıq', tag: 'Rəqəmsal',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
   powersLabel: 'AKTIN ƏHATƏ ETDİYİ HÜQUQLAR',
-  preamble: 'Bu aktla {to} adlı şəxsin qrup çatında 400 mesajı oxumadan «nə oldu?» soruşmaq hüququ rəsmiləşdirilir. Akt {from} tərəfindən, qrupun sabitliyi naminə hazırlanmışdır.',
-  powers: 'Mesajları oxumadan mövzuya qoşulmaq.\nSəsli mesajlara emoji ilə cavab vermək.\nPlan müzakirəsində iştirak etmədən nəticəyə etiraz etmək.\nÇatı səssiz rejimə salıb inkar etmək.',
-  penalty: 'Eyni sual üç dəfə təkrarlandıqda sənəd sahibi növbəti görüşün yerini rezerv etmək öhdəliyi daşıyır.'
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin qrup söhbətindəki susqunluğu qeyri-adi müddətə çatmışdır. {from} tərəfindən vəziyyətin aydınlaşdırılması tələb edilir; iştirakçılar arasında narahatlıq yaranmış və müxtəlif ehtimallar irəli sürülmüşdür.',
+  powers: 'Susqunluq müddəti yeddi günü keçmişdir.\nOxunmamış mesajların sayı iki yüzdən çoxdur.\nSon fəallıq yalnız reaksiya qoymaqla məhdudlaşıb.\nQrupdan çıxış barədə məlumat verilməyib.',
+  penalty: 'Xəbərdarlığa cavab verilmədikdə növbəti görüşün yeri və ödəniş qaydası susqun tərəfin iştirakı olmadan müəyyən edilir.',
+  titleOptions: [
+    'Qrup Söhbətində Uzunmüddətli Susqunluq Halı haqqında Xəbərdarlıq',
+    'Qrupdakı Mesajlara Cavab Verilməməsi haqqında Təcili Teleqram',
+    'Bildirişlərin Söndürülməsi Faktının Qeydə Alınması haqqında Xəbərdarlıq',
+    'Qrup Söhbətinə Qayıdış Tələbi haqqında Təcili Teleqram'
+  ],
+  powersOptions: [
+    'Susqunluq müddəti yeddi günü keçmişdir.',
+    'Oxunmamış mesajların sayı iki yüzdən çoxdur.',
+    'Son fəallıq yalnız reaksiya qoymaqla məhdudlaşıb.',
+    'Qrupdan çıxış barədə məlumat verilməyib.',
+    'Şəxsi mesajlara cavab verildiyi müəyyən edilib.',
+    'Səsli mesajların dinlənilmə statusu naməlumdur.',
+    'Qrupun adı və şəkli dəyişdirilməyib.',
+    'Görüş təklifi cavabsız qalıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Xəbərdarlığa cavab verilmədikdə növbəti görüşün yeri və ödəniş qaydası susqun tərəfin iştirakı olmadan müəyyən edilir.',
+    'Susqunluq daha yeddi gün davam etsə, qrupun adı dəyişdirilir.',
+    'Cavab verildikdə xəbərdarlıq qüvvədən düşür.'
+  ]
 },
 {
   id: 'photo-rights', cat: 'friends', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
-  title: 'Şəkil Çəkmə Öhdəliyi', tag: 'İnstaqram',
-  signOrg: 'Məclis Fotoqrafiyası Qaydaları üzrə Komitə',
-  preamble: 'Bu sertifikatla {to} adlı şəxs {from} üçün şəkil çəkərkən minimum keyfiyyət standartlarına əməl etməyi öhdəsinə götürür. Öhdəlik bütün səyahət, kafe və küçə çəkilişlərinə şamil olunur.',
-  powers: 'Ən azı 15 kadr çəkmək.\nÜfüqi xətti düz saxlamaq.\n«Elə belə yaxşıdır» deməmək.\nÇəkilişi ilk kadrdan sonra dayandırmamaq.',
-  penalty: 'Standartlara əməl edilmədikdə növbəti çəkiliş növbəsi ötürülür və öhdəlik sahibi kofe hesabını ödəyir.'
+  title: 'Birgə Çəkilmiş Şəkillərin Paylaşılması Qaydalarının Sertifikatı', tag: 'İnstaqram',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs birgə çəkilmiş şəkillərin paylaşılması qaydalarına əməl edir. Sertifikat {from} tərəfindən, uzun müddət ərzində heç bir uğursuz kadrın paylaşılmadığı əsas götürülərək verilir.',
+  powers: 'Birgə şəkil paylaşılmazdan əvvəl razılıq alınır.\nUğursuz kadr saxlanılmır və göndərilmir.\nOn kadrdan ən azı üçü qarşı tərəf üçün çəkilir.\nŞəklin işlənməsi qarşılıqlı razılaşdırılır.',
+  penalty: 'Uğursuz kadrın paylaşılması halında sertifikat dərhal qüvvədən düşür və növbəti altı ay ərzində birgə şəkil çəkilməsi dayandırılır.',
+  titleOptions: [
+    'Birgə Çəkilmiş Şəkillərin Paylaşılması Qaydalarının Sertifikatı',
+    'Uğursuz Kadrların Paylaşılmamasını Təsdiq edən Sertifikat',
+    'Şəkil Seçimində Qarşılıqlı Razılıq Rejiminin Sertifikatı',
+    'Birgə Kadrların İşlənməsi Qaydalarına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Birgə şəkil paylaşılmazdan əvvəl razılıq alınır.',
+    'Uğursuz kadr saxlanılmır və göndərilmir.',
+    'On kadrdan ən azı üçü qarşı tərəf üçün çəkilir.',
+    'Şəklin işlənməsi qarşılıqlı razılaşdırılır.',
+    'Arxiv şəkillər xəbər verilmədən paylaşılmır.',
+    'Etiketləmə əvvəlcədən razılaşdırılır.',
+    'Şəkil silinmə tələbi bir gün ərzində icra edilir.',
+    'Video materiala da eyni qaydalar şamil edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Uğursuz kadrın paylaşılması halında sertifikat dərhal qüvvədən düşür və növbəti altı ay ərzində birgə şəkil çəkilməsi dayandırılır.',
+    'Razılıqsız paylaşım sertifikatın yenidən baxılmasına əsas verir.',
+    'Sertifikat yalnız qarşılıqlı əməletmə şərti ilə qüvvədədir.'
+  ]
 },
 {
   id: 'taxi-split', cat: 'friends', tone: 'zarafat', layout: 'arayis', palette: 'forest',
-  title: 'Taksi Pulu Bölüşdürmə Protokolu', tag: 'Hesablaşma',
-  signOrg: 'Dostlararası Hesablaşmalar üzrə Baş İdarə',
-  preamble: 'Tərəflər — {from} və {to} — birgə səfərlərdə taksi xərclərinin bölüşdürülməsi barədə razılığa gəlmişlər. Protokol həm gediş, həm də qayıdış marşrutlarına şamil olunur.',
-  powers: 'Xərc məsafəyə görə bölünür, əhval-ruhiyyəyə görə yox.\n«Sonra verərəm» ifadəsi 48 saat qüvvədədir.\nTaksini çağıran şəxs marşrutu seçir.\nGecikən tərəf gözləmə haqqını öz üzərinə götürür.',
-  penalty: '48 saatlıq müddət pozulduqda borclu tərəf növbəti səfərin tam məbləğini ödəyir.'
+  title: 'Taksi Xərcinin Bölüşdürülməsi Qaydasının Müəyyən Edilməsi haqqında Arayış', tag: 'Hesablaşma',
+  signOrg: 'Dostlararası Maliyyə Münasibətləri üzrə Şura',
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, taksi xərcinin bölüşdürülməsi qaydası {from} ilə birgə müəyyən edilmişdir. Arayış marşrutun uzanması və əlavə dayanacaqlar da daxil olmaqla bütün halları əhatə edir.',
+  powers: 'Xərc iştirakçıların sayına bərabər bölünür.\nƏn son düşən şəxs əlavə məsafənin haqqını ödəyir.\nÖdəniş həmin gün ərzində köçürülür.\nQırıq məbləğ ödəyənin xeyrinə yuvarlaqlaşdırılır.',
+  penalty: 'Ödəniş üç gün ərzində köçürülmədikdə növbəti səfərin bütün xərci gecikdirən tərəfin üzərinə düşür.',
+  titleOptions: [
+    'Taksi Xərcinin Bölüşdürülməsi Qaydasının Müəyyən Edilməsi haqqında Arayış',
+    'Yol Xərclərinin İştirakçılar Arasında Bölgüsü haqqında Arayış',
+    'Ödənişin Sonradan Köçürülməsi Öhdəliyi haqqında Rəsmi Arayış',
+    'Marşrutun Uzanmasına Görə Əlavə Xərcin Bölgüsü haqqında Arayış'
+  ],
+  powersOptions: [
+    'Xərc iştirakçıların sayına bərabər bölünür.',
+    'Ən son düşən şəxs əlavə məsafənin haqqını ödəyir.',
+    'Ödəniş həmin gün ərzində köçürülür.',
+    'Qırıq məbləğ ödəyənin xeyrinə yuvarlaqlaşdırılır.',
+    'Əlavə dayanacaq təklif edən şəxs fərqi ödəyir.',
+    'Ön oturacaq növbə ilə tutulur.',
+    'Ödənişi edən şəxs marşrutu seçmək hüququ qazanır.',
+    'Sifariş kimin telefonundan verilibsə, hesab ona yazılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ödəniş üç gün ərzində köçürülmədikdə növbəti səfərin bütün xərci gecikdirən tərəfin üzərinə düşür.',
+    'Borc növbəti sifarişdən avtomatik tutulmuş sayılır.',
+    'Arayış yalnız əvvəlcədən razılaşdırılmış marşrutlara şamil edilir.'
+  ]
 },
 {
   id: 'plan-canceller', cat: 'friends', tone: 'zarafat', layout: 'ekspertiza', palette: 'ink',
-  title: 'Plan Ləğvetmə Lisenziyası', tag: 'Universal',
-  signOrg: 'Ləğv Edilmiş Planlar üzrə Xüsusi Şura',
+  title: 'Birgə Planların Ləğvi Səbəblərinin Qiymətləndirilməsi haqqında Rəy', tag: 'Universal',
+  signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
   toLabel: 'LİSENZİYA SAHİBİ',
-  preamble: 'Bu lisenziya {to} adlı şəxsə razılaşdırılmış planları son anda ləğv etmək hüququ verir. Lisenziya {from} tərəfindən, artıq gözlənilən davranışın rəsmiləşdirilməsi məqsədilə təqdim olunmuşdur.',
-  powers: 'Görüşdən 30 dəqiqə əvvəl ləğv etmək.\nSəbəb kimi «yorğunam» yazmaq.\nEyni planı üç dəfə təxirə salmaq.\nLəğv etdikdən sonra onlayn görünmək.',
-  penalty: 'Ardıcıl üçüncü ləğvdən sonra lisenziya dayandırılır və sahib növbəti görüşü təşkil etmək öhdəliyi daşıyır.'
+  preamble: 'Aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxsin birgə planlardan imtina səbəbləri təkrarlanan xarakter daşıyır. Rəy {from} tərəfindən verilmiş müraciət əsasında, son altı ayın müşahidələrinə istinadən tərtib edilmişdir.',
+  powers: 'İmtina səbəbləri üç əsas kateqoriyaya bölünür.\nƏn çox istifadə olunan səbəb yorğunluqdur.\nİmtina adətən görüşdən iki saat əvvəl bildirilir.\nEvdən çıxma ehtimalı otuz faiz qiymətləndirilir.',
+  penalty: 'Rəy növbəti üç görüşdə iştirak təmin edildikdə yenidən nəzərdən keçirilir və göstəricilər müsbət istiqamətdə dəyişdirilir.',
+  titleOptions: [
+    'Birgə Planların Ləğvi Səbəblərinin Qiymətləndirilməsi haqqında Rəy',
+    'Son Anda İmtina Hallarının Statistik Təhlili haqqında Ekspert Rəyi',
+    'Plandan İmtina Səbəblərinin Etibarlılıq Dərəcəsinə dair Rəy',
+    'Evdən Çıxmaq Niyyətinin Real Ehtimalının Qiymətləndirilməsinə dair Rəy'
+  ],
+  powersOptions: [
+    'İmtina səbəbləri üç əsas kateqoriyaya bölünür.',
+    'Ən çox istifadə olunan səbəb yorğunluqdur.',
+    'İmtina adətən görüşdən iki saat əvvəl bildirilir.',
+    'Evdən çıxma ehtimalı otuz faiz qiymətləndirilir.',
+    'Hava şəraiti arqumenti mövsümdən asılı olmadan işlədilir.',
+    'Bilet alındıqda imtina ehtimalı kəskin azalır.',
+    'Qonaqlıq təklifi iştirak ehtimalını artırır.',
+    'Səhər təsdiqlənən plan axşam dəyişdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəy növbəti üç görüşdə iştirak təmin edildikdə yenidən nəzərdən keçirilir və göstəricilər müsbət istiqamətdə dəyişdirilir.',
+    'İmtina halları davam etdikdə plan siyahısı yenidən tərtib edilir.',
+    'Rəy yalnız qeyri-rəsmi görüşlərə şamil edilir.'
+  ]
 },
 {
   id: 'wedding-table', cat: 'friends', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
-  title: 'Toy Masası Səlahiyyətnaməsi', tag: 'Mövsümi',
-  signOrg: 'Məclis Qaydaları üzrə Fövqəladə Komissiya',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə toy məclisində masa idarəçiliyi səlahiyyəti verilir. Səlahiyyət yalnız həmin məclis müddətində qüvvədədir və başqa şəxsə ötürülə bilməz.',
-  powers: 'Masada oturma sırasını müəyyən etmək.\nRəqsə ilk çıxmaq növbəsini təyin etmək.\nOrkestrə sifariş vermək (gecədə 2 mahnı).\nQonaqlara «bir dəqiqə» deyib yoxa çıxmaq.',
-  penalty: 'Səlahiyyət sui-istifadə edildikdə növbəti məclisdə sahib ən uzaq masaya təyin olunur.'
+  title: 'Toy Mərasimində Masa və Yer Seçimi Səlahiyyətinin Verilməsinə dair Akt', tag: 'Mövsümi',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə toy mərasimində masa və yer seçimi səlahiyyəti verilir. Səlahiyyət yalnız dostlar qrupuna aid masalara şamil olunur və mərasim başa çatanadək qüvvədə qalır.',
+  powers: 'Masanın yeri mərasim başlamazdan əvvəl müəyyən edilir.\nSəhnəyə yaxın yerlər növbə ilə tutulur.\nGec gələn qonaq boş qalan yeri seçir.\nMasa dəyişikliyi qrupun razılığı ilə mümkündür.',
+  penalty: 'Səlahiyyət sahibi mərasimə gecikdikdə bu hüquq avtomatik olaraq ilk gələn qonağa keçir və geri qaytarılmır.',
+  titleOptions: [
+    'Toy Mərasimində Masa və Yer Seçimi Səlahiyyətinin Verilməsinə dair Akt',
+    'Toy Masasında Yerlərin Bölüşdürülməsi Səlahiyyətinə dair Akt',
+    'Mərasim Zamanı Qonaq Yerləşdirilməsi Qaydasına dair Etibarnamə',
+    'Toy Masası Arxasında Nizamın Təmin Edilməsinə dair Akt'
+  ],
+  powersOptions: [
+    'Masanın yeri mərasim başlamazdan əvvəl müəyyən edilir.',
+    'Səhnəyə yaxın yerlər növbə ilə tutulur.',
+    'Gec gələn qonaq boş qalan yeri seçir.',
+    'Masa dəyişikliyi qrupun razılığı ilə mümkündür.',
+    'Rəqs meydançasına çıxış yolu bağlanmır.',
+    'Foto çəkilişi üçün masa müvəqqəti tərk edilə bilər.',
+    'Uşaqlı qonaqlara kənar masalar təklif edilir.',
+    'Şirniyyat bölgüsü masa daxilində aparılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Səlahiyyət sahibi mərasimə gecikdikdə bu hüquq avtomatik olaraq ilk gələn qonağa keçir və geri qaytarılmır.',
+    'Səlahiyyət yalnız bir mərasim üçün verilir.',
+    'Masa nizamının pozulması səlahiyyətin ləğvinə əsasdır.'
+  ]
 },
 {
   id: 'dietary-oath', cat: 'friends', tone: 'zarafat', layout: 'muqavile', palette: 'forest',
-  title: 'Birlikdə Pəhriz Andı', tag: 'Yanvar',
-  signOrg: 'Birgə Öhdəliklər və Pəhriz Andları üzrə Komitə',
+  title: 'Birgə Pəhriz Rejiminə Əməl Edilməsi üzrə Qarşılıqlı Müqavilə', tag: 'Yanvar',
+  signOrg: 'Dostluq Öhdəliklərinin Qeydiyyatı üzrə Komissiya',
   toLabel: 'And içən', fromLabel: 'Şahid',
-  preamble: '{to} adlı şəxs {from} qarşısında pəhriz rejiminə əməl edəcəyinə and içir. And bazar ertəsi qüvvəyə minir və növbəti bazar ertəsinə qədər davam edir.',
-  powers: 'Həftədə bir dəfə istisna gün elan etmək.\nBaşqasının boşqabından dadmaq (say hesab edilmir).\nÇəkini yalnız səhər ölçmək.\nPəhrizin başlanğıc tarixini yeniləmək.',
-  penalty: 'And pozulduqda pozan tərəf növbəti həftə birgə idmanın bütün təşkilini öz üzərinə götürür.'
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında birgə pəhriz rejiminə əməl edilməsi barədə razılıq əldə edilmişdir. Müqavilə hər iki tərəfə bərabər öhdəliklər yükləyir və birtərəfli qaydada ləğv edilmir.',
+  powers: 'Şirniyyat yalnız birgə qərarla qəbul edilir.\nGecə saat 22:00-dan sonra qidalanma dayandırılır.\nNəticələr həftədə bir dəfə müqayisə edilir.\nPozuntu barədə məlumat könüllü verilir.',
+  penalty: 'Müqaviləni birinci pozan tərəf digərinə bir qonaqlıq təşkil etmək öhdəliyi daşıyır və növbəti ayın rejimini müəyyən etmək hüququndan məhrum edilir.',
+  titleOptions: [
+    'Birgə Pəhriz Rejiminə Əməl Edilməsi üzrə Qarşılıqlı Müqavilə',
+    'Şirniyyatdan İmtina Öhdəliyinin Birgə İcrası üzrə Saziş',
+    'Pəhriz Dövründə Qarşılıqlı Nəzarət Qaydaları üzrə Müqavilə',
+    'Yanvar Ayı üçün Qida Rejiminin Müəyyən Edilməsi üzrə Saziş'
+  ],
+  powersOptions: [
+    'Şirniyyat yalnız birgə qərarla qəbul edilir.',
+    'Gecə saat 22:00-dan sonra qidalanma dayandırılır.',
+    'Nəticələr həftədə bir dəfə müqayisə edilir.',
+    'Pozuntu barədə məlumat könüllü verilir.',
+    'Bayram süfrəsi istisna gün kimi qeyd edilir.',
+    'Qonaqlıqda təklif edilən yemək pozuntu sayılmır.',
+    'Su rejimi ayrıca nəzarətə götürülür.',
+    'Birgə idman həftədə iki dəfə planlaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Müqaviləni birinci pozan tərəf digərinə bir qonaqlıq təşkil etmək öhdəliyi daşıyır və növbəti ayın rejimini müəyyən etmək hüququndan məhrum edilir.',
+    'Hər iki tərəf eyni gün pozuntuya yol verərsə, hal qeydə alınmır.',
+    'Müqavilə yalnız qarşılıqlı razılıqla dayandırıla bilər.'
+  ]
 },
 {
   id: 'gossip-license', cat: 'friends', tone: 'zarafat', layout: 'viza', palette: 'forest',
-  title: 'Söhbət Aparma Lisenziyası', tag: 'Padruqa',
-  signOrg: 'Söhbət və Xəbər Yayılması üzrə Xüsusi Komitə',
+  title: 'Ümumi Tanışlar Barədə Söhbətin Aparılmasına dair Məhdud İcazə', tag: 'Padruqa',
+  signOrg: 'Dostlararası Mübahisələrin Həlli üzrə Ali Məclis',
   powersLabel: 'İCAZƏ VERİLƏN MÖVZULAR',
-  preamble: 'Bu lisenziya {to} adlı şəxsə {from} ilə saatlarla davam edən telefon söhbətləri aparmaq hüququ verir. Lisenziya gecə saatlarında da qüvvədədir və batareya bitənə qədər etibarlıdır.',
-  powers: 'Bir mövzudan digərinə xəbərdarlıq etmədən keçmək.\n«Sonuncu bir şey» ifadəsini üç dəfə istifadə etmək.\nSöhbəti 40 dəqiqə uzatmaq.\nHekayəni əvvəldən təkrar danışmaq.',
-  penalty: 'Söhbətin mövzusu üçüncü şəxsə çatdıqda lisenziya dayandırılır və bərpası üçün ortaq razılıq tələb olunur.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə ümumi tanışlar barədə söhbət aparmaq üçün məhdud icazə verilir. İcazə yalnız iki tərəf arasında qüvvədədir və üçüncü şəxsin iştirakı ilə keçirilən söhbətlərə şamil edilmir.',
+  powers: 'Söhbətin məzmunu heç kimə ötürülmür.\nMənbənin adı heç bir halda açıqlanmır.\nSöhbətin müddəti iki saatı keçmir.\nEkran görüntüsü çəkilmir və saxlanılmır.',
+  penalty: 'Söhbətin məzmunu üçüncü şəxsə çatdıqda icazə dərhal qüvvədən düşür və yeni icazə ən azı bir il müddətinə verilmir.',
+  titleOptions: [
+    'Ümumi Tanışlar Barədə Söhbətin Aparılmasına dair Məhdud İcazə',
+    'Məlumat Mübadiləsinin Qapalı Rejimdə Aparılmasına dair İcazə',
+    'Söhbətin Mövzu və Müddət Hüdudlarının Müəyyən Edilməsinə dair İcazə',
+    'Qarşılıqlı Məlumat Paylaşımının Rəsmiləşdirilməsinə dair İcazə'
+  ],
+  powersOptions: [
+    'Söhbətin məzmunu heç kimə ötürülmür.',
+    'Mənbənin adı heç bir halda açıqlanmır.',
+    'Söhbətin müddəti iki saatı keçmir.',
+    'Ekran görüntüsü çəkilmir və saxlanılmır.',
+    'Söhbət yalnız qapalı şəraitdə aparılır.',
+    'Yeni məlumat qarşılıqlı əsasda bölüşülür.',
+    'Təsdiqlənməmiş məlumat ehtimal kimi göstərilir.',
+    'Mövzu iştirakçılardan birinin xahişi ilə dəyişdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Söhbətin məzmunu üçüncü şəxsə çatdıqda icazə dərhal qüvvədən düşür və yeni icazə ən azı bir il müddətinə verilmir.',
+    'Mənbənin açıqlanması icazənin müddətsiz ləğvinə əsasdır.',
+    'İcazə yalnız qarşılıqlılıq prinsipi gözlənildiyi halda qüvvədədir.'
+  ]
 },
 
 /* ==================== İŞ YERİ ==================== */
 {
   id: 'salary-diploma', cat: 'work', tone: 'zarafat', layout: 'diplom', palette: 'steel',
-  title: 'Heç Nə Etmədən Maaş Almaq Diplomu', tag: 'Ofis klassikası',
-  signOrg: 'Əmək Nailiyyətlərinin Qiymətləndirilməsi üzrə Şura',
-  preamble: 'Zarafat Notariat Palatası təsdiq edir ki, bu şəxs iş saatları ərzində minimum fəaliyyət göstərməklə maksimum nəticə təəssüratı yaratmaq sahəsində yüksək ixtisas nümayiş etdirmişdir. Diplom {from} tərəfindən təqdim olunur.',
-  powers: 'Klaviaturaya səslə toxunaraq məşğul təəssüratı yaratmaq.\nEkranda daim açıq cədvəl saxlamaq.\nToplantıda «razıyam, davam edək» demək.\nHəftəlik hesabatı bir cümlə ilə yazmaq.',
-  penalty: 'Fəaliyyətin real yoxlanışı zamanı uyğunsuzluq aşkar edilərsə, diplom sahibi növbəti komanda toplantısının protokolunu yazmaq öhdəliyi daşıyır.'
+  title: 'Görünən Fəaliyyət Göstərmədən Nəticə Əldə Etməyə Görə Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: 'Baş İdarə {to} adlı şəxsin iş prosesindəki fəaliyyətini araşdıraraq müəyyən etmişdir ki, nəticə ilə sərf edilmiş görünən səy arasında nadir rast gəlinən nisbət yaranmışdır. Diplom {from} tərəfindən təqdim olunur.',
+  powers: 'Toplantıda vaxtında başını tərpətmək bacarığı.\nEkranda həmişə açıq sənəd saxlamaq.\nRəhbər keçəndə klaviaturaya toxunmaq.\nHesabatı son gün, lakin vaxtında təqdim etmək.',
+  penalty: 'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə könüllü olaraq əlavə tapşırıq götürmək öhdəliyi daşıyır.',
+  titleOptions: [
+    'Görünən Fəaliyyət Göstərmədən Nəticə Əldə Etməyə Görə Fəxri Diplom',
+    'İş Prosesində Minimal Enerji Sərfiyyatına Görə Fəxri Diplom',
+    'Monitorun Qarşısında Sabit Mövcudluğa Görə Verilmiş Diplom',
+    'Zəruri Anlarda Görünmək Bacarığına Görə Fəxri Diplom'
+  ],
+  powersOptions: [
+    'Toplantıda vaxtında başını tərpətmək bacarığı.',
+    'Ekranda həmişə açıq sənəd saxlamaq.',
+    'Rəhbər keçəndə klaviaturaya toxunmaq.',
+    'Hesabatı son gün, lakin vaxtında təqdim etmək.',
+    'Səhər ilk gələnlərdən biri kimi görünmək.',
+    'Yazışmada qısa və inandırıcı cavab vermək.',
+    'Çətin sualı düzgün şəxsə yönləndirmək.',
+    'Nahar fasiləsini dəqiq hesablamaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Lakin təltif olunan şəxs il ərzində ən azı bir dəfə könüllü olaraq əlavə tapşırıq götürmək öhdəliyi daşıyır.',
+    'Diplom yalnız qeyri-rəsmi kollektiv tədbirlərdə nümayiş etdirilir.',
+    'Təltif növbəti ilin nəticələrinə görə yenidən baxılır.'
+  ]
 },
 {
   id: 'meeting-silence', cat: 'work', tone: 'zarafat', layout: 'sertifikat', palette: 'ink',
-  title: 'Toplantıda Susma Ustalığı Sertifikatı', tag: 'Uzaqdan iş',
-  signOrg: 'Toplantı Nizamı üzrə Xüsusi Komissiya',
-  preamble: 'Bu sertifikat {to} adlı şəxsin bir saatlıq toplantı ərzində heç bir söz deməyərək eyni zamanda tam iştirak təəssüratı yaratmaq bacarığını təsdiq edir. Qiymətləndirmə {from} tərəfindən aparılmışdır.',
-  powers: 'Kameranı bağlı saxlamaq və «şəbəkə problemi» yazmaq.\nMüvafiq anlarda başını tərpətmək.\nÇatda «+1» yazaraq mövqe bildirmək.\nToplantının sonunda «hər şey aydındır» demək.',
-  penalty: 'Sertifikat sahibi toplantıda təsadüfən danışdığı halda həmin mövzunun məsul şəxsi təyin edilir və geri qaytarılma mümkün deyil.'
+  title: 'Toplantı Zamanı Susmaq və Vaxtı Uzatmamaq Bacarığının Sertifikatı', tag: 'Toplantı',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs toplantılar zamanı müzakirəni uzadan sual verməmək bacarığı nümayiş etdirmişdir. Sertifikat {from} tərəfindən, kollektivin ümumi vaxtına göstərilən qayğı nəzərə alınaraq verilir.',
+  powers: 'Toplantının sonunda əlavə sual verilmir.\nArtıq razılaşdırılmış məsələ yenidən açılmır.\n«Bir də qısa deyim» ifadəsi işlədilmir.\nEkran paylaşımı vaxtında dayandırılır.',
+  penalty: 'Toplantını iyirmi dəqiqədən artıq uzadan sual verildikdə sertifikat həmin rüb üçün qüvvədən düşür və növbəti toplantının protokolu sahib tərəfindən yazılır.',
+  titleOptions: [
+    'Toplantı Zamanı Susmaq və Vaxtı Uzatmamaq Bacarığının Sertifikatı',
+    'Uzun Toplantılarda Diqqətli Görünmə Bacarığının Sertifikatı',
+    'Sualı Toplantının Sonunda Verməmək Bacarığına dair Sertifikat',
+    'Toplantı Vaxtının Qorunmasına Verilən Töhfənin Şəhadətnaməsi'
+  ],
+  powersOptions: [
+    'Toplantının sonunda əlavə sual verilmir.',
+    'Artıq razılaşdırılmış məsələ yenidən açılmır.',
+    '«Bir də qısa deyim» ifadəsi işlədilmir.',
+    'Ekran paylaşımı vaxtında dayandırılır.',
+    'Gündəlikdən kənar mövzu qaldırılmır.',
+    'Cavabı yazışma ilə verilə bilən sual səsləndirilmir.',
+    'Toplantıya vaxtında qoşulur.',
+    'Mikrofon danışılmadıqda söndürülür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Toplantını iyirmi dəqiqədən artıq uzadan sual verildikdə sertifikat həmin rüb üçün qüvvədən düşür və növbəti toplantının protokolu sahib tərəfindən yazılır.',
+    'Sertifikat hər rübün sonunda yenidən qiymətləndirilir.',
+    'Vaxtı qorunan toplantı sertifikatın müddətini uzadır.'
+  ]
 },
 {
   id: 'coffee-authority', cat: 'work', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Kofe Maşını Üzərində Nəzarət Səlahiyyəti', tag: 'Strateji',
-  signOrg: 'Kofe və Fasilə Məsələləri üzrə Ali Şura',
-  preamble: 'Bu sənədlə {from} tərəfindən {to} adlı şəxsə ofis kofe maşını üzərində tam və mübahisəsiz nəzarət səlahiyyəti verilir. Səlahiyyət kollektivin sabitliyi naminə təqdim olunmuşdur.',
-  powers: 'Kofe növünü təkbaşına müəyyən etmək.\nMaşını təmizləmək növbəsini digərlərinə həvalə etmək.\nSüd ehtiyatına nəzarət etmək.\nSəhər saat 10:00-a qədər növbədə birinci olmaq.',
-  penalty: 'Kofe ehtiyatının nəzarətsizlik ucbatından bitməsi halında səlahiyyət dərhal ləğv olunur və növbəti ay üçün ehtiyat sahibin hesabına alınır.'
+  title: 'Kofe Maşını üzərində Nəzarət Səlahiyyətinin Verilməsinə dair Akt', tag: 'Kofe',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə kofe maşını üzərində nəzarət səlahiyyəti verilir. Səlahiyyət maşının texniki vəziyyətinə və ehtiyatın vaxtında yenilənməsinə görə məsuliyyəti də əhatə edir.',
+  powers: 'Son fincanı götürən şəxs yeni porsiya hazırlayır.\nSüd ehtiyatı bitdikdə dərhal xəbər verilir.\nMaşının təmizlənməsi növbə ilə aparılır.\nŞəxsi fincan ümumi rəfdə saxlanılmır.',
+  penalty: 'Səlahiyyət sahibi ehtiyatın bitməsinə iki dəfə yol verdikdə nəzarət hüququ kollektivin növbəti üzvünə keçir.',
+  titleOptions: [
+    'Kofe Maşını üzərində Nəzarət Səlahiyyətinin Verilməsinə dair Akt',
+    'Kofe Maşınının Təmizlənməsi Öhdəliyinin Bölüşdürülməsinə dair Akt',
+    'Son Fincanı Götürən Şəxsin Öhdəlikləri haqqında Akt',
+    'Ofisdə Kofe Ehtiyatının İdarə Edilməsinə dair Etibarnamə'
+  ],
+  powersOptions: [
+    'Son fincanı götürən şəxs yeni porsiya hazırlayır.',
+    'Süd ehtiyatı bitdikdə dərhal xəbər verilir.',
+    'Maşının təmizlənməsi növbə ilə aparılır.',
+    'Şəxsi fincan ümumi rəfdə saxlanılmır.',
+    'Kofe növü kollektiv qərarla seçilir.',
+    'Qonaqlara kofe növbədənkənar təqdim edilir.',
+    'Boş qablar dərhal yuyulur.',
+    'Maşının nasazlığı barədə eyni gün məlumat verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Səlahiyyət sahibi ehtiyatın bitməsinə iki dəfə yol verdikdə nəzarət hüququ kollektivin növbəti üzvünə keçir.',
+    'Səlahiyyət rüblük əsasda yenidən bölüşdürülür.',
+    'Maşının təmiz saxlanılması səlahiyyətin uzadılmasına əsasdır.'
+  ]
 },
 {
   id: 'tomorrow-promise', cat: 'work', tone: 'zarafat', layout: 'teleqram', palette: 'burgundy',
-  title: '«Sabah Göndərərəm» Müddətsiz Vədnaməsi', tag: 'Universal',
-  signOrg: 'Vədlər və Son Tarixlər üzrə Baş İdarə',
+  title: '«Sabah Göndərərəm» Vədinin İcra Vəziyyəti haqqında Xəbərdarlıq', tag: 'Vəd',
+  signOrg: 'İş Vədləri və İcra Müddətləri üzrə Şura',
   toLabel: 'Vəd verən', fromLabel: 'Vədi gözləyən',
-  preamble: 'Bu vədnamə ilə {to} adlı şəxs {from} qarşısında müəyyən edilmiş işi «sabah» göndərməyi öhdəsinə götürür. Tərəflər «sabah» anlayışının konkret tarixə bağlı olmadığını qəbul edirlər.',
-  powers: '«Sabah göndərərəm» ifadəsini limitsiz istifadə etmək.\nSon tarixi könüllü olaraq yeniləmək.\nFaylı 95% hazır elan etmək.\nCavabsız mesajları oxunmuş saymamaq.',
-  penalty: 'Vədnamənin icrası ardıcıl beş dəfə təxirə salındıqda sənəd sahibi işi həmin gün, iş saatından sonra tamamlamaq öhdəliyi daşıyır.'
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxs tərəfindən verilmiş «sabah göndərərəm» vədinin icra müddəti bir neçə dəfə uzadılmışdır. {from} tərəfindən sənədin faktiki vəziyyəti barədə məlumat verilməsi tələb olunur.',
+  powers: 'Vədin verildiyi tarix qeydə alınıb.\nMüddət indiyədək dörd dəfə uzadılıb.\nSənədin hansı mərhələdə olduğu bilinmir.\nYeni müddət göstərilməyib.',
+  penalty: 'Sənəd növbəti iş gününün sonuna qədər təqdim edilmədikdə məsələ toplantının gündəliyinə salınır və icra müddəti kənar şəxs tərəfindən müəyyən edilir.',
+  titleOptions: [
+    '«Sabah Göndərərəm» Vədinin İcra Vəziyyəti haqqında Xəbərdarlıq',
+    'Təqdim Edilməmiş Sənədlə Bağlı Təkrar Xatırlatma haqqında Teleqram',
+    'Vədin Verildiyi Tarixdən Keçən Müddət haqqında Xəbərdarlıq',
+    'İcra Müddətinin Növbəti Dəfə Uzadılması haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Vədin verildiyi tarix qeydə alınıb.',
+    'Müddət indiyədək dörd dəfə uzadılıb.',
+    'Sənədin hansı mərhələdə olduğu bilinmir.',
+    'Yeni müddət göstərilməyib.',
+    'Faylın adı yazışmada qeyd olunub.',
+    'İlkin variant heç kimə göndərilməyib.',
+    'Əlaqədar şöbə gözləmə rejimindədir.',
+    'Növbəti toplantıda məsələ gündəliyə salınacaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sənəd növbəti iş gününün sonuna qədər təqdim edilmədikdə məsələ toplantının gündəliyinə salınır və icra müddəti kənar şəxs tərəfindən müəyyən edilir.',
+    'Vədin növbəti dəfə uzadılması qəbul edilmir.',
+    'Sənəd təqdim edildikdə xəbərdarlıq arxivə verilir.'
+  ]
 },
 {
   id: 'deadline-extension', cat: 'work', tone: 'zarafat', layout: 'qerar', palette: 'steel',
-  title: 'Son Tarix Uzatma Etibarnaməsi', tag: 'Layihə',
-  signOrg: 'Uzadılmış Müddətlər üzrə Xüsusi Komitə',
-  preamble: 'Bu etibarnamə ilə {from} tərəfindən {to} adlı şəxsə layihənin son tarixini bir dəfə, tərəflərin razılığı olmadan uzatmaq səlahiyyəti verilir. Etibarnamə yalnız bir layihəyə şamil olunur.',
-  powers: 'Son tarixi 5 iş günü uzatmaq.\nSəbəb kimi «əlaqəli komandadan cavab gözləyirik» yazmaq.\nStatusu «davam edir» saxlamaq.\nHesabatda faiz göstəricisini yuvarlaqlaşdırmaq.',
-  penalty: 'İkinci uzatma tələbi qəbul edilmir; bu halda sənəd sahibi gündəlik status yeniləməsi göndərmək öhdəliyi daşıyır.'
+  title: 'Tapşırığın İcra Müddətinin Növbəti Dəfə Uzadılması haqqında Qərar', tag: 'Son tarix',
+  signOrg: 'İş Vədləri və İcra Müddətləri üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, tapşırığın icrasına mane olan hallar qismən obyektiv xarakter daşıyır. {from} tərəfindən bildirilən mövqe nəzərə alınmaqla müddətin uzadılması məqsədəuyğun hesab edilmişdir.',
+  powers: 'Müddət beş iş günü uzadılır.\nUzadılma bir dəfə tətbiq edilir.\nAralıq nəticə üç gün ərzində təqdim olunur.\nYeni müddət dəyişdirilmir.',
+  penalty: 'Uzadılmış müddət də pozulduqda tapşırıq başqa icraçıya verilir və müddət uzatma müraciətlərinə növbəti rübdə baxılmır.',
+  titleOptions: [
+    'Tapşırığın İcra Müddətinin Növbəti Dəfə Uzadılması haqqında Qərar',
+    'Son Tarixin Yenidən Müəyyən Edilməsi haqqında Yekun Qətnamə',
+    'Obyektiv Səbəblərə Görə Müddətin Uzadılması haqqında Qərar',
+    'İcra Müddətinin Son Dəfə Uzadılması haqqında Yekun Qərar'
+  ],
+  powersOptions: [
+    'Müddət beş iş günü uzadılır.',
+    'Uzadılma bir dəfə tətbiq edilir.',
+    'Aralıq nəticə üç gün ərzində təqdim olunur.',
+    'Yeni müddət dəyişdirilmir.',
+    'İcra planı yazılı formada razılaşdırılır.',
+    'Əlavə resurs tələbi ayrıca baxılır.',
+    'Gündəlik hesabat tələb olunmur.',
+    'Müddət bitməzdən bir gün əvvəl vəziyyət yoxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Uzadılmış müddət də pozulduqda tapşırıq başqa icraçıya verilir və müddət uzatma müraciətlərinə növbəti rübdə baxılmır.',
+    'Aralıq nəticə təqdim edilmədikdə uzadılma ləğv edilir.',
+    'Qərardan narazılıq qeydə alınır, lakin müddətə təsir etmir.'
+  ]
 },
 {
   id: 'camera-off', cat: 'work', tone: 'zarafat', layout: 'lisenziya', palette: 'steel',
-  title: 'Kameranı Açmama Lisenziyası', tag: 'Uzaqdan iş',
-  signOrg: 'Onlayn Toplantı Qaydaları üzrə Komissiya',
+  title: 'Onlayn Toplantılarda Kameranın Açılmaması Hüququna dair Lisenziya', tag: 'Onlayn',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
   toLabel: 'LİSENZİYA SAHİBİ',
-  preamble: 'Bu lisenziya {to} adlı şəxsə onlayn toplantılarda kameranı açmamaq hüququ verir. Lisenziya {from} tərəfindən verilmiş və bütün platformalara şamil olunur.',
-  powers: 'Kameranı bütün toplantı boyu bağlı saxlamaq.\nProfil şəklini kamera görüntüsü kimi təqdim etmək.\n«Kamera işləmir» ifadəsini müddətsiz istifadə etmək.\nEkran paylaşımına keçərək mövzunu dəyişmək.',
-  penalty: 'Lisenziya rüblük ümumi toplantıya şamil olunmur; həmin toplantıda kamera açılmalıdır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə onlayn toplantılarda kameranı açmamaq hüququ verilir. Lisenziya toplantıda fəal iştirakı istisna etmir və mikrofonun işlək vəziyyətdə saxlanılması şərti ilə qüvvədədir.',
+  powers: 'Kameranın söndürülməsi izahat tələb etmir.\nMikrofon sual verildikdə dərhal açılır.\nFon şəkli əvəzinə boş ekran qəbul edilir.\nBağlantı problemi arqumenti tələb olunmur.',
+  penalty: 'Kənar iştirakçıların olduğu təqdimat toplantılarında lisenziya qüvvədən düşür və kameranın açılması tələb olunur.',
+  titleOptions: [
+    'Onlayn Toplantılarda Kameranın Açılmaması Hüququna dair Lisenziya',
+    'Video Bağlantı Zamanı Kameranın Söndürülməsinə dair Lisenziya',
+    'Səhər Toplantılarında Yalnız Səslə İştiraka dair Xüsusi İcazə',
+    'Kamera Rejiminin Fərdi Müəyyən Edilməsinə dair Lisenziya'
+  ],
+  powersOptions: [
+    'Kameranın söndürülməsi izahat tələb etmir.',
+    'Mikrofon sual verildikdə dərhal açılır.',
+    'Fon şəkli əvəzinə boş ekran qəbul edilir.',
+    'Bağlantı problemi arqumenti tələb olunmur.',
+    'Səhər toplantılarında güzəşt genişləndirilir.',
+    'Şəkil profildə saxlanılır.',
+    'Yazışma ilə iştirak da fəallıq sayılır.',
+    'Ekran paylaşımı ayrıca razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Kənar iştirakçıların olduğu təqdimat toplantılarında lisenziya qüvvədən düşür və kameranın açılması tələb olunur.',
+    'Suala cavab verilmədikdə lisenziya həmin toplantı üçün dayandırılır.',
+    'Lisenziya rüblük əsasda yenidən nəzərdən keçirilir.'
+  ]
 },
 {
   id: 'cc-authority', cat: 'work', tone: 'zarafat', layout: 'muqavile', palette: 'ink',
-  title: '«Cc-də Saxlayıram» Səlahiyyətnaməsi', tag: 'E-poçt',
-  signOrg: 'Elektron Yazışma və Cc Məsələləri üzrə İdarə',
-  preamble: 'Bu səlahiyyətnamə ilə {to} adlı şəxsə istənilən yazışmada üçüncü şəxsləri məlumat üçün kopyaya salmaq səlahiyyəti verilir. Səlahiyyət {from} tərəfindən, məsuliyyətin bölüşdürülməsi məqsədilə təqdim olunmuşdur.',
-  powers: 'İstənilən şəxsi kopyaya salmaq.\n«Məlumat üçün» ifadəsi ilə məsuliyyəti paylaşmaq.\nCavabı «hamıya cavabla» göndərmək.\nMövzu sətrini üç dəfə dəyişmək.',
-  penalty: 'Kopyaya salınmış şəxslərin sayı on beşi keçdikdə səlahiyyət dayandırılır və yazışma birbaşa ünvana yönləndirilir.'
+  title: 'Elektron Yazışmada Nüsxə Siyahısının Tərtibi Qaydası üzrə Protokol', tag: 'Yazışma',
+  signOrg: 'Korporativ Mübahisələr üzrə Arbitraj Komissiyası',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında elektron yazışmada nüsxə siyahısının tərtibi, rəhbərliyin əlavə edilməsi və mövzu sətrinin dəqiqləşdirilməsi qaydaları barədə razılıq əldə edilmişdir. Protokol bütün daxili yazışmalara şamil olunur.',
+  powers: 'Rəhbərlik yalnız zəruri hallarda nüsxəyə salınır.\nGizli nüsxə sahəsindən istifadə edilmir.\nCavab yazılarkən siyahı genişləndirilmir.\nMövzu sətri hər yazışmada dəqiqləşdirilir.',
+  penalty: 'Rəhbərliyin əsassız olaraq nüsxəyə salınması halında pozuntuya yol vermiş tərəf növbəti toplantının protokolunu yazmaq öhdəliyi daşıyır.',
+  titleOptions: [
+    'Elektron Yazışmada Nüsxə Siyahısının Tərtibi Qaydası üzrə Protokol',
+    'Yazışmaya Rəhbərliyin Əlavə Edilməsi Qaydası üzrə Protokol',
+    'Nüsxə və Gizli Nüsxə Sahələrindən İstifadə üzrə Müqavilə',
+    'Yazışmanın Ünvan Siyahısının Genişləndirilməsi üzrə Saziş'
+  ],
+  powersOptions: [
+    'Rəhbərlik yalnız zəruri hallarda nüsxəyə salınır.',
+    'Gizli nüsxə sahəsindən istifadə edilmir.',
+    'Cavab yazılarkən siyahı genişləndirilmir.',
+    'Mövzu sətri hər yazışmada dəqiqləşdirilir.',
+    'Aidiyyəti olmayan şəxs siyahıdan çıxarılır.',
+    '«Hamıya cavab» düyməsi ehtiyatla işlədilir.',
+    'Fayl ölçüsü hədddən artıq olmamalıdır.',
+    'Təcili mesaj ayrıca kanalla bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəhbərliyin əsassız olaraq nüsxəyə salınması halında pozuntuya yol vermiş tərəf növbəti toplantının protokolunu yazmaq öhdəliyi daşıyır.',
+    'Protokol yalnız daxili yazışmalara şamil edilir.',
+    'Şərtlərin pozulması halında qaydalar yenidən müzakirə olunur.'
+  ]
 },
 {
   id: 'lunch-king', cat: 'work', tone: 'zarafat', layout: 'vesiqe', palette: 'burgundy',
-  title: 'Nahar Fasiləsi Uzatma Vəsiqəsi', tag: 'Gündəlik',
-  signOrg: 'Nahar Fasiləsi Rejimi üzrə Ali Şura',
-  preamble: 'Bu vəsiqə {to} adlı şəxsə nahar fasiləsini rəsmi müddətdən artıq davam etdirmək hüququ verir. Vəsiqə {from} tərəfindən, məhsuldarlığın nahardan sonra artdığı müşahidəsinə əsasən verilmişdir.',
-  powers: 'Fasiləni 20 dəqiqə uzatmaq.\nQayıdışda qəhvə növbəsində dayanmaq.\n«Yoldayam» yazıb hələ kafedə olmaq.\nSonrakı 15 dəqiqəni «yenidən fokuslanma» adlandırmaq.',
-  penalty: 'Fasilə iki saatı aşdıqda vəsiqə həmin həftə üçün dayandırılır və sahib komanda üçün qəhvə gətirir.'
+  title: 'Nahar Fasiləsinin Müddəti və Bərpası Qaydasını Təsdiq edən Vəsiqə', tag: 'Nahar',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: 'Bu vəsiqə {to} adlı şəxsin nahar fasiləsindən istifadə qaydasını təsbit edir. Sənəd {from} tərəfindən, fasilənin faktiki müddəti ilə rəsmi müddəti arasındakı sabit fərq nəzərə alınaraq rəsmiləşdirilmişdir.',
+  powers: 'Fasilənin müddəti bir saat müəyyən edilir.\nNövbəti gün əvəzləmə yolu ilə bərpa edilir.\nNahar yeri kollektiv qərarla seçilir.\nFasilə zamanı iş yazışmalarına cavab verilmir.',
+  penalty: 'Fasilə müddətinin ardıcıl olaraq aşılması halında əvəzləmə imkanı dayandırılır və fasilənin başlama vaxtı sabitləşdirilir.',
+  titleOptions: [
+    'Nahar Fasiləsinin Müddəti və Bərpası Qaydasını Təsdiq edən Vəsiqə',
+    'Fasilə Vaxtının Fərdi Müəyyən Edilməsinə dair Vəsiqə',
+    'Nahar Yerinin Seçilməsi Səlahiyyətini Təsdiq edən Vəsiqə',
+    'Fasilə Müddətinin Bərpası Qaydasına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Fasilənin müddəti bir saat müəyyən edilir.',
+    'Növbəti gün əvəzləmə yolu ilə bərpa edilir.',
+    'Nahar yeri kollektiv qərarla seçilir.',
+    'Fasilə zamanı iş yazışmalarına cavab verilmir.',
+    'Fasilə iki hissəyə bölünə bilər.',
+    'Kənarda nahar halında əlavə on beş dəqiqə verilir.',
+    'Doğum günü süfrəsi fasiləyə daxil edilmir.',
+    'Hesab növbə ilə ödənilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Fasilə müddətinin ardıcıl olaraq aşılması halında əvəzləmə imkanı dayandırılır və fasilənin başlama vaxtı sabitləşdirilir.',
+    'Vəsiqə təcili iş günlərində qüvvədən düşür.',
+    'Müddətə əməl edilməsi vəsiqənin uzadılmasına əsasdır.'
+  ]
 },
 {
   id: 'printer-master', cat: 'work', tone: 'zarafat', layout: 'ekspertiza', palette: 'steel',
-  title: 'Printer Ustası Sertifikatı', tag: 'Texniki',
-  signOrg: 'Ofis Texnikası üzrə Texniki Nəzarət Mərkəzi',
-  preamble: 'Bu sertifikat {to} adlı şəxsin ofis printerini kağız sıxışdığı hallarda bərpa etmək sahəsindəki müstəsna bacarığını təsdiq edir. Qiymətləndirmə {from} tərəfindən aparılmışdır.',
-  powers: 'Printeri qapağını açıb-bağlamaqla bərpa etmək.\nKartricin bitdiyini gözlə müəyyən etmək.\nNövbəni idarə etmək.\n«Yenidən göndər» məsləhətini rəsmi həll kimi təqdim etmək.',
-  penalty: 'Bərpa cəhdi iki dəfə uğursuz olduqda sertifikat sahibi texniki dəstəyə müraciət formasını doldurmaq öhdəliyi daşıyır.'
+  title: 'Ofis Avadanlığının Bərpası üzrə Bacarıqların Qiymətləndirilməsi Rəyi', tag: 'Texniki',
+  signOrg: 'Korporativ Mübahisələr üzrə Arbitraj Komissiyası',
+  preamble: 'Aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxs ofis avadanlığının bərpası sahəsində kollektivdə ən yüksək göstəriciyə malikdir. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib edilmişdir.',
+  powers: 'Kağız sıxışması orta hesabla iki dəqiqəyə aradan qaldırılır.\nKartricin dəyişdirilməsi təlimatsız həyata keçirilir.\nNasazlığın səbəbi səsdən müəyyən edilir.\nCihazın söndürülüb yandırılması son çarə kimi tətbiq olunur.',
+  penalty: 'Rəy texniki xidmətin rəsmi öhdəliklərini əvəz etmir; mürəkkəb nasazlıqlarda müraciət səlahiyyətli xidmətə ünvanlanır.',
+  titleOptions: [
+    'Ofis Avadanlığının Bərpası üzrə Bacarıqların Qiymətləndirilməsi Rəyi',
+    'Printerin İşə Salınması Sahəsindəki Bacarıqlara dair Rəy',
+    'Texniki Nasazlıqların Aradan Qaldırılması üzrə Ekspert Rəyi',
+    'Kağız Sıxışması Hallarının Həlli üzrə Peşəkarlıq Rəyi'
+  ],
+  powersOptions: [
+    'Kağız sıxışması orta hesabla iki dəqiqəyə aradan qaldırılır.',
+    'Kartricin dəyişdirilməsi təlimatsız həyata keçirilir.',
+    'Nasazlığın səbəbi səsdən müəyyən edilir.',
+    'Cihazın söndürülüb yandırılması son çarə kimi tətbiq olunur.',
+    'Şəbəkə bağlantısı müstəqil bərpa edilir.',
+    'Digər şöbələrə də dəstək göstərilir.',
+    'Ehtiyat kartric əvvəlcədən sifariş edilir.',
+    'Təlimat kitabçasının yeri məlumdur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəy texniki xidmətin rəsmi öhdəliklərini əvəz etmir; mürəkkəb nasazlıqlarda müraciət səlahiyyətli xidmətə ünvanlanır.',
+    'Rəy hər il yenidən qiymətləndirilir.',
+    'Avadanlığın zədələnməsi halında rəy qüvvədən düşür.'
+  ]
 },
 {
   id: 'employee-year', cat: 'work', tone: 'zarafat', layout: 'viza', palette: 'forest',
-  title: 'İlin İşçisi Diplomu', tag: 'Təltif',
-  signOrg: 'Ofis Nailiyyətləri üzrə Ali Məclis',
-  preamble: 'Zarafat Notariat Palatası təsdiq edir ki, bu şəxs heç bir səsvermə keçirilmədən, tamamilə öz təşəbbüsü ilə «İlin İşçisi» adına layiq görülmüşdür. Diplom {from} tərəfindən təqdim olunur.',
-  powers: 'Adı iş yerində nümayiş etdirmək.\nToplantılarda titula istinad etmək.\nSəsvermə nəticələrini açıqlamamaq.\nNövbəti il üçün adı avtomatik uzatmaq.',
-  penalty: 'Diplom geri alınmır. Sahibi yalnız komandaya bir dəfə şirniyyat gətirmək öhdəliyi daşıyır.'
+  title: 'İlin İşçisinə Verilən Güzəştlərdən İstifadəyə dair İcazə', tag: 'İlin işçisi',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: '{from} tərəfindən {to} adlı şəxsə il ərzində göstərdiyi nəticələrə görə əlavə güzəştlərdən istifadə etmək icazəsi verilir. İcazə növbəti illik qiymətləndirməyə qədər qüvvədə hesab edilir və əsas öhdəliklərin icrası şərti ilə saxlanılır.',
+  powers: 'Ayda bir dəfə iş gününü bir saat gec başlamaq.\nToplantı otağını növbədənkənar sifariş etmək.\nNahar fasiləsini yarım saat uzatmaq.\nƏn rahat oturacağı seçmək hüququ.',
+  penalty: 'Güzəştlərdən istifadə əsas öhdəliklərin icrasına mane olduqda icazə növbəti qiymətləndirməyə qədər dayandırılır.',
+  titleOptions: [
+    'İlin İşçisinə Verilən Güzəştlərdən İstifadəyə dair İcazə',
+    'İllik Nəticələrə Görə Əlavə Güzəştlərin Tətbiqinə dair İcazə',
+    'Fəxri Ada Bağlı İş Rejimi Güzəştlərinə dair İcazə',
+    'Nümunəvi İşçi Statusuna Bağlı Səlahiyyətlərə dair İcazə'
+  ],
+  powersOptions: [
+    'Ayda bir dəfə iş gününü bir saat gec başlamaq.',
+    'Toplantı otağını növbədənkənar sifariş etmək.',
+    'Nahar fasiləsini yarım saat uzatmaq.',
+    'Ən rahat oturacağı seçmək hüququ.',
+    'İllik məzuniyyət tarixini birinci seçmək.',
+    'Kollektiv tədbirin yerini təklif etmək.',
+    'Yeni işçiyə mentorluq etmək hüququ.',
+    'Kondisionerin rejimi barədə fikir bildirmək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Güzəştlərdən istifadə əsas öhdəliklərin icrasına mane olduqda icazə növbəti qiymətləndirməyə qədər dayandırılır.',
+    'İcazə hər il yenidən verilir.',
+    'Güzəştlər başqa şəxsə ötürülə bilməz.'
+  ]
 },
 {
   id: 'excuse-registry', cat: 'work', tone: 'zarafat', layout: 'arayis', palette: 'ink',
-  title: 'Bəhanə Bankı Qeydiyyat Aktı', tag: 'Arxiv',
-  signOrg: 'Bəhanələr və Gözlənilməz Hadisələr üzrə Baş İdarə',
+  title: 'Gecikmə Səbəbləri üzrə Təqdim Edilmiş İzahatlar haqqında Arayış', tag: 'Bəhanə',
+  signOrg: 'İş Vədləri və İcra Müddətləri üzrə Şura',
   powersLabel: 'QEYDƏ ALINMIŞ BƏHANƏLƏR',
-  preamble: 'Bu aktla {to} adlı şəxsin istifadə etdiyi bəhanələr rəsmi qeydiyyata alınır. Qeydiyyat {from} tərəfindən aparılmış və təkrar istifadənin qarşısını almaq məqsədi daşıyır.',
-  powers: 'İnternet kəsildi — 12 dəfə istifadə edilib.\nFayl göndərildi, çatmayıb — 9 dəfə.\nTəqvimə düşməyib — 7 dəfə.\nEyni anda iki toplantı var idi — 5 dəfə.',
-  penalty: 'Eyni bəhanə üçüncü dəfə istifadə edildikdə akta yeni bəhanə əlavə edilməsi tələb olunur; təkrarlar qəbul edilmir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, işə gecikmə səbəbləri üzrə təqdim etdiyi izahatlar {from} tərəfindən qeydə alınmış, kateqoriyalara ayrılmış və ümumiləşdirilmişdir. Arayış son altı ayın məlumatlarını əhatə edir.',
+  powers: 'Ən çox istifadə olunan səbəb tıxacdır.\nİkinci yerdə lift nasazlığı göstərilir.\nHava şəraiti arqumenti mövsümdən asılı deyil.\nİzahatların heç biri sənədlə təsdiqlənməyib.',
+  penalty: 'Eyni izahatın ayda üç dəfədən artıq təqdim edilməsi halında həmin səbəb sonrakı müraciətlərdə nəzərə alınmır.',
+  titleOptions: [
+    'Gecikmə Səbəbləri üzrə Təqdim Edilmiş İzahatlar haqqında Arayış',
+    'İşə Gecikmə Hallarının Səbəbləri haqqında Ümumiləşdirilmiş Arayış',
+    'Təqdim Edilmiş İzahatların Təkrarlanma Tezliyi haqqında Arayış',
+    'Nəqliyyat və Yol Amillərinə İstinadlar haqqında Arayış'
+  ],
+  powersOptions: [
+    'Ən çox istifadə olunan səbəb tıxacdır.',
+    'İkinci yerdə lift nasazlığı göstərilir.',
+    'Hava şəraiti arqumenti mövsümdən asılı deyil.',
+    'İzahatların heç biri sənədlə təsdiqlənməyib.',
+    'Yeni səbəb son ayda iki dəfə səsləndirilib.',
+    'Gecikmənin orta müddəti on iki dəqiqədir.',
+    'Cümə günləri göstərici yüksəlir.',
+    'Toplantı günlərində gecikmə qeydə alınmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni izahatın ayda üç dəfədən artıq təqdim edilməsi halında həmin səbəb sonrakı müraciətlərdə nəzərə alınmır.',
+    'Arayış yalnız məlumat xarakteri daşıyır.',
+    'Göstəricilər yaxşılaşdıqda arayış yenilənir.'
+  ]
 },
 {
   id: 'ac-authority', cat: 'work', tone: 'zarafat', layout: 'blank', palette: 'burgundy',
-  title: 'Kondisioner Üzərində Nəzarət Fərmanı', tag: 'Yay',
-  signOrg: 'Ofis İqlim Rejimi üzrə Xüsusi Komissiya',
-  preamble: 'Bu fərmanla {to} adlı şəxsə ofis kondisionerinin temperaturu üzərində tam nəzarət səlahiyyəti verilir. Fərman {from} tərəfindən, uzunmüddətli temperatur müharibəsinə son qoymaq məqsədilə imzalanmışdır.',
-  powers: 'Temperaturu təkbaşına müəyyən etmək.\nPultu görünməyən yerdə saxlamaq.\n«Elə belə normaldır» qərarını qəbul etmək.\nŞikayətləri növbəti günə təxirə salmaq.',
-  penalty: 'Ofisdə eyni gündə üç və daha çox şikayət qeydə alındıqda fərman dayandırılır və temperatur ümumi səsvermə ilə müəyyən edilir.'
+  title: 'Kondisionerin Rejimi üzrə Kollektiv Qərarın Elan Edilməsi Bildirişi', tag: 'İqlim',
+  signOrg: 'Ofis Nizamı və Əmək Rejimi üzrə Baş İdarə',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, ofisdə temperatur rejimi kollektiv qərarla müəyyən edilmişdir. {from} tərəfindən verilmiş təkliflər və {to} adlı şəxsin mövqeyi qərarın qəbulunda nəzərə alınmışdır.',
+  powers: 'Temperatur 23 dərəcə səviyyəsində saxlanılır.\nPult ümumi rəfdə saxlanılır.\nRejim dəyişikliyi kollektivə bildirilir.\nBirbaşa hava axını iş yerinə yönəldilmir.',
+  penalty: 'Rejimin kollektivə bildirilmədən dəyişdirilməsi halında pultun saxlanma səlahiyyəti növbəti həftə üçün başqa şəxsə həvalə edilir.',
+  titleOptions: [
+    'Kondisionerin Rejimi üzrə Kollektiv Qərarın Elan Edilməsi Bildirişi',
+    'Ofisdə Temperatur Rejiminin Müəyyən Edilməsi haqqında Bildiriş',
+    'Kondisionerin Pultunun Saxlanma Yeri haqqında Rəsmi Bildiriş',
+    'İqlim Nəzarəti üzrə Səlahiyyətlərin Bölüşdürülməsi Bildirişi'
+  ],
+  powersOptions: [
+    'Temperatur 23 dərəcə səviyyəsində saxlanılır.',
+    'Pult ümumi rəfdə saxlanılır.',
+    'Rejim dəyişikliyi kollektivə bildirilir.',
+    'Birbaşa hava axını iş yerinə yönəldilmir.',
+    'Səhər saatlarında rejim yumşaldılır.',
+    'Pəncərə açılarkən cihaz söndürülür.',
+    'Şikayət yazılı formada bildirilir.',
+    'Qonaqların rahatlığı ayrıca nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejimin kollektivə bildirilmədən dəyişdirilməsi halında pultun saxlanma səlahiyyəti növbəti həftə üçün başqa şəxsə həvalə edilir.',
+    'Bildiriş hər mövsümün əvvəlində yenilənir.',
+    'Şikayətlərin sayı artdıqda rejim yenidən müzakirə edilir.'
+  ]
 },
 
 /* ---------------- AİLƏ / UŞAQLAR ---------------- */
 {
   id: 'homework-truce', cat: 'family', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Dərs Saatı Barışıq Sazişi', tag: 'Axşam sülhü',
-  signOrg: 'Dərs Saatı və Ev Tapşırıqları üzrə Komissiya',
+  title: 'Dərs Hazırlığı Saatlarının Müəyyən Edilməsinə dair Barışıq Aktı', tag: 'Diplomatiya',
+  signOrg: 'Valideyn-Övlad Münasibətləri üzrə Ali Şura',
   toLabel: 'Dərs oxuyan tərəf', fromLabel: 'Nəzarət edən tərəf',
-  preamble: 'Bu sazişlə {from} və {to} arasında dərs saatları ilə bağlı uzun illik münaqişəyə son qoyulur. Tərəflər qışqırmadan, ah-vay etmədən və «bir azdan başlayacam» ifadəsinə müraciət etmədən razılığa gəlmək öhdəliyi götürürlər.',
-  powers: 'Dərsə başlamazdan əvvəl 10 dəqiqəlik hazırlıq fasiləsi.\nHər 40 dəqiqədən bir 5 dəqiqəlik rəsmi ara.\nBir sual üçün gündə iki dəfə kömək istəmək.\nRiyaziyyat məsələsindən sonra şirniyyat tələb etmək.',
-  penalty: 'Fasilə müddəti üç dəfə artıq işlədildikdə növbəti gün planşetdən istifadə hüququ bir saatlıq dayandırılır.'
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında dərs hazırlığı saatları, fasilələrin müddəti və telefonun saxlanma yeri barədə razılıq əldə edilmişdir. Akt hər iki tərəfə öhdəlik yükləyir və birtərəfli qaydada dəyişdirilə bilməz.',
+  powers: 'Dərs saat 17:00-da başlayır və iki saat davam edir.\nBu müddətdə telefon başqa otaqda saxlanılır.\nHər qırx dəqiqədən sonra on dəqiqə fasilə verilir.\nTapşırıq bitdikdə əlavə tapşırıq verilmir.',
+  penalty: 'Aktın şərtləri pozulduqda növbəti gün dərs hazırlığının başlama vaxtı bir saat tezləşdirilir və fasilə müddəti qısaldılır.',
+  titleOptions: [
+    'Dərs Hazırlığı Saatlarının Müəyyən Edilməsinə dair Barışıq Aktı',
+    'Ev Tapşırıqlarının İcra Rejiminin Razılaşdırılmasına dair Akt',
+    'Dərs Vaxtı üzrə Yaranmış Gərginliyin Aradan Qaldırılması Aktı',
+    'Hazırlıq Saatında Qarşılıqlı Öhdəliklərin Təsbiti haqqında Akt'
+  ],
+  powersOptions: [
+    'Dərs saat 17:00-da başlayır və iki saat davam edir.',
+    'Bu müddətdə telefon başqa otaqda saxlanılır.',
+    'Hər qırx dəqiqədən sonra on dəqiqə fasilə verilir.',
+    'Tapşırıq bitdikdə əlavə tapşırıq verilmir.',
+    'Çətin sualda kömək bir dəfə istənilir.',
+    'Səs tonu ucaldılmadan izah aparılır.',
+    'Həftəsonu hazırlıq günorta saatlarına keçirilir.',
+    'Qiymətlər dərs saatında müzakirə edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Aktın şərtləri pozulduqda növbəti gün dərs hazırlığının başlama vaxtı bir saat tezləşdirilir və fasilə müddəti qısaldılır.',
+    'Pozuntu halında ekran vaxtı həmin gün üçün yarıya endirilir.',
+    'Akt hər tədris rübünün əvvəlində yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'screen-time-license', cat: 'family', tone: 'zarafat', layout: 'lisenziya', palette: 'ink',
-  title: 'Ekran Vaxtı Lisenziyası', tag: 'Ən çox tələb olunan',
-  signOrg: 'Ekran Vaxtı Rejiminə Nəzarət Komitəsi',
+  title: 'Gündəlik Ekran Vaxtından İstifadəyə dair Müddətli Lisenziya', tag: 'Ekran vaxtı',
+  signOrg: 'Ev Tapşırıqları və Daxili Nizam üzrə Baş İdarə',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ HALLAR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə gündəlik ekran vaxtından istifadə etmək üçün rəsmi lisenziya verilir. Lisenziya yalnız ev tapşırıqları tamamlandıqdan və otaq səliqəyə salındıqdan sonra qüvvəyə minir.',
-  powers: 'İş günü 90 dəqiqə, həftəsonu 150 dəqiqə ekran vaxtı.\nMultfilm seçimini təkbaşına etmək.\nSon 5 dəqiqə üçün əlavə vaxt istəmək (gündə 1 dəfə).\nNahar süfrəsində telefonu masaya qoymamaq.',
-  penalty: 'Vaxt həddi üç gün ardıcıl aşıldıqda lisenziya bir həftəlik dayandırılır və oxu vaxtı ilə əvəz olunur.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə gündəlik ekran vaxtından istifadə üçün lisenziya verilir. Lisenziyanın müddəti dərs və ev tapşırıqları başa çatdıqdan sonra hesablanmağa başlayır və yatmaq saatında avtomatik olaraq sona çatır.',
+  powers: 'Gündəlik limit iki saat müəyyən edilir.\nDərs bitmədən ekran vaxtı başlamır.\nYatmaq saatından bir saat əvvəl ekran bağlanır.\nHəftəsonu limit bir saat artırılır.',
+  penalty: 'Limitin gizli şəkildə aşılması aşkarlandıqda lisenziya növbəti üç gün üçün dayandırılır və bərpa yalnız tapşırıqlar tamamlandıqdan sonra mümkündür.',
+  titleOptions: [
+    'Gündəlik Ekran Vaxtından İstifadəyə dair Müddətli Lisenziya',
+    'Telefon və Planşetdən İstifadə Rejiminə dair Lisenziya',
+    'Ekran Vaxtının Artırılması Şərtlərinə dair Xüsusi İcazə',
+    'Həftəsonu Ekran Rejiminin Genişləndirilməsinə dair Lisenziya'
+  ],
+  powersOptions: [
+    'Gündəlik limit iki saat müəyyən edilir.',
+    'Dərs bitmədən ekran vaxtı başlamır.',
+    'Yatmaq saatından bir saat əvvəl ekran bağlanır.',
+    'Həftəsonu limit bir saat artırılır.',
+    'Dərslə bağlı istifadə limitə daxil edilmir.',
+    'Qohumlarla video zəng ayrıca hesablanır.',
+    'Yaxşı qiymət əlavə otuz dəqiqə qazandırır.',
+    'Limit gün ərzində hissə-hissə istifadə edilə bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Limitin gizli şəkildə aşılması aşkarlandıqda lisenziya növbəti üç gün üçün dayandırılır və bərpa yalnız tapşırıqlar tamamlandıqdan sonra mümkündür.',
+    'Gecə saatlarında istifadə lisenziyanı bir həftə dayandırır.',
+    'Lisenziya hər ay yenidən nəzərdən keçirilir.'
+  ]
 },
 {
   id: 'allowance-contract', cat: 'family', tone: 'zarafat', layout: 'muqavile', palette: 'steel',
-  title: 'Cib Xərcliyi Müqaviləsi', tag: 'Maliyyə intizamı',
-  signOrg: 'Ailə Büdcəsi və Cib Xərcliyi üzrə Xüsusi Şura',
-  preamble: 'Bu müqavilə ilə {from} tərəfindən {to} adlı şəxsə həftəlik cib xərcliyi ayrılır. Vəsaitin sərf olunma istiqaməti sərbəstdir, lakin ay sonunda «pulum yoxdur» ifadəsi ilə əlavə maliyyələşmə tələb etmək hüququ verilmir.',
-  powers: 'Həftəlik məbləği bazar ertəsi almaq.\nXərcləri heç kimə izah etməmək.\nYığım etdikdə bonus tələb etmək hüququ.\nAyda bir dəfə avans istəmək (əsaslandırma ilə).',
-  penalty: 'Avans üç həftə ardıcıl istənildikdə növbəti ayın xərcliyi hissə-hissə, həftədə iki dəfə ödənilir.'
+  title: 'Cib Xərcliyinin Verilmə Qaydası və Məbləği üzrə Müqavilə', tag: 'Büdcə',
+  signOrg: 'Valideyn-Övlad Münasibətləri üzrə Ali Şura',
+  preamble: 'Tərəflər arasında aparılmış müzakirə nəticəsində {from} və {to} arasında cib xərcliyinin məbləği, verilmə tarixi və artırılma qaydası barədə razılıq əldə edilmişdir. Müqavilə tədris ili ərzində qüvvədə qalır.',
+  powers: 'Xərclik hər ayın birinci günü verilir.\nMəbləğin sərf istiqaməti soruşulmur.\nAvans yalnız bir dəfə və əsaslandırılmış halda verilir.\nArtırılma tədris nəticələrinə əsasən müzakirə edilir.',
+  penalty: 'Avansın razılaşdırılmadan tələb edilməsi halında növbəti ayın xərcliyi bir həftə gec verilir və avans imkanı müvəqqəti dayandırılır.',
+  titleOptions: [
+    'Cib Xərcliyinin Verilmə Qaydası və Məbləği üzrə Müqavilə',
+    'Aylıq Cib Xərcliyinin Müəyyən Edilməsi üzrə Ailədaxili Müqavilə',
+    'Əlavə Vəsaitin Verilmə Şərtləri üzrə Qarşılıqlı Saziş',
+    'Cib Xərcliyinin Artırılması Qaydasına dair Müqavilə'
+  ],
+  powersOptions: [
+    'Xərclik hər ayın birinci günü verilir.',
+    'Məbləğin sərf istiqaməti soruşulmur.',
+    'Avans yalnız bir dəfə və əsaslandırılmış halda verilir.',
+    'Artırılma tədris nəticələrinə əsasən müzakirə edilir.',
+    'Ev işlərində köməklik əlavə vəsait qazandırır.',
+    'Qalan məbləğ növbəti aya keçirilə bilər.',
+    'Hədiyyə üçün ayrıca vəsait nəzərdə tutulur.',
+    'İtirilmiş məbləğ bərpa edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Avansın razılaşdırılmadan tələb edilməsi halında növbəti ayın xərcliyi bir həftə gec verilir və avans imkanı müvəqqəti dayandırılır.',
+    'Müqavilə tədris ilinin sonunda yenidən bağlanır.',
+    'Şərtlərin pozulması artırılma müzakirəsini təxirə salır.'
+  ]
 },
 {
   id: 'bedtime-decree', cat: 'family', tone: 'zarafat', layout: 'blank', palette: 'burgundy',
-  title: 'Yatma Saatı Fərmanı', tag: 'Gecə rejimi',
-  signOrg: 'Gecə Saatları üzrə Xüsusi Tənzimləmə İdarəsi',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxs üçün yatma saatı rəsmi olaraq müəyyən edilir. Fərman «bir dəqiqə də oynayım» müraciətlərinə baxmayaraq qüvvədə qalır və gecə saatlarında bütün ev üzvləri üçün məcburidir.',
-  powers: 'İş günü saat 22:00, həftəsonu 23:30-da yatmaq.\nYatmazdan əvvəl bir nağıl tələb etmək.\nGecə lampasını söndürməmək hüququ.\nSəhər 10 dəqiqə əlavə yatmaq (həftəsonu).',
-  penalty: 'Fərman ardıcıl iki gecə pozulduqda növbəti həftəsonu yatma saatı bir saat qabağa çəkilir.'
+  title: 'Yatma Saatının Müəyyən Edilməsi və Gecə Rejimi haqqında Bildiriş', tag: 'Gecə rejimi',
+  signOrg: 'Ev Tapşırıqları və Daxili Nizam üzrə Baş İdarə',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxs üçün yatma saatı və gecə rejimi müəyyən edilmişdir. Qərar {from} tərəfindən, son həftələrdə səhər oyanma prosesinin nəzərəçarpacaq dərəcədə çətinləşməsi və dərsə gecikmə hallarının artması nəzərə alınaraq qəbul edilmişdir.',
+  powers: 'Həftə içi yatma saatı 22:00 müəyyən edilir.\nHəftəsonu bir saat gec yatmağa icazə verilir.\n«Beş dəqiqə də» xahişi gündə bir dəfə qəbul edilir.\nYatmazdan əvvəl bir nağıl oxunur.',
+  penalty: 'Rejimin ardıcıl üç gün pozulması halında həftəsonu güzəşti həmin həftə üçün ləğv edilir və yatma saatı bərpa olunur.',
+  titleOptions: [
+    'Yatma Saatının Müəyyən Edilməsi və Gecə Rejimi haqqında Bildiriş',
+    'Gecə Dincliyi Rejiminin Tətbiqi haqqında Rəsmi Bildiriş',
+    'Yatma Saatının Həftə İçi və Həftəsonu üzrə Müəyyən Edilməsi Bildirişi',
+    '«Beş dəqiqə də» Xahişinin Baxılma Qaydası haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Həftə içi yatma saatı 22:00 müəyyən edilir.',
+    'Həftəsonu bir saat gec yatmağa icazə verilir.',
+    '«Beş dəqiqə də» xahişi gündə bir dəfə qəbul edilir.',
+    'Yatmazdan əvvəl bir nağıl oxunur.',
+    'Su üçün qalxmaq bir dəfə icazəlidir.',
+    'Gecə işığı sabaha qədər yandırıla bilər.',
+    'Qonaq gələndə rejim yarım saat uzadılır.',
+    'Xəstəlik halında rejim tətbiq edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejimin ardıcıl üç gün pozulması halında həftəsonu güzəşti həmin həftə üçün ləğv edilir və yatma saatı bərpa olunur.',
+    'Rejim bayram günlərində qüvvədən düşür.',
+    'Səhər vaxtında oyanmaq güzəştin bərpasına əsas verir.'
+  ]
 },
 {
   id: 'room-cleaning-act', cat: 'family', tone: 'zarafat', layout: 'arayis', palette: 'forest',
-  title: 'Otaq Təmizliyi Aktı', tag: 'Yoxlama nəticəsi',
-  signOrg: 'Məişət Məsələləri üzrə Xüsusi Komissiya',
+  title: 'Otağın Səliqəyə Salınması Öhdəliyinin İcra Vəziyyəti haqqında Arayış', tag: 'Ev işi',
+  signOrg: 'Ev Tapşırıqları və Daxili Nizam üzrə Baş İdarə',
   toLabel: 'Otağın sahibi', fromLabel: 'Yoxlamanı aparan',
-  preamble: 'Bu aktla təsdiq olunur ki, {to} adlı şəxsin otağı {from} tərəfindən yoxlanılmış və təmizlik səviyyəsi qənaətbəxş hesab edilmişdir. Çarpayının altı və şkafın içi yoxlama zamanı, qarşılıqlı razılıq əsasında, açılmamışdır.',
-  powers: 'Otağı həftədə bir dəfə tam təmizləmək.\nCorabları döşəmədən yığmaq (gündəlik).\nStolun üstündə ən çoxu üç stəkan saxlamaq.\nYoxlamadan əvvəl 20 dəqiqə xəbərdarlıq almaq.',
-  penalty: 'İki ardıcıl yoxlamada eyni qüsur aşkarlandıqda növbəti həftə ümumi otaqların təmizliyi də həvalə olunur.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, otağın səliqəyə salınması üzrə öhdəliyin icra vəziyyəti {from} tərəfindən yoxlanılmış və nəticələr bu arayışda əks etdirilmişdir. Yoxlama xəbərdarlıq edilmədən aparılmışdır.',
+  powers: 'Yataq səhər saatlarında düzəldilir.\nPaltarlar stulda deyil, şkafda saxlanılır.\nMasanın üstü dərsdən sonra boşaldılır.\nYerdə qalan əşyalar axşama qədər yığılır.',
+  penalty: 'Növbəti yoxlamada eyni çatışmazlıqlar aşkarlandıqda otağın səliqəyə salınması birgə, lakin sənəd sahibinin iştirakı ilə həyata keçirilir.',
+  titleOptions: [
+    'Otağın Səliqəyə Salınması Öhdəliyinin İcra Vəziyyəti haqqında Arayış',
+    'Otaqda Aparılmış Təmizlik İşlərinin Nəticəsi haqqında Arayış',
+    'Paltarların Yerinə Qoyulması Öhdəliyinin İcrası haqqında Arayış',
+    'Yataq Düzəldilməsi Vərdişinin Formalaşması haqqında Arayış'
+  ],
+  powersOptions: [
+    'Yataq səhər saatlarında düzəldilir.',
+    'Paltarlar stulda deyil, şkafda saxlanılır.',
+    'Masanın üstü dərsdən sonra boşaldılır.',
+    'Yerdə qalan əşyalar axşama qədər yığılır.',
+    'Boş qablar mətbəxə qaytarılır.',
+    'Şkafın içi ayda bir dəfə nizama salınır.',
+    'Kitablar rəfə öz yerinə qoyulur.',
+    'Zibil qabı hər gün boşaldılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbəti yoxlamada eyni çatışmazlıqlar aşkarlandıqda otağın səliqəyə salınması birgə, lakin sənəd sahibinin iştirakı ilə həyata keçirilir.',
+    'Üç uğurlu yoxlama arayışın müsbət qiymətləndirilməsinə əsasdır.',
+    'Yoxlamanın vaxtı əvvəlcədən bildirilmir.'
+  ]
 },
 {
   id: 'best-child-diploma', cat: 'family', tone: 'zarafat', layout: 'diplom', palette: 'burgundy',
-  title: 'İlin Ən Yaxşı Övladı Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Ailə Qərarlarının Təsdiqi üzrə Ali Məclis',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, il ərzində göstərdiyi nümunəvi davranışa, vaxtında gələn cavab mesajlarına və heç bir xatırlatma olmadan yuyulan qablara görə bu fəxri diplom təqdim olunur.',
-  powers: 'İl boyu bir dəfə «mən demişdim» deməmək.\nQonaq gələndə salamlaşmağı unutmamaq.\nAnaya gündə bir dəfə zəng etmək.\nSoyuducunun qapısını uzun müddət açıq saxlamamaq.',
-  penalty: 'Diploma layiq olma şərtləri pozulduqda ad növbəti ilə qədər müvəqqəti dayandırılır və divardan asılmır.'
+  title: 'Ailədə Nümunəvi Davranış və Köməkliyə Görə Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Valideyn-Övlad Münasibətləri üzrə Ali Şura',
+  preamble: 'Şura {to} adlı şəxsin il ərzində ailədə göstərdiyi davranışı və könüllü köməkliyi qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur və ailə arxivində saxlanılır.',
+  powers: 'Xahiş edilmədən süfrəni yığmaq.\nKiçik qardaş-bacıya dərsdə kömək etmək.\nSəhər özü oyanmaq bacarığı.\nVerilən sözü axıra qədər yerinə yetirmək.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs il ərzində bir dəfə istədiyi şam yeməyini seçmək hüququ qazanır.',
+  titleOptions: [
+    'Ailədə Nümunəvi Davranış və Köməkliyə Görə Fəxri Diplom',
+    'İl Ərzində Göstərilmiş Nəticələrə Görə Verilmiş Fəxri Diplom',
+    'Ev İşlərində Könüllü İştiraka Görə Verilmiş Fəxri Diplom',
+    'Xahiş Edilmədən Kömək Etmək Sahəsində Fəxri Diplom'
+  ],
+  powersOptions: [
+    'Xahiş edilmədən süfrəni yığmaq.',
+    'Kiçik qardaş-bacıya dərsdə kömək etmək.',
+    'Səhər özü oyanmaq bacarığı.',
+    'Verilən sözü axıra qədər yerinə yetirmək.',
+    'Qonaq qarşısında nümunəvi davranış.',
+    'Telefonun özü tərəfindən kənara qoyulması.',
+    'Alış-verişdə köməklik göstərmək.',
+    'Səhvi vaxtında etiraf etmək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs il ərzində bir dəfə istədiyi şam yeməyini seçmək hüququ qazanır.',
+    'Diplom növbəti ilin nəticələrinə görə yenilənir.',
+    'Təltif ailə arxivində müddətsiz saxlanılır.'
+  ]
 },
 {
   id: 'dinner-veto', cat: 'family', tone: 'zarafat', layout: 'sertifikat', palette: 'steel',
-  title: 'Şam Yeməyi Veto Səlahiyyəti', tag: 'Menyu hüququ',
-  signOrg: 'Mətbəx və Qonaq Otağı Məsələləri üzrə Komissiya',
+  title: 'Şam Yeməyinin Tərkibinə Etiraz Bildirmək Hüququnun Sertifikatı', tag: 'Mətbəx',
+  signOrg: 'Uşaq Hüquqlarının Müdafiəsi üzrə Ailə Komissiyası',
   powersLabel: 'VETO HÜQUQUNUN ŞƏRTLƏRİ',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə şam yeməyi menyusuna veto qoymaq səlahiyyəti verilir. Səlahiyyət {from} tərəfindən, uzunmüddətli menyu mübahisələrinə son qoymaq məqsədilə könüllü şəkildə həvalə edilmişdir.',
-  powers: 'Həftədə bir dəfə menyunu tam dəyişmək.\nEyni yeməyin ardıcıl iki gün verilməsinə etiraz.\nSüfrəyə pendir əlavə olunmasını tələb etmək.\nSupu «sonra içərəm» deyib təxirə salmaq.',
-  penalty: 'Veto həftədə ikidən çox işlədildikdə növbəti şam yeməyini veto qoyan şəxs özü hazırlayır.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxsə şam yeməyinin tərkibinə etiraz bildirmək hüququ tanınır. Sertifikat {from} tərəfindən, uzun müzakirələrdən sonra və məhdud sayda məhsula şamil edilməklə verilmişdir.',
+  powers: 'Həftədə bir dəfə yemək seçimi təklif edilə bilər.\nBir məhsul boşqabın kənarına qoyula bilər.\nŞorbadan imtina ayrıca əsaslandırma tələb edir.\nSertifikat qonaq süfrəsinə şamil edilmir.',
+  penalty: 'Sertifikat qonaqların iştirakı ilə keçirilən süfrələrə və bayram tədbirlərinə şamil edilmir; həmin hallarda ümumi qayda tətbiq olunur.',
+  titleOptions: [
+    'Şam Yeməyinin Tərkibinə Etiraz Bildirmək Hüququnun Sertifikatı',
+    'Bəyənilməyən Yeməkdən İmtina Hüququnu Təsdiq edən Sertifikat',
+    'Süfrədə Bir Məhsulun Kənara Qoyulması Hüququnun Sertifikatı',
+    'Şam Yeməyi Seçimində İştirak Hüququna dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Həftədə bir dəfə yemək seçimi təklif edilə bilər.',
+    'Bir məhsul boşqabın kənarına qoyula bilər.',
+    'Şorbadan imtina ayrıca əsaslandırma tələb edir.',
+    'Sertifikat qonaq süfrəsinə şamil edilmir.',
+    'Yeni yeməyi bir dəfə dadmaq öhdəliyi qalır.',
+    'Şirniyyat şam yeməyini əvəz etmir.',
+    'Seçim bir gün əvvəl bildirilir.',
+    'Bayram süfrəsində etiraz qəbul edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat qonaqların iştirakı ilə keçirilən süfrələrə və bayram tədbirlərinə şamil edilmir; həmin hallarda ümumi qayda tətbiq olunur.',
+    'Ardıcıl imtinalar sertifikatın yenidən baxılmasına əsasdır.',
+    'Sertifikat mətbəxdə köməklik göstərildiyi müddətdə qüvvədədir.'
+  ]
 },
 {
   id: 'parent-verdict', cat: 'family', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: 'Valideyn Məhkəməsinin Qərarı', tag: 'Ali instansiya',
-  signOrg: 'Evdaxili Münasibətlərin Tənzimlənməsi üzrə Ali Şura',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasındakı mübahisəyə baxaraq müəyyən etdi ki, tərəflər arasında yaranmış anlaşılmazlıq qarşılıqlı güzəşt yolu ilə həll oluna bilər və heç bir tərəf tam haqlı sayılmır.',
-  powers: 'Hər iki tərəf beş dəqiqə fasilə verir.\nSəs tonu normal səviyyəyə endirilir.\nQalan mübahisə səhərə saxlanılır.\nBarışıq şirniyyat ilə rəsmiləşdirilir.',
-  penalty: 'Qərar icra olunmadıqda iş yenidən baxılmaq üçün nənəyə göndərilir və onun qərarı qəti sayılır.'
+  title: 'Ailədaxili Mübahisə üzrə Aparılmış Baxışın Nəticəsi haqqında Qərar', tag: 'Məhkəmə',
+  signOrg: 'Uşaq Hüquqlarının Müdafiəsi üzrə Ailə Komissiyası',
+  preamble: 'Şura {to} və {from} arasında yaranmış mübahisəyə hər iki tərəfin izahatını dinləməklə baxmış və müəyyən etmişdir ki, hadisələrin ardıcıllığı barədə ifadələr tam uyğun gəlmir. Məsələ üzrə yekun qərar qəbul edilmişdir.',
+  powers: 'Mübahisənin predmeti əhəmiyyətsiz hesab edilir.\nHər iki tərəfin qismən haqlı olduğu müəyyən edilir.\nKimin birinci başladığı məsələsi araşdırılmır.\nBarışıq həmin gün ərzində həyata keçirilir.',
+  penalty: 'Qərar qəbul edildikdən sonra eyni mövzunun yenidən qaldırılması halında mübahisə predmeti olan əşya bir həftəlik hər iki tərəfdən alınır.',
+  titleOptions: [
+    'Ailədaxili Mübahisə üzrə Aparılmış Baxışın Nəticəsi haqqında Qərar',
+    'Bacı-Qardaş Arasındakı Mübahisə üzrə Yekun Qətnamə',
+    'Kimin Birinci Başladığı Məsələsi üzrə Qəbul Edilmiş Qərar',
+    'Ailədaxili Münaqişənin Həlli haqqında Qəti Qərar'
+  ],
+  powersOptions: [
+    'Mübahisənin predmeti əhəmiyyətsiz hesab edilir.',
+    'Hər iki tərəfin qismən haqlı olduğu müəyyən edilir.',
+    'Kimin birinci başladığı məsələsi araşdırılmır.',
+    'Barışıq həmin gün ərzində həyata keçirilir.',
+    'Şahid ifadələri bir-birini təsdiqləmir.',
+    'Ucadan danışmaq ağırlaşdırıcı hal sayılır.',
+    'Əşyanın zədələnməsi ayrıca qeydə alınır.',
+    'Üzrxahlıq qarşılıqlı qaydada bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərar qəbul edildikdən sonra eyni mövzunun yenidən qaldırılması halında mübahisə predmeti olan əşya bir həftəlik hər iki tərəfdən alınır.',
+    'Qərardan narazılıq qeydə alınır, lakin nəticəyə təsir etmir.',
+    'Barışıq şərtləri pozulduqda məsələyə yenidən baxılır.'
+  ]
 },
 {
   id: 'sibling-peace', cat: 'family', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
-  title: 'Bacı-Qardaş Sülh Müqaviləsi', tag: 'Sərhəd bölgüsü',
-  signOrg: 'Bacı-Qardaş Mübahisələri üzrə Barışıq Komitəsi',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında otaq, oyuncaq və pult üzərində uzun illik münaqişəyə son qoyulur. Tərəflər bir-birinin əşyalarını icazəsiz götürməmək və valideynə şikayət etməzdən əvvəl danışıqlar aparmaq öhdəliyi götürürlər.',
-  powers: 'Otağın sərhədi razılaşdırılmış xətt üzrə müəyyən edilir.\nPult növbə ilə, hər biri 40 dəqiqə.\nBorc alınan əşya eyni gün qaytarılır.\nŞikayətdən əvvəl bir dəfə xəbərdarlıq edilir.',
-  penalty: 'Sərhəd icazəsiz keçildikdə pozan tərəf növbəti gün pult növbəsindən tam məhrum edilir.'
+  title: 'Bacı-Qardaş Münasibətlərinin Vəziyyətinin Qiymətləndirilməsi haqqında Rəy', tag: 'Sülh',
+  signOrg: 'Uşaq Hüquqlarının Müdafiəsi üzrə Ailə Komissiyası',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində {to} və {from} arasındakı münasibətlərin ümumi vəziyyəti müsbət qiymətləndirilmişdir. Qeydə alınan mübahisələrin əksəriyyəti qısamüddətli və nəticəsiz xarakter daşıyır.',
+  powers: 'Mübahisələrin orta müddəti on beş dəqiqədir.\nBarışıq adətən kənar müdaxilə olmadan baş verir.\nƏşya bölgüsü ən çox rast gəlinən səbəbdir.\nBirgə oyun münasibətləri sabitləşdirən amildir.',
+  penalty: 'Rəy hər tədris rübünün sonunda yenidən nəzərdən keçirilir; göstəricilər pisləşdikdə əlavə barışıq tədbirləri tövsiyə olunur.',
+  titleOptions: [
+    'Bacı-Qardaş Münasibətlərinin Vəziyyətinin Qiymətləndirilməsi haqqında Rəy',
+    'Ailədaxili Münaqişələrin Səbəblərinin Təhlili haqqında Rəy',
+    'Otaq və Əşya Bölgüsü üzrə Gərginliyin Qiymətləndirilməsinə dair Rəy',
+    'Barışıq Prosesinin Nəticələrinin Təsdiqi haqqında Yekun Rəy'
+  ],
+  powersOptions: [
+    'Mübahisələrin orta müddəti on beş dəqiqədir.',
+    'Barışıq adətən kənar müdaxilə olmadan baş verir.',
+    'Əşya bölgüsü ən çox rast gəlinən səbəbdir.',
+    'Birgə oyun münasibətləri sabitləşdirən amildir.',
+    'Otağın bölünməsi gərginliyi azaldan tədbirdir.',
+    'Böyük tərəfin güzəşti barışığı sürətləndirir.',
+    'Valideyn müdaxiləsi hallarının sayı azalmışdır.',
+    'Ümumi düşmən yarandıqda münasibətlər yaxşılaşır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəy hər tədris rübünün sonunda yenidən nəzərdən keçirilir; göstəricilər pisləşdikdə əlavə barışıq tədbirləri tövsiyə olunur.',
+    'Rəy tərəflərin xahişi ilə istənilən vaxt yenilənə bilər.',
+    'Mübahisələrin sayı artdıqda əlavə araşdırma aparılır.'
+  ]
 },
 {
   id: 'grade-telegram', cat: 'family', tone: 'zarafat', layout: 'teleqram', palette: 'gold',
-  title: 'Qiymət Bildirişi Teleqramı', tag: 'Təcili xəbər',
-  signOrg: 'Təhsil Nəticələri üzrə Bildiriş İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə təcili bildiriş göndərilir. Məktəbdən gələn qiymət barədə məlumat rəsmi qaydada çatdırılır və izahat vermək üçün 24 saat müddət ayrılır.',
-  powers: 'İzahat şifahi və ya yazılı verilə bilər.\nBir dəfə «müəllim düzgün qiymətləndirmədi» arqumenti qəbul olunur.\nDüzəltmə imtahanı üçün dəstək təmin edilir.\nXəbər nənəyə çatdırılmır (şərtli).',
-  penalty: 'İzahat 24 saat ərzində verilmədikdə məlumat bütün ailə qrupuna avtomatik ötürülür.'
+  title: 'Tədris Nəticələri barədə Valideynə Ünvanlanmış Təcili Bildiriş', tag: 'Təcili',
+  signOrg: 'Valideyn-Övlad Münasibətləri üzrə Ali Şura',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin tədris nəticələrində gözlənilməz dəyişiklik qeydə alınmışdır. {from} tərəfindən məsələnin sakit şəraitdə müzakirə edilməsi və qəti tədbirlərdən çəkinilməsi xahiş olunur.',
+  powers: 'Nəticə barədə məlumat özü tərəfindən verilib.\nSəbəblərin izahı üçün vaxt tələb olunur.\nDüzəltmək imkanı hələ də mövcuddur.\nDigər fənlər üzrə vəziyyət sabitdir.',
+  penalty: 'Vəziyyət növbəti iki həftə ərzində düzəldilmədikdə əlavə hazırlıq rejimi tətbiq edilir və həftəsonu proqramı yenidən nəzərdən keçirilir.',
+  titleOptions: [
+    'Tədris Nəticələri barədə Valideynə Ünvanlanmış Təcili Bildiriş',
+    'Gözlənilməz Qiymət barədə Təcili Xəbərdarlıq',
+    'Jurnalda Yeni Qeydin Yaranması haqqında Təcili Teleqram',
+    'Tədris Göstəricilərinin Dəyişməsi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Nəticə barədə məlumat özü tərəfindən verilib.',
+    'Səbəblərin izahı üçün vaxt tələb olunur.',
+    'Düzəltmək imkanı hələ də mövcuddur.',
+    'Digər fənlər üzrə vəziyyət sabitdir.',
+    'Müəllimlə görüş təklif edilir.',
+    'Əlavə hazırlıq planı tərtib olunur.',
+    'Ekran vaxtı könüllü azaldılır.',
+    'Növbəti nəticə iki həftə ərzində gözlənilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəziyyət növbəti iki həftə ərzində düzəldilmədikdə əlavə hazırlıq rejimi tətbiq edilir və həftəsonu proqramı yenidən nəzərdən keçirilir.',
+    'Nəticə düzəldildikdə bildiriş arxivə verilir.',
+    'Bildiriş yalnız məlumat xarakteri daşıyır.'
+  ]
 },
 {
   id: 'junior-id', cat: 'family', tone: 'zarafat', layout: 'vesiqe', palette: 'steel',
-  title: 'Kiçik Ailə Üzvü Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Ailə Üzvlüyü və Qeydiyyat Şöbəsi',
+  title: 'Ailənin Kiçik Üzvünün Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə', tag: 'Ailə üzvü',
+  signOrg: 'Valideyn-Övlad Münasibətləri üzrə Ali Şura',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin ailənin tamhüquqlu kiçik üzvü olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və soyuducunun qarşısında, süfrə arxasında və pult mübahisələrində etibarlıdır.',
-  powers: 'Süfrədə öz daimi yerini tutmaq.\nQonaq gələndə ilk şirniyyatı seçmək.\nAilə qərarlarında bir səsə malik olmaq.\nHəftədə bir dəfə axşam menyusunu təyin etmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə ərzində şirniyyat növbəsi sonuncuya keçir.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin ailənin tamhüquqlu kiçik üzvü olduğunu təsdiq edir. Sənəd {from} tərəfindən verilmişdir və ailədaxili qərarların qəbulunda məsləhətçi səs hüququ verir. Vəsiqə ev işləri üzrə öhdəliklərin icrası ilə birlikdə qüvvədə hesab edilir.',
+  powers: 'Ailə şurasında fikir bildirmək hüququ tanınır.\nHəftəsonu proqramına bir təklif verilə bilər.\nŞam yeməyi seçimində iştirak hüququ verilir.\nOtağın daxili nizamı özü tərəfindən müəyyən edilir.',
+  penalty: 'Vəsiqə ilə verilən hüquqlar öhdəliklərin icrası ilə bağlıdır; tapşırıqların yerinə yetirilməməsi halında məsləhətçi səs hüququ müvəqqəti dayandırılır.',
+  titleOptions: [
+    'Ailənin Kiçik Üzvünün Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə',
+    'Ailə Şurasında Səsvermə Hüququnu Təsdiq edən Vəsiqə',
+    'Kiçik Ailə Üzvü Statusunu Təsdiq edən Şəhadətnamə',
+    'Ailə Qərarlarında İştirak Hüququna dair Vəsiqə'
+  ],
+  powersOptions: [
+    'Ailə şurasında fikir bildirmək hüququ tanınır.',
+    'Həftəsonu proqramına bir təklif verilə bilər.',
+    'Şam yeməyi seçimində iştirak hüququ verilir.',
+    'Otağın daxili nizamı özü tərəfindən müəyyən edilir.',
+    'Qonaq siyahısına bir ad əlavə edilə bilər.',
+    'Səyahət marşrutunda bir dayanacaq təklif edilir.',
+    'Ailə fotolarında yer seçimi hüququ verilir.',
+    'Bayram menyusuna bir yemək daxil edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə verilən hüquqlar öhdəliklərin icrası ilə bağlıdır; tapşırıqların yerinə yetirilməməsi halında məsləhətçi səs hüququ müvəqqəti dayandırılır.',
+    'Vəsiqə hər il yenidən təsdiq edilir.',
+    'Hüquqların həcmi yaşa uyğun olaraq genişləndirilir.'
+  ]
 },
 {
   id: 'chore-authority', cat: 'family', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
-  title: 'Ev İşləri Səlahiyyətnaməsi', tag: 'Növbə cədvəli',
-  signOrg: 'Ev Səlahiyyətlərinin Bölüşdürülməsi Komitəsi',
+  title: 'Ev İşlərinin Bölüşdürülməsi və Növbəliliyinə dair İcazə', tag: 'Ev işləri',
+  signOrg: 'Ev Tapşırıqları və Daxili Nizam üzrə Baş İdarə',
   powersLabel: 'HƏVALƏ OLUNAN İŞLƏR',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə müəyyən ev işlərinin icrası həvalə olunur. Səlahiyyət könüllü qəbul edilmiş sayılır və «mən növbəmi keçən həftə etmişdim» iddiası sənədlə təsdiqlənmədikdə nəzərə alınmır.',
-  powers: 'Qabları həftədə üç dəfə yumaq.\nZibili axşam saat 21:00-a qədər çıxarmaq.\nÇarpayını hər səhər yığmaq.\nPaltarları maşından çıxarıb asmaq.',
-  penalty: 'Növbə iki dəfə ötürüldükdə növbəti həftə paltar ütüləmək öhdəliyi də əlavə olunur.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə ev işlərinin bölüşdürülməsində iştirak etmək və həftəlik cədvəldən öz növbəsini seçmək səlahiyyəti verilir. İcazə cədvəl çərçivəsində qüvvədədir və tapşırıqların vaxtında icrası şərti ilə uzadılır.',
+  powers: 'Həftəlik cədvəldən iki tapşırıq seçilə bilər.\nNövbə bir dəfə başqa günə keçirilə bilər.\nTapşırıq axşam saat 20:00-dək tamamlanır.\nDəyişiklik əvvəlcədən bildirilir.',
+  penalty: 'Növbənin ardıcıl iki dəfə buraxılması halında seçim hüququ növbəti həftə üçün dayandırılır və tapşırıqlar cədvəl üzrə təyin edilir.',
+  titleOptions: [
+    'Ev İşlərinin Bölüşdürülməsi və Növbəliliyinə dair İcazə',
+    'Ev Tapşırıqlarının Seçilməsi Səlahiyyətinə dair İcazə',
+    'Növbənin Başqa Günə Keçirilməsinə dair Məhdud İcazə',
+    'Ev İşlərində İştirak Qaydasının Müəyyən Edilməsinə dair İcazə'
+  ],
+  powersOptions: [
+    'Həftəlik cədvəldən iki tapşırıq seçilə bilər.',
+    'Növbə bir dəfə başqa günə keçirilə bilər.',
+    'Tapşırıq axşam saat 20:00-dək tamamlanır.',
+    'Dəyişiklik əvvəlcədən bildirilir.',
+    'İki tapşırıq bir günə birləşdirilə bilər.',
+    'Xəstəlik halında növbə avtomatik keçirilir.',
+    'Əlavə tapşırıq könüllü əsasda götürülür.',
+    'Tapşırığın keyfiyyəti birgə qiymətləndirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbənin ardıcıl iki dəfə buraxılması halında seçim hüququ növbəti həftə üçün dayandırılır və tapşırıqlar cədvəl üzrə təyin edilir.',
+    'İcazə hər ayın əvvəlində yenidən verilir.',
+    'Könüllü əlavə tapşırıq buraxılmış növbəni əvəz edir.'
+  ]
 },
 
 /* ---------------- QOHUMLAR / QAYNANA ---------------- */
 {
   id: 'mother-in-law-protocol', cat: 'relatives', tone: 'zarafat', layout: 'blank', palette: 'burgundy',
-  title: 'Qaynana Ziyarəti Protokolu', tag: 'Ən çox paylaşılan',
-  signOrg: 'Qohum Müdaxilələrinin Tənzimlənməsi Komitəsi',
+  title: 'Qaynana Ziyarəti Zamanı Tərəflərin Davranış Qaydaları haqqında Bildiriş', tag: 'Protokol',
+  signOrg: 'Qohumluq Münasibətlərinin Tənzimlənməsi üzrə Şura',
   toLabel: 'Ziyarət olunan tərəf', fromLabel: 'Ziyarətə gələn tərəf',
-  preamble: 'Bu protokolla {from} tərəfindən {to} adlı şəxsin evinə ediləcək ziyarətin qaydaları müəyyən edilir. Ziyarət əvvəlcədən xəbərdarlıq əsasında baş tutur və mətbəxə giriş yalnız ev sahibinin müşayiəti ilə mümkündür.',
-  powers: 'Ziyarətdən ən azı 3 saat əvvəl xəbər vermək.\nMətbəxdə yeməyin duzuna şərh verməmək.\nOtaqların səliqəsi barədə fikir bildirməmək.\nZiyarətin müddəti 4 saatı keçməmək.',
-  penalty: 'Protokol pozulduqda növbəti ziyarət qarşı tərəfin evində və onun müəyyən etdiyi vaxtda keçirilir.'
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, {to} və {from} arasında ziyarət zamanı tətbiq ediləcək davranış qaydaları müəyyən edilmişdir. Qaydalar hər iki tərəfə bərabər şəkildə şamil olunur və ziyarətin müddətindən asılı olaraq dəyişdirilmir.',
+  powers: 'Ziyarət ən azı bir gün əvvəl xəbər verilir.\nMətbəxdəki qablaşdırma qaydası dəyişdirilmir.\nEvin səliqəsi barədə rəy soruşulduqda bildirilir.\nYemək resepti tövsiyə kimi verilir, tələb kimi yox.',
+  penalty: 'Qaydaların pozulması halında növbəti ziyarətin vaxtı və müddəti tam olaraq ev sahibi tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Qaynana Ziyarəti Zamanı Tərəflərin Davranış Qaydaları haqqında Bildiriş',
+    'Ziyarət Zamanı Mətbəxə Müdaxilə Hüdudları haqqında Bildiriş',
+    'Evin Səliqəsi barədə Rəyin Bildirilməsi Qaydası haqqında Bildiriş',
+    'Ziyarətin Müddəti və Xəbərdarlıq Rejimi haqqında Rəsmi Bildiriş'
+  ],
+  powersOptions: [
+    'Ziyarət ən azı bir gün əvvəl xəbər verilir.',
+    'Mətbəxdəki qablaşdırma qaydası dəyişdirilmir.',
+    'Evin səliqəsi barədə rəy soruşulduqda bildirilir.',
+    'Yemək resepti tövsiyə kimi verilir, tələb kimi yox.',
+    'Uşaqların tərbiyəsi mövzusu ayrıca müzakirəyə çıxarılmır.',
+    'Şkafların içi yoxlanılmır.',
+    'Ziyarətin müddəti əvvəlcədən razılaşdırılır.',
+    'Gətirilən yemək evin menyusunu əvəz etmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qaydaların pozulması halında növbəti ziyarətin vaxtı və müddəti tam olaraq ev sahibi tərəfindən müəyyən edilir.',
+    'Bildiriş hər iki ailənin ziyarətlərinə eyni qaydada şamil edilir.',
+    'Şərtlər hər il yenidən razılaşdırılır.'
+  ]
 },
 {
   id: 'recipe-secret-act', cat: 'relatives', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Ailə Reseptinin Sirr Aktı', tag: 'Məxfi sənəd',
-  signOrg: 'Ailə Reseptləri və Mətbəx Sirləri üzrə Şura',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə ailənin əsrlik plov reseptinin bir hissəsi etibar edilir. Resept şifahi ötürülür, yazıya alınmır və heç bir halda qonşu ailəyə açıqlanmır.',
-  powers: 'Resepti yalnız öz mətbəxində tətbiq etmək.\nÖlçüləri «gözəyarı» saxlamaq.\nSirri ən tezi 10 il sonra ötürmək.\nZəfəranın mənbəyini heç kimə deməmək.',
-  penalty: 'Sirr üçüncü şəxsə açıqlandıqda akt ləğv edilir və resept sahibinə bayram süfrəsində izahat vermək öhdəliyi qoyulur.'
+  title: 'Ailə Reseptinin Məxfiliyinin Qorunması Öhdəliyi haqqında Akt', tag: 'Sirr',
+  signOrg: 'Qohumluq Münasibətlərinin Tənzimlənməsi üzrə Şura',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə ailə reseptinin məxfiliyini qorumaq öhdəliyi həvalə edilir. Öhdəlik müddətsizdir və reseptin yalnız ailə daxilində ötürülməsini nəzərdə tutur.',
+  powers: 'Resept yazılı formada üçüncü şəxsə verilmir.\nÖlçülər «gözəyarı» ifadəsi ilə izah edilir.\nBir tərkib hissəsi həmişə açıqlanmamış qalır.\nResept yalnız ailə üzvünə ötürülür.',
+  penalty: 'Reseptin tam şəkildə kənar şəxsə ötürülməsi halında öhdəliyi pozan tərəf növbəti bayram süfrəsinin hazırlanmasını təkbaşına həyata keçirir.',
+  titleOptions: [
+    'Ailə Reseptinin Məxfiliyinin Qorunması Öhdəliyi haqqında Akt',
+    'Reseptin Yalnız Ailə Daxilində Ötürülməsinə dair Akt',
+    'Ölçülərin Dəqiq Açıqlanmaması Ənənəsinin Təsbiti haqqında Akt',
+    'Ailə Mətbəx Sirlərinin Saxlanılması üzrə Etibarnamə'
+  ],
+  powersOptions: [
+    'Resept yazılı formada üçüncü şəxsə verilmir.',
+    'Ölçülər «gözəyarı» ifadəsi ilə izah edilir.',
+    'Bir tərkib hissəsi həmişə açıqlanmamış qalır.',
+    'Resept yalnız ailə üzvünə ötürülür.',
+    'Süfrədə sual verildikdə ümumi cavab verilir.',
+    'Sosial şəbəkədə paylaşım aparılmır.',
+    'Dəyişiklik edilərsə ailəyə bildirilir.',
+    'Reseptin mənşəyi barədə mübahisə açılmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Reseptin tam şəkildə kənar şəxsə ötürülməsi halında öhdəliyi pozan tərəf növbəti bayram süfrəsinin hazırlanmasını təkbaşına həyata keçirir.',
+    'Öhdəlik ailənin bütün üzvlərinə bərabər şəkildə şamil olunur.',
+    'Pozuntu halında resept yeni variantda yenidən tərtib edilir.'
+  ]
 },
 {
   id: 'wedding-advice-license', cat: 'relatives', tone: 'zarafat', layout: 'lisenziya', palette: 'burgundy',
-  title: 'Toy Məsləhəti Vermə Lisenziyası', tag: 'Məhdud icazə',
-  signOrg: 'Toy Məsləhətlərinin Məhdudlaşdırılması İdarəsi',
+  title: 'Toy Mərasimi ilə Bağlı Məsləhət Vermək Hüququna dair Lisenziya', tag: 'Toy mövsümü',
+  signOrg: 'Qohum Sualları və Sosial Təzyiq üzrə Komissiya',
   powersLabel: 'LİSENZİYANIN ƏHATƏ DAİRƏSİ',
-  preamble: '{from} tərəfindən {to} adlı şəxsə toy hazırlığı ilə bağlı məsləhət vermək üçün məhdud lisenziya verilir. Lisenziya yalnız soruşulduqda qüvvəyə minir və gəlinin paltar seçiminə şamil edilmir.',
-  powers: 'Süfrə menyusu barədə fikir bildirmək.\nQonaq siyahısına bir ad təklif etmək.\nMusiqi seçiminə bir dəfə müdaxilə etmək.\n«Bizim vaxtımızda belə idi» ifadəsini ayda 2 dəfə işlətmək.',
-  penalty: 'Soruşulmadan verilən hər üç məsləhətdən sonra lisenziya toy gününə qədər dayandırılır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə toy mərasimi ilə bağlı məsləhət vermək hüququ verilir. Lisenziya məsləhətin tövsiyə xarakteri daşıması və qərar qəbulunda həlledici sayılmaması şərti ilə qüvvədədir.',
+  powers: 'Məsləhət yalnız soruşulduqda verilir.\nQonaq siyahısına düzəliş təklif edilə bilər.\nMenyu barədə bir tövsiyə qəbul edilir.\n«Bizim vaxtımızda» ifadəsi arqument sayılmır.',
+  penalty: 'Məsləhətin tələbə çevrilməsi halında lisenziya dayandırılır və məsləhətçi statusu mərasim başa çatanadək bərpa edilmir.',
+  titleOptions: [
+    'Toy Mərasimi ilə Bağlı Məsləhət Vermək Hüququna dair Lisenziya',
+    'Mərasim Təşkilinə dair Tövsiyə Vermək Səlahiyyətinə dair Lisenziya',
+    'Qonaq Siyahısı barədə Fikir Bildirmək Hüququna dair İcazə',
+    'Toy Hazırlığında Məsləhətçi Statusuna dair Xüsusi İcazə'
+  ],
+  powersOptions: [
+    'Məsləhət yalnız soruşulduqda verilir.',
+    'Qonaq siyahısına düzəliş təklif edilə bilər.',
+    'Menyu barədə bir tövsiyə qəbul edilir.',
+    '«Bizim vaxtımızda» ifadəsi arqument sayılmır.',
+    'Mərasim yeri barədə fikir yekun hesab edilmir.',
+    'Büdcə məsələsi ayrıca müzakirə edilir.',
+    'Geyim seçiminə müdaxilə edilmir.',
+    'Musiqi proqramı təşkilatçıların səlahiyyətindədir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Məsləhətin tələbə çevrilməsi halında lisenziya dayandırılır və məsləhətçi statusu mərasim başa çatanadək bərpa edilmir.',
+    'Lisenziya yalnız bir mərasim üçün verilir.',
+    'Məsləhətlərin sayı gündə üçdən artıq olmamalıdır.'
+  ]
 },
 {
   id: 'guest-visit-permit', cat: 'relatives', tone: 'zarafat', layout: 'arayis', palette: 'steel',
-  title: 'Xəbərsiz Qonaq Gəlmə İcazəsi', tag: 'Xüsusi hal',
-  signOrg: 'Xəbərsiz Ziyarətlər üzrə Xüsusi Komissiya',
+  title: 'Əvvəlcədən Xəbər Verilmədən Qonaq Gəlmə Hallarının Tənzimlənməsi Arayışı', tag: 'Qonaq',
+  signOrg: 'Bayram Ziyarətləri və Süfrə Nizamı üzrə Baş İdarə',
   toLabel: 'İcazə verilən şəxs', fromLabel: 'İcazəni verən ev sahibi',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxsə {from} tərəfindən müstəsna hallarda xəbərsiz qonaq gəlmək icazəsi verilmişdir. İcazə ildə iki dəfə istifadə oluna bilər və bayram günlərini əhatə etmir.',
-  powers: 'İldə iki dəfə xəbərsiz gəlmək.\nGəlişdən sonra ilk 15 dəqiqə çay gözləmək.\nEvin səliqəsi barədə şərh verməmək.\nQalma müddəti 2 saatı keçməmək.',
-  penalty: 'İcazə həddi aşıldıqda növbəti il üçün bütün ziyarətlər əvvəlcədən zənglə razılaşdırılır.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, əvvəlcədən xəbər verilmədən qonaq gəlmə halları {from} ilə birgə müzakirə edilmiş və qəbul şərtləri müəyyən olunmuşdur. Arayış hər iki tərəfin ziyarətlərinə şamil edilir.',
+  powers: 'Ziyarətdən ən azı bir saat əvvəl zəng edilir.\nXəbərsiz gələn qonaq süfrə gözləməməlidir.\nZiyarətin müddəti iki saatla məhdudlaşır.\nGecə saat 21:00-dan sonra ziyarət təşkil edilmir.',
+  penalty: 'Şərtlərin pozulması halında növbəti ziyarətin vaxtı və müddəti tam olaraq ev sahibi tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Əvvəlcədən Xəbər Verilmədən Qonaq Gəlmə Hallarının Tənzimlənməsi Arayışı',
+    'Xəbərsiz Ziyarətin Qəbul Edilmə Şərtləri haqqında Arayış',
+    'Qonaq Qəbulu üçün Minimal Hazırlıq Müddəti haqqında Arayış',
+    'Ziyarət Xəbərdarlığının Formaları haqqında Rəsmi Arayış'
+  ],
+  powersOptions: [
+    'Ziyarətdən ən azı bir saat əvvəl zəng edilir.',
+    'Xəbərsiz gələn qonaq süfrə gözləməməlidir.',
+    'Ziyarətin müddəti iki saatla məhdudlaşır.',
+    'Gecə saat 21:00-dan sonra ziyarət təşkil edilmir.',
+    'Yaxınlıqdan keçərkən qısa ziyarət icazəlidir.',
+    'Uşaqlı qonaqlar əvvəlcədən xəbər verir.',
+    'Ev sahibi məşğuldursa ziyarət təxirə salınır.',
+    'Bayram günlərində şərtlər yumşaldılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şərtlərin pozulması halında növbəti ziyarətin vaxtı və müddəti tam olaraq ev sahibi tərəfindən müəyyən edilir.',
+    'Arayış bayram və hüzn günlərinə şamil edilmir.',
+    'Şərtlər hər iki tərəf üçün eyni qaydada tətbiq olunur.'
+  ]
 },
 {
   id: 'family-council-decision', cat: 'relatives', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: 'Ailə Şurasının Qərarı', tag: 'Yekun qərar',
-  signOrg: 'Ailə Məclislərinin Qərarları üzrə Ali Məclis',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında qohumluq münasibətləri üzrə yaranmış mübahisəyə baxaraq müəyyən etdi ki, hər iki tərəfin arqumentləri bayram süfrəsində eyni dərəcədə səslənmişdir və qəti üstünlük yoxdur.',
-  powers: 'Mübahisə mövzusu bir il müddətinə bağlanır.\nHər iki tərəf digərinin evinə növbə ilə gedir.\nKöhnə hadisələr xatırladılmır.\nQərar bütün qohumlara eyni formada çatdırılır.',
-  penalty: 'Mövzu vaxtından əvvəl açıldıqda açan tərəf növbəti ailə yığıncağını öz evində təşkil edir.'
+  title: 'Qohumlar Şurasının Müzakirəsindən Sonra Qəbul Edilmiş Qərar', tag: 'Şura',
+  signOrg: 'Qohumluq Münasibətlərinin Tənzimlənməsi üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsə aid məsələni müzakirə etmiş və müəyyən etmişdir ki, iştirakçıların mövqeyi tam üst-üstə düşməsə də, ümumi qənaətə gəlmək mümkün olmuşdur. {from} tərəfindən bildirilən mövqe qərarın qəbulunda nəzərə alınmışdır.',
+  powers: 'Qərar müzakirənin ümumi nəticəsini əks etdirir.\nSəsvermə aparılmamış, ümumi razılıq əldə edilmişdir.\nMəsələ üzrə əlavə müzakirəyə ehtiyac görülmür.\nQərarın icrasına nəzarət şuranın sədrinə həvalə edilir.',
+  penalty: 'Qərardan narazı olan şəxslərin etirazları qəbul edilir və qeydə alınır, lakin qərarın qüvvəsinə təsir göstərmir.',
+  titleOptions: [
+    'Qohumlar Şurasının Müzakirəsindən Sonra Qəbul Edilmiş Qərar',
+    'Ailə Məsələsi üzrə Qohumlar Şurasının Yekun Qətnaməsi',
+    'Uzunmüddətli Müzakirədən Sonra Qəbul Edilmiş Yekun Qərar',
+    'Şuranın Rəyi Nəzərə Alınmaqla Qəbul Edilmiş Qərar'
+  ],
+  powersOptions: [
+    'Qərar müzakirənin ümumi nəticəsini əks etdirir.',
+    'Səsvermə aparılmamış, ümumi razılıq əldə edilmişdir.',
+    'Məsələ üzrə əlavə müzakirəyə ehtiyac görülmür.',
+    'Qərarın icrasına nəzarət şuranın sədrinə həvalə edilir.',
+    'İştirak etməyən üzvlərin mövqeyi sonradan soruşulur.',
+    'Qərarın mətni ailə arxivində saxlanılır.',
+    'Uşaqların rəyi məsləhət xarakteri daşıyır.',
+    'Qərar bayram süfrəsində elan edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qərardan narazı olan şəxslərin etirazları qəbul edilir və qeydə alınır, lakin qərarın qüvvəsinə təsir göstərmir.',
+    'Məsələ bir ildən sonra yenidən müzakirəyə çıxarıla bilər.',
+    'Yeni hallar aşkarlandıqda şura təkrar toplanır.'
+  ]
 },
 {
   id: 'best-son-in-law', cat: 'relatives', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'İlin Ən Yaxşı Kürəkəni Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Kürəkən və Gəlin Məsələləri üzrə Baş İdarə',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, il ərzində göstərdiyi nümunəvi davranışa, vaxtında edilən zənglərə və heç bir xatırlatma olmadan gətirilən şirniyyata görə bu fəxri diplom təqdim olunur.',
-  powers: 'Həftədə bir dəfə zəng etmək.\nBayramlarda ilk təbrik edən olmaq.\nSüfrədə plovu tərifləmək (səmimi şəkildə).\nAğır çantaları soruşmadan götürmək.',
-  penalty: 'Şərtlər pozulduqda ad növbəti ilədək dayandırılır və qonşu ailənin kürəkəni ilə müqayisə başlanır.'
+  title: 'Qohumlar Arasında Nümunəvi Münasibətə Görə Verilmiş Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Qohumluq Münasibətlərinin Tənzimlənməsi üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin qohumlarla münasibətdə uzun müddət ərzində göstərdiyi mövqeyi qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur və ailə arxivində saxlanılır.',
+  powers: 'Bayram ziyarətləri heç vaxt təxirə salınmayıb.\nSüfrə arxasında mövqe həmişə diplomatik olub.\nKömək xahiş edilmədən göstərilib.\nQohum sualları səbirlə qarşılanıb.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs ildə bir dəfə ailə süfrəsinin yerini və vaxtını müəyyən etmək hüququ qazanır.',
+  titleOptions: [
+    'Qohumlar Arasında Nümunəvi Münasibətə Görə Verilmiş Fəxri Diplom',
+    'Ailəyə Göstərilən Diqqətə Görə Verilmiş Fəxri Diplom',
+    'Bayram Ziyarətlərinin Nizamlı İcrasına Görə Fəxri Diplom',
+    'Qohumluq Öhdəliklərinin Nümunəvi İcrasına Görə Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Bayram ziyarətləri heç vaxt təxirə salınmayıb.',
+    'Süfrə arxasında mövqe həmişə diplomatik olub.',
+    'Kömək xahiş edilmədən göstərilib.',
+    'Qohum sualları səbirlə qarşılanıb.',
+    'Uzaq qohumların adları düzgün xatırlanıb.',
+    'Toy və hüzn mərasimlərində iştirak təmin edilib.',
+    'Hədiyyə seçimində diqqət göstərilib.',
+    'Ailə söhbətlərində mövzu ustalıqla dəyişdirilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs ildə bir dəfə ailə süfrəsinin yerini və vaxtını müəyyən etmək hüququ qazanır.',
+    'Təltif növbəti ilin nəticələrinə görə yenidən baxılır.',
+    'Diplom ailə arxivində müddətsiz saxlanılır.'
+  ]
 },
 {
   id: 'plov-authority', cat: 'relatives', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
-  title: 'Plov Bişirmə Səlahiyyəti', tag: 'Mətbəx hüququ',
-  signOrg: 'Süfrə və Plov Məsələləri üzrə Xüsusi Komitə',
+  title: 'Bayram Süfrəsi üçün Plov Hazırlanması Səlahiyyətinin Sertifikatı', tag: 'Süfrə',
+  signOrg: 'Bayram Ziyarətləri və Süfrə Nizamı üzrə Baş İdarə',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə ailə tədbirlərində plov bişirmək səlahiyyəti verilir. Səlahiyyət {from} tərəfindən uzun illik müşahidə və üç uğurlu sınaqdan sonra rəsmiləşdirilmişdir.',
-  powers: 'Qazanı təkbaşına idarə etmək.\nDüyünün növünü seçmək.\nMətbəxə giriş rejimini müəyyən etmək.\nDadına baxmaq növbəsini təyin etmək.',
-  penalty: 'Plov iki dəfə ardıcıl uğursuz alındıqda səlahiyyət müvəqqəti olaraq əvvəlki sahibinə qaytarılır.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs bayram süfrəsi üçün plov hazırlanması səlahiyyətinə malikdir. Sertifikat {from} tərəfindən, uzun illik təcrübə və ailə üzvlərinin yekdil rəyi əsas götürülərək verilmişdir.',
+  powers: 'Düyünün süzülmə anı təkbaşına müəyyən edilir.\nMətbəxə giriş bu mərhələdə məhdudlaşdırılır.\nQazmağın vəziyyəti müzakirə predmeti deyil.\nƏdviyyat ölçüsü barədə məsləhət qəbul edilmir.',
+  penalty: 'Plovun keyfiyyəti ailə üzvlərinin əksəriyyəti tərəfindən qənaətbəxş sayılmadıqda sertifikat növbəti bayrama qədər dayandırılır.',
+  titleOptions: [
+    'Bayram Süfrəsi üçün Plov Hazırlanması Səlahiyyətinin Sertifikatı',
+    'Aş Bişirmə Prosesinə Rəhbərlik Səlahiyyətinin Sertifikatı',
+    'Düyünün Süzülməsi Mərhələsinə Nəzarət Hüququnun Sertifikatı',
+    'Bayram Menyusunun Əsas Yeməyinə Məsuliyyətə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Düyünün süzülmə anı təkbaşına müəyyən edilir.',
+    'Mətbəxə giriş bu mərhələdə məhdudlaşdırılır.',
+    'Qazmağın vəziyyəti müzakirə predmeti deyil.',
+    'Ədviyyat ölçüsü barədə məsləhət qəbul edilmir.',
+    'Odun gücü yalnız sertifikat sahibi tərəfindən dəyişdirilir.',
+    'Süfrəyə verilmə vaxtı əvvəlcədən elan edilir.',
+    'Yardımçı şəxs sertifikat sahibi tərəfindən seçilir.',
+    'Qab seçimi ənənəyə uyğun aparılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Plovun keyfiyyəti ailə üzvlərinin əksəriyyəti tərəfindən qənaətbəxş sayılmadıqda sertifikat növbəti bayrama qədər dayandırılır.',
+    'Sertifikat hər il bayram ərəfəsində yenidən təsdiq edilir.',
+    'Mətbəxə icazəsiz müdaxilə sertifikatın qüvvəsinə təsir etmir.'
+  ]
 },
 {
   id: 'holiday-visit-contract', cat: 'relatives', tone: 'zarafat', layout: 'muqavile', palette: 'burgundy',
-  title: 'Bayram Ziyarəti Müqaviləsi', tag: 'İllik cədvəl',
-  signOrg: 'Bayram Ziyarətlərinin Tənzimlənməsi üzrə Şura',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında bayram günlərində qarşılıqlı ziyarətlərin ardıcıllığı müəyyən edilir. Tərəflər növbəni pozmamaq və «biz keçən il getmişdik» arqumentini sənədlə əsaslandırmaq öhdəliyi götürürlər.',
-  powers: 'Novruz birinci tərəfin evində qeyd olunur.\nQurban bayramı ikinci tərəfdə keçirilir.\nAd günləri ayrıca razılaşdırılır.\nZiyarət müddəti tərəflərin razılığı ilə uzadıla bilər.',
-  penalty: 'Növbə əsassız pozulduqda pozan tərəf növbəti iki bayramı öz evində təşkil edir.'
+  title: 'Bayram Ziyarətlərinin Növbəliliyi və Müddəti üzrə Müqavilə', tag: 'Bayram',
+  signOrg: 'Bayram Ziyarətləri və Süfrə Nizamı üzrə Baş İdarə',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında bayram ziyarətlərinin növbəliliyi barədə razılıq əldə edilmişdir. Müqavilə hər iki ailəyə bərabər sayda ziyarət nəzərdə tutur və birtərəfli dəyişdirilmir.',
+  powers: 'Bayramın birinci günü növbə ilə bölünür.\nHər ailəyə ayrılan vaxt bərabərdir.\nMarşrut bayramdan bir həftə əvvəl razılaşdırılır.\nZiyarətin ləğvi hər iki tərəfə eyni gün bildirilir.',
+  penalty: 'Növbəliliyin pozulması halında növbəti bayramda ilk ziyarətin ünvanı zərərçəkmiş tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Bayram Ziyarətlərinin Növbəliliyi və Müddəti üzrə Müqavilə',
+    'İki Ailə Arasında Ziyarət Növbəsinin Bölüşdürülməsi üzrə Saziş',
+    'Bayram Günlərinin Bərabər Bölgüsü üzrə Qarşılıqlı Müqavilə',
+    'Ziyarət Marşrutunun Əvvəlcədən Razılaşdırılması üzrə Protokol'
+  ],
+  powersOptions: [
+    'Bayramın birinci günü növbə ilə bölünür.',
+    'Hər ailəyə ayrılan vaxt bərabərdir.',
+    'Marşrut bayramdan bir həftə əvvəl razılaşdırılır.',
+    'Ziyarətin ləğvi hər iki tərəfə eyni gün bildirilir.',
+    'Uzaq qohumlara ziyarət ayrıca planlaşdırılır.',
+    'Gecələmə variantı əvvəlcədən müzakirə edilir.',
+    'Hədiyyə büdcəsi bərabər bölünür.',
+    'Yol xərcləri ümumi büdcədən ödənilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbəliliyin pozulması halında növbəti bayramda ilk ziyarətin ünvanı zərərçəkmiş tərəf tərəfindən müəyyən edilir.',
+    'Müqavilə hər il bayram ərəfəsində yenidən nəzərdən keçirilir.',
+    'Fövqəladə hallarda növbəlilik müvəqqəti dayandırılır.'
+  ]
 },
 {
   id: 'relative-telegram', cat: 'relatives', tone: 'zarafat', layout: 'teleqram', palette: 'forest',
-  title: 'Qohumluq Bildirişi Teleqramı', tag: 'Təcili məlumat',
-  signOrg: 'Qohumluq Bildirişləri üzrə Rabitə İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə təcili bildiriş göndərilir. Qohumluq dərəcəsi, ziyarət tarixi və gətiriləcək şirniyyatın növü barədə məlumat rəsmi qaydada çatdırılır.',
-  powers: 'Cavab teleqramı 24 saat ərzində gözlənilir.\nZiyarət tarixi bir dəfə dəyişdirilə bilər.\nŞirniyyat növü müzakirə mövzusu deyil.\nQonaq sayı əvvəlcədən dəqiqləşdirilir.',
-  penalty: 'Cavab verilmədikdə ziyarət avtomatik təsdiqlənmiş sayılır və qonaqlar səhər saatlarında gəlirlər.'
+  title: 'Qohum Yığıncağında Gözlənilən Suallar barədə Təcili Xəbərdarlıq', tag: 'Təcili',
+  signOrg: 'Qohum Sualları və Sosial Təzyiq üzrə Komissiya',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin iştirak edəcəyi qohum yığıncağında şəxsi məzmunlu sualların qaldırılması ehtimalı yüksəkdir. {from} tərəfindən əvvəlcədən hazırlıq görülməsi tövsiyə edilir.',
+  powers: 'Ən çox gözlənilən sual evlilik mövzusundadır.\nİkinci yerdə iş və maaş məsələsi gəlir.\nSualların pik vaxtı süfrənin ortasıdır.\nMövzunu dəyişmək üçün iki cəhd nəzərdə tutulur.',
+  penalty: 'Hazırlıq görülmədikdə suallar bütün yığıncaq boyu davam edir və növbəti tədbirdə də təkrarlanır.',
+  titleOptions: [
+    'Qohum Yığıncağında Gözlənilən Suallar barədə Təcili Xəbərdarlıq',
+    'Süfrə Arxasında Qaldırılacaq Mövzular haqqında Təcili Teleqram',
+    'Elçilik Mövzusunun Gündəliyə Salınması haqqında Xəbərdarlıq',
+    'Yığıncağa Hazırlıq Tədbirləri haqqında Təcili Bildiriş'
+  ],
+  powersOptions: [
+    'Ən çox gözlənilən sual evlilik mövzusundadır.',
+    'İkinci yerdə iş və maaş məsələsi gəlir.',
+    'Sualların pik vaxtı süfrənin ortasıdır.',
+    'Mövzunu dəyişmək üçün iki cəhd nəzərdə tutulur.',
+    'Uşaqlarla oynamaq etibarlı sığınacaq hesab edilir.',
+    'Mətbəxə kömək təklifi mövzunu dayandırır.',
+    'Telefon zəngi qısamüddətli çıxış imkanı verir.',
+    'Erkən ayrılma səbəbi əvvəlcədən hazırlanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Hazırlıq görülmədikdə suallar bütün yığıncaq boyu davam edir və növbəti tədbirdə də təkrarlanır.',
+    'Xəbərdarlıq yalnız məlumat xarakteri daşıyır.',
+    'Mövzu dəyişdirildikdə xəbərdarlıq qüvvədən düşür.'
+  ]
 },
 {
   id: 'bride-id', cat: 'relatives', tone: 'zarafat', layout: 'vesiqe', palette: 'burgundy',
-  title: 'Gəlin Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Gəlin Statusunun Qeydiyyatı Şöbəsi',
+  title: 'Ailəyə Yeni Qatılmış Üzvün Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə', tag: 'Vəsiqə',
+  signOrg: 'Qohumluq Münasibətlərinin Tənzimlənməsi üzrə Şura',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin ailənin tamhüquqlu gəlini olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və bütün ailə tədbirlərində, mətbəxdə və bayram süfrələrində etibarlıdır.',
-  powers: 'Süfrədə öz daimi yerini tutmaq.\nMətbəxdə bir yeməyi tam öz üsulu ilə bişirmək.\nAilə qərarlarında səs vermək hüququ.\nQonaq siyahısına bir ad əlavə etmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi dərhal verilir, lakin bir ay ərzində çay süfrəsi növbəsi ikiqat olur.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin ailənin tamhüquqlu üzvü olduğunu təsdiq edir. Sənəd {from} tərəfindən verilmişdir, uyğunlaşma dövründə tətbiq edilən güzəştləri əhatə edir və müddətsiz hesab olunur.',
+  powers: 'Ailə ənənələri tədricən mənimsənilir.\nMətbəxdə köməklik könüllü əsasda göstərilir.\nSəhv edildikdə xatırlatma bir dəfə olunur.\nÖz ailəsinə ziyarət maneəsiz həyata keçirilir.',
+  penalty: 'Vəsiqə ilə verilən güzəştlər uyğunlaşma dövrü ilə məhdudlaşmır; hüquqlar müddətsiz olaraq qüvvədə saxlanılır.',
+  titleOptions: [
+    'Ailəyə Yeni Qatılmış Üzvün Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə',
+    'Yeni Ailə Üzvü Statusunu Təsdiq edən Rəsmi Vəsiqə',
+    'Ailə Ənənələrinə Uyğunlaşma Dövrünü Təsbit edən Vəsiqə',
+    'Ailədaxili Hüquqların Tanınmasına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Ailə ənənələri tədricən mənimsənilir.',
+    'Mətbəxdə köməklik könüllü əsasda göstərilir.',
+    'Səhv edildikdə xatırlatma bir dəfə olunur.',
+    'Öz ailəsinə ziyarət maneəsiz həyata keçirilir.',
+    'Bayram menyusuna bir yemək təklif edilə bilər.',
+    'Evin daxili nizamı barədə fikir bildirilir.',
+    'Müqayisə aparılması qadağandır.',
+    'Şəxsi vaxt hüququ tanınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə verilən güzəştlər uyğunlaşma dövrü ilə məhdudlaşmır; hüquqlar müddətsiz olaraq qüvvədə saxlanılır.',
+    'Vəsiqə hər iki ailəyə eyni qaydada şamil edilir.',
+    'Hüquqların həcmi ailə şurasında genişləndirilə bilər.'
+  ]
 },
 {
   id: 'comparison-ban', cat: 'relatives', tone: 'zarafat', layout: 'ekspertiza', palette: 'ink',
-  title: 'Müqayisə Qadağası Fərmanı', tag: 'Sinir sülhü',
-  signOrg: 'Müqayisə və Sosial Təzyiq üzrə Ali Komissiya',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxsin qonşu ailənin uşaqları, kürəkəni və ya gəlini ilə müqayisə edilməsi qadağan olunur. Fərman bütün ailə yığıncaqlarında və telefon danışıqlarında qüvvədədir.',
-  powers: 'Müqayisə cümləsi başlanan kimi dayandırılır.\n«Filankəsin oğlu» ifadəsi işlədilmir.\nUğurlar yalnız öz keçmişi ilə müqayisə edilir.\nİldə bir dəfə istisna hüququ saxlanılır.',
-  penalty: 'Qadağa pozulduqda pozan tərəf növbəti ailə tədbirində qablı yumaq öhdəliyi daşıyır.'
+  title: 'Qohumlar Arasında Müqayisə Aparılması Praktikasının Qiymətləndirilməsi Rəyi', tag: 'Müqayisə',
+  signOrg: 'Qohum Sualları və Sosial Təzyiq üzrə Komissiya',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxsə münasibətdə tətbiq olunan müqayisələr heç bir müsbət nəticə verməmişdir. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib edilmişdir.',
+  powers: 'Müqayisələrin motivasiya effekti sıfıra bərabərdir.\nMüqayisə edilən şəxslərin real vəziyyəti yoxlanılmayıb.\nUğur hekayələrinin əksəriyyəti təsdiqlənməyib.\nPraktikanın dayandırılması tövsiyə olunur.',
+  penalty: 'Rəyin nəticələri nəzərə alınmadıqda məsələ ailə şurasının gündəliyinə salınır və əlavə araşdırma aparılır.',
+  titleOptions: [
+    'Qohumlar Arasında Müqayisə Aparılması Praktikasının Qiymətləndirilməsi Rəyi',
+    '«Filankəsin oğlu» Müqayisələrinin Təsiri haqqında Ekspert Rəyi',
+    'Ailədaxili Müqayisələrin Nəticələrinin Təhlili haqqında Rəy',
+    'Sosial Təzyiq Amillərinin Qiymətləndirilməsinə dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Müqayisələrin motivasiya effekti sıfıra bərabərdir.',
+    'Müqayisə edilən şəxslərin real vəziyyəti yoxlanılmayıb.',
+    'Uğur hekayələrinin əksəriyyəti təsdiqlənməyib.',
+    'Praktikanın dayandırılması tövsiyə olunur.',
+    'Müqayisələr ən çox süfrə arxasında səsləndirilir.',
+    'Nəticə əks istiqamətdə təsir göstərir.',
+    'Müqayisə edilən tərəflər bir-birini tanımır.',
+    'Praktika nəsillər arasında ötürülür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəyin nəticələri nəzərə alınmadıqda məsələ ailə şurasının gündəliyinə salınır və əlavə araşdırma aparılır.',
+    'Rəy hər il yenidən qiymətləndirilir.',
+    'Praktikanın dayandırılması rəyin arxivə verilməsinə əsasdır.'
+  ]
 },
 {
   id: 'tea-ceremony-act', cat: 'relatives', tone: 'zarafat', layout: 'viza', palette: 'steel',
-  title: 'Çay Süfrəsi Aktı', tag: 'Süfrə protokolu',
-  signOrg: 'Çay Süfrəsi Qaydaları üzrə Xüsusi Komissiya',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə ailə çay süfrəsinin təşkili və idarə olunması həvalə edilir. Aktda armudu stəkanın istifadəsi məcburi, kupanın istifadəsi isə müstəsna hal kimi qeyd olunur.',
-  powers: 'Çayı süzmək və növbəni müəyyən etmək.\nMürəbbə növünü seçmək.\nSüfrəyə əlavə şirniyyat gətirmək.\nSöhbətin mövzusunu bir dəfə dəyişmək.',
-  penalty: 'Çay soyuq verildikdə növbəti süfrənin təşkili avtomatik olaraq digər tərəfə keçir.'
+  title: 'Çay Süfrəsinin Təşkili və Süfrədən Ayrılma Qaydasına dair İcazə', tag: 'Çay',
+  signOrg: 'Bayram Ziyarətləri və Süfrə Nizamı üzrə Baş İdarə',
+  preamble: '{from} tərəfindən {to} adlı şəxsə çay süfrəsində iştirak müddətini müstəqil müəyyən etmək icazəsi verilir. İcazə qonaqpərvərlik ənənəsini pozmadan tətbiq edilir və ev sahibinə əvvəlcədən bildirilir.',
+  powers: 'İkinci stəkandan sonra imtina qəbul edilir.\nSüfrədən ayrılma vaxtı əvvəlcədən elan edilir.\n«Bir stəkan da» təklifi bir dəfə rədd edilə bilər.\nŞirniyyatdan imtina izahat tələb etmir.',
+  penalty: 'İcazə ev sahibinin xüsusi hazırladığı şirniyyata şamil edilmir; həmin halda ən azı bir dəfə dadmaq öhdəliyi qalır.',
+  titleOptions: [
+    'Çay Süfrəsinin Təşkili və Süfrədən Ayrılma Qaydasına dair İcazə',
+    'Üçüncü Stəkandan İmtina Hüququna dair Xüsusi İcazə',
+    'Çay Süfrəsində İştirak Müddətinin Müəyyən Edilməsinə dair İcazə',
+    'Süfrədən Vaxtında Ayrılmaq Hüququna dair Məhdud İcazə'
+  ],
+  powersOptions: [
+    'İkinci stəkandan sonra imtina qəbul edilir.',
+    'Süfrədən ayrılma vaxtı əvvəlcədən elan edilir.',
+    '«Bir stəkan da» təklifi bir dəfə rədd edilə bilər.',
+    'Şirniyyatdan imtina izahat tələb etmir.',
+    'Armudu stəkanın seçimi sərbəstdir.',
+    'Çayın dəmi barədə rəy bildirmək icazəlidir.',
+    'Söhbətin mövzusu birgə müəyyən edilir.',
+    'Süfrənin yığılmasında köməklik göstərilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'İcazə ev sahibinin xüsusi hazırladığı şirniyyata şamil edilmir; həmin halda ən azı bir dəfə dadmaq öhdəliyi qalır.',
+    'İcazə bayram və hüzn süfrələrində qüvvədən düşür.',
+    'Şərtlərə əməl edilməsi icazənin uzadılmasına əsasdır.'
+  ]
 },
 
 /* ---------------- TƏLƏBƏLƏR / UNİVERSİTET ---------------- */
 {
   id: 'exam-luck-certificate', cat: 'student', tone: 'zarafat', layout: 'sertifikat', palette: 'gold',
-  title: 'İmtahan Uğuru Sertifikatı', tag: 'Sessiya dövrü',
-  signOrg: 'Tələbə Uğuru və Bəxt Məsələləri üzrə Şura',
+  title: 'İmtahan Ərəfəsində Görülmüş Hazırlıq İşlərini Təsdiq edən Sertifikat', tag: 'İmtahan',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
   powersLabel: 'SERTİFİKATIN VERDİYİ ZƏMANƏTLƏR',
-  preamble: 'Bu sertifikatla {from} tərəfindən {to} adlı şəxsə qarşıdakı imtahanda uğur arzulanır və mənəvi dəstək rəsmi qaydada sənədləşdirilir. Sertifikat biletin məzmununa təsir etmir, lakin özünə inamı artırır.',
-  powers: 'İmtahandan əvvəl bir stəkan çay pulsuz.\nHər sualdan sonra 30 saniyə düşünmək hüququ.\nBilet dəyişdirmə cəhdi (bir dəfə).\nNəticə elan olunana qədər soruşulmamaq.',
-  penalty: 'Sertifikat imtahandan sonra «mən hazır idim» ifadəsi ilə birlikdə istifadə edildikdə etibarsız sayılır.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs imtahan ərəfəsində mövcud imkanlar daxilində hazırlıq işləri görmüşdür. Sertifikat {from} tərəfindən, hazırlığın həcmindən asılı olmayaraq nəticənin müsbət olacağı ümidi ilə verilir.',
+  powers: 'Konspekt son gecə tam oxunub.\nSuallar siyahısı əldə edilib.\nƏn çətin mövzu axıra saxlanılıb.\nNəticə müəllimin əhvalından da asılıdır.',
+  penalty: 'Sertifikat imtahanın nəticəsinə heç bir təsir göstərmir və qiymətin mübahisələndirilməsi üçün əsas sayılmır.',
+  titleOptions: [
+    'İmtahan Ərəfəsində Görülmüş Hazırlıq İşlərini Təsdiq edən Sertifikat',
+    'Bir Gecəlik Hazırlığın Nəticələrini Təsdiq edən Sertifikat',
+    'İmtahana Buraxılış Şərtlərinin Yerinə Yetirildiyi Sertifikatı',
+    'Uğur Arzusunun Rəsmi Qaydada Çatdırılmasına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Konspekt son gecə tam oxunub.',
+    'Suallar siyahısı əldə edilib.',
+    'Ən çətin mövzu axıra saxlanılıb.',
+    'Nəticə müəllimin əhvalından da asılıdır.',
+    'Qrup yoldaşları ilə birgə təkrar aparılıb.',
+    'Gecə yatmaq vaxtı qurban verilib.',
+    'Bilet seçimi təsadüf amilinə buraxılıb.',
+    'Yaddaş mexanizmi son anda işə düşür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Sertifikat imtahanın nəticəsinə heç bir təsir göstərmir və qiymətin mübahisələndirilməsi üçün əsas sayılmır.',
+    'Sertifikat yalnız bir imtahana aiddir.',
+    'Nəticə müsbət olduqda sertifikat arxivə verilir.'
+  ]
 },
 {
   id: 'konspekt-loan', cat: 'student', tone: 'zarafat', layout: 'muqavile', palette: 'steel',
-  title: 'Konspekt Borcu Müqaviləsi', tag: 'Sessiyanın xilaskarı',
-  signOrg: 'Konspekt Borcları üzrə Hesablaşma İdarəsi',
-  preamble: 'Bu müqavilə ilə {from} tərəfindən {to} adlı şəxsə şəxsi konspekt müvəqqəti istifadəyə verilir. Konspekt üzərində qeyd aparmaq, səhifə qatlamaq və içərisinə çay tökmək qadağandır.',
-  powers: 'Konspektdən 48 saat istifadə etmək.\nŞəkil çəkib öz telefonunda saxlamaq.\nOxunmayan yerləri sahibindən soruşmaq.\nİmtahan günü səhər qaytarmaq (son həddir).',
-  penalty: 'Konspekt vaxtında qaytarılmadıqda borclu tərəf növbəti semestrin bütün konspektlərini özü yazır.'
+  title: 'Konspektin Müvəqqəti İstifadəyə Verilməsi Şərtləri üzrə Müqavilə', tag: 'Konspekt',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında konspektin müvəqqəti istifadəyə verilməsi barədə razılıq əldə edilmişdir. Müqavilə materialın vəziyyətinə görə məsuliyyəti də əhatə edir.',
+  powers: 'Konspekt iki gün ərzində qaytarılır.\nSəhifələr cırılmır və üzərinə yazılmır.\nSurət yalnız şəxsi istifadə üçün çıxarılır.\nÜçüncü şəxsə ötürülməsi qadağandır.',
+  penalty: 'Konspektin vaxtında qaytarılmaması halında növbəti semestrdə material istifadəyə verilmir və müraciətə baxılmır.',
+  titleOptions: [
+    'Konspektin Müvəqqəti İstifadəyə Verilməsi Şərtləri üzrə Müqavilə',
+    'Dərs Materialının Qaytarılma Müddəti üzrə Qarşılıqlı Saziş',
+    'Konspektin Surətinin Çıxarılması Qaydası üzrə Müqavilə',
+    'Qeydlərin Üçüncü Şəxsə Ötürülməməsi üzrə Protokol'
+  ],
+  powersOptions: [
+    'Konspekt iki gün ərzində qaytarılır.',
+    'Səhifələr cırılmır və üzərinə yazılmır.',
+    'Surət yalnız şəxsi istifadə üçün çıxarılır.',
+    'Üçüncü şəxsə ötürülməsi qadağandır.',
+    'İmtahan ərəfəsində müddət bir günə endirilir.',
+    'Çatışmayan mövzular birlikdə tamamlanır.',
+    'Qaytarılma faktı yazışma ilə təsdiqlənir.',
+    'İtirilmə halında yenidən yazılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Konspektin vaxtında qaytarılmaması halında növbəti semestrdə material istifadəyə verilmir və müraciətə baxılmır.',
+    'Müqavilə hər semestr üçün yenidən bağlanır.',
+    'Materialın zədələnməsi bərpa öhdəliyi yaradır.'
+  ]
 },
 {
   id: 'dorm-charter', cat: 'student', tone: 'zarafat', layout: 'blank', palette: 'forest',
-  title: 'Yataqxana Nizamnaməsi', tag: 'Otaq qaydaları',
-  signOrg: 'Yataqxana Nizamı üzrə Ali Şura',
-  preamble: 'Bu nizamnamə ilə {from} və {to} arasında yataqxana otağında birgə yaşayış qaydaları müəyyən edilir. Sənəd otağın divarına asılır və mübahisə zamanı birinci istinad mənbəyi sayılır.',
-  powers: 'Saat 23:00-dan sonra işıq masa lampası ilə.\nQulaqlıqsız musiqi yalnız gündüz.\nSoyuducudakı hər əşyanın sahibi yazılır.\nQonaq gəlişindən 2 saat əvvəl xəbər verilir.',
-  penalty: 'Nizamnamə üç dəfə pozulduqda pozan tərəf növbəti ay otağın təmizliyini təkbaşına aparır.'
+  title: 'Yataqxana Otağında Birgə Yaşayış Qaydaları haqqında Bəyannamə', tag: 'Yataqxana',
+  signOrg: 'Yataqxana Məsələləri üzrə Qarşılıqlı Komissiya',
+  preamble: 'Bu bəyannamə ilə {to} və {from} otaqda birgə yaşayış qaydalarını qəbul edirlər. Qaydalar təmizlik növbəsini, gecə rejimini və ümumi ehtiyatın istifadəsini əhatə edir, hər iki tərəfə bərabər şamil olunur və semestrin sonunadək qüvvədə qalır.',
+  powers: 'Təmizlik növbəsi həftəlik dəyişdirilir.\nGecə saat 24:00-dan sonra səs həddi azaldılır.\nÜmumi ərzaq soruşulmadan götürülmür.\nQonaq gəlişi əvvəlcədən bildirilir.',
+  penalty: 'Qaydaların pozulması halında növbəti həftənin təmizlik növbəsi tam olaraq pozuntuya yol vermiş tərəfin üzərinə düşür.',
+  titleOptions: [
+    'Yataqxana Otağında Birgə Yaşayış Qaydaları haqqında Bəyannamə',
+    'Otaq Yoldaşları Arasında Növbəliliyin Müəyyən Edilməsi Bəyannaməsi',
+    'Gecə Rejimi və Səs Həddi Qaydaları haqqında Bildiriş',
+    'Ümumi Ərzaq Ehtiyatının İstifadəsi Qaydaları haqqında Bəyannamə'
+  ],
+  powersOptions: [
+    'Təmizlik növbəsi həftəlik dəyişdirilir.',
+    'Gecə saat 24:00-dan sonra səs həddi azaldılır.',
+    'Ümumi ərzaq soruşulmadan götürülmür.',
+    'Qonaq gəlişi əvvəlcədən bildirilir.',
+    'İşıq rejimi birgə razılaşdırılır.',
+    'Qab-qacaq istifadədən sonra dərhal yuyulur.',
+    'Şəxsi əşyalar öz rəfində saxlanılır.',
+    'İmtahan dövründə səssizlik rejimi tətbiq olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Qaydaların pozulması halında növbəti həftənin təmizlik növbəsi tam olaraq pozuntuya yol vermiş tərəfin üzərinə düşür.',
+    'Bəyannamə hər semestrin əvvəlində yenilənir.',
+    'Yeni otaq yoldaşı qaydalara qoşulur.'
+  ]
 },
 {
   id: 'late-arrival-license', cat: 'student', tone: 'zarafat', layout: 'lisenziya', palette: 'burgundy',
-  title: 'Dərsə Gecikmə Lisenziyası', tag: 'Səhər xilası',
-  signOrg: 'Dərsə Gecikmə Məsələləri üzrə Baş İdarə',
+  title: 'Dərsə Gecikmə Hallarının Rəsmiləşdirilməsinə dair Məhdud Lisenziya', tag: 'Gecikmə',
+  signOrg: 'Auditoriya Nizamı və Davamiyyət üzrə Baş İdarə',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ HALLAR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə səhər cütlərinə məhdud gecikmə hüququ verilir. Lisenziya yalnız birinci cütə şamil edilir və imtahan günlərində avtomatik dayandırılır.',
-  powers: 'Həftədə iki dəfə 10 dəqiqəyə qədər gecikmək.\nAuditoriyaya səssiz daxil olmaq.\nQeydiyyatı fasilədə imzalamaq.\nSəbəb izah etməmək hüququ.',
-  penalty: 'Gecikmə 20 dəqiqəni keçdikdə həmin həftənin qalan hissəsində lisenziya qüvvədən düşür.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə dərsə gecikmə hallarının rəsmiləşdirilməsi üçün məhdud lisenziya verilir. Lisenziya semestr ərzində müəyyən sayda istifadə nəzərdə tutur və hər hal qeydə alınır.',
+  powers: 'Semestr ərzində limit beş gecikmə müəyyən edilir.\nAuditoriyaya səssiz daxil olma şərtdir.\nOn beş dəqiqədən artıq gecikmə qeydə alınmır.\nSəhər cütləri üçün limit ayrıca hesablanır.',
+  penalty: 'Limit tükəndikdən sonra hər gecikmə davamiyyət jurnalına yazılır və lisenziya semestrin sonuna qədər bərpa edilmir.',
+  titleOptions: [
+    'Dərsə Gecikmə Hallarının Rəsmiləşdirilməsinə dair Məhdud Lisenziya',
+    'Auditoriyaya Səssiz Daxil Olma Hüququna dair Lisenziya',
+    'Səhər Cütlərinə Gecikmənin Tənzimlənməsinə dair İcazə',
+    'Gecikmə Limitinin Müəyyən Edilməsinə dair Müddətli Lisenziya'
+  ],
+  powersOptions: [
+    'Semestr ərzində limit beş gecikmə müəyyən edilir.',
+    'Auditoriyaya səssiz daxil olma şərtdir.',
+    'On beş dəqiqədən artıq gecikmə qeydə alınmır.',
+    'Səhər cütləri üçün limit ayrıca hesablanır.',
+    'Nəqliyyat problemi ayrıca kateqoriyadır.',
+    'Növbəti cütə vaxtında gəlmək tələb olunur.',
+    'Yoxlama işi günü lisenziya qüvvədən düşür.',
+    'Limit semestrin sonunda sıfırlanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Limit tükəndikdən sonra hər gecikmə davamiyyət jurnalına yazılır və lisenziya semestrin sonuna qədər bərpa edilmir.',
+    'Lisenziya imtahan günlərinə şamil edilmir.',
+    'Vaxtında gəlmək limitin bərpasına əsas vermir.'
+  ]
 },
 {
   id: 'attendance-arayis', cat: 'student', tone: 'zarafat', layout: 'arayis', palette: 'steel',
-  title: 'Dərsdə İştirak Arayışı', tag: 'Rəsmi təsdiq',
-  signOrg: 'Dərsdə İştirakın Qeydiyyatı Şöbəsi',
+  title: 'Semestr Ərzində Dərslərdə İştirak Vəziyyəti haqqında Arayış', tag: 'Davamiyyət',
+  signOrg: 'Auditoriya Nizamı və Davamiyyət üzrə Baş İdarə',
   toLabel: 'Arayış verilir', fromLabel: 'Təsdiq edən qrup yoldaşı',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxs həmin gün auditoriyada fiziki olaraq iştirak etmişdir. {from} tərəfindən verilən bu təsdiq şəxsin diqqətinin harada olduğunu əhatə etmir.',
-  powers: 'Qeydiyyatda adı oxunduqda cavab vermək.\nArxa cərgədə oturmaq hüququ.\nFasilədə auditoriyanı tərk etmək.\nSlaydları sonradan istəmək.',
-  penalty: 'Arayış yalan məlumat əsasında verildiyi aşkarlandıqda təsdiq edən şəxs bir həftə konspekt paylaşmır.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, semestr ərzində dərslərdə iştirak vəziyyəti {from} tərəfindən yoxlanılmış və göstəricilər ümumiləşdirilmişdir. Arayış bütün fənləri əhatə edir.',
+  powers: 'Ümumi davamiyyət hədd səviyyəsindədir.\nBuraxılmış saatların çoxu səhər cütlərinə düşür.\nSəbəb kimi ən çox nəqliyyat göstərilib.\nİmtahana buraxılış şərti hələ pozulmayıb.',
+  penalty: 'Buraxılmış saatların sayı həddi aşdıqda imtahana buraxılış dayandırılır və arayış bu halda əsas kimi qəbul edilmir.',
+  titleOptions: [
+    'Semestr Ərzində Dərslərdə İştirak Vəziyyəti haqqında Arayış',
+    'Davamiyyət Göstəricilərinin Ümumiləşdirilməsi haqqında Arayış',
+    'Buraxılmış Saatların Səbəbləri haqqında Rəsmi Arayış',
+    'İmtahana Buraxılış Şərtinin Vəziyyəti haqqında Arayış'
+  ],
+  powersOptions: [
+    'Ümumi davamiyyət hədd səviyyəsindədir.',
+    'Buraxılmış saatların çoxu səhər cütlərinə düşür.',
+    'Səbəb kimi ən çox nəqliyyat göstərilib.',
+    'İmtahana buraxılış şərti hələ pozulmayıb.',
+    'Praktiki məşğələlərdə iştirak yüksəkdir.',
+    'Cümə günləri göstərici aşağı düşür.',
+    'Buraxılışın bərpası üçün imkan qalır.',
+    'Qeydiyyat jurnalı ilə uyğunluq təsdiqlənib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Buraxılmış saatların sayı həddi aşdıqda imtahana buraxılış dayandırılır və arayış bu halda əsas kimi qəbul edilmir.',
+    'Arayış yalnız cari semestrə aiddir.',
+    'Göstəricilər həftəlik yenilənir.'
+  ]
 },
 {
   id: 'deadline-decision', cat: 'student', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: 'Təhvil Müddəti üzrə Qərar', tag: 'Son mühlət',
-  signOrg: 'Təhvil Müddətləri üzrə Fövqəladə Komissiya',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında işin təhvil müddəti ilə bağlı mübahisəyə baxaraq müəyyən etdi ki, «sabah göndərərəm» ifadəsi hüquqi öhdəlik yaratmır və dəqiq tarix tələb olunur.',
-  powers: 'Yeni son mühlət yazılı şəkildə təsbit olunur.\nUzatma yalnız bir dəfə mümkündür.\nHissə-hissə təhvil qəbul edilir.\nGecə saat 23:59 son hədd sayılır.',
-  penalty: 'Yeni müddət də pozulduqda iş qrup rəhbərinə ötürülür və növbəti layihədə rol dəyişdirilir.'
+  title: 'Kurs İşinin Təhvil Müddətinin Uzadılması haqqında Qərar', tag: 'Təhvil',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, işin tamamlanmasına mane olan hallar qismən əsaslıdır. {from} tərəfindən bildirilən mövqe nəzərə alınmaqla müddətin uzadılması məqsədəuyğun hesab edilmişdir.',
+  powers: 'Müddət yeddi gün uzadılır.\nUzadılma bir dəfə tətbiq edilir.\nAralıq variant üç gün ərzində təqdim olunur.\nYeni müddət dəyişdirilmir.',
+  penalty: 'Uzadılmış müddət də pozulduqda iş növbəti semestrə keçirilir və müddət uzatma müraciətlərinə baxılmır.',
+  titleOptions: [
+    'Kurs İşinin Təhvil Müddətinin Uzadılması haqqında Qərar',
+    'Tapşırığın Təhvil Tarixinin Yenidən Müəyyən Edilməsi haqqında Qərar',
+    'Müddət Uzatma Müraciətinə Baxılması haqqında Yekun Qətnamə',
+    'Son Tarixin Bir Dəfə Uzadılması haqqında Qərar'
+  ],
+  powersOptions: [
+    'Müddət yeddi gün uzadılır.',
+    'Uzadılma bir dəfə tətbiq edilir.',
+    'Aralıq variant üç gün ərzində təqdim olunur.',
+    'Yeni müddət dəyişdirilmir.',
+    'Mövzunun dəyişdirilməsinə icazə verilmir.',
+    'Ədəbiyyat siyahısı əvvəlcədən təsdiqlənir.',
+    'Həcm tələbi azaldılmır.',
+    'Təqdimat tarixi ayrıca müəyyən edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Uzadılmış müddət də pozulduqda iş növbəti semestrə keçirilir və müddət uzatma müraciətlərinə baxılmır.',
+    'Aralıq variant təqdim edilmədikdə uzadılma ləğv edilir.',
+    'Qərardan narazılıq qeydə alınır, lakin müddətə təsir etmir.'
+  ]
 },
 {
   id: 'group-leader-diploma', cat: 'student', tone: 'zarafat', layout: 'diplom', palette: 'burgundy',
-  title: 'Qrup Nümayəndəsi Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Qrup Nümayəndəliyi üzrə Ali Məclis',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, semestr boyu qrup çatını idarə etdiyinə, müəllimlə danışıqlar apardığına və heç kimin oxumadığı elanları oxuduğuna görə bu fəxri diplom təqdim olunur.',
-  powers: 'Qrup çatında elan yerləşdirmək.\nMüəllimlə imtahan tarixini müzakirə etmək.\nCədvəl dəyişikliyini birinci öyrənmək.\nİlin sonunda təşəkkür tələb etmək.',
-  penalty: 'Vacib elan vaxtında paylaşılmadıqda diplom növbəti semestrədək divardan asılmır.'
+  title: 'Qrup Nümayəndəsi Vəzifəsinin İcrasına Görə Verilmiş Fəxri Diplom', tag: 'Nümayəndə',
+  signOrg: 'Auditoriya Nizamı və Davamiyyət üzrə Baş İdarə',
+  preamble: 'Baş İdarə {to} adlı şəxsin qrup nümayəndəsi kimi yerinə yetirdiyi işi qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən qrupun yekdil rəyi əsasında təqdim olunur.',
+  powers: 'Cədvəl dəyişikliyi dərhal çatdırılıb.\nMüəllimlə danışıqlar səbirlə aparılıb.\nQrupun xahişləri vaxtında ötürülüb.\nHeç kim məlumatsız qalmayıb.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs növbəti semestrdə vəzifədən imtina etmək hüququnu saxlayır.',
+  titleOptions: [
+    'Qrup Nümayəndəsi Vəzifəsinin İcrasına Görə Verilmiş Fəxri Diplom',
+    'Qrupla Müəllim Arasında Əlaqənin Təmin Edilməsinə Görə Diplom',
+    'Cədvəl Dəyişikliklərinin Vaxtında Çatdırılmasına Görə Diplom',
+    'Qrupun Maraqlarının Müdafiəsinə Görə Verilmiş Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Cədvəl dəyişikliyi dərhal çatdırılıb.',
+    'Müəllimlə danışıqlar səbirlə aparılıb.',
+    'Qrupun xahişləri vaxtında ötürülüb.',
+    'Heç kim məlumatsız qalmayıb.',
+    'Sənədlərin toplanması nizamla aparılıb.',
+    'Auditoriya dəyişikliyi əvvəlcədən bildirilib.',
+    'İmtahan tarixləri dəqiqləşdirilib.',
+    'Qrup söhbətində nizam saxlanılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs növbəti semestrdə vəzifədən imtina etmək hüququnu saxlayır.',
+    'Təltif hər semestrin sonunda yenidən verilir.',
+    'Diplom qrup arxivində saxlanılır.'
+  ]
 },
 {
   id: 'coffee-night-act', cat: 'student', tone: 'zarafat', layout: 'notarial', palette: 'ink',
-  title: 'Gecə Oxuma Aktı', tag: 'Sessiya gecəsi',
-  signOrg: 'Gecə Oxuma Rejimi üzrə Xüsusi Komitə',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsin imtahandan əvvəlki gecə boyu oxuduğu rəsmi qaydada təsdiq edilir. Aktda oxunan materialın nə qədərinin yadda qaldığı göstərilmir.',
-  powers: 'Gecə saat 03:00-a qədər işıq yandırmaq.\nHər 90 dəqiqədən bir kofe hazırlamaq.\nSəhər ikinci cütdə yatmaq (şərti).\n«Mən oxumamışam» deməmək öhdəliyi.',
-  penalty: 'Akt imtahandan sonra «heç nə oxumamışdım» ifadəsi ilə birlikdə istifadə olunduqda etibarsız sayılır.'
+  title: 'İmtahan Ərəfəsində Gecə Hazırlığının Aparılması haqqında Akt', tag: 'Gecə',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən müəyyən edilmişdir ki, {to} adlı şəxs imtahan ərəfəsində gecə hazırlığı rejiminə keçmişdir. Akt {from} tərəfindən, prosesin bilavasitə müşahidəsi əsasında tərtib edilmişdir.',
+  powers: 'Hazırlıq gecə saat 23:00-da başlayıb.\nİlk iki saat mövzu axtarışına sərf olunub.\nQəhvə ehtiyatı səhərə qədər çatmayıb.\nSon mövzu açılmamış qalıb.',
+  penalty: 'Akt hazırlığın keyfiyyətini deyil, yalnız faktını təsbit edir və imtahan nəticəsinə heç bir təsir göstərmir.',
+  titleOptions: [
+    'İmtahan Ərəfəsində Gecə Hazırlığının Aparılması haqqında Akt',
+    'Bir Gecədə Semestrin Mənimsənilməsi Cəhdi haqqında Akt',
+    'Gecə Saatlarında Oxu Rejiminin Tətbiqi haqqında Etibarnamə',
+    'Səhərə Qədər Davam Edən Hazırlıq haqqında Rəsmi Akt'
+  ],
+  powersOptions: [
+    'Hazırlıq gecə saat 23:00-da başlayıb.',
+    'İlk iki saat mövzu axtarışına sərf olunub.',
+    'Qəhvə ehtiyatı səhərə qədər çatmayıb.',
+    'Son mövzu açılmamış qalıb.',
+    'Konspekt son anda əldə edilib.',
+    'Qrup söhbətində sual mübadiləsi aparılıb.',
+    'Yuxu rejimi tam pozulub.',
+    'Səhər imtahana vaxtında gedilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Akt hazırlığın keyfiyyətini deyil, yalnız faktını təsbit edir və imtahan nəticəsinə heç bir təsir göstərmir.',
+    'Akt yalnız bir imtahan dövrünə aiddir.',
+    'Rejimin təkrarı ayrıca qeydə alınır.'
+  ]
 },
 {
   id: 'exam-telegram', cat: 'student', tone: 'zarafat', layout: 'teleqram', palette: 'gold',
-  title: 'İmtahan Nəticəsi Teleqramı', tag: 'Təcili xəbər',
-  signOrg: 'İmtahan Nəticələri üzrə Bildiriş İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə imtahan nəticəsi barədə təcili bildiriş göndərilir. Məlumat rəsmi qaydada çatdırılır və valideynlərə ötürülməsi ayrıca razılaşdırılır.',
-  powers: 'Nəticə ilk növbədə şəxsə çatdırılır.\nİzahat üçün 12 saat müddət verilir.\nApellyasiya cəhdi bir dəfə mümkündür.\nQrup çatında paylaşılması şəxsin öhdəsindədir.',
-  penalty: 'Nəticə gizlədildikdə məlumat növbəti ailə söhbətində təsadüfən açıqlanır.'
+  title: 'İmtahan Nəticəsinin Elan Edilməsi haqqında Təcili Teleqram', tag: 'Nəticə',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin imtahan nəticəsi elan edilmiş və jurnala salınmışdır. {from} tərəfindən nəticənin sakit şəraitdə qarşılanması, qəti tədbirlərdən çəkinilməsi və apellyasiya müddətinin nəzərə alınması xahiş olunur.',
+  powers: 'Nəticə jurnala salınıb.\nApellyasiya müddəti üç gündür.\nDigər fənlər üzrə vəziyyət sabitdir.\nÜmumi orta göstərici saxlanılıb.',
+  penalty: 'Nəticə apellyasiya müddəti ərzində mübahisələndirilmədikdə qəti hesab edilir və sonrakı müraciətlərə baxılmır.',
+  titleOptions: [
+    'İmtahan Nəticəsinin Elan Edilməsi haqqında Təcili Teleqram',
+    'Qiymətin Jurnala Salınması haqqında Təcili Bildiriş',
+    'Gözlənilən və Faktiki Nəticə Arasındakı Fərq haqqında Teleqram',
+    'İmtahan Nəticəsi barədə Ailəyə Ünvanlanmış Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Nəticə jurnala salınıb.',
+    'Apellyasiya müddəti üç gündür.',
+    'Digər fənlər üzrə vəziyyət sabitdir.',
+    'Ümumi orta göstərici saxlanılıb.',
+    'Təkrar imtahan imkanı mövcuddur.',
+    'Müəllimlə görüş təyin edilib.',
+    'Növbəti fənn üzrə hazırlıq başlayıb.',
+    'Səbəblərin təhlili aparılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Nəticə apellyasiya müddəti ərzində mübahisələndirilmədikdə qəti hesab edilir və sonrakı müraciətlərə baxılmır.',
+    'Teleqram yalnız məlumat xarakteri daşıyır.',
+    'Nəticə düzəldildikdə teleqram arxivə verilir.'
+  ]
 },
 {
   id: 'student-id', cat: 'student', tone: 'zarafat', layout: 'vesiqe', palette: 'forest',
-  title: 'Tələbə Şərəf Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Tələbə Şərəfinin Qeydiyyatı Şöbəsi',
+  title: 'Tələbənin Statusunu və Akademik Vəziyyətini Təsdiq edən Vəsiqə', tag: 'Şərəf',
+  signOrg: 'Auditoriya Nizamı və Davamiyyət üzrə Baş İdarə',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin qrupun tamhüquqlu üzvü olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və auditoriyada, kitabxanada və bufetdə etibarlıdır.',
-  powers: 'Arxa cərgədə daimi yer tutmaq.\nKonspekt mübadiləsində iştirak etmək.\nQrup qərarlarında bir səsə malik olmaq.\nBufetdə növbəni bir dəfə keçmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə konspekt istəmək hüququ dayandırılır.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin tələbə statusunu və cari akademik vəziyyətini təsdiq edir. Sənəd {from} tərəfindən verilmişdir, semestrin sonuna qədər qüvvədə hesab edilir və güzəştlərdən istifadə hüququ verir.',
+  powers: 'Kitabxanadan istifadə hüququ tanınır.\nNəqliyyat güzəştindən istifadə edilir.\nAuditoriyaya sərbəst giriş təmin olunur.\nQrup tədbirlərində iştirak hüququ verilir.',
+  penalty: 'Vəsiqə ilə tanınan güzəştlər davamiyyət və akademik borc göstəricilərindən asılıdır; şərtlər pozulduqda statusa yenidən baxılır.',
+  titleOptions: [
+    'Tələbənin Statusunu və Akademik Vəziyyətini Təsdiq edən Vəsiqə',
+    'Tələbə Statusunun və Güzəştlərin Təsdiqinə dair Vəsiqə',
+    'Akademik Göstəricilərin Cari Vəziyyətinə dair Şəhadətnamə',
+    'Kitabxana və Auditoriya Hüquqlarını Təsdiq edən Vəsiqə'
+  ],
+  powersOptions: [
+    'Kitabxanadan istifadə hüququ tanınır.',
+    'Nəqliyyat güzəştindən istifadə edilir.',
+    'Auditoriyaya sərbəst giriş təmin olunur.',
+    'Qrup tədbirlərində iştirak hüququ verilir.',
+    'Elmi dərnəklərə üzvlük açıqdır.',
+    'İdman zalından istifadə icazəlidir.',
+    'Yataqxana növbəsində iştirak hüququ var.',
+    'Təqaüd müraciəti verilə bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə tanınan güzəştlər davamiyyət və akademik borc göstəricilərindən asılıdır; şərtlər pozulduqda statusa yenidən baxılır.',
+    'Vəsiqə hər semestr yenidən təsdiq edilir.',
+    'Akademik borc güzəştləri dayandırır.'
+  ]
 },
 {
   id: 'presentation-authority', cat: 'student', tone: 'zarafat', layout: 'viza', palette: 'forest',
-  title: 'Təqdimat Danışma Səlahiyyəti', tag: 'Komanda işi',
-  signOrg: 'Təqdimat və Çıxış Səlahiyyətləri üzrə Komissiya',
+  title: 'Qrup Layihəsinin Təqdim Edilməsi Səlahiyyətinin Verilməsinə dair İcazə', tag: 'Təqdimat',
+  signOrg: 'Auditoriya Nizamı və Davamiyyət üzrə Baş İdarə',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə qrup təqdimatında danışmaq səlahiyyəti verilir. Səlahiyyət {from} və digər komanda üzvləri tərəfindən, slaydları hazırlamaq müqabilində həvalə edilmişdir.',
-  powers: 'Giriş və nəticə hissəsini danışmaq.\nSuallara cavab verməyi bölüşdürmək.\nSlayd keçidini idarə etmək.\nVaxt bitdikdə təqdimatı dayandırmaq.',
-  penalty: 'Danışan şəxs slaydları oxumaqla kifayətləndikdə səlahiyyət növbəti təqdimatda başqasına keçir.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə qrup layihəsini auditoriyada təqdim etmək səlahiyyəti verilir. İcazə layihənin hazırlanmasında iştirak edən bütün üzvlərin razılığı ilə rəsmiləşdirilmişdir.',
+  powers: 'Təqdimat müddəti on dəqiqə müəyyən edilir.\nSuallara komanda adından cavab verilir.\nSlaydlar əvvəlcədən razılaşdırılır.\nHər üzvün adı təqdimatda qeyd olunur.',
+  penalty: 'Təqdimatda iştirak etməyən üzvlərin adı çıxışda qeyd edilmir və qiymətləndirmə fərdi qaydada aparılır.',
+  titleOptions: [
+    'Qrup Layihəsinin Təqdim Edilməsi Səlahiyyətinin Verilməsinə dair İcazə',
+    'Layihənin Auditoriyada Danışılması Səlahiyyətinə dair İcazə',
+    'Sualların Cavablandırılması Öhdəliyinə dair Xüsusi İcazə',
+    'Komanda Adından Çıxış Etmək Hüququna dair İcazə'
+  ],
+  powersOptions: [
+    'Təqdimat müddəti on dəqiqə müəyyən edilir.',
+    'Suallara komanda adından cavab verilir.',
+    'Slaydlar əvvəlcədən razılaşdırılır.',
+    'Hər üzvün adı təqdimatda qeyd olunur.',
+    'Çətin sual müvafiq üzvə yönləndirilir.',
+    'Texniki hazırlıq bir gün əvvəl yoxlanılır.',
+    'Ehtiyat nüsxə saxlanılır.',
+    'Qiymət komandaya bərabər yazılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təqdimatda iştirak etməyən üzvlərin adı çıxışda qeyd edilmir və qiymətləndirmə fərdi qaydada aparılır.',
+    'İcazə yalnız bir layihəyə şamil edilir.',
+    'Səlahiyyət komandanın qərarı ilə dəyişdirilə bilər.'
+  ]
 },
 {
   id: 'retake-amnesty', cat: 'student', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
-  title: 'Təkrar İmtahan Amnistiyası', tag: 'İkinci şans',
-  signOrg: 'Təkrar İmtahan Amnistiyası üzrə Ali Komissiya',
+  title: 'Təkrar İmtahan Hüququnun Verilməsi Şərtlərinin Qiymətləndirilməsi Rəyi', tag: 'Təkrar',
+  signOrg: 'Tələbə Öhdəlikləri və İmtahan Rejimi üzrə Şura',
   toLabel: 'Amnistiya olunan', fromLabel: 'Amnistiya verən',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə keçmiş semestrdə buraxılmış bütün dərslərə görə tam və qeyd-şərtsiz amnistiya elan olunur. Amnistiya yalnız keçmişə şamil edilir.',
-  powers: 'Keçmiş qaib sayı müzakirə olunmur.\nTəkrar imtahana hazırlıq üçün 10 gün.\nBir fənn üzrə əlavə məsləhət saatı.\nKeçmiş qiymətlər xatırladılmır.',
-  penalty: 'Yeni semestrdə eyni vəziyyət təkrarlandıqda amnistiya ləğv olunur və köhnə hesabat bərpa edilir.'
+  preamble: 'Aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxsin akademik borcu təkrar imtahan yolu ilə bağlanması mümkündür. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib edilmişdir.',
+  powers: 'Borcun bağlanması üçün vaxt kifayətdir.\nTəkrar imtahan bir dəfə verilir.\nHazırlıq planı iki həftəyə hesablanıb.\nDigər fənlərə təsir minimaldır.',
+  penalty: 'Təkrar imtahan da uğursuz olduqda fənn növbəti semestrə keçirilir və əlavə müraciətlərə baxılmır.',
+  titleOptions: [
+    'Təkrar İmtahan Hüququnun Verilməsi Şərtlərinin Qiymətləndirilməsi Rəyi',
+    'Akademik Borcun Bağlanması İmkanlarına dair Ekspert Rəyi',
+    'Təkrar İmtahana Buraxılış Şərtlərinin Təhlili haqqında Rəy',
+    'Semestrin Xilas Edilməsi İmkanlarına dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Borcun bağlanması üçün vaxt kifayətdir.',
+    'Təkrar imtahan bir dəfə verilir.',
+    'Hazırlıq planı iki həftəyə hesablanıb.',
+    'Digər fənlərə təsir minimaldır.',
+    'Konsultasiya saatlarından istifadə tövsiyə olunur.',
+    'Ən zəif mövzular əvvəlcədən müəyyən edilib.',
+    'Qrup yoldaşlarının köməyi nəzərdə tutulur.',
+    'Nəticə ümumi göstəriciyə daxil edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təkrar imtahan da uğursuz olduqda fənn növbəti semestrə keçirilir və əlavə müraciətlərə baxılmır.',
+    'Rəy yalnız bir fənnə aiddir.',
+    'Hazırlıq planına əməl edilməməsi rəyi qüvvədən salır.'
+  ]
 },
 
 /* ---------------- QONŞULAR / HƏYƏT ---------------- */
 {
   id: 'noise-curfew', cat: 'neighbors', tone: 'zarafat', layout: 'blank', palette: 'steel',
-  title: 'Səs-Küy Rejimi Fərmanı', tag: 'Gecə sülhü',
-  signOrg: 'Səs-Küy Rejiminə Nəzarət Baş İdarəsi',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxs üçün mənzildə səs-küy rejimi müəyyən edilir. Fərman divarın hər iki tərəfi üçün eyni dərəcədə məcburidir və qonşuluq münasibətlərinin əsasını təşkil edir.',
-  powers: 'Saat 23:00-dan 08:00-a qədər sükut rejimi.\nMusiqi səviyyəsi qonşu divardan eşidilməyəcək həddə.\nMebel yerdəyişməsi yalnız gündüz.\nBayram günləri istisna hesab olunur.',
-  penalty: 'Rejim üç dəfə pozulduqda pozan tərəf növbəti ay pilləkən təmizliyi növbəsini ikiqat çəkir.'
+  title: 'Binada Gecə Səs Rejiminin Müəyyən Edilməsi haqqında Bildiriş', tag: 'Səs-küy',
+  signOrg: 'Səs-Küy və Gecə Rejimi üzrə Nəzarət İdarəsi',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, binada gecə səs rejimi müəyyən edilmişdir. {from} tərəfindən verilmiş məlumat və {to} adlı şəxsin izahatı qərarın qəbulunda nəzərə alınmışdır.',
+  powers: 'Gecə saat 23:00-dan sonra səs həddi azaldılır.\nTəmir işləri yalnız gündüz saatlarında aparılır.\nBayram günləri istisna hal kimi qəbul edilir.\nŞikayət əvvəlcə şifahi bildirilir.',
+  penalty: 'Rejimin ardıcıl pozulması halında məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+  titleOptions: [
+    'Binada Gecə Səs Rejiminin Müəyyən Edilməsi haqqında Bildiriş',
+    'Ümumi İstifadə Saatlarında Səs Həddi haqqında Rəsmi Bildiriş',
+    'Təmir İşlərinin Aparılma Vaxtı haqqında Bildiriş',
+    'Gecə Dincliyinin Təmin Edilməsi Tədbirləri haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Gecə saat 23:00-dan sonra səs həddi azaldılır.',
+    'Təmir işləri yalnız gündüz saatlarında aparılır.',
+    'Bayram günləri istisna hal kimi qəbul edilir.',
+    'Şikayət əvvəlcə şifahi bildirilir.',
+    'Musiqi səsi qonşu mənzildə eşidilməməlidir.',
+    'Ağır əşyalar sürüşdürülmür, qaldırılır.',
+    'Uşaq səsləri pozuntu sayılmır.',
+    'Tədbir barədə bir gün əvvəl xəbər verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejimin ardıcıl pozulması halında məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+    'Bildiriş binanın bütün mənzillərinə şamil edilir.',
+    'Bayram gecələri rejim müvəqqəti yumşaldılır.'
+  ]
 },
 {
   id: 'parking-authority', cat: 'neighbors', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Park Yeri Səlahiyyətnaməsi', tag: 'Həyət mübahisəsi',
-  signOrg: 'Həyət Park Yerləri üzrə Xüsusi Komissiya',
+  title: 'Həyətdə Park Yerindən İstifadə Səlahiyyətinin Verilməsinə dair Akt', tag: 'Park',
+  signOrg: 'Ümumi İstifadə Sahələri üzrə Qarşılıqlı Komissiya',
   powersLabel: 'PARK YERİ ÜZRƏ SƏLAHİYYƏTLƏR',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə həyətdəki müəyyən park yerindən istifadə hüququ verilir. Səlahiyyət yalnız bir avtomobilə şamil edilir və qonaq maşınlarını əhatə etmir.',
-  powers: 'Razılaşdırılmış yerdən daimi istifadə.\nYer tutulduqda zəng edib xəbər vermək hüququ.\nQonaq maşını üçün 3 saatlıq müvəqqəti icazə.\nQar təmizlənməsində növbədən azad olmaq.',
-  penalty: 'Başqasının yeri iki dəfə tutulduqda səlahiyyət bir ay müddətinə dayandırılır.'
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə həyətdə park yerindən istifadə səlahiyyəti verilir. Səlahiyyət digər sakinlərin hüquqlarını məhdudlaşdırmır və girişin bağlanmaması şərti ilə qüvvədədir.',
+  powers: 'Park yeri girişi bağlamayacaq şəkildə seçilir.\nİki yer birdən tutulmur.\nQonaq avtomobili üçün yer ayrılır.\nUzunmüddətli dayanma barədə xəbər verilir.',
+  penalty: 'Girişin bağlanması halında avtomobil sahibinə dərhal müraciət edilir; təkrar hallarda məsələ ümumi yığıncağa çıxarılır.',
+  titleOptions: [
+    'Həyətdə Park Yerindən İstifadə Səlahiyyətinin Verilməsinə dair Akt',
+    'Daimi Park Yerinin Təsbit Edilməsinə dair Rəsmi Akt',
+    'Avtomobilin Yerləşdirilməsi Qaydasına dair Etibarnamə',
+    'Qonaq Avtomobilləri üçün Yer Ayrılmasına dair Akt'
+  ],
+  powersOptions: [
+    'Park yeri girişi bağlamayacaq şəkildə seçilir.',
+    'İki yer birdən tutulmur.',
+    'Qonaq avtomobili üçün yer ayrılır.',
+    'Uzunmüddətli dayanma barədə xəbər verilir.',
+    'Uşaq meydançasının qarşısı boş saxlanılır.',
+    'Zibil maşınının yolu bağlanmır.',
+    'Nömrə və əlaqə vasitəsi görünən yerdə qoyulur.',
+    'Qar təmizləmə günü avtomobil yerdəyişdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Girişin bağlanması halında avtomobil sahibinə dərhal müraciət edilir; təkrar hallarda məsələ ümumi yığıncağa çıxarılır.',
+    'Akt yalnız bina sakinlərinə şamil edilir.',
+    'Yerlərin bölgüsü hər il yenidən aparılır.'
+  ]
 },
 {
   id: 'stairwell-duty', cat: 'neighbors', tone: 'zarafat', layout: 'arayis', palette: 'forest',
-  title: 'Pilləkən Növbəsi Cədvəli', tag: 'Ümumi sahə',
-  signOrg: 'Pilləkən Növbəsi üzrə Məhəllə Komitəsi',
+  title: 'Pilləkən Sahəsinin Təmizlik Növbəsinin Müəyyən Edilməsi haqqında Arayış', tag: 'Növbə',
+  signOrg: 'Ümumi İstifadə Sahələri üzrə Qarşılıqlı Komissiya',
   toLabel: 'Növbəni icra edən', fromLabel: 'Cədvəli təsdiq edən',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxs pilləkən təmizliyi növbəsini vaxtında və keyfiyyətlə icra etmişdir. Təsdiq {from} tərəfindən, mərtəbədəki bütün qonşuların adından verilmişdir.',
-  powers: 'Növbəni həftənin istənilən günü icra etmək.\nTəmizlik vasitələrini ümumi büdcədən almaq.\nNövbəni bir dəfə dəyişdirmək hüququ.\nİcra tarixini elan lövhəsinə yazmaq.',
-  penalty: 'Növbə iki həftə ardıcıl buraxıldıqda növbəti dövr üçün iki mərtəbə həvalə olunur.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, pilləkən sahəsinin təmizlik növbəsi {from} ilə birgə müəyyən edilmiş, cədvəl bütün sakinlərə çatdırılmış və girişdəki elan lövhəsində yerləşdirilmişdir.',
+  powers: 'Növbə həftəlik olaraq dəyişdirilir.\nCədvəl girişdə elan lövhəsində saxlanılır.\nNövbə dəyişikliyi əvvəlcədən razılaşdırılır.\nÜmumi vəsait ay ərzində toplanır.',
+  penalty: 'Növbənin ardıcıl iki dəfə buraxılması halında həmin mənzilin növbəsi ikiqat müddətə təyin edilir.',
+  titleOptions: [
+    'Pilləkən Sahəsinin Təmizlik Növbəsinin Müəyyən Edilməsi haqqında Arayış',
+    'Ümumi Sahələrin Təmizlənməsi Cədvəli haqqında Rəsmi Arayış',
+    'Növbənin Mərtəbələr üzrə Bölüşdürülməsi haqqında Arayış',
+    'Təmizlik Öhdəliyinin İcra Vəziyyəti haqqında Arayış'
+  ],
+  powersOptions: [
+    'Növbə həftəlik olaraq dəyişdirilir.',
+    'Cədvəl girişdə elan lövhəsində saxlanılır.',
+    'Növbə dəyişikliyi əvvəlcədən razılaşdırılır.',
+    'Ümumi vəsait ay ərzində toplanır.',
+    'Yaşlı sakinlər üçün güzəşt tətbiq olunur.',
+    'Bayram ərəfəsində əlavə təmizlik aparılır.',
+    'Lift kabinəsi ayrıca cədvəldədir.',
+    'Zibil qutusu hər gün yoxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbənin ardıcıl iki dəfə buraxılması halında həmin mənzilin növbəsi ikiqat müddətə təyin edilir.',
+    'Arayış hər mərtəbə üçün ayrıca tərtib edilir.',
+    'Cədvəl hər ay yenidən bölüşdürülür.'
+  ]
 },
 {
   id: 'drill-license', cat: 'neighbors', tone: 'zarafat', layout: 'lisenziya', palette: 'burgundy',
-  title: 'Perforator İşlətmə Lisenziyası', tag: 'Təmir mövsümü',
-  signOrg: 'Təmir İşlərinə Nəzarət İdarəsi',
+  title: 'Təmir Alətlərindən İstifadə Vaxtının Müəyyən Edilməsinə dair Lisenziya', tag: 'Təmir',
+  signOrg: 'Səs-Küy və Gecə Rejimi üzrə Nəzarət İdarəsi',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ SAATLAR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə mənzildə təmir işləri aparmaq və perforatordan istifadə etmək üçün məhdud lisenziya verilir. Lisenziya yalnız iş günlərində və müəyyən saat aralığında qüvvədədir.',
-  powers: 'İş günü 10:00–13:00 və 15:00–18:00 arası.\nFasiləsiz iş müddəti 45 dəqiqədən çox olmamaq.\nBazar günü tam istirahət rejimi.\nİşdən əvvəl qonşulara xəbər vermək.',
-  penalty: 'Lisenziya şərtləri pozulduqda növbəti həftə bütün səsli işlər dayandırılır və müddət uzadılmır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə təmir alətlərindən istifadə üçün lisenziya verilir. Lisenziya yalnız müəyyən edilmiş saatlarda qüvvədədir və qonşulara əvvəlcədən xəbər verilməsini şərt kimi nəzərdə tutur.',
+  powers: 'İşlər saat 10:00 ilə 18:00 arasında aparılır.\nQonşulara bir gün əvvəl xəbər verilir.\nFasiləsiz iş müddəti iki saatı keçmir.\nHəftəsonu səsli işlər dayandırılır.',
+  penalty: 'Lisenziyanın şərtləri pozulduqda icazə növbəti həftə üçün dayandırılır və işlərin davamına yalnız ümumi razılıqla icazə verilir.',
+  titleOptions: [
+    'Təmir Alətlərindən İstifadə Vaxtının Müəyyən Edilməsinə dair Lisenziya',
+    'Perforator İşlərinin Aparılma Rejiminə dair Xüsusi İcazə',
+    'Divar İşlərinin Vaxt Hüdudlarına dair Müddətli Lisenziya',
+    'Səsli Təmir İşlərinə dair Məhdud İcazə'
+  ],
+  powersOptions: [
+    'İşlər saat 10:00 ilə 18:00 arasında aparılır.',
+    'Qonşulara bir gün əvvəl xəbər verilir.',
+    'Fasiləsiz iş müddəti iki saatı keçmir.',
+    'Həftəsonu səsli işlər dayandırılır.',
+    'Nahar saatında iş dayandırılır.',
+    'Ümumi sahələrdə tullantı saxlanılmır.',
+    'İşin ümumi müddəti əvvəlcədən bildirilir.',
+    'Bayram günlərində iş aparılmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Lisenziyanın şərtləri pozulduqda icazə növbəti həftə üçün dayandırılır və işlərin davamına yalnız ümumi razılıqla icazə verilir.',
+    'Lisenziya təmir müddəti ilə məhdudlaşır.',
+    'Təcili nasazlıqlar lisenziyadan kənardır.'
+  ]
 },
 {
   id: 'yard-court-decision', cat: 'neighbors', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: 'Həyət Məhkəməsinin Qərarı', tag: 'Skamya hökmü',
-  signOrg: 'Həyət Mübahisələrinin Həlli üzrə Ali Məclis',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında həyət ərazisindən istifadə üzrə mübahisəyə baxaraq müəyyən etdi ki, hər iki tərəfin iddiası qismən əsaslıdır və ümumi sahə bölünmür.',
-  powers: 'Skamya növbə ilə istifadə olunur.\nUşaq meydançası bütün sakinlərə açıqdır.\nAğac altındakı kölgə bölünmür.\nMübahisə birbaşa danışıq yolu ilə həll olunur.',
-  penalty: 'Qərar icra olunmadıqda iş həyət ağsaqqalına göndərilir və onun qərarı qəti sayılır.'
+  title: 'Həyətdə Yaranmış Mübahisə üzrə Sakinlərin Qəbul Etdiyi Qərar', tag: 'Həyət',
+  signOrg: 'Həyət və Qonşuluq Mübahisələri üzrə Ali Şura',
+  preamble: 'Şura {to} və {from} arasında yaranmış mübahisəyə hər iki tərəfin izahatını dinləməklə baxmış və müəyyən etmişdir ki, məsələ qarşılıqlı güzəşt yolu ilə həll edilə bilər. Yekun qərar qəbul edilmişdir.',
+  powers: 'Mübahisə predmeti üzrə güzəşt qarşılıqlıdır.\nHər iki tərəf qismən haqlı hesab edilir.\nÜmumi sahə növbə ilə istifadə olunur.\nBarışıq bir həftə ərzində rəsmiləşdirilir.',
+  penalty: 'Eyni mübahisənin təkrarlanması halında məsələ sakinlərin ümumi yığıncağına çıxarılır və qərar səsvermə yolu ilə qəbul edilir.',
+  titleOptions: [
+    'Həyətdə Yaranmış Mübahisə üzrə Sakinlərin Qəbul Etdiyi Qərar',
+    'Qonşuluq Münasibətlərində Gərginliyin Həlli haqqında Qərar',
+    'Ümumi Sahələrdən İstifadə Mübahisəsi üzrə Yekun Qətnamə',
+    'Sakinlərin Yığıncağının Qəbul Etdiyi Yekun Qərar'
+  ],
+  powersOptions: [
+    'Mübahisə predmeti üzrə güzəşt qarşılıqlıdır.',
+    'Hər iki tərəf qismən haqlı hesab edilir.',
+    'Ümumi sahə növbə ilə istifadə olunur.',
+    'Barışıq bir həftə ərzində rəsmiləşdirilir.',
+    'Şahid ifadələri protokola əlavə edilir.',
+    'Üçüncü sakinlər müzakirəyə cəlb edilmir.',
+    'Zərər dəyibsə birgə bərpa olunur.',
+    'Nəticə elan lövhəsində yerləşdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni mübahisənin təkrarlanması halında məsələ sakinlərin ümumi yığıncağına çıxarılır və qərar səsvermə yolu ilə qəbul edilir.',
+    'Qərardan narazılıq qeydə alınır, lakin icraya təsir etmir.',
+    'Barışıq şərtləri pozulduqda məsələyə yenidən baxılır.'
+  ]
 },
 {
   id: 'best-neighbor-diploma', cat: 'neighbors', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'İlin Ən Yaxşı Qonşusu Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Məhəllə Münasibətlərinin Tənzimlənməsi Şurası',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, il ərzində heç bir gecə səs-küy salmadığına, açarı unudulanda qapını açdığına və lifti həmişə mərtəbədə qoyduğuna görə bu fəxri diplom təqdim olunur.',
-  powers: 'Bayramlarda ilk təbrik olunan olmaq.\nDuz və çörək borcunda birinci növbə.\nHəyət qərarlarında iki səs hüququ.\nAvtomobili qısa müddət ikinci sırada saxlamaq.',
-  penalty: 'Şərtlər pozulduqda ad növbəti ilədək dayandırılır və diplom elan lövhəsindən götürülür.'
+  title: 'Qonşuluq Münasibətlərində Nümunəvi Davranışa Görə Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Həyət və Qonşuluq Mübahisələri üzrə Ali Şura',
+  preamble: 'Şura {to} adlı şəxsin qonşuluq münasibətlərində uzun müddət ərzində göstərdiyi davranışı qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən sakinlərin yekdil rəyi ilə təqdim olunur.',
+  powers: 'Səs həddi heç vaxt pozulmayıb.\nÜmumi sahələr təmiz saxlanılıb.\nKömək xahiş edilmədən göstərilib.\nMübahisələr sakit həll edilib.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs bina yığıncağında birinci söz hüququnu qazanır.',
+  titleOptions: [
+    'Qonşuluq Münasibətlərində Nümunəvi Davranışa Görə Fəxri Diplom',
+    'Ümumi Sahələrin Qorunmasına Verilən Töhfəyə Görə Diplom',
+    'Çətin Anlarda Göstərilən Köməyə Görə Verilmiş Fəxri Diplom',
+    'Bina Nizamının Qorunmasına Görə Verilmiş Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Səs həddi heç vaxt pozulmayıb.',
+    'Ümumi sahələr təmiz saxlanılıb.',
+    'Kömək xahiş edilmədən göstərilib.',
+    'Mübahisələr sakit həll edilib.',
+    'Açar etibar edilə bilən şəxs kimi tanınıb.',
+    'Bayramlarda qonşular unudulmayıb.',
+    'Yaşlı sakinlərə diqqət göstərilib.',
+    'Ümumi vəsait vaxtında ödənilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs bina yığıncağında birinci söz hüququnu qazanır.',
+    'Təltif hər il yenidən qiymətləndirilir.',
+    'Diplom binanın elan lövhəsində yerləşdirilir.'
+  ]
 },
 {
   id: 'balcony-treaty', cat: 'neighbors', tone: 'zarafat', layout: 'muqavile', palette: 'steel',
-  title: 'Balkon Sərhəd Müqaviləsi', tag: 'Sərhəd bölgüsü',
-  signOrg: 'Balkon və Sərhəd Məsələləri üzrə Komissiya',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında qonşu balkonların sərhədləri və istifadə qaydaları müəyyən edilir. Tərəflər paltar sərməkdən tutmuş güldan yerləşdirməyə qədər bütün məsələləri razılaşdırırlar.',
-  powers: 'Paltar yalnız öz bölməsində sərilir.\nSuvarma suyu aşağı mərtəbəyə axıdılmır.\nGüldanlar məhəccərin daxili tərəfində saxlanılır.\nSiqaret çəkmə saatları razılaşdırılır.',
-  penalty: 'Sərhəd üç dəfə pozulduqda pozan tərəf növbəti mövsüm balkon təmizliyini hər iki tərəf üçün aparır.'
+  title: 'Balkon Sahələrinin İstifadə Sərhədlərinin Müəyyən Edilməsi üzrə Müqavilə', tag: 'Balkon',
+  signOrg: 'Ümumi İstifadə Sahələri üzrə Qarşılıqlı Komissiya',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında balkon sahələrinin istifadə sərhədləri barədə razılıq əldə edilmişdir. Müqavilə hər iki mənzilə bərabər şəkildə şamil olunur.',
+  powers: 'Paltar suyu aşağı mərtəbəyə damcılamır.\nSiqaret tüstüsü pəncərəyə yönəldilmir.\nAğır əşyalar məhəccəngdən asılmır.\nBalkondan heç nə atılmır.',
+  penalty: 'Müqavilənin şərtləri pozulduqda zərər dəymiş tərəfin tələbi ilə vəziyyət üç gün ərzində bərpa edilir.',
+  titleOptions: [
+    'Balkon Sahələrinin İstifadə Sərhədlərinin Müəyyən Edilməsi üzrə Müqavilə',
+    'Paltar Qurutma və Siqaret Çəkmə Qaydaları üzrə Saziş',
+    'Balkondan Yuxarı Mərtəbəyə Təsirin Tənzimlənməsi üzrə Protokol',
+    'Balkon Sahələrinin Qarşılıqlı İstifadəsi üzrə Müqavilə'
+  ],
+  powersOptions: [
+    'Paltar suyu aşağı mərtəbəyə damcılamır.',
+    'Siqaret tüstüsü pəncərəyə yönəldilmir.',
+    'Ağır əşyalar məhəccəngdən asılmır.',
+    'Balkondan heç nə atılmır.',
+    'Gül qablarının yeri təhlükəsiz seçilir.',
+    'Səs həddi gecə saatlarında azaldılır.',
+    'Təmir işi əvvəlcədən bildirilir.',
+    'Ümumi görünüş nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Müqavilənin şərtləri pozulduqda zərər dəymiş tərəfin tələbi ilə vəziyyət üç gün ərzində bərpa edilir.',
+    'Müqavilə mənzillərin sahibləri dəyişdikdə yenilənir.',
+    'Şərtlər hər iki tərəfə eyni qaydada tətbiq olunur.'
+  ]
 },
 {
   id: 'playground-rules', cat: 'neighbors', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
-  title: 'Uşaq Meydançası Sertifikatı', tag: 'Həyət qaydası',
-  signOrg: 'Uşaq Meydançası Qaydaları üzrə Xüsusi Komitə',
+  title: 'Uşaq Meydançasından İstifadə Qaydalarının Təsdiqi Sertifikatı', tag: 'Meydança',
+  signOrg: 'Həyət və Qonşuluq Mübahisələri üzrə Ali Şura',
   powersLabel: 'MEYDANÇADAN İSTİFADƏ ŞƏRTLƏRİ',
-  preamble: 'Bu sertifikatla {to} adlı şəxsin ailəsinə həyət uşaq meydançasından istifadə hüququ təsdiq edilir. Sertifikat {from} tərəfindən bütün sakinlərin adından verilmişdir.',
-  powers: 'Meydançadan səhər 09:00–axşam 21:00 arası istifadə.\nOyuncaqları oyundan sonra yerinə qoymaq.\nYelləncək növbəsini gözləmək.\nQum qutusuna heyvan buraxmamaq.',
-  penalty: 'Qaydalar pozulduqda ailə bir həftə meydança təmizliyi növbəsinə cəlb olunur.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs uşaq meydançasından istifadə qaydalarına əməl edir. Sertifikat {from} tərəfindən, sakinlərin müraciəti və uzunmüddətli müşahidə əsasında verilmişdir.',
+  powers: 'Meydançadan istifadə saat 21:00-dək davam edir.\nAvadanlıq təyinatı üzrə istifadə olunur.\nUşaqlar nəzarətsiz buraxılmır.\nZibil ardınca yığılır.',
+  penalty: 'Avadanlığın zədələnməsi halında bərpa xərcləri zədəni törədən tərəfin hesabına təmin edilir.',
+  titleOptions: [
+    'Uşaq Meydançasından İstifadə Qaydalarının Təsdiqi Sertifikatı',
+    'Meydança Avadanlığının Qorunması Öhdəliyinin Sertifikatı',
+    'Uşaqların Təhlükəsizliyinin Təmin Edilməsi Sertifikatı',
+    'Meydançadan İstifadə Saatlarının Təsdiqinə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Meydançadan istifadə saat 21:00-dək davam edir.',
+    'Avadanlıq təyinatı üzrə istifadə olunur.',
+    'Uşaqlar nəzarətsiz buraxılmır.',
+    'Zibil ardınca yığılır.',
+    'Böyük yaşlı uşaqlar kiçiklərə güzəşt edir.',
+    'Velosiped meydança daxilində sürülmür.',
+    'Nasazlıq barədə dərhal xəbər verilir.',
+    'Ev heyvanları meydançaya buraxılmır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Avadanlığın zədələnməsi halında bərpa xərcləri zədəni törədən tərəfin hesabına təmin edilir.',
+    'Sertifikat bütün bina sakinlərinə şamil edilir.',
+    'Qaydalar hər mövsüm yenidən elan olunur.'
+  ]
 },
 {
   id: 'neighbor-telegram', cat: 'neighbors', tone: 'zarafat', layout: 'teleqram', palette: 'burgundy',
-  title: 'Qonşuya Xəbərdarlıq Teleqramı', tag: 'Son xəbərdarlıq',
-  signOrg: 'Qonşu Xəbərdarlıqları üzrə Rabitə İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə təcili xəbərdarlıq göndərilir. Mübahisə mövzusu, təkrarlanma sayı və gözlənilən düzəliş müddəti rəsmi qaydada çatdırılır.',
-  powers: 'Cavab 48 saat ərzində gözlənilir.\nÜzrxahlıq şifahi qəbul olunur.\nBir dəfə izahat vermək hüququ.\nMəsələ ev idarəsinə ötürülmür (şərti).',
-  penalty: 'Cavab verilmədikdə məsələ mərtəbə çatına və sonra ev idarəsinə ötürülür.'
+  title: 'Qonşu Mənzildən Gecə Saatlarında Gələn Səs Barədə Təcili Xəbərdarlıq', tag: 'Xəbərdarlıq',
+  signOrg: 'Səs-Küy və Gecə Rejimi üzrə Nəzarət İdarəsi',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin mənzilindən gələn səs gecə saatlarında qeydə alınmış və digər sakinlər tərəfindən də təsdiqlənmişdir. {from} tərəfindən vəziyyətin aydınlaşdırılması və tədbir görülməsi xahiş olunur.',
+  powers: 'Səs saat 01:00-dan sonra qeydə alınıb.\nHal son həftədə üçüncü dəfə təkrarlanıb.\nŞifahi müraciət nəticə verməyib.\nDigər sakinlər də vəziyyəti təsdiqləyir.',
+  penalty: 'Xəbərdarlığa reaksiya verilmədikdə məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+  titleOptions: [
+    'Qonşu Mənzildən Gecə Saatlarında Gələn Səs Barədə Təcili Xəbərdarlıq',
+    'Gecə Saatlarında Qeydə Alınmış Səs Barədə Təcili Teleqram',
+    'Su Sızması Ehtimalı Barədə Təxirəsalınmaz Xəbərdarlıq',
+    'Ümumi Sahədə Aşkarlanmış Vəziyyət Barədə Təcili Teleqram'
+  ],
+  powersOptions: [
+    'Səs saat 01:00-dan sonra qeydə alınıb.',
+    'Hal son həftədə üçüncü dəfə təkrarlanıb.',
+    'Şifahi müraciət nəticə verməyib.',
+    'Digər sakinlər də vəziyyəti təsdiqləyir.',
+    'Səsin mənbəyi dəqiqləşdirilməyib.',
+    'Təmir işi ehtimalı istisna edilmir.',
+    'Şikayət yazılı formada təqdim edilib.',
+    'Növbəti addım yığıncaqda müzakirə olunacaq.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Xəbərdarlığa reaksiya verilmədikdə məsələ bina sakinlərinin ümumi yığıncağının gündəliyinə salınır.',
+    'Vəziyyət düzəldildikdə xəbərdarlıq arxivə verilir.',
+    'Xəbərdarlıq yalnız məlumat xarakteri daşıyır.'
+  ]
 },
 {
   id: 'resident-id', cat: 'neighbors', tone: 'zarafat', layout: 'vesiqe', palette: 'ink',
-  title: 'Həyət Sakini Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Həyət Sakinliyinin Qeydiyyatı Şöbəsi',
+  title: 'Bina Sakininin Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə', tag: 'Sakin',
+  signOrg: 'Ümumi İstifadə Sahələri üzrə Qarşılıqlı Komissiya',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin həyətin tamhüquqlu sakini olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və skamyada, park yerində və pilləkən söhbətlərində etibarlıdır.',
-  powers: 'Skamyada daimi yer tutmaq.\nHəyət qərarlarında səs vermək.\nQonaq maşını üçün müvəqqəti yer istəmək.\nElan lövhəsinə məlumat yerləşdirmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir ay park yeri növbəsi sonuncuya keçir.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin bina sakini statusunu təsdiq edir. Sənəd {from} tərəfindən verilmişdir və ümumi sahələrdən istifadə hüququ ilə birlikdə müvafiq öhdəlikləri də əhatə edir.',
+  powers: 'Ümumi sahələrdən istifadə hüququ tanınır.\nYığıncaqda səs hüququ verilir.\nPark yeri növbəsində iştirak edilir.\nÜmumi vəsait ay ərzində ödənilir.',
+  penalty: 'Vəsiqə ilə tanınan hüquqlar ümumi öhdəliklərin icrası ilə bağlıdır; ödənişlər gecikdikdə yığıncaqda səs hüququ müvəqqəti dayandırılır.',
+  titleOptions: [
+    'Bina Sakininin Hüquq və Öhdəliklərini Təsdiq edən Vəsiqə',
+    'Ümumi Sahələrdən İstifadə Hüququnu Təsdiq edən Vəsiqə',
+    'Sakinlərin Yığıncağında Səs Hüququna dair Şəhadətnamə',
+    'Həyət və Park Yeri Hüquqlarını Təsdiq edən Vəsiqə'
+  ],
+  powersOptions: [
+    'Ümumi sahələrdən istifadə hüququ tanınır.',
+    'Yığıncaqda səs hüququ verilir.',
+    'Park yeri növbəsində iştirak edilir.',
+    'Ümumi vəsait ay ərzində ödənilir.',
+    'Elan lövhəsindən istifadə açıqdır.',
+    'Təmizlik növbəsində iştirak öhdəlikdir.',
+    'Qonaqların davranışına görə məsuliyyət daşınır.',
+    'Nasazlıq barədə məlumat vermək tələb olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə tanınan hüquqlar ümumi öhdəliklərin icrası ilə bağlıdır; ödənişlər gecikdikdə yığıncaqda səs hüququ müvəqqəti dayandırılır.',
+    'Vəsiqə mənzil sahibi dəyişdikdə yenidən verilir.',
+    'Hüquqlar ailənin bütün üzvlərinə şamil olunur.'
+  ]
 },
 {
   id: 'salt-borrow-act', cat: 'neighbors', tone: 'zarafat', layout: 'ekspertiza', palette: 'burgundy',
-  title: 'Duz Borcu Aktı', tag: 'Klassik janr',
-  signOrg: 'Qonşulararası Kiçik Borclar üzrə Baş İdarə',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə bir stəkan duz müvəqqəti istifadəyə verilir. Borcun qaytarılma müddəti müəyyən edilmir, lakin qarşılıqlı xoş münasibət şərti saxlanılır.',
-  powers: 'Borcu istənilən vaxt qaytarmaq.\nDuz əvəzinə şəkər qaytarmaq (razılıqla).\nBorcu üç dəfəyə qədər yeniləmək.\nQaytarma zamanı çaya dəvət olunmaq.',
-  penalty: 'Borc bir il ərzində qaytarılmadıqda növbəti dəfə duz istəyən tərəf öz stəkanını gətirir.'
+  title: 'Qonşudan Ərzaq Borc Alma Praktikasının Qiymətləndirilməsi haqqında Rəy', tag: 'Qonşuluq',
+  signOrg: 'Həyət və Qonşuluq Mübahisələri üzrə Ali Şura',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında ərzaq mübadiləsi qarşılıqlı və balanslıdır. Rəy son bir ilin müşahidələrinə əsaslanır.',
+  powers: 'Mübadilə hər iki istiqamətdə aparılıb.\nƏn çox borc alınan məhsul duzdur.\nQaytarılma adətən eyni gün baş verib.\nHeç bir tərəfdən şikayət daxil olmayıb.',
+  penalty: 'Balans bir tərəfin xeyrinə davamlı pozulduqda vəziyyət qarşılıqlı söhbət yolu ilə bərpa edilir.',
+  titleOptions: [
+    'Qonşudan Ərzaq Borc Alma Praktikasının Qiymətləndirilməsi haqqında Rəy',
+    'Qarşılıqlı Ərzaq Mübadiləsinin Balansı haqqında Ekspert Rəyi',
+    'Borc Alınmış Məhsulların Qaytarılma Vəziyyəti haqqında Rəy',
+    'Qonşuluq Yardımının Həcminə dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Mübadilə hər iki istiqamətdə aparılıb.',
+    'Ən çox borc alınan məhsul duzdur.',
+    'Qaytarılma adətən eyni gün baş verib.',
+    'Heç bir tərəfdən şikayət daxil olmayıb.',
+    'Bayram ərəfəsində həcm artır.',
+    'Qablar həmişə təmiz qaytarılıb.',
+    'Miqdar dəqiq ölçülməyib.',
+    'Praktika qonşuluğu möhkəmləndirən amildir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Balans bir tərəfin xeyrinə davamlı pozulduqda vəziyyət qarşılıqlı söhbət yolu ilə bərpa edilir.',
+    'Rəy yalnız məlumat xarakteri daşıyır.',
+    'Göstəricilər hər il yenidən qiymətləndirilir.'
+  ]
 },
 {
   id: 'wifi-sharing-permit', cat: 'neighbors', tone: 'zarafat', layout: 'viza', palette: 'steel',
-  title: 'Wi-Fi Paylaşma İcazəsi', tag: 'Rəqəmsal qonşuluq',
-  signOrg: 'Rəqəmsal Şəbəkə Paylaşımı üzrə Komissiya',
+  title: 'Qonşu Mənzilə İnternet Bağlantısının Paylaşılmasına dair İcazə', tag: 'İnternet',
+  signOrg: 'Ümumi İstifadə Sahələri üzrə Qarşılıqlı Komissiya',
   toLabel: 'İcazə verilən şəxs', fromLabel: 'Şəbəkə sahibi',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxsə {from} tərəfindən məhdud müddətə Wi-Fi şəbəkəsindən istifadə icazəsi verilmişdir. İcazə şifrənin üçüncü şəxslərə ötürülməsini əhatə etmir.',
-  powers: 'Şəbəkəyə eyni anda iki cihaz qoşmaq.\nAxşam saatlarında sürət azalmasına etiraz etməmək.\nŞifrəni heç kimə verməmək.\nİnternet kəsildikdə birlikdə gözləmək.',
-  penalty: 'Şifrə üçüncü şəxsə ötürüldükdə icazə dərhal ləğv edilir və şəbəkə adı dəyişdirilir.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə internet bağlantısının paylaşılmasına icazə verilir. İcazə ödənişin bölüşdürülməsi və sürətin hər iki tərəf üçün kifayət qədər qalması şərti ilə qüvvədədir.',
+  powers: 'Şifrə üçüncü şəxsə verilmir.\nÖdəniş bərabər bölüşdürülür.\nAğır yükləmələr gecə saatlarına keçirilir.\nNasazlıq barədə dərhal xəbər verilir.',
+  penalty: 'Şifrənin üçüncü şəxsə ötürüldüyü aşkarlandıqda icazə dərhal qüvvədən düşür və bağlantı yenidən paylaşılmır.',
+  titleOptions: [
+    'Qonşu Mənzilə İnternet Bağlantısının Paylaşılmasına dair İcazə',
+    'Şəbəkə Şifrəsinin Müvəqqəti Verilməsinə dair Xüsusi İcazə',
+    'Bağlantının Birgə İstifadəsi Şərtlərinə dair İcazə',
+    'Ödənişin Bölüşdürülməsi Şərti ilə Verilmiş İcazə'
+  ],
+  powersOptions: [
+    'Şifrə üçüncü şəxsə verilmir.',
+    'Ödəniş bərabər bölüşdürülür.',
+    'Ağır yükləmələr gecə saatlarına keçirilir.',
+    'Nasazlıq barədə dərhal xəbər verilir.',
+    'Cihazların sayı razılaşdırılır.',
+    'Şifrə hər üç ayda bir dəyişdirilir.',
+    'Sürət azaldıqda vəziyyət birgə yoxlanılır.',
+    'Bağlantının kəsilməsi əvvəlcədən bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şifrənin üçüncü şəxsə ötürüldüyü aşkarlandıqda icazə dərhal qüvvədən düşür və bağlantı yenidən paylaşılmır.',
+    'İcazə ödəniş vaxtında edildiyi müddətdə qüvvədədir.',
+    'Sürətin kritik azalması icazəni dayandırır.'
+  ]
 },
 
 /* ---------------- BAYRAM, TOY & AD GÜNÜ ---------------- */
 {
   id: 'novruz-sweet-quota', cat: 'holiday', tone: 'zarafat', layout: 'blank', palette: 'gold',
-  title: 'Novruz Şirniyyat Kvotası', tag: 'Bayram üçün',
-  signOrg: 'Novruz Süfrəsi və Şirniyyat Kvotaları Komitəsi',
-  preamble: 'Bu sənədlə {from} tərəfindən {to} adlı şəxs üçün Novruz süfrəsindən götürüləcək şirniyyatın gündəlik həddi müəyyən edilir. Kvota xoncanın ümumi tarazlığını qorumaq məqsədi daşıyır.',
-  powers: 'Gündə 3 paxlava, 2 şəkərbura.\nQonaq gələndə kvota müvəqqəti artırılır.\nSəməni bəzəyinə toxunmamaq.\nSon paxlavanı bölüşmək öhdəliyi.',
-  penalty: 'Kvota iki gün ardıcıl aşıldıqda növbəti bayram üçün şirniyyat bişirmək öhdəliyi həvalə olunur.'
+  title: 'Bayram Şirniyyatının Bölüşdürülməsi Qaydası haqqında Bildiriş', tag: 'Novruz',
+  signOrg: 'Bayram Süfrəsi və Qonaq Qəbulu üzrə Ali Şura',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, bayram şirniyyatının bölüşdürülməsi qaydası müəyyən edilmişdir. {from} tərəfindən {to} adlı şəxsə şəxsi kvota ayrılmış və ehtiyatın bayrama qədər qorunması şərti qoyulmuşdur.',
+  powers: 'Gündəlik kvota üç ədəd müəyyən edilir.\nQonaq üçün ayrılmış hissəyə toxunulmur.\nBayramdan əvvəl dadmaq bir dəfə icazəlidir.\nBoş qab dərhal xəbər verilir.',
+  penalty: 'Kvotanın gizli şəkildə aşılması aşkarlandıqda növbəti bayram üçün şirniyyat hazırlığında iştirak öhdəliyi tam olaraq həmin şəxsin üzərinə düşür.',
+  titleOptions: [
+    'Bayram Şirniyyatının Bölüşdürülməsi Qaydası haqqında Bildiriş',
+    'Şəkərbura və Paxlavanın Şəxsi Kvotası haqqında Rəsmi Bildiriş',
+    'Bayram Ehtiyatının Qorunması Tədbirləri haqqında Bildiriş',
+    'Şirniyyat Ehtiyatının Bayramadək Saxlanılması haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Gündəlik kvota üç ədəd müəyyən edilir.',
+    'Qonaq üçün ayrılmış hissəyə toxunulmur.',
+    'Bayramdan əvvəl dadmaq bir dəfə icazəlidir.',
+    'Boş qab dərhal xəbər verilir.',
+    'Qonşuya göndərilən pay ayrıca hesablanır.',
+    'Ən yaxşı nüsxələr qonaq üçün saxlanılır.',
+    'Gecə saatlarında müraciət qeydə alınır.',
+    'Hazırlıqda iştirak edən əlavə pay alır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Kvotanın gizli şəkildə aşılması aşkarlandıqda növbəti bayram üçün şirniyyat hazırlığında iştirak öhdəliyi tam olaraq həmin şəxsin üzərinə düşür.',
+    'Bildiriş yalnız bayram ərəfəsində qüvvədədir.',
+    'Qonaq gəldikdə kvota müvəqqəti dayandırılır.'
+  ]
 },
 {
   id: 'wedding-table-contract', cat: 'holiday', tone: 'zarafat', layout: 'muqavile', palette: 'burgundy',
-  title: 'Toy Masası Müqaviləsi', tag: 'Oturacaq bölgüsü',
-  signOrg: 'Toy Masası Məsələləri üzrə Ali Şura',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında toy məclisində masa bölgüsü və oturacaq düzümü razılaşdırılır. Tərəflər qonaqların bir-biri ilə münasibətini nəzərə alaraq yerləri müəyyən edirlər.',
-  powers: 'Hər tərəf öz qonaq siyahısını təqdim edir.\nMübahisəli qonaqlar ayrı masalara oturdulur.\nUşaq masası səhnədən uzaqda yerləşdirilir.\nSon dəyişiklik toydan 3 gün əvvələ qədər.',
-  penalty: 'Razılaşdırılmış düzüm pozulduqda pozan tərəf növbəti tədbirin masa bölgüsünü təkbaşına aparır.'
+  title: 'Toy Masasında Yerlərin və Öhdəliklərin Bölüşdürülməsi üzrə Müqavilə', tag: 'Toy masası',
+  signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında toy masasında yerlərin bölüşdürülməsi və süfrə öhdəlikləri barədə razılıq əldə edilmişdir. Müqavilə yalnız bir mərasim üçün bağlanır.',
+  powers: 'Masa nömrəsi mərasimdən əvvəl bildirilir.\nQohum və dost qrupları ayrı masalarda oturur.\nSüfrənin doldurulmasına növbə ilə nəzarət edilir.\nBoş yerlər gec gələn qonaqlara verilir.',
+  penalty: 'Masa nizamının icazəsiz dəyişdirilməsi halında növbəti mərasimdə yer seçimi hüququ tam olaraq digər tərəfə keçir.',
+  titleOptions: [
+    'Toy Masasında Yerlərin və Öhdəliklərin Bölüşdürülməsi üzrə Müqavilə',
+    'Mərasim Zamanı Masa Nizamının Təmin Edilməsi üzrə Saziş',
+    'Qonaqların Yerləşdirilməsi Qaydası üzrə Qarşılıqlı Müqavilə',
+    'Toy Süfrəsinin İdarə Edilməsi Qaydası üzrə Protokol'
+  ],
+  powersOptions: [
+    'Masa nömrəsi mərasimdən əvvəl bildirilir.',
+    'Qohum və dost qrupları ayrı masalarda oturur.',
+    'Süfrənin doldurulmasına növbə ilə nəzarət edilir.',
+    'Boş yerlər gec gələn qonaqlara verilir.',
+    'Uşaqlı ailələr çıxışa yaxın yerləşdirilir.',
+    'Səhnəyə yaxın masalar əvvəlcədən təyin edilir.',
+    'Foto çəkilişi növbə ilə təşkil olunur.',
+    'Şirniyyat bölgüsü masa daxilində aparılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Masa nizamının icazəsiz dəyişdirilməsi halında növbəti mərasimdə yer seçimi hüququ tam olaraq digər tərəfə keçir.',
+    'Müqavilə mərasim başa çatdıqda qüvvədən düşür.',
+    'Fövqəladə hallarda nizam təşkilatçılar tərəfindən dəyişdirilir.'
+  ]
 },
 {
   id: 'gift-obligation', cat: 'holiday', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Hədiyyə Öhdəliyi Aktı', tag: 'Qarşılıqlı borc',
-  signOrg: 'Hədiyyə Öhdəlikləri üzrə Xüsusi Komissiya',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı şəxsə təqdim olunan hədiyyə rəsmi qeydiyyata alınır. Aktda hədiyyənin dəyəri göstərilmir, lakin qarşılıqlı öhdəliyin yarandığı təsbit edilir.',
-  powers: 'Hədiyyəni açarkən səmimi sevinc nümayiş etdirmək.\nÇeki soruşmamaq hüququ.\nQarşılıqlı hədiyyəni bir il ərzində vermək.\nHədiyyəni başqasına ötürməmək.',
-  penalty: 'Hədiyyə üçüncü şəxsə ötürüldüyü aşkarlandıqda akt ləğv edilir və qarşılıqlı öhdəlik ikiqat artır.'
+  title: 'Bayram Hədiyyəsi üzrə Qarşılıqlı Öhdəliklərin Təsbiti haqqında Akt', tag: 'Hədiyyə',
+  signOrg: 'Hədiyyə və Təbrik Öhdəlikləri üzrə Komissiya',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} və {to} arasında bayram hədiyyəsi üzrə qarşılıqlı öhdəliklər müəyyən edilmişdir. Akt hədiyyənin dəyərini deyil, verilmə faktını əsas götürür.',
+  powers: 'Hədiyyə büdcəsi əvvəlcədən razılaşdırılır.\nAlınan hədiyyə başqasına ötürülmür.\nÇek hədiyyə ilə birlikdə verilmir.\nBəyənilmədikdə bu barədə susulur.',
+  penalty: 'Alınmış hədiyyənin üçüncü şəxsə ötürüldüyü aşkarlandıqda növbəti bayramda hədiyyə seçimi tam olaraq zərərçəkmiş tərəfə həvalə edilir.',
+  titleOptions: [
+    'Bayram Hədiyyəsi üzrə Qarşılıqlı Öhdəliklərin Təsbiti haqqında Akt',
+    'Hədiyyə Büdcəsinin Razılaşdırılması haqqında Rəsmi Akt',
+    'Təkrar Hədiyyənin Ötürülməsi Praktikasına dair Akt',
+    'Hədiyyə Seçimində Qarşılıqlı Məsləhətləşmə haqqında Etibarnamə'
+  ],
+  powersOptions: [
+    'Hədiyyə büdcəsi əvvəlcədən razılaşdırılır.',
+    'Alınan hədiyyə başqasına ötürülmür.',
+    'Çek hədiyyə ilə birlikdə verilmir.',
+    'Bəyənilmədikdə bu barədə susulur.',
+    'Hədiyyə siyahısı bir həftə əvvəl bildirilir.',
+    'Təkrarlanan hədiyyə dəyişdirilə bilər.',
+    'Pul hədiyyəsi ayrıca razılaşdırılır.',
+    'Uşaqlara hədiyyə ayrıca planlaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Alınmış hədiyyənin üçüncü şəxsə ötürüldüyü aşkarlandıqda növbəti bayramda hədiyyə seçimi tam olaraq zərərçəkmiş tərəfə həvalə edilir.',
+    'Akt hər bayram üçün yenidən razılaşdırılır.',
+    'Büdcənin aşılması öhdəlik yaratmır.'
+  ]
 },
 {
   id: 'birthday-decree', cat: 'holiday', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
-  title: 'Ad Günü Fərmanı', tag: 'Bir günlük hakimiyyət',
-  signOrg: 'Ad Günü Mərasimləri üzrə Baş İdarə',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı şəxsə ad günü boyunca müstəsna səlahiyyətlər verilir. Fərman gecə saat 00:00-dan növbəti gecə 00:00-a qədər qüvvədədir.',
-  powers: 'Menyunu təkbaşına müəyyən etmək.\nHeç bir ev işi görməmək.\nMusiqi seçimində son söz sahibi olmaq.\nTortun ilk dilimini kəsmək.',
-  penalty: 'Səlahiyyət ad günündən sonra da işlədilməyə çalışıldıqda fərman geriyə şamil olunmaqla ləğv edilir.'
+  title: 'Ad Günü Sahibinə Verilən Xüsusi Səlahiyyətlərə dair İcazə', tag: 'Ad günü',
+  signOrg: 'Hədiyyə və Təbrik Öhdəlikləri üzrə Komissiya',
+  preamble: '{from} tərəfindən {to} adlı şəxsə ad günü münasibətilə xüsusi səlahiyyətlər verilir. İcazə yalnız həmin gün ərzində qüvvədədir, gecə yarısında avtomatik olaraq qüvvədən düşür və istifadə edilməmiş güzəştlər saxlanılmır.',
+  powers: 'Günün proqramı tam olaraq özü tərəfindən müəyyən edilir.\nMenyu seçimi mübahisə predmeti deyil.\nQab-qacaq yumaq öhdəliyindən azad edilir.\nMusiqi seçimi hüququ tanınır.',
+  penalty: 'İcazə yalnız bir gün ərzində qüvvədədir və növbəti günə keçirilmir; istifadə edilməmiş güzəştlər saxlanılmır.',
+  titleOptions: [
+    'Ad Günü Sahibinə Verilən Xüsusi Səlahiyyətlərə dair İcazə',
+    'Ad Günü Boyu Qərar Qəbulu Səlahiyyətinə dair Xüsusi İcazə',
+    'Doğum Günü Sahibinin Güzəştlərindən İstifadəyə dair İcazə',
+    'Bir Gün Ərzində Bütün Seçimləri Etmək Hüququna dair İcazə'
+  ],
+  powersOptions: [
+    'Günün proqramı tam olaraq özü tərəfindən müəyyən edilir.',
+    'Menyu seçimi mübahisə predmeti deyil.',
+    'Qab-qacaq yumaq öhdəliyindən azad edilir.',
+    'Musiqi seçimi hüququ tanınır.',
+    'Hədiyyə açılış ardıcıllığı özü tərəfindən seçilir.',
+    'Foto çəkilişindən imtina hüququ verilir.',
+    'Səhər gec oyanmaq icazəlidir.',
+    'Bir dəfə hər hansı tapşırığı başqasına ötürmək olar.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'İcazə yalnız bir gün ərzində qüvvədədir və növbəti günə keçirilmir; istifadə edilməmiş güzəştlər saxlanılmır.',
+    'İcazə iş və dərs öhdəliklərinə şamil edilmir.',
+    'Güzəştlər başqa şəxsə ötürülə bilməz.'
+  ]
 },
 {
   id: 'dance-license', cat: 'holiday', tone: 'zarafat', layout: 'lisenziya', palette: 'gold',
-  title: 'Toyda Rəqs Lisenziyası', tag: 'Səhnə hüququ',
+  title: 'Toy Mərasimi Zamanı Rəqs Fəaliyyətindən Azad Edilməyə dair İcazə', tag: 'Toy mövsümü',
   signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ RƏQSLƏR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə toy məclisində rəqs etmək üçün lisenziya verilir. Lisenziya bütün janrları əhatə edir, lakin videoçəkiliş zamanı məsuliyyət şəxsin öz üzərinə düşür.',
-  powers: 'Meydança açıldıqdan sonra sərbəst rəqs.\nMusiqi sifariş etmək (gecədə 2 dəfə).\nQohumları rəqsə dəvət etmək.\nVideo çəkilişinə etiraz etmək hüququ.',
-  penalty: 'Rəqs zamanı masa yaxınlığında qəza baş verdikdə lisenziya həmin gecə üçün dayandırılır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə toy mərasimi zamanı rəqs fəaliyyətindən azad olmaq icazəsi verilir. Şəxsin hazırkı vəziyyəti və qohumlar tərəfindən gözlənilən sosial təzyiq nəzərə alınmışdır.',
+  powers: 'Rəqs meydançasına çıxmaq öhdəliyi aradan qaldırılır.\n«Bir dənə oyna da» müraciəti icazəyə təsir etmir.\nAilə rəqsində iştirak ayrıca razılaşdırılır.\nAlqışla müşayiət etmək kifayət hesab edilir.',
+  penalty: 'İcazə bəy və gəlinin birbaşa dəvətinə şamil edilmir; həmin halda ən azı bir rəqsdə iştirak nəzakət qaydası hesab olunur.',
+  titleOptions: [
+    'Toy Mərasimi Zamanı Rəqs Fəaliyyətindən Azad Edilməyə dair İcazə',
+    'Məcburi Rəqsdən Müvəqqəti Azad Edilməyə dair Xüsusi İcazə',
+    'Mərasim Zamanı Rəqsdə İştirak Hüdudlarına dair Lisenziya',
+    'Rəqs Meydançasına Çıxma Öhdəliyindən Azad Edilməyə dair İcazə'
+  ],
+  powersOptions: [
+    'Rəqs meydançasına çıxmaq öhdəliyi aradan qaldırılır.',
+    '«Bir dənə oyna da» müraciəti icazəyə təsir etmir.',
+    'Ailə rəqsində iştirak ayrıca razılaşdırılır.',
+    'Alqışla müşayiət etmək kifayət hesab edilir.',
+    'Fotoya düşmək üçün meydançaya qısa çıxış icazəlidir.',
+    'Yaxın qohumun xahişi bir dəfə nəzərə alınır.',
+    'Musiqinin növü icazəyə təsir göstərmir.',
+    'Masadan qalxmadan iştirak forma sayılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'İcazə bəy və gəlinin birbaşa dəvətinə şamil edilmir; həmin halda ən azı bir rəqsdə iştirak nəzakət qaydası hesab olunur.',
+    'İcazə yalnız bir mərasim üçün verilir.',
+    'Könüllü iştirak icazənin qüvvəsinə təsir etmir.'
+  ]
 },
 {
   id: 'guest-list-arayis', cat: 'holiday', tone: 'zarafat', layout: 'arayis', palette: 'steel',
-  title: 'Qonaq Siyahısı Arayışı', tag: 'Rəsmi siyahı',
-  signOrg: 'Qonaq Siyahısının Qeydiyyatı Şöbəsi',
+  title: 'Tədbirin Qonaq Siyahısının Tərtibi və Təsdiqi haqqında Arayış', tag: 'Siyahı',
+  signOrg: 'Bayram Süfrəsi və Qonaq Qəbulu üzrə Ali Şura',
   toLabel: 'Siyahıya daxil edilən', fromLabel: 'Siyahını tərtib edən',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxs {from} tərəfindən tərtib edilmiş rəsmi qonaq siyahısına daxil edilmişdir. Siyahı tədbirdən 10 gün əvvəl qapanır və sonrakı əlavələr müstəsna hal sayılır.',
-  powers: 'Özü ilə bir müşayiətçi gətirmək.\nMasa seçimi barədə xahiş etmək.\nMenyu üzrə xüsusi tələb bildirmək.\nGəlişi 3 gün əvvəl təsdiqləmək.',
-  penalty: 'Təsdiq verildikdən sonra gəlinmədikdə növbəti tədbirdə siyahıya ehtiyat qaydada daxil edilir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, tədbirin qonaq siyahısı {from} ilə birgə tərtib edilmiş, hər iki tərəfin təklifləri nəzərə alınmış, yekun say razılaşdırılmış və dəvətnamələrin göndərilmə tarixi müəyyən edilmişdir.',
+  powers: 'Siyahı tədbirdən iki həftə əvvəl bağlanır.\nƏlavə ad qarşılıqlı razılıqla salınır.\nHər tərəfə bərabər sayda yer ayrılır.\nDəvətnamələr eyni gün göndərilir.',
+  penalty: 'Siyahı bağlandıqdan sonra əlavə ad salınması halında həmin qonağın yeri və xərci onu təklif edən tərəfin hesabına təmin edilir.',
+  titleOptions: [
+    'Tədbirin Qonaq Siyahısının Tərtibi və Təsdiqi haqqında Arayış',
+    'Dəvətnamələrin Paylanması Vəziyyəti haqqında Rəsmi Arayış',
+    'Siyahıya Əlavə Ad Salınması Qaydası haqqında Arayış',
+    'Qonaq Sayının Yekunlaşdırılması haqqında Arayış'
+  ],
+  powersOptions: [
+    'Siyahı tədbirdən iki həftə əvvəl bağlanır.',
+    'Əlavə ad qarşılıqlı razılıqla salınır.',
+    'Hər tərəfə bərabər sayda yer ayrılır.',
+    'Dəvətnamələr eyni gün göndərilir.',
+    'İştirak təsdiqi bir həftə əvvəl toplanır.',
+    'Uşaqlı ailələr ayrıca qeyd edilir.',
+    'Gözlənilməz qonaq üçün ehtiyat yer saxlanılır.',
+    'Ləğv barədə məlumat dərhal ötürülür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Siyahı bağlandıqdan sonra əlavə ad salınması halında həmin qonağın yeri və xərci onu təklif edən tərəfin hesabına təmin edilir.',
+    'Arayış yalnız bir tədbirə şamil edilir.',
+    'Say dəyişikliyi məkanla ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'toastmaster-diploma', cat: 'holiday', tone: 'zarafat', layout: 'diplom', palette: 'burgundy',
-  title: 'Tamada Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Tamada Səlahiyyətləri üzrə Ali Məclis',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, məclisi əvvəldən axıra idarə etdiyinə, hər tosta yeni məzmun tapdığına və heç kimi darıxdırmadığına görə bu fəxri diplom təqdim olunur.',
-  powers: 'Söz növbəsini müəyyən etmək.\nTostun müddətini məhdudlaşdırmaq.\nMusiqi fasiləsi elan etmək.\nMəclisin bitmə vaxtını təyin etmək.',
-  penalty: 'Tost 4 dəqiqəni keçdikdə diplom müvəqqəti dayandırılır və mikrofon növbəti şəxsə keçir.'
+  title: 'Mərasimin Aparılması Sahəsində Göstərilmiş Nəticələrə Görə Fəxri Diplom', tag: 'Tamada',
+  signOrg: 'Toy Davranışlarına Nəzarət üzrə Baş İdarə',
+  preamble: 'Baş İdarə {to} adlı şəxsin mərasim aparıcısı kimi göstərdiyi nəticələri qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur və qonaqların yekdil rəyi ilə təsdiqlənir.',
+  powers: 'Sözlər qısa və yerində deyilib.\nHeç bir qonaq unudulmayıb.\nMikrofon vaxtında təhvil verilib.\nProqram cədvəldən kənara çıxmayıb.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs növbəti mərasimə dəvət edildikdə imtina hüququnu saxlayır.',
+  titleOptions: [
+    'Mərasimin Aparılması Sahəsində Göstərilmiş Nəticələrə Görə Fəxri Diplom',
+    'Süfrə Arxasında Söz Deməyi Bacarmağa Görə Fəxri Diplom',
+    'Tədbirin Nizamlı Keçirilməsinə Verilən Töhfəyə Görə Diplom',
+    'Qonaqların Əhval-ruhiyyəsinin Qorunmasına Görə Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Sözlər qısa və yerində deyilib.',
+    'Heç bir qonaq unudulmayıb.',
+    'Mikrofon vaxtında təhvil verilib.',
+    'Proqram cədvəldən kənara çıxmayıb.',
+    'Adlar düzgün tələffüz edilib.',
+    'Musiqi ilə uyğunlaşma təmin edilib.',
+    'Uşaqlar üçün ayrıca vaxt ayrılıb.',
+    'Gözlənilməz hallar sakit həll edilib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs növbəti mərasimə dəvət edildikdə imtina hüququnu saxlayır.',
+    'Təltif hər mərasimdən sonra yenidən qiymətləndirilir.',
+    'Diplom ailə arxivində saxlanılır.'
+  ]
 },
 {
   id: 'holiday-court', cat: 'holiday', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: 'Bayram Süfrəsi Məhkəməsinin Qərarı', tag: 'Süfrə hökmü',
-  signOrg: 'Bayram Süfrəsi Mübahisələri üzrə Komissiya',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında bayram süfrəsində yaranmış mübahisəyə baxaraq müəyyən etdi ki, son dilimin taleyi ilə bağlı iddiaların hər ikisi qismən əsaslıdır.',
-  powers: 'Son dilim iki yerə bölünür.\nMübahisə süfrədən sonra müzakirə olunmur.\nHər iki tərəf bir-birinə çay süzür.\nQərar bütün qonaqlar qarşısında elan edilir.',
-  penalty: 'Qərar icra olunmadıqda son dilim üçüncü tərəfə — ən kiçik qonağa təhvil verilir.'
+  title: 'Bayram Süfrəsində Yaranmış Mübahisə üzrə Qəbul Edilmiş Qərar', tag: 'Süfrə',
+  signOrg: 'Bayram Süfrəsi və Qonaq Qəbulu üzrə Ali Şura',
+  preamble: 'Şura bayram süfrəsində {to} və {from} arasında yaranmış müzakirəyə baxaraq müəyyən etmişdir ki, mövzu bayram gününə uyğun deyil və hər iki tərəfin mövqeyi qismən əsaslıdır. Məsələ üzrə yekun qərar qəbul edilmişdir.',
+  powers: 'Müzakirə bayram günü dayandırılır.\nMövzuya bayramdan sonra qayıdıla bilər.\nHər iki tərəf qismən haqlı hesab edilir.\nSüfrə arxasında səs tonu aşağı salınır.',
+  penalty: 'Mövzunun həmin gün yenidən qaldırılması halında müzakirəni başlayan tərəf süfrənin yığılmasını təkbaşına həyata keçirir.',
+  titleOptions: [
+    'Bayram Süfrəsində Yaranmış Mübahisə üzrə Qəbul Edilmiş Qərar',
+    'Süfrə Arxasındakı Müzakirənin Dayandırılması haqqında Qərar',
+    'Bayram Günü Qaldırılan Mövzu üzrə Yekun Qətnamə',
+    'Süfrə Nizamının Bərpası haqqında Təxirəsalınmaz Qərar'
+  ],
+  powersOptions: [
+    'Müzakirə bayram günü dayandırılır.',
+    'Mövzuya bayramdan sonra qayıdıla bilər.',
+    'Hər iki tərəf qismən haqlı hesab edilir.',
+    'Süfrə arxasında səs tonu aşağı salınır.',
+    'Uşaqların iştirak etdiyi mövzular seçilmir.',
+    'Siyasət və maaş mövzuları gündəlikdən çıxarılır.',
+    'Üçüncü şəxslər müzakirəyə cəlb edilmir.',
+    'Barışıq çay süfrəsində rəsmiləşdirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Mövzunun həmin gün yenidən qaldırılması halında müzakirəni başlayan tərəf süfrənin yığılmasını təkbaşına həyata keçirir.',
+    'Qərar yalnız bayram günü üçün qüvvədədir.',
+    'Etiraz qeydə alınır, lakin bayram günü baxılmır.'
+  ]
 },
 {
   id: 'congrats-telegram', cat: 'holiday', tone: 'zarafat', layout: 'teleqram', palette: 'gold',
-  title: 'Təbrik Teleqramı', tag: 'Klassik janr',
-  signOrg: 'Təbrik Bildirişləri üzrə Rabitə İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə bayram münasibətilə rəsmi təbrik göndərilir. Teleqram köhnə üsulla, tam böyük hərflərlə tərtib olunmuşdur və səmimiyyət dərəcəsi maksimumdur.',
-  powers: 'Təbrik mətni dəyişdirilmədən çatdırılır.\nCavab teleqramı gözlənilir, lakin məcburi deyil.\nMətn ailə qrupunda paylaşıla bilər.\nHər il təkrar göndərilməsi mümkündür.',
-  penalty: 'Təbrik cavabsız qaldıqda növbəti il teleqram səhər saat 06:00-da çatdırılır.'
+  title: 'Əlamətdar Gün Münasibətilə Ünvanlanmış Rəsmi Təbrik Teleqramı', tag: 'Təbrik',
+  signOrg: 'Hədiyyə və Təbrik Öhdəlikləri üzrə Komissiya',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin əlamətdar günü {from} tərəfindən qeydə alınmış və rəsmi qaydada təbrik edilməsi qərara alınmışdır. Təbrik səmimidir və heç bir qarşılıq gözləmir.',
+  powers: 'Təbrik vaxtında və birinci sırada çatdırılır.\nArzular səmimi və konkretdir.\nHədiyyə ayrıca təqdim ediləcək.\nGecikmiş təbriklər də qəbul edilir.',
+  penalty: 'Təbrik heç bir öhdəlik yaratmır. Yeganə gözlənti növbəti əlamətdar gündə eyni diqqətin göstərilməsidir.',
+  titleOptions: [
+    'Əlamətdar Gün Münasibətilə Ünvanlanmış Rəsmi Təbrik Teleqramı',
+    'Bayram Münasibətilə Göndərilmiş Rəsmi Təbrik Teleqramı',
+    'Əlamətdar Hadisə ilə Bağlı Təbrik Bildirişi',
+    'Uğur Münasibətilə Ünvanlanmış Təcili Təbrik Teleqramı'
+  ],
+  powersOptions: [
+    'Təbrik vaxtında və birinci sırada çatdırılır.',
+    'Arzular səmimi və konkretdir.',
+    'Hədiyyə ayrıca təqdim ediləcək.',
+    'Gecikmiş təbriklər də qəbul edilir.',
+    'Təbrik şəxsən təkrarlanacaq.',
+    'Zəng günün ilk saatlarında edilir.',
+    'Qohumlar ayrıca xəbərdar edilir.',
+    'Fotoşəkil xatirə üçün saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təbrik heç bir öhdəlik yaratmır. Yeganə gözlənti növbəti əlamətdar gündə eyni diqqətin göstərilməsidir.',
+    'Teleqram yalnız bir tarixə aiddir.',
+    'Təbrikin gecikməsi onun səmimiliyinə təsir etmir.'
+  ]
 },
 {
   id: 'guest-id', cat: 'holiday', tone: 'zarafat', layout: 'vesiqe', palette: 'burgundy',
-  title: 'Fəxri Qonaq Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Fəxri Qonaq Qeydiyyatı Şöbəsi',
+  title: 'Fəxri Qonaq Statusunu və Onunla Bağlı Hüquqları Təsdiq edən Vəsiqə', tag: 'Qonaq',
+  signOrg: 'Bayram Süfrəsi və Qonaq Qəbulu üzrə Ali Şura',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin tədbirin fəxri qonağı olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və məclis boyunca bütün masalarda etibarlıdır.',
-  powers: 'Baş masada yer tutmaq.\nTost söyləmək növbəsində üstünlük.\nMenyudan əlavə sifariş vermək.\nTədbiri istənilən vaxt tərk etmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin baş masada yer növbəti tədbirə saxlanılır.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin fəxri qonaq statusunu təsdiq edir. Sənəd {from} tərəfindən verilmişdir və evin bütün tədbirlərində, xəbərdarlıq edilmədən gəlinən hallar da daxil olmaqla qüvvədədir.',
+  powers: 'Süfrədə yer həmişə ayrılmış vəziyyətdə saxlanılır.\nDəvətnamə tələb olunmur.\nSevimli yemək menyuya daxil edilir.\nAyrılma vaxtı özü tərəfindən müəyyən edilir.',
+  penalty: 'Vəsiqə ilə verilən hüquqlar qarşılıqlıdır; ev sahibi də eyni statusla qonağın evində qəbul edilir.',
+  titleOptions: [
+    'Fəxri Qonaq Statusunu və Onunla Bağlı Hüquqları Təsdiq edən Vəsiqə',
+    'Süfrədə Xüsusi Yer Hüququnu Təsdiq edən Fəxri Vəsiqə',
+    'Daimi Dəvətli Qonaq Statusuna dair Şəhadətnamə',
+    'Ev Sahibinin Xüsusi Diqqətinə Layiq Qonaq Vəsiqəsi'
+  ],
+  powersOptions: [
+    'Süfrədə yer həmişə ayrılmış vəziyyətdə saxlanılır.',
+    'Dəvətnamə tələb olunmur.',
+    'Sevimli yemək menyuya daxil edilir.',
+    'Ayrılma vaxtı özü tərəfindən müəyyən edilir.',
+    'Gecələmə variantı əvvəlcədən hazırlanır.',
+    'Uşaqları ilə birlikdə gəlmək icazəlidir.',
+    'Şirniyyatdan pay ayrılır.',
+    'Bayram günü birinci sırada təbrik edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə verilən hüquqlar qarşılıqlıdır; ev sahibi də eyni statusla qonağın evində qəbul edilir.',
+    'Vəsiqə müddətsizdir və geri alınmır.',
+    'Status ailənin bütün üzvlərinə şamil olunur.'
+  ]
 },
 {
   id: 'photo-duty-certificate', cat: 'holiday', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
-  title: 'Bayram Fotosu Səlahiyyəti', tag: 'Ailə arxivi',
-  signOrg: 'Mərasim Fotoqrafiyası üzrə Xüsusi Komitə',
+  title: 'Bayram Tədbirində Foto Çəkiliş Öhdəliyinin İcrasına dair Sertifikat', tag: 'Foto',
+  signOrg: 'Hədiyyə və Təbrik Öhdəlikləri üzrə Komissiya',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə bayram tədbirində ailə fotolarını çəkmək səlahiyyəti verilir. Səlahiyyət {from} tərəfindən, arxivin keyfiyyətini qorumaq məqsədilə həvalə edilmişdir.',
-  powers: 'Ümumi şəkil üçün hamını bir yerə toplamaq.\nÇəkilişi ən azı üç dəfə təkrarlamaq.\nUğursuz kadrları silmək.\nFotoları 3 gün ərzində paylaşmaq.',
-  penalty: 'Fotolar bir həftə ərzində paylaşılmadıqda səlahiyyət növbəti bayramda başqasına keçir.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs tədbirdə foto çəkiliş öhdəliyini üzərinə götürmüşdür. Sertifikat {from} tərəfindən, əvvəlki tədbirlərdəki nəticələr əsas götürülərək verilir.',
+  powers: 'Ümumi şəkil tədbirin ortasında çəkilir.\nHər qonaqdan ən azı bir kadr alınır.\nUğursuz kadrlar paylaşılmır.\nŞəkillər üç gün ərzində göndərilir.',
+  penalty: 'Şəkillərin razılaşdırılmış müddətdə göndərilməməsi halında növbəti tədbirdə foto öhdəliyi başqa şəxsə həvalə edilir.',
+  titleOptions: [
+    'Bayram Tədbirində Foto Çəkiliş Öhdəliyinin İcrasına dair Sertifikat',
+    'Ümumi Şəklin Təşkili Səlahiyyətini Təsdiq edən Sertifikat',
+    'Tədbirin Fotoqrafı Statusuna dair Şəhadətnamə',
+    'Şəkillərin Paylaşılması Qaydasını Təsdiq edən Sertifikat'
+  ],
+  powersOptions: [
+    'Ümumi şəkil tədbirin ortasında çəkilir.',
+    'Hər qonaqdan ən azı bir kadr alınır.',
+    'Uğursuz kadrlar paylaşılmır.',
+    'Şəkillər üç gün ərzində göndərilir.',
+    'Uşaqların şəkilləri ayrıca toplanır.',
+    'Ailə qrupları növbə ilə çəkilir.',
+    'Video materiala da eyni qayda şamil edilir.',
+    'Arxiv nüsxə saxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şəkillərin razılaşdırılmış müddətdə göndərilməməsi halında növbəti tədbirdə foto öhdəliyi başqa şəxsə həvalə edilir.',
+    'Sertifikat hər tədbir üçün ayrıca verilir.',
+    'Razılıqsız paylaşım sertifikatı qüvvədən salır.'
+  ]
 },
 {
   id: 'leftovers-treaty', cat: 'holiday', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
-  title: 'Süfrə Qalığı Müqaviləsi', tag: 'Ədalətli bölgü',
-  signOrg: 'Süfrə Qalıqlarının Bölüşdürülməsi Komissiyası',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında bayram süfrəsindən qalan yeməklərin bölgüsü razılaşdırılır. Tərəflər qablaşdırma və daşınma məsələlərini də əvvəlcədən müəyyən edirlər.',
-  powers: 'Hər tərəf öz gətirdiyi qabı geri aparır.\nDolma bərabər bölünür.\nTort qalığı uşaqlara verilir.\nSalat bölgüsü müzakirə olunmur — qalır.',
-  penalty: 'Bölgü pozulduqda növbəti tədbirdə pozan tərəf iki əlavə yemək hazırlayır.'
+  title: 'Bayram Süfrəsindən Qalan Yeməklərin Bölgüsü haqqında Rəy', tag: 'Qalıq',
+  signOrg: 'Bayram Süfrəsi və Qonaq Qəbulu üzrə Ali Şura',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında süfrə qalıqlarının bölgüsü üzrə mövqelər əsasən üst-üstə düşür. Rəy növbəti üç günün menyusunu da nəzərə alır.',
+  powers: 'Qalıqlar üç gün ərzində istifadə edilir.\nQonaqlara pay ayrılması üstünlük təşkil edir.\nŞirniyyat ayrıca saxlanılır.\nMenyu təkrarı qaçılmaz hesab edilir.',
+  penalty: 'Rəyin nəticələri hər bayramdan sonra yenidən qiymətləndirilir; qalıqların həcmi artdıqda menyu planı əvvəlcədən düzəldilir.',
+  titleOptions: [
+    'Bayram Süfrəsindən Qalan Yeməklərin Bölgüsü haqqında Rəy',
+    'Süfrə Qalıqlarının Saxlanma Müddətinə dair Ekspert Rəyi',
+    'Qonaqlara Verilən Payın Həcminə dair Yekun Rəy',
+    'Bayramdan Sonrakı Menyu Planlaşdırmasına dair Rəy'
+  ],
+  powersOptions: [
+    'Qalıqlar üç gün ərzində istifadə edilir.',
+    'Qonaqlara pay ayrılması üstünlük təşkil edir.',
+    'Şirniyyat ayrıca saxlanılır.',
+    'Menyu təkrarı qaçılmaz hesab edilir.',
+    'Dondurulacaq hissə əvvəlcədən ayrılır.',
+    'Ən sevimli yemək bərabər bölünür.',
+    'Qab-qacaq eyni gün yuyulur.',
+    'Qonşuya göndərilən pay ənənə sayılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rəyin nəticələri hər bayramdan sonra yenidən qiymətləndirilir; qalıqların həcmi artdıqda menyu planı əvvəlcədən düzəldilir.',
+    'Rəy yalnız bir bayram dövrünə aiddir.',
+    'Qalıqların israfı ayrıca qeydə alınır.'
+  ]
 },
 
 /* ---------------- SƏYAHƏT / YOL ---------------- */
 {
   id: 'suitcase-quota', cat: 'travel', tone: 'zarafat', layout: 'blank', palette: 'steel',
-  title: 'Çamadan Çəki Kvotası', tag: 'Yığım günü',
-  signOrg: 'Baqaj və Çamadan Kvotaları üzrə Baş İdarə',
-  preamble: 'Bu sənədlə {from} tərəfindən {to} adlı şəxs üçün səyahət çamadanının çəki və həcm həddi müəyyən edilir. Kvota «bəlkə lazım olar» prinsipi ilə əlavə edilən əşyalara şamil edilmir.',
-  powers: 'Çamadan çəkisi 20 kq-ı keçməmək.\nƏl yükü bir ədəd olmaq.\n«Ehtiyat üçün» ayaqqabı sayı ikidən çox olmamaq.\nSaç fenini götürməmək (oteldə var).',
-  penalty: 'Hədd aşıldıqda artıq əşyalar digər tərəfin çamadanına yerləşdirilir və geri qayıdışda o daşınır.'
+  title: 'Səfər Zamanı Baqaj Çəkisinin Bölüşdürülməsi haqqında Bildiriş', tag: 'Çamadan',
+  signOrg: 'Baqaj və Yol Ehtiyatları üzrə Komissiya',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, səfər zamanı baqaj çəkisinin bölüşdürülməsi qaydası müəyyən edilmişdir. {from} və {to} arasında ortaq çamadanda yer bölgüsü də razılaşdırılmışdır.',
+  powers: 'Ortaq çamadanda yer bərabər bölünür.\nƏlavə çəki haqqını onu yaradan tərəf ödəyir.\nSuvenirlər üçün beş kiloqram ehtiyat saxlanılır.\nAyaqqabı sayı üç cütlə məhdudlaşır.',
+  penalty: 'Çəki həddinin aşılması halında əlavə haqq həmin əşyaların sahibi tərəfindən ödənilir və ümumi büdcədən çıxılmır.',
+  titleOptions: [
+    'Səfər Zamanı Baqaj Çəkisinin Bölüşdürülməsi haqqında Bildiriş',
+    'Ortaq Çamadanda Yer Bölgüsü haqqında Rəsmi Bildiriş',
+    'Əlavə Baqaj Haqqının Ödənilməsi Qaydası haqqında Bildiriş',
+    'Suvenir və Hədiyyə üçün Ayrılan Yer haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Ortaq çamadanda yer bərabər bölünür.',
+    'Əlavə çəki haqqını onu yaradan tərəf ödəyir.',
+    'Suvenirlər üçün beş kiloqram ehtiyat saxlanılır.',
+    'Ayaqqabı sayı üç cütlə məhdudlaşır.',
+    'Dərman və sənədlər əl yükündə saxlanılır.',
+    'Qayıdışda çəki yenidən yoxlanılır.',
+    '«Bəlkə lazım oldu» əşyalar siyahıdan çıxarılır.',
+    'Yığım səfərdən bir gün əvvəl tamamlanır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Çəki həddinin aşılması halında əlavə haqq həmin əşyaların sahibi tərəfindən ödənilir və ümumi büdcədən çıxılmır.',
+    'Bildiriş yalnız bir səfərə şamil edilir.',
+    'Qayıdış baqajı ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'navigator-authority', cat: 'travel', tone: 'zarafat', layout: 'notarial', palette: 'steel',
-  title: 'Naviqasiya Səlahiyyətnaməsi', tag: 'Yol mübahisəsi',
-  signOrg: 'Naviqasiya və Marşrut Məsələləri üzrə Komissiya',
+  title: 'Səfər Zamanı Marşrutun Müəyyən Edilməsi Səlahiyyətinə dair Akt', tag: 'Yol',
+  signOrg: 'Yol Hərəkəti və Marşrut Nizamı üzrə Baş İdarə',
   powersLabel: 'NAVİQATORUN SƏLAHİYYƏTLƏRİ',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə səyahət boyunca marşrutu müəyyən etmək və naviqasiya idarəsi səlahiyyəti verilir. Səhv dönüş halında məsuliyyət bölünmür.',
-  powers: 'Marşrutu təkbaşına seçmək.\nDayanacaq yerlərini müəyyən etmək.\nXəritəni yüksək səslə oxumaq.\nSəhv dönüşdən sonra izahat verməmək.',
-  penalty: 'Eyni səfərdə üç səhv dönüş baş verdikdə səlahiyyət avtomatik olaraq digər sərnişinə keçir.'
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə səfər marşrutunu müəyyən etmək səlahiyyəti verilir. Səlahiyyət dayanacaqların planlaşdırılmasını da əhatə edir.',
+  powers: 'Marşrut səfərdən əvvəl razılaşdırılır.\nDəyişiklik sürücü ilə birgə qərara alınır.\nDayanacaqlar hər iki saatdan bir planlaşdırılır.\nAlternativ yol yalnız real üstünlük olduqda seçilir.',
+  penalty: 'Marşrutun səbəbsiz uzadılması halında növbəti səfərdə naviqasiya səlahiyyəti tam olaraq digər tərəfə keçir.',
+  titleOptions: [
+    'Səfər Zamanı Marşrutun Müəyyən Edilməsi Səlahiyyətinə dair Akt',
+    'Naviqasiya Cihazına Nəzarət Səlahiyyətinin Verilməsinə dair Akt',
+    'Yol Boyu Dayanacaqların Planlaşdırılmasına dair Etibarnamə',
+    'Marşrut Dəyişikliyi Qaydasının Müəyyən Edilməsinə dair Akt'
+  ],
+  powersOptions: [
+    'Marşrut səfərdən əvvəl razılaşdırılır.',
+    'Dəyişiklik sürücü ilə birgə qərara alınır.',
+    'Dayanacaqlar hər iki saatdan bir planlaşdırılır.',
+    'Alternativ yol yalnız real üstünlük olduqda seçilir.',
+    'Yanacaq dayanacağı əvvəlcədən müəyyən edilir.',
+    'Yemək fasiləsi marşruta daxil edilir.',
+    'Gecə sürüşü ayrıca razılaşdırılır.',
+    'Gəlmə vaxtı təxmini bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Marşrutun səbəbsiz uzadılması halında növbəti səfərdə naviqasiya səlahiyyəti tam olaraq digər tərəfə keçir.',
+    'Akt yalnız bir səfərə şamil edilir.',
+    'Yol qapanmaları səlahiyyətə təsir göstərmir.'
+  ]
 },
 {
   id: 'driving-shift-contract', cat: 'travel', tone: 'zarafat', layout: 'muqavile', palette: 'ink',
-  title: 'Sürücülük Növbəsi Müqaviləsi', tag: 'Uzun yol',
-  signOrg: 'Sürücülük Növbəsi üzrə Ali Şura',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında uzun məsafəli səfərdə sükan arxasında növbələşmə qaydası müəyyən edilir. Tərəflər yorğunluq hiss etdikdə dərhal xəbər vermək öhdəliyi götürürlər.',
-  powers: 'Hər 2 saatdan bir növbə dəyişikliyi.\nSürücü musiqi seçimində üstünlüyə malikdir.\nYorğunluq halında növbə dərhal dəyişir.\nYanacaq xərci bərabər bölünür.',
-  penalty: 'Növbə əsassız uzadıldıqda növbəti səfərdə ilk növbə uzadan tərəfə düşür.'
+  title: 'Uzun Yolda Sürücülük Növbəsinin Bölüşdürülməsi üzrə Müqavilə', tag: 'Sükan',
+  signOrg: 'Yol Hərəkəti və Marşrut Nizamı üzrə Baş İdarə',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında uzun yolda sürücülük növbəsi, dincəlmə fasilələri və yanacaq xərclərinin bölgüsü barədə razılıq əldə edilmişdir. Müqavilə səfər başa çatanadək qüvvədədir.',
+  powers: 'Növbə hər iki saatdan bir dəyişdirilir.\nSükan arxasında olan şəxsə məsləhət verilmir.\nYanacaq xərci bərabər bölünür.\nYorğunluq bildirildikdə növbə dərhal dəyişdirilir.',
+  penalty: 'Növbədən imtina halında həmin tərəf növbəti səfərin yanacaq xərcinin tam ödənilməsi öhdəliyini daşıyır.',
+  titleOptions: [
+    'Uzun Yolda Sürücülük Növbəsinin Bölüşdürülməsi üzrə Müqavilə',
+    'Sükan Arxasında Növbəliliyin Müəyyən Edilməsi üzrə Saziş',
+    'Sürücülərin Dincəlmə Rejimi üzrə Qarşılıqlı Müqavilə',
+    'Yanacaq və Yol Xərclərinin Bölgüsü üzrə Protokol'
+  ],
+  powersOptions: [
+    'Növbə hər iki saatdan bir dəyişdirilir.',
+    'Sükan arxasında olan şəxsə məsləhət verilmir.',
+    'Yanacaq xərci bərabər bölünür.',
+    'Yorğunluq bildirildikdə növbə dərhal dəyişdirilir.',
+    'Gecə saatlarında növbə qısaldılır.',
+    'Musiqi seçimi sürücünün səlahiyyətindədir.',
+    'Cərimə onu yaradan tərəf tərəfindən ödənilir.',
+    'Avtomobilin vəziyyəti səfərdən əvvəl yoxlanılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbədən imtina halında həmin tərəf növbəti səfərin yanacaq xərcinin tam ödənilməsi öhdəliyini daşıyır.',
+    'Müqavilə hər səfər üçün yenidən bağlanır.',
+    'Sağlamlıq halları növbədən azad edir.'
+  ]
 },
 {
   id: 'playlist-license', cat: 'travel', tone: 'zarafat', layout: 'lisenziya', palette: 'gold',
-  title: 'Yol Musiqisi Lisenziyası', tag: 'Səs hüququ',
-  signOrg: 'Yol Musiqisi Məsələləri üzrə Xüsusi Komitə',
+  title: 'Yol Boyu Musiqi Seçimi Səlahiyyətinin Verilməsinə dair Lisenziya', tag: 'Musiqi',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ JANRLAR',
-  preamble: '{from} tərəfindən {to} adlı şəxsə səfər boyunca avtomobil musiqisini idarə etmək üçün lisenziya verilir. Lisenziya bütün janrları əhatə edir, lakin veto hüququ sürücüdə qalır.',
-  powers: 'Mahnı siyahısını əvvəlcədən hazırlamaq.\nHər saatda bir dəfə janr dəyişmək.\nSəs səviyyəsini müəyyən etmək.\nMahnını yarımçıq kəsmək (səfərdə 3 dəfə).',
-  penalty: 'Eyni mahnı üç dəfə təkrarlandıqda lisenziya bir saatlıq dayandırılır və radio yandırılır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə yol boyu musiqi seçimi səlahiyyəti verilir. Lisenziya digər sərnişinlərin rahatlığını nəzərə almağı və növbəliliyə əməl etməyi şərt kimi nəzərdə tutur.',
+  powers: 'Musiqi növbəsi hər saatdan bir dəyişdirilir.\nMahnı yarımçıq kəsilmir.\nSəs həddi danışığa mane olmur.\nSürücünün etirazı dərhal nəzərə alınır.',
+  penalty: 'Eyni mahnının üç dəfədən artıq təkrarlanması halında musiqi seçimi səlahiyyəti növbəti sərnişinə keçir.',
+  titleOptions: [
+    'Yol Boyu Musiqi Seçimi Səlahiyyətinin Verilməsinə dair Lisenziya',
+    'Səsgücləndiricidən İstifadə Növbəsinə dair Xüsusi İcazə',
+    'Musiqi Siyahısının Tərtibi Hüququna dair Müddətli Lisenziya',
+    'Mahnının Dəyişdirilməsi Qaydasına dair Məhdud İcazə'
+  ],
+  powersOptions: [
+    'Musiqi növbəsi hər saatdan bir dəyişdirilir.',
+    'Mahnı yarımçıq kəsilmir.',
+    'Səs həddi danışığa mane olmur.',
+    'Sürücünün etirazı dərhal nəzərə alınır.',
+    'Gecə saatlarında sakit musiqi seçilir.',
+    'Təkrarlanan mahnı siyahıdan çıxarılır.',
+    'Hər sərnişin ən azı bir mahnı təklif edir.',
+    'Səssizlik rejimi də seçim variantıdır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni mahnının üç dəfədən artıq təkrarlanması halında musiqi seçimi səlahiyyəti növbəti sərnişinə keçir.',
+    'Lisenziya yalnız bir səfərə şamil edilir.',
+    'Sürücünün diqqətinə mane olan seçim dayandırılır.'
+  ]
 },
 {
   id: 'hotel-choice-arayis', cat: 'travel', tone: 'zarafat', layout: 'arayis', palette: 'forest',
-  title: 'Otel Seçimi Arayışı', tag: 'Rəsmi təsdiq',
-  signOrg: 'Yerləşmə və Otel Seçiminin Qeydiyyatı Şöbəsi',
+  title: 'Yaşayış Yerinin Seçilməsi Prosesinin Nəticələri haqqında Arayış', tag: 'Otel',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
   toLabel: 'Seçimi edən tərəf', fromLabel: 'Razılıq verən tərəf',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxsin etdiyi otel seçimi {from} tərəfindən qəbul edilmişdir. Şəkillərlə reallıq arasındakı fərqə görə məsuliyyət seçimi edən tərəfin üzərinə düşür.',
-  powers: 'Oteli təkbaşına seçmək.\nRezervasiyanı öz adına etmək.\nSəhər yeməyi paketini müəyyən etmək.\nOtaq nömrəsini dəyişdirmək tələbi (bir dəfə).',
-  penalty: 'Otel gözləntiyə uyğun gəlmədikdə növbəti səfərin oteli digər tərəf tərəfindən seçilir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, səfər üçün yaşayış yerinin seçilməsi prosesi {from} ilə birgə aparılmış, variantlar müqayisə edilmiş və yekun qərar qarşılıqlı razılıqla qəbul olunmuşdur.',
+  powers: 'Ən azı beş variant müqayisə edilib.\nBüdcə həddi əvvəlcədən müəyyən edilib.\nRəylərin sayı və tarixi nəzərə alınıb.\nMərkəzə yaxınlıq üstünlük sayılıb.',
+  penalty: 'Seçilmiş variant gözləntiləri doğrultmadıqda məsuliyyət hər iki tərəf arasında bərabər bölüşdürülür.',
+  titleOptions: [
+    'Yaşayış Yerinin Seçilməsi Prosesinin Nəticələri haqqında Arayış',
+    'Otel Variantlarının Müqayisəsinin Nəticəsi haqqında Arayış',
+    'Büdcə və Yerləşmə Şərtlərinin Uzlaşdırılması haqqında Arayış',
+    'Rəylərin Nəzərə Alınması Qaydası haqqında Rəsmi Arayış'
+  ],
+  powersOptions: [
+    'Ən azı beş variant müqayisə edilib.',
+    'Büdcə həddi əvvəlcədən müəyyən edilib.',
+    'Rəylərin sayı və tarixi nəzərə alınıb.',
+    'Mərkəzə yaxınlıq üstünlük sayılıb.',
+    'Səhər yeməyinin daxil olması yoxlanılıb.',
+    'Ləğv şərtləri diqqətlə oxunub.',
+    'Şəkillərlə real vəziyyət müqayisə ediləcək.',
+    'Ehtiyat variant saxlanılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Seçilmiş variant gözləntiləri doğrultmadıqda məsuliyyət hər iki tərəf arasında bərabər bölüşdürülür.',
+    'Arayış yalnız bir səfərə şamil edilir.',
+    'Ləğv halında xərclər ümumi büdcədən ödənilir.'
+  ]
 },
 {
   id: 'delay-decision', cat: 'travel', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
-  title: 'Gecikməyə Görə Qərar', tag: 'Yola çıxma',
-  signOrg: 'Gecikmiş Yolçuluqlar üzrə Fövqəladə Komissiya',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında yola çıxma vaxtının gecikməsi ilə bağlı mübahisəyə baxaraq müəyyən etdi ki, «5 dəqiqəyə hazıram» ifadəsi ölçü vahidi kimi qəbul edilə bilməz.',
-  powers: 'Yeni yola çıxma vaxtı dəqiq təyin edilir.\nGecikən tərəf yanacaq alır.\nBirinci dayanacaqda qəhvə ondan.\nKöhnə gecikmələr xatırladılmır.',
-  penalty: 'Yeni vaxt da pozulduqda növbəti səfərdə maşın gecikən tərəf olmadan yola düşür.'
+  title: 'Səfərin Başlanmasının Gecikdirilməsi Halı üzrə Qəbul Edilmiş Qərar', tag: 'Gecikmə',
+  signOrg: 'Yol Hərəkəti və Marşrut Nizamı üzrə Baş İdarə',
+  preamble: 'Şura {to} adlı şəxsin səfərin başlanmasını gecikdirməsi halına baxaraq müəyyən etmişdir ki, göstərilən səbəblərin bir hissəsi obyektivdir. {from} tərəfindən verilmiş müraciət qismən təmin edilir.',
+  powers: 'Gecikmə müddəti qırx dəqiqə qeydə alınıb.\nSəbəblərin bir hissəsi obyektiv sayılır.\nYeni yola çıxma vaxtı müəyyən edilir.\nMarşrut buna uyğun düzəldilir.',
+  penalty: 'Gecikmənin təkrarlanması halında növbəti səfərdə yola çıxma vaxtı bir saat tez elan edilir.',
+  titleOptions: [
+    'Səfərin Başlanmasının Gecikdirilməsi Halı üzrə Qəbul Edilmiş Qərar',
+    'Yola Çıxma Vaxtının Pozulması üzrə Yekun Qətnamə',
+    'Gecikmənin Səbəblərinin Qiymətləndirilməsi haqqında Qərar',
+    'Yeni Yola Çıxma Vaxtının Müəyyən Edilməsi haqqında Qərar'
+  ],
+  powersOptions: [
+    'Gecikmə müddəti qırx dəqiqə qeydə alınıb.',
+    'Səbəblərin bir hissəsi obyektiv sayılır.',
+    'Yeni yola çıxma vaxtı müəyyən edilir.',
+    'Marşrut buna uyğun düzəldilir.',
+    'Baqajın yığılması gecikmənin əsas səbəbidir.',
+    'Xəbərdarlıq vaxtında edilməyib.',
+    'Növbəti səfərdə yığım bir gün əvvəl tamamlanır.',
+    'Qalan iştirakçıların vaxtı nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Gecikmənin təkrarlanması halında növbəti səfərdə yola çıxma vaxtı bir saat tez elan edilir.',
+    'Qərardan narazılıq qeydə alınır, lakin icraya təsir etmir.',
+    'Obyektiv səbəblər sənədlə təsdiqlənməlidir.'
+  ]
 },
 {
   id: 'best-traveler-diploma', cat: 'travel', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'İlin Səyyahı Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Səyahət Nailiyyətləri üzrə Ali Məclis',
-  preamble: '{from} tərəfindən {to} adlı şəxsə, il ərzində heç bir uçuşu qaçırmadığına, çamadanı vaxtında yığdığına və heç bir sərhəddə problem yaşamadığına görə bu fəxri diplom təqdim olunur.',
-  powers: 'Növbəti səfərdə pəncərə yerini seçmək.\nMarşrut təklifində üstünlük.\nSəyahət büdcəsini idarə etmək.\nŞəkillərin seçimini təsdiqləmək.',
-  penalty: 'Bir uçuş qaçırıldıqda ad növbəti ilədək dayandırılır və pəncərə yeri növbəyə qaytarılır.'
+  title: 'Səyahət Yoldaşı kimi Göstərilmiş Nəticələrə Görə Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin səyahət yoldaşı kimi göstərdiyi davranışı qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən, səfər iştirakçılarının yekdil rəyi ilə təqdim olunur.',
+  powers: 'Heç vaxt gecikməyib.\nBaqaj çəkisi həddi aşmayıb.\nXərclər vaxtında bölüşdürülüb.\nGözlənilməz hallarda sakitlik saxlanılıb.',
+  penalty: 'Diplom geri alınmır. Təltif olunan şəxs növbəti səfərdə pəncərə yerini birinci seçmək hüququ qazanır.',
+  titleOptions: [
+    'Səyahət Yoldaşı kimi Göstərilmiş Nəticələrə Görə Fəxri Diplom',
+    'Yol Boyu Nümunəvi Davranışa Görə Verilmiş Fəxri Diplom',
+    'Gözlənilməz Halların Sakit Həllinə Görə Fəxri Diplom',
+    'Səfərin Nizamlı Keçməsinə Verilən Töhfəyə Görə Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Heç vaxt gecikməyib.',
+    'Baqaj çəkisi həddi aşmayıb.',
+    'Xərclər vaxtında bölüşdürülüb.',
+    'Gözlənilməz hallarda sakitlik saxlanılıb.',
+    'Yol ərzağı bölüşülüb.',
+    'Şəkil çəkmə xahişləri rədd edilməyib.',
+    'Marşrut dəyişikliyinə etiraz olmayıb.',
+    'Sənədlər həmişə əldə saxlanılıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan şəxs növbəti səfərdə pəncərə yerini birinci seçmək hüququ qazanır.',
+    'Təltif hər səfərdən sonra yenidən qiymətləndirilir.',
+    'Diplom səfər albomunda saxlanılır.'
+  ]
 },
 {
   id: 'photo-stop-certificate', cat: 'travel', tone: 'zarafat', layout: 'sertifikat', palette: 'steel',
-  title: 'Foto Dayanacağı Sertifikatı', tag: 'Yol boyu',
-  signOrg: 'Foto Dayanacaqları üzrə Xüsusi Komissiya',
+  title: 'Yol Boyu Foto Dayanacaqlarının Sayı və Müddətinə dair Sertifikat', tag: 'Foto',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
   powersLabel: 'DAYANACAQ ŞƏRTLƏRİ',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə səfər boyunca foto çəkmək üçün dayanacaq tələb etmək hüququ verilir. Hüquq {from} tərəfindən, uzun mübahisələrdən sonra rəsmiləşdirilmişdir.',
-  powers: 'Səfərdə 3 dəfə dayanacaq tələb etmək.\nHər dayanacaq ən çoxu 10 dəqiqə.\nDayanacaq yerini əvvəlcədən bildirmək.\nŞəkilləri sonradan hamıya göndərmək.',
-  penalty: 'Dayanacaq 20 dəqiqəni keçdikdə qalan bütün foto dayanacaqları həmin gün üçün ləğv edilir.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs yol boyu foto dayanacaqlarının sayı və müddəti barədə şərtlərə əməl edir. Sertifikat {from} tərəfindən, əvvəlki səfərlərin təcrübəsi əsas götürülərək verilir.',
+  powers: 'Foto dayanacağı hər saatda bir dəfə olur.\nDayanma müddəti on dəqiqəni keçmir.\nHər iştirakçıdan ən azı bir kadr alınır.\nSürücü də şəkildə iştirak edir.',
+  penalty: 'Dayanacaqların sayı razılaşdırılmış həddi aşdıqda foto fasilələri səfərin qalan hissəsi üçün dayandırılır.',
+  titleOptions: [
+    'Yol Boyu Foto Dayanacaqlarının Sayı və Müddətinə dair Sertifikat',
+    'Mənzərəli Yerlərdə Dayanma Hüququnu Təsdiq edən Sertifikat',
+    'Foto Çəkiliş Fasilələrinin Razılaşdırılmasına dair Sertifikat',
+    'Səfər Şəkillərinin Paylaşılması Qaydasına dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Foto dayanacağı hər saatda bir dəfə olur.',
+    'Dayanma müddəti on dəqiqəni keçmir.',
+    'Hər iştirakçıdan ən azı bir kadr alınır.',
+    'Sürücü də şəkildə iştirak edir.',
+    'Təhlükəli yerlərdə dayanma aparılmır.',
+    'Uğursuz kadrlar paylaşılmır.',
+    'Şəkillər səfərdən sonra bölüşülür.',
+    'Video çəkiliş ayrıca razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Dayanacaqların sayı razılaşdırılmış həddi aşdıqda foto fasilələri səfərin qalan hissəsi üçün dayandırılır.',
+    'Sertifikat yalnız bir səfərə şamil edilir.',
+    'Mənzərəli yerlər əvvəlcədən siyahıya salınır.'
+  ]
 },
 {
   id: 'arrival-telegram', cat: 'travel', tone: 'zarafat', layout: 'teleqram', palette: 'forest',
-  title: 'Çatma Bildirişi Teleqramı', tag: 'Ana üçün',
-  signOrg: 'Çatma Bildirişləri üzrə Rabitə İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə sağ-salamat çatma barədə təcili bildiriş göndərilir. Teleqram valideynlərin narahatlığını aradan qaldırmaq məqsədi daşıyır və gecikdirilə bilməz.',
-  powers: 'Çatan kimi bildiriş göndərmək.\nOtelin adını qeyd etmək.\nBir foto əlavə etmək.\nGündə bir dəfə vəziyyət yeniləməsi.',
-  penalty: 'Bildiriş 2 saat gecikdikdə valideynlər tərəfindən ardıcıl zənglər başlayır və dayanmır.'
+  title: 'Təyinat Məntəqəsinə Çatma Faktı haqqında Təcili Teleqram', tag: 'Çatma',
+  signOrg: 'Yol Hərəkəti və Marşrut Nizamı üzrə Baş İdarə',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxs təyinat məntəqəsinə sağ-salamat çatmış, baqaj tam şəkildə əldə edilmiş və yerləşmə problemsiz həyata keçirilmişdir. {from} tərəfindən narahatlığa əsas olmadığı bildirilir.',
+  powers: 'Yol nəzərdə tutulan müddətdə başa çatıb.\nBaqaj tam şəkildə əldədir.\nYerləşmə problemsiz həyata keçirilib.\nƏlaqə vasitəsi işlək vəziyyətdədir.',
+  penalty: 'Bu teleqram göndərildikdən sonra saatbaşı zəng gözləntisi əsassız hesab edilir; növbəti əlaqə razılaşdırılmış qrafik üzrə həyata keçirilir.',
+  titleOptions: [
+    'Təyinat Məntəqəsinə Çatma Faktı haqqında Təcili Teleqram',
+    'Sağ-Salamat Çatma Barədə Ailəyə Ünvanlanmış Teleqram',
+    'Yolun Başa Çatması haqqında Təxirəsalınmaz Bildiriş',
+    'Gəlmə Vaxtının Təsdiqi haqqında Təcili Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Yol nəzərdə tutulan müddətdə başa çatıb.',
+    'Baqaj tam şəkildə əldədir.',
+    'Yerləşmə problemsiz həyata keçirilib.',
+    'Əlaqə vasitəsi işlək vəziyyətdədir.',
+    'Hava şəraiti əlverişlidir.',
+    'Şəkillər axşam göndəriləcək.',
+    'Növbəti əlaqə sabah nəzərdə tutulur.',
+    'Qayıdış tarixi dəyişməyib.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bu teleqram göndərildikdən sonra saatbaşı zəng gözləntisi əsassız hesab edilir; növbəti əlaqə razılaşdırılmış qrafik üzrə həyata keçirilir.',
+    'Teleqram yalnız məlumat xarakteri daşıyır və öhdəlik yaratmır.',
+    'Əlaqə qrafiki tərəflər arasında ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'traveler-id', cat: 'travel', tone: 'zarafat', layout: 'vesiqe', palette: 'steel',
-  title: 'Səyahət Yoldaşı Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Səyahət Yoldaşlığının Qeydiyyatı Şöbəsi',
+  title: 'Səyahət Yoldaşı Statusunu və Öhdəliklərini Təsdiq edən Vəsiqə', tag: 'Yoldaş',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
   fromLabel: 'Vəsiqəni verən',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin etibarlı səyahət yoldaşı olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və bütün marşrutlarda, hava limanlarında və qatar kupelərində etibarlıdır.',
-  powers: 'Marşrut müzakirəsində səs vermək.\nÇamadanı təkbaşına yığmaq.\nSəfər büdcəsinə giriş.\nSəhər yeməyi saatını təklif etmək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin növbəti səfərdə pəncərə yeri iddiası irəli sürülmür.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin səyahət qrupuna üzvlüyünü təsdiq edir. Sənəd {from} tərəfindən verilmişdir və ortaq büdcədə iştirak hüququ ilə birlikdə müvafiq öhdəlikləri də əhatə edir.',
+  powers: 'Marşrut müzakirəsində səs hüququ tanınır.\nOrtaq büdcəyə pay vaxtında ödənilir.\nBir dayanacaq təklif etmək hüququ verilir.\nSənədlər şəxsən saxlanılır.',
+  penalty: 'Vəsiqə ilə tanınan hüquqlar ortaq büdcə öhdəliklərinin icrası ilə bağlıdır; ödəniş gecikdikdə səs hüququ müvəqqəti dayandırılır.',
+  titleOptions: [
+    'Səyahət Yoldaşı Statusunu və Öhdəliklərini Təsdiq edən Vəsiqə',
+    'Səfər İştirakçısının Hüquqlarını Təsdiq edən Vəsiqə',
+    'Ortaq Büdcədə İştirak Hüququna dair Şəhadətnamə',
+    'Səfər Qrupuna Üzvlüyü Təsdiq edən Vəsiqə'
+  ],
+  powersOptions: [
+    'Marşrut müzakirəsində səs hüququ tanınır.',
+    'Ortaq büdcəyə pay vaxtında ödənilir.',
+    'Bir dayanacaq təklif etmək hüququ verilir.',
+    'Sənədlər şəxsən saxlanılır.',
+    'Yemək yerinin seçimində iştirak edilir.',
+    'Pəncərə yeri növbə ilə tutulur.',
+    'Fövqəladə hallarda qrup bir yerdə qalır.',
+    'Ayrılma barədə əvvəlcədən xəbər verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə tanınan hüquqlar ortaq büdcə öhdəliklərinin icrası ilə bağlıdır; ödəniş gecikdikdə səs hüququ müvəqqəti dayandırılır.',
+    'Vəsiqə hər səfər üçün yenidən verilir.',
+    'Qrupdan ayrılma vəsiqəni qüvvədən salır.'
+  ]
 },
 {
   id: 'snack-authority', cat: 'travel', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
-  title: 'Yol Ərzağı Səlahiyyəti', tag: 'Bagaj hüququ',
-  signOrg: 'Yol Ərzağı və Fasilələr üzrə Komitə',
+  title: 'Yol Ərzağının Hazırlanması və Paylanması Qaydasına dair İcazə', tag: 'Ərzaq',
+  signOrg: 'Baqaj və Yol Ehtiyatları üzrə Komissiya',
   powersLabel: 'ƏRZAQ ÜZRƏ SƏLAHİYYƏTLƏR',
-  preamble: 'Bu səlahiyyətnamə ilə {from} tərəfindən {to} adlı şəxsə yol ərzağının seçimi, qablaşdırılması və paylanması həvalə olunur. Səlahiyyət sürücünün payını əvvəlcədən ayırmaq şərti ilə verilir.',
-  powers: 'Ərzaq siyahısını təkbaşına müəyyən etmək.\nPaylama vaxtını təyin etmək.\nSürücüyə birinci vermək.\nSon sendviçin taleyini həll etmək.',
-  penalty: 'Ərzaq yolun yarısında bitdikdə növbəti dayanacaqda alış-veriş həmin şəxsin hesabına aparılır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə yol ərzağının hazırlanması, saxlanması və paylanması səlahiyyəti verilir. İcazə ehtiyatın səfərin sonuna qədər çatması və payın bütün iştirakçılara bərabər verilməsi şərti ilə qüvvədədir.',
+  powers: 'Ehtiyat yola çıxdıqdan bir saat sonra açılır.\nPay bütün iştirakçılara bərabər verilir.\nSürücünün payı ayrıca saxlanılır.\nZibil torbada toplanır.',
+  penalty: 'Ehtiyatın yolun yarısına qədər tükənməsi halında əlavə alış xərcləri onu istifadə edən tərəflər arasında bölüşdürülür.',
+  titleOptions: [
+    'Yol Ərzağının Hazırlanması və Paylanması Qaydasına dair İcazə',
+    'Ehtiyatın Açılma Vaxtının Müəyyən Edilməsinə dair Xüsusi İcazə',
+    'Yol Ərzağının Bölüşdürülməsi Qaydasına dair Məhdud İcazə',
+    'Ərzaq Ehtiyatına Nəzarət Səlahiyyətinin Verilməsinə dair İcazə'
+  ],
+  powersOptions: [
+    'Ehtiyat yola çıxdıqdan bir saat sonra açılır.',
+    'Pay bütün iştirakçılara bərabər verilir.',
+    'Sürücünün payı ayrıca saxlanılır.',
+    'Zibil torbada toplanır.',
+    'Su ehtiyatı ayrıca hesablanır.',
+    'İsti içki termosda saxlanılır.',
+    'Ehtiyatın qalığı qayıdışa saxlanılır.',
+    'Xüsusi pəhriz əvvəlcədən nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Ehtiyatın yolun yarısına qədər tükənməsi halında əlavə alış xərcləri onu istifadə edən tərəflər arasında bölüşdürülür.',
+    'İcazə yalnız bir səfərə şamil edilir.',
+    'Ehtiyatın tərkibi əvvəlcədən razılaşdırılır.'
+  ]
 },
 {
   id: 'window-seat-treaty', cat: 'travel', tone: 'zarafat', layout: 'ekspertiza', palette: 'gold',
-  title: 'Pəncərə Yeri Müqaviləsi', tag: 'Əbədi mübahisə',
-  signOrg: 'Pəncərə Yeri Mübahisələri üzrə Arbitraj Komitəsi',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında nəqliyyat vasitəsində pəncərə yerindən istifadə növbəsi müəyyən edilir. Müqavilə təyyarə, qatar və avtobus üçün eyni dərəcədə qüvvədədir.',
-  powers: 'Gediş və qayıdış yerləri dəyişdirilir.\nUzun səfərdə orta nöqtədə növbə dəyişir.\nPəncərə pərdəsi razılıqla bağlanır.\nFoto çəkmək üçün müvəqqəti yer dəyişikliyi.',
-  penalty: 'Növbə pozulduqda növbəti iki səfərdə pəncərə yeri tam olaraq digər tərəfə keçir.'
+  title: 'Nəqliyyat Vasitəsində Yerlərin Bölüşdürülməsinə dair Rəy', tag: 'Yer',
+  signOrg: 'Səyahət Yoldaşları Arasında Mübahisələr üzrə Şura',
+  preamble: 'Məsələyə dair aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında pəncərə yeri üzrə mübahisə növbəlilik prinsipi ilə həll edilə bilər. Rəy bütün iştirakçıların rahatlığını nəzərə alır.',
+  powers: 'Pəncərə yeri hər iki saatdan bir dəyişdirilir.\nÖn oturacaq ən hündür sərnişinə verilir.\nYuxuya gedən şəxs yerini itirmir.\nDayanacaqda yerdəyişmə aparılır.',
+  penalty: 'Növbəliliyin pozulması halında növbəti səfərdə pəncərə yeri tam olaraq zərərçəkmiş tərəfə verilir.',
+  titleOptions: [
+    'Nəqliyyat Vasitəsində Yerlərin Bölüşdürülməsinə dair Rəy',
+    'Pəncərə Yerinin Növbəliliyinə dair Ekspert Rəyi',
+    'Oturacaq Seçimi Mübahisəsinin Həllinə dair Yekun Rəy',
+    'Uzun Yolda Rahatlığın Bölüşdürülməsinə dair Rəy'
+  ],
+  powersOptions: [
+    'Pəncərə yeri hər iki saatdan bir dəyişdirilir.',
+    'Ön oturacaq ən hündür sərnişinə verilir.',
+    'Yuxuya gedən şəxs yerini itirmir.',
+    'Dayanacaqda yerdəyişmə aparılır.',
+    'Xəstəlik halında güzəşt tətbiq edilir.',
+    'Şəkil çəkmək üçün müvəqqəti dəyişmə icazəlidir.',
+    'Baqaj yerləşdirilməsi yerə təsir etmir.',
+    'Qayıdış yolunda növbə tərsinə başlayır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbəliliyin pozulması halında növbəti səfərdə pəncərə yeri tam olaraq zərərçəkmiş tərəfə verilir.',
+    'Rəy yalnız bir səfərə şamil edilir.',
+    'İştirakçıların sayı dəyişdikdə növbə yenidən qurulur.'
+  ]
 },
 
 /* ---------------- EV HEYVANLARI ---------------- */
 {
   id: 'sofa-rights', cat: 'pets', tone: 'zarafat', layout: 'notarial', palette: 'gold',
-  title: 'Divan Hüququ Etibarnaməsi', tag: 'Ən çox mübahisəli',
-  signOrg: 'Ev Heyvanlarının Divan Hüquqları üzrə Ali Şura',
+  title: 'Divanın Müəyyən Hissəsindən İstifadə Hüququnun Verilməsinə dair Akt', tag: 'Divan',
+  signOrg: 'Mənzil Daxilində Ərazi Bölgüsü üzrə Komissiya',
   toLabel: 'Hüquq verilən', fromLabel: 'Divanın sahibi',
-  preamble: 'Bu etibarnamə ilə {from} tərəfindən {to} adlı ev heyvanına divandan istifadə hüququ rəsmi olaraq tanınır. Hüquq uzun illik faktiki istifadə əsasında sənədləşdirilmişdir və geriyə şamil olunur.',
-  powers: 'Divanın sağ küncündə daimi yer.\nQonaq gələndə yerini saxlamaq.\nGün ərzində istənilən vaxt yatmaq.\nYastığı özü üçün uyğunlaşdırmaq.',
-  penalty: 'Divan örtüyü zədələndikdə hüquq bir həftəlik dayandırılır və xüsusi yataq tətbiq edilir.'
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə divanın müəyyən hissəsindən istifadə hüququ verilir. Hüquq uzunmüddətli faktiki istifadə əsasında tanınmışdır.',
+  powers: 'Divanın sağ küncü daimi istifadəyə verilir.\nYastıq mübahisə predmeti sayılmır.\nQonaq gəldikdə yer müvəqqəti boşaldılır.\nTük təmizliyi ev sahibinin öhdəsindədir.',
+  penalty: 'Hüquq divanın zədələnməməsi şərti ilə qüvvədədir; cırılma halında istifadə sahəsi yenidən müəyyən edilir.',
+  titleOptions: [
+    'Divanın Müəyyən Hissəsindən İstifadə Hüququnun Verilməsinə dair Akt',
+    'Mənzil Daxilində Ərazi Bölgüsünün Təsbit Edilməsinə dair Akt',
+    'Yastıq və Ədyalın İstifadə Rejiminə dair Etibarnamə',
+    'İstirahət Yerinin Rəsmi Qaydada Tanınmasına dair Akt'
+  ],
+  powersOptions: [
+    'Divanın sağ küncü daimi istifadəyə verilir.',
+    'Yastıq mübahisə predmeti sayılmır.',
+    'Qonaq gəldikdə yer müvəqqəti boşaldılır.',
+    'Tük təmizliyi ev sahibinin öhdəsindədir.',
+    'Ədyaldan istifadə soyuq aylarda genişləndirilir.',
+    'Günəş düşən hissə növbə ilə tutulur.',
+    'Yerdəyişmə xahişi bir dəfə edilir.',
+    'Gecə saatlarında yer sərbəst seçilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Hüquq divanın zədələnməməsi şərti ilə qüvvədədir; cırılma halında istifadə sahəsi yenidən müəyyən edilir.',
+    'Akt yeni mebel alındıqda yenidən tərtib edilir.',
+    'Hüquq digər ev heyvanlarına şamil edilmir.'
+  ]
 },
 {
   id: 'feeding-duty', cat: 'pets', tone: 'zarafat', layout: 'arayis', palette: 'forest',
-  title: 'Yemləmə Növbəsi Cədvəli', tag: 'Ailə növbəsi',
-  signOrg: 'Yemləmə Növbəsi üzrə Xüsusi Komissiya',
+  title: 'Ev Heyvanının Yemləmə Növbəsinin Bölüşdürülməsi haqqında Arayış', tag: 'Növbə',
+  signOrg: 'Yemləmə və Gəzinti Növbəsi üzrə Baş İdarə',
   toLabel: 'Növbəni icra edən', fromLabel: 'Cədvəli təsdiq edən',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı şəxs ev heyvanının yemləmə növbəsini vaxtında icra etmişdir. Təsdiq {from} tərəfindən verilmiş və heyvanın razılığı ilə qüvvəyə minmişdir.',
-  powers: 'Səhər 08:00 və axşam 19:00-da yemləmək.\nSu qabını gündə iki dəfə dəyişmək.\nƏlavə şirniyyat verməmək.\nNövbəni bir dəfə dəyişdirmək hüququ.',
-  penalty: 'Yemləmə iki dəfə gecikdirildikdə heyvan səhər saat 06:00-da müstəqil oyanış rejiminə keçir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, ev heyvanının yemləmə növbəsi {from} ilə birgə müəyyən edilmiş, səhər və axşam saatları üzrə cədvəl tərtib olunmuş və bütün ailə üzvlərinə çatdırılmışdır.',
+  powers: 'Yemləmə səhər və axşam saatlarında aparılır.\nSu qabı hər gün yenilənir.\nSüfrədən yemək verilmir.\nNövbə dəyişikliyi əvvəlcədən bildirilir.',
+  penalty: 'Növbənin ardıcıl iki dəfə buraxılması halında yemləmə öhdəliyi növbəti həftə üçün tam olaraq həmin şəxsin üzərinə düşür.',
+  titleOptions: [
+    'Ev Heyvanının Yemləmə Növbəsinin Bölüşdürülməsi haqqında Arayış',
+    'Yemləmə Cədvəlinin İcra Vəziyyəti haqqında Rəsmi Arayış',
+    'Qidalanma Rejiminin Müəyyən Edilməsi haqqında Arayış',
+    'Növbənin Ailə Üzvləri Arasında Bölgüsü haqqında Arayış'
+  ],
+  powersOptions: [
+    'Yemləmə səhər və axşam saatlarında aparılır.',
+    'Su qabı hər gün yenilənir.',
+    'Süfrədən yemək verilmir.',
+    'Növbə dəyişikliyi əvvəlcədən bildirilir.',
+    'Yem ehtiyatı bitmədən yenilənir.',
+    'Porsiya çəkisi dəyişdirilmir.',
+    'Əlavə şirniyyat baytarla razılaşdırılır.',
+    'Qab yemdən sonra yuyulur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbənin ardıcıl iki dəfə buraxılması halında yemləmə öhdəliyi növbəti həftə üçün tam olaraq həmin şəxsin üzərinə düşür.',
+    'Arayış hər ay yenidən tərtib edilir.',
+    'Səfər dövründə növbə ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'cat-license', cat: 'pets', tone: 'zarafat', layout: 'lisenziya', palette: 'ink',
-  title: 'Pişik Sərbəstlik Lisenziyası', tag: 'Ev qaydası',
-  signOrg: 'Pişik Sərbəstliyi üzrə Baş İdarə',
+  title: 'Mənzil Daxilində Sərbəst Hərəkət Hüququna dair Xüsusi İcazə', tag: 'Pişik',
+  signOrg: 'Ev Heyvanlarının Hüquqları üzrə Ali Şura',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ HALLAR',
-  preamble: '{from} tərəfindən {to} adlı pişiyə evin bütün otaqlarında sərbəst hərəkət etmək üçün lisenziya verilir. Lisenziya mətbəx masasının üstünü və klaviaturanı əhatə etmir, lakin bu şərt praktikada icra olunmur.',
-  powers: 'Bütün otaqlara sərbəst giriş.\nİstənilən qutunun içində oturmaq.\nGecə saat 04:00-da qaçış rejimi.\nƏşyaları masadan aşağı salmaq (gündə 3 ədəd).',
-  penalty: 'Bir gündə üçdən çox əşya sındırıldıqda lisenziya bir gecəlik dayandırılır və qapı bağlanır.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə mənzil daxilində sərbəst hərəkət hüququ verilir. İcazə mövcud vəziyyətin rəsmiləşdirilməsindən ibarətdir; faktiki olaraq bu hüquq artıq uzun müddətdir tətbiq edilir.',
+  powers: 'Bütün otaqlara giriş açıqdır.\nQapılar tam bağlanmır.\nPəncərə önü daimi istifadəyə verilir.\nGecə fəaliyyəti müzakirə predmeti deyil.',
+  penalty: 'İcazə qiymətli və kövrək əşyaların yerləşdiyi rəflərə şamil edilmir; həmin sahələr istisna zona kimi saxlanılır.',
+  titleOptions: [
+    'Mənzil Daxilində Sərbəst Hərəkət Hüququna dair Xüsusi İcazə',
+    'Rəflərə və Yüksək Səthlərə Çıxma Hüququna dair Lisenziya',
+    'Gecə Saatlarında Fəaliyyət Rejiminə dair Xüsusi İcazə',
+    'Qapıların Açıq Saxlanılması Tələbinə dair Lisenziya'
+  ],
+  powersOptions: [
+    'Bütün otaqlara giriş açıqdır.',
+    'Qapılar tam bağlanmır.',
+    'Pəncərə önü daimi istifadəyə verilir.',
+    'Gecə fəaliyyəti müzakirə predmeti deyil.',
+    'Klaviaturanın üstündə oturmaq icazəlidir.',
+    'Karton qutu sahiblik hüququ yaradır.',
+    'Mətbəx rəfi istisna zona kimi qalır.',
+    'Yatağın ortası növbə ilə tutulur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'İcazə qiymətli və kövrək əşyaların yerləşdiyi rəflərə şamil edilmir; həmin sahələr istisna zona kimi saxlanılır.',
+    'İcazə müddətsizdir və geri alınmır.',
+    'Qonaq gəldikdə hərəkət sahəsi müvəqqəti məhdudlaşdırılır.'
+  ]
 },
 {
   id: 'walk-contract', cat: 'pets', tone: 'zarafat', layout: 'muqavile', palette: 'forest',
-  title: 'Gəzinti Müqaviləsi', tag: 'Gündəlik öhdəlik',
-  signOrg: 'Gəzinti Öhdəlikləri üzrə Komitə',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında ev heyvanının gündəlik gəzinti qaydaları müəyyən edilir. Tərəflər hava şəraitindən asılı olmayaraq gəzintinin baş tutacağını qəbul edirlər.',
-  powers: 'Gündə iki gəzinti, hər biri 30 dəqiqə.\nMarşrutu heyvan müəyyən edir.\nHər ağacın yanında dayanmaq hüququ.\nDigər itlərlə salamlaşmaq üçün əlavə vaxt.',
-  penalty: 'Gəzinti buraxıldıqda evdə enerji həmin axşam mebel üzərində sərbəst şəkildə boşaldılır.'
+  title: 'Gündəlik Gəzintinin Marşrutu, Müddəti və Növbəliliyi üzrə Müqavilə', tag: 'Gəzinti',
+  signOrg: 'Yemləmə və Gəzinti Növbəsi üzrə Baş İdarə',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında gündəlik gəzintinin marşrutu, müddəti və növbəliliyi barədə razılıq əldə edilmişdir. Müqavilə bütün mövsümlərə şamil olunur.',
+  powers: 'Gəzinti gündə iki dəfə həyata keçirilir.\nMüddət ən azı iyirmi dəqiqə olur.\nMarşrut həftədə bir dəfə dəyişdirilir.\nYağışlı hava gəzintini ləğv etmir.',
+  penalty: 'Gəzinti növbəsinin buraxılması halında həmin gün ikinci gəzinti öhdəliyi tam olaraq növbəni buraxan tərəfin üzərinə düşür.',
+  titleOptions: [
+    'Gündəlik Gəzintinin Marşrutu, Müddəti və Növbəliliyi üzrə Müqavilə',
+    'Gəzinti Növbəsinin Ailə Üzvləri Arasında Bölgüsü üzrə Saziş',
+    'Hava Şəraitinin Nəzərə Alınması Qaydası üzrə Qarşılıqlı Müqavilə',
+    'Gəzinti Zamanı Davranış Qaydalarının Müəyyən Edilməsi üzrə Protokol'
+  ],
+  powersOptions: [
+    'Gəzinti gündə iki dəfə həyata keçirilir.',
+    'Müddət ən azı iyirmi dəqiqə olur.',
+    'Marşrut həftədə bir dəfə dəyişdirilir.',
+    'Yağışlı hava gəzintini ləğv etmir.',
+    'Digər heyvanlarla görüş nəzarətdə saxlanılır.',
+    'Zibil ardınca yığılır.',
+    'Su butulkası özü ilə götürülür.',
+    'Axşam gəzintisi işıqlı marşrutla aparılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Gəzinti növbəsinin buraxılması halında həmin gün ikinci gəzinti öhdəliyi tam olaraq növbəni buraxan tərəfin üzərinə düşür.',
+    'Müqavilə mövsümə uyğun olaraq dəyişdirilir.',
+    'Xəstəlik halında növbə avtomatik keçirilir.'
+  ]
 },
 {
   id: 'good-boy-diploma', cat: 'pets', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'İlin Ən Yaxşı İti Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Ev Heyvanı Nailiyyətləri üzrə Ali Məclis',
-  preamble: '{from} tərəfindən {to} adlı ev heyvanına, il ərzində heç bir ayaqqabını yeməmək, qapı zəngində yalnız üç dəfə hürmək və qonaqları qorxutmamaq göstəricilərinə görə bu fəxri diplom təqdim olunur.',
-  powers: 'Divanda əlavə bir saat yatmaq.\nHəftədə bir dəfə əlavə şirniyyat.\nGəzinti marşrutunu seçmək.\nQonaqları birinci qarşılamaq.',
-  penalty: 'Bir cüt ayaqqabı zədələndikdə ad növbəti ilədək dayandırılır və diploma baxılmır.'
+  title: 'İl Ərzində Nümunəvi Davranışa Görə Verilmiş Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Ev Heyvanlarının Hüquqları üzrə Ali Şura',
+  preamble: 'Şura {to} adlı şəxsin il ərzində ev qaydalarına münasibətdə göstərdiyi davranışı qiymətləndirərək təltif haqqında qərar qəbul etmişdir. Diplom {from} tərəfindən təqdim olunur və ailə arxivində saxlanılır.',
+  powers: 'Ayaqqabılar bu il toxunulmaz qalıb.\nQonaqlar həddindən artıq narahat edilməyib.\nÇağırışa cavab verilib.\nGecə səs-küy salınmayıb.',
+  penalty: 'Diplom geri alınmır. Təltif olunan bir dəfə əlavə şirniyyat almaq hüququ qazanır.',
+  titleOptions: [
+    'İl Ərzində Nümunəvi Davranışa Görə Verilmiş Fəxri Diplom',
+    'Ev Qaydalarına Əməl Edilməsinə Görə Verilmiş Fəxri Diplom',
+    'Qonaqların Qarşılanmasında Göstərilən Nizama Görə Diplom',
+    'Sadiqlik və Səbrə Görə Verilmiş Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Ayaqqabılar bu il toxunulmaz qalıb.',
+    'Qonaqlar həddindən artıq narahat edilməyib.',
+    'Çağırışa cavab verilib.',
+    'Gecə səs-küy salınmayıb.',
+    'Baytar ziyarətinə müqavimət göstərilməyib.',
+    'Yeni yem növü qəbul edilib.',
+    'Qonşu heyvanlarla münasibət sabit qalıb.',
+    'Uşaqlarla davranış nümunəvi olub.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Təltif olunan bir dəfə əlavə şirniyyat almaq hüququ qazanır.',
+    'Təltif hər il yenidən qiymətləndirilir.',
+    'Diplom ailə arxivində müddətsiz saxlanılır.'
+  ]
 },
 {
   id: 'bark-decree', cat: 'pets', tone: 'zarafat', layout: 'blank', palette: 'steel',
-  title: 'Hürmə Rejimi Fərmanı', tag: 'Qonşu sülhü',
-  signOrg: 'Hürmə və Səs Rejiminə Nəzarət İdarəsi',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı ev heyvanı üçün hürmə rejimi müəyyən edilir. Fərman qonşularla münasibətlərin qorunması məqsədi daşıyır və gecə saatlarında ciddi tətbiq olunur.',
-  powers: 'Qapı zəngində ən çoxu üç dəfə hürmək.\nGecə saat 23:00-dan sonra sükut.\nPəncərədən keçən pişiklərə reaksiya — səssiz.\nPoçtalyona xüsusi münasibət saxlanılır.',
-  penalty: 'Rejim gecə pozulduqda növbəti gün gəzinti müddəti 15 dəqiqə uzadılır (enerji üçün).'
+  title: 'Gecə Saatlarında Səs Rejiminin Müəyyən Edilməsi haqqında Bildiriş', tag: 'Səs',
+  signOrg: 'Ev Heyvanlarının Hüquqları üzrə Ali Şura',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, {to} adlı şəxs üçün gecə saatlarında səs rejimi müəyyən edilmişdir. Qərar {from} tərəfindən, qonşulardan daxil olmuş müraciətlər nəzərə alınaraq qəbul edilmişdir.',
+  powers: 'Gecə saat 23:00-dan sonra səs həddi azaldılır.\nQapı zənginə reaksiya qısa olur.\nPəncərədən keçən şəxslərə reaksiya azaldılır.\nLift səsi təhlükə siqnalı sayılmır.',
+  penalty: 'Rejimin ardıcıl pozulması halında gecə saatlarında qalınan otaq dəyişdirilir və gəzinti cədvəli yenidən tərtib olunur.',
+  titleOptions: [
+    'Gecə Saatlarında Səs Rejiminin Müəyyən Edilməsi haqqında Bildiriş',
+    'Qapı Zəngi Zamanı Reaksiya Qaydaları haqqında Bildiriş',
+    'Qonşuların Narahat Edilməməsi Tədbirləri haqqında Bildiriş',
+    'Səs Həddinin Gecə və Gündüz üzrə Müəyyən Edilməsi Bildirişi'
+  ],
+  powersOptions: [
+    'Gecə saat 23:00-dan sonra səs həddi azaldılır.',
+    'Qapı zənginə reaksiya qısa olur.',
+    'Pəncərədən keçən şəxslərə reaksiya azaldılır.',
+    'Lift səsi təhlükə siqnalı sayılmır.',
+    'Qonaq gəlişi əvvəlcədən xəbərdar edilir.',
+    'Gündüz saatlarında rejim yumşaldılır.',
+    'Digər heyvanların səsi istisna hesab olunur.',
+    'Bayram atəşfəşanlığı ayrıca nəzərə alınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Rejimin ardıcıl pozulması halında gecə saatlarında qalınan otaq dəyişdirilir və gəzinti cədvəli yenidən tərtib olunur.',
+    'Bildiriş yalnız gecə saatlarına şamil edilir.',
+    'Xəstəlik halında rejim tətbiq edilmir.'
+  ]
 },
 {
   id: 'vet-visit-arayis', cat: 'pets', tone: 'zarafat', layout: 'ekspertiza', palette: 'steel',
-  title: 'Baytar Ziyarəti Arayışı', tag: 'Rəsmi təsdiq',
-  signOrg: 'Baytar Müayinələrinin Qeydiyyatı Şöbəsi',
+  title: 'Baytar Müayinəsinin Nəticələri və Tövsiyələr haqqında Rəy', tag: 'Baytar',
+  signOrg: 'Yemləmə və Gəzinti Növbəsi üzrə Baş İdarə',
   toLabel: 'Müayinə olunan', fromLabel: 'Müşayiət edən',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı ev heyvanı {from} tərəfindən baytar müayinəsinə aparılmış və müayinə boyunca nümunəvi davranış nümayiş etdirmişdir (qapıya çatana qədər).',
-  powers: 'Müayinədən sonra əlavə şirniyyat.\nEvə qayıdanda bir saat toxunulmazlıq.\nDaşıma qutusuna etiraz etmək hüququ.\nNövbəti ziyarətdən 1 gün əvvəl xəbərdar edilmək.',
-  penalty: 'Ziyarət təxirə salındıqda növbəti dəfə daşıma qutusu daha erkən hazırlanır və gizlədilmir.'
+  preamble: 'Aparılmış müayinə nəticəsində {to} adlı şəxsin ümumi sağlamlıq vəziyyəti qənaətbəxş qiymətləndirilmişdir. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib edilmiş və tövsiyələrlə tamamlanmışdır.',
+  powers: 'Ümumi vəziyyət qənaətbəxş hesab edilir.\nÇəki norma həddinin yuxarı sərhədindədir.\nGündəlik hərəkət həcminin artırılması tövsiyə olunur.\nNövbəti müayinə altı aydan sonra planlaşdırılır.',
+  penalty: 'Tövsiyələrə əməl edilmədikdə növbəti müayinədə əlavə tədbirlərin görülməsi zəruri hesab ediləcəkdir.',
+  titleOptions: [
+    'Baytar Müayinəsinin Nəticələri və Tövsiyələr haqqında Rəy',
+    'Ümumi Sağlamlıq Vəziyyətinin Qiymətləndirilməsinə dair Rəy',
+    'Çəki və Qidalanma Rejiminə dair Ekspert Rəyi',
+    'Növbəti Müayinənin Tarixinə dair Yekun Rəy'
+  ],
+  powersOptions: [
+    'Ümumi vəziyyət qənaətbəxş hesab edilir.',
+    'Çəki norma həddinin yuxarı sərhədindədir.',
+    'Gündəlik hərəkət həcminin artırılması tövsiyə olunur.',
+    'Növbəti müayinə altı aydan sonra planlaşdırılır.',
+    'Peyvənd cədvəli yenilənib.',
+    'Qidalanma rejimi dəyişdirilməlidir.',
+    'Diş vəziyyəti nəzarətə götürülüb.',
+    'Süfrədən yemək verilməsi dayandırılmalıdır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Tövsiyələrə əməl edilmədikdə növbəti müayinədə əlavə tədbirlərin görülməsi zəruri hesab ediləcəkdir.',
+    'Rəy növbəti müayinəyə qədər qüvvədədir.',
+    'Vəziyyət dəyişdikdə təkrar müraciət edilir.'
+  ]
 },
 {
   id: 'pet-court', cat: 'pets', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
-  title: 'Ev Heyvanı Məhkəməsinin Qərarı', tag: 'Vazanın taleyi',
-  signOrg: 'Ev Heyvanı Mübahisələri üzrə Ali Məclis',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında evdə baş vermiş hadisə üzrə mübahisəyə baxaraq müəyyən etdi ki, günahsızlıq prezumpsiyası ev heyvanlarına da şamil edilir və birbaşa sübut yoxdur.',
-  powers: 'Cavabdeh günahsız hesab olunur.\nVaza itkisi təbii hadisə kimi qeyd edilir.\nHər iki tərəf barışıq şirniyyatı alır.\nMəsələ bir daha qaldırılmır.',
-  penalty: 'Eyni hadisə təkrarlandıqda vazalar yüksək rəfə köçürülür və iş yenidən açılmır.'
+  title: 'Ev Heyvanına Aid Edilən Əməl üzrə Aparılmış Baxışın Qərarı', tag: 'Məhkəmə',
+  signOrg: 'Ev Heyvanlarının Hüquqları üzrə Ali Şura',
+  preamble: 'Şura {to} adlı şəxsə aid edilən əməli araşdıraraq müəyyən etmişdir ki, təqdim edilmiş dəlillər birbaşa təsdiq üçün kifayət deyil. {from} tərəfindən verilmiş müraciət qismən əsaslı hesab olunur.',
+  powers: 'Hadisə yerində birbaşa şahid olmayıb.\nDəlillər dolayı xarakter daşıyır.\nDigər ev sakinlərinin iştirakı istisna edilmir.\nŞübhələr təqsirsizlik xeyrinə şərh olunur.',
+  penalty: 'Şəxs bəraət almış hesab edilsin. Bununla belə, qiymətli əşyaların daha yüksək rəflərdə saxlanılması tövsiyə olunur.',
+  titleOptions: [
+    'Ev Heyvanına Aid Edilən Əməl üzrə Aparılmış Baxışın Qərarı',
+    'Zədələnmiş Əşya ilə Bağlı Məsələ üzrə Yekun Qətnamə',
+    'Günahın Müəyyən Edilməsi Mümkün Olmadığı haqqında Bəraət',
+    'Şübhələrin Təsdiqlənməməsi haqqında Yekun Qərar'
+  ],
+  powersOptions: [
+    'Hadisə yerində birbaşa şahid olmayıb.',
+    'Dəlillər dolayı xarakter daşıyır.',
+    'Digər ev sakinlərinin iştirakı istisna edilmir.',
+    'Şübhələr təqsirsizlik xeyrinə şərh olunur.',
+    'Əşyanın yerləşdiyi hündürlük nəzərə alınıb.',
+    'Hadisənin vaxtı dəqiqləşdirilməyib.',
+    'Əvvəlki oxşar hallar sənədləşdirilməyib.',
+    'Davranış dəyişikliyi qeydə alınmayıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Şəxs bəraət almış hesab edilsin. Bununla belə, qiymətli əşyaların daha yüksək rəflərdə saxlanılması tövsiyə olunur.',
+    'Yeni dəlillər aşkarlandıqda məsələyə yenidən baxıla bilər.',
+    'Qərar oxşar gələcək hallara şamil edilmir.'
+  ]
 },
 {
   id: 'pet-id', cat: 'pets', tone: 'zarafat', layout: 'vesiqe', palette: 'gold',
-  title: 'Ev Heyvanı Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Ev Heyvanlarının Qeydiyyatı Şöbəsi',
+  title: 'Ev Heyvanının Ailə Üzvü Statusunu və Hüquqlarını Təsdiq edən Vəsiqə', tag: 'Vəsiqə',
+  signOrg: 'Mənzil Daxilində Ərazi Bölgüsü üzrə Komissiya',
   fromLabel: 'Vəsiqəni verən sahib',
-  preamble: 'Bu vəsiqə {to} adlı ev heyvanının ailənin tamhüquqlu üzvü olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və divanda, mətbəxdə və yataq otağında etibarlıdır.',
-  powers: 'Ailə fotolarında iştirak etmək.\nÖz adına çəkilmiş qab istifadə etmək.\nGəzinti marşrutunda səs vermək.\nQonaqlar tərəfindən sığallanmaq.',
-  penalty: 'Vəsiqə itirildikdə yenisi dərhal verilir — heyvanın heç bir öhdəliyi yaranmır.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin ailənin tamhüquqlu üzvü olduğunu təsdiq edir. Sənəd {from} tərəfindən verilmişdir, mənzil daxilində tanınmış hüquqları əhatə edir və müddətsiz hesab olunur.',
+  powers: 'Ailə fotolarında iştirak hüququ tanınır.\nDivanda daimi yer ayrılır.\nAd günü qeyd edilir.\nSəfər planlaşdırılarkən nəzərə alınır.',
+  penalty: 'Vəsiqə müddətsizdir və heç bir halda geri alınmır; hüquqlar ailənin bütün üzvləri tərəfindən tanınır.',
+  titleOptions: [
+    'Ev Heyvanının Ailə Üzvü Statusunu və Hüquqlarını Təsdiq edən Vəsiqə',
+    'Mənzil Daxilində Hüquq və Ərazilərin Təsdiqinə dair Vəsiqə',
+    'Ailə Fotolarında İştirak Hüququnu Təsdiq edən Rəsmi Vəsiqə',
+    'Ev Heyvanının Ailədaxili Statusuna dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Ailə fotolarında iştirak hüququ tanınır.',
+    'Divanda daimi yer ayrılır.',
+    'Ad günü qeyd edilir.',
+    'Səfər planlaşdırılarkən nəzərə alınır.',
+    'Qonaqlara ayrıca təqdim edilir.',
+    'Yem növü seçimində reaksiya nəzərə alınır.',
+    'Baytar ziyarəti vaxtında təşkil olunur.',
+    'Oyuncaqlar mütəmadi yenilənir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə müddətsizdir və heç bir halda geri alınmır; hüquqlar ailənin bütün üzvləri tərəfindən tanınır.',
+    'Vəsiqə ailənin bütün üzvlərinə eyni qaydada məlumdur.',
+    'Status yeni ev heyvanı gəldikdə də dəyişmir.'
+  ]
 },
 {
   id: 'treat-certificate', cat: 'pets', tone: 'zarafat', layout: 'sertifikat', palette: 'burgundy',
-  title: 'Şirniyyat Verilməsi Sertifikatı', tag: 'Mükafat sistemi',
-  signOrg: 'Şirniyyat və Mükafat Verilməsi üzrə Komissiya',
+  title: 'Əlavə Yem və Mükafatın Verilməsi Qaydasını Təsdiq edən Sertifikat', tag: 'Mükafat',
+  signOrg: 'Yemləmə və Gəzinti Növbəsi üzrə Baş İdarə',
   powersLabel: 'MÜKAFATLANDIRMA ŞƏRTLƏRİ',
-  preamble: 'Bu sertifikatla {from} tərəfindən {to} adlı ev heyvanına yaxşı davranışa görə əlavə şirniyyat verilməsi rəsmiləşdirilir. Sertifikat gözlərin yalvarıcı ifadəsini əsas kimi qəbul etmir.',
-  powers: 'Günə 2 ədəd mükafat şirniyyatı.\nƏmri yerinə yetirdikdə əlavə 1 ədəd.\nQonaq gələndə xüsusi porsiya.\nSüfrədən yemək tələb etməmək öhdəliyi.',
-  penalty: 'Süfrədən icazəsiz yemək götürüldükdə həmin günün bütün mükafatları ləğv edilir.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxs üçün əlavə yem və mükafatın verilməsi qaydası müəyyən edilmişdir. Sertifikat {from} tərəfindən, baytar tövsiyələri nəzərə alınmaqla verilmişdir.',
+  powers: 'Gündəlik mükafat norması üç ədəddir.\nMükafat komandanın icrasından sonra verilir.\nSüfrədən yemək mükafat sayılmır.\nNorma bütün ailə üzvləri üçün ümumidir.',
+  penalty: 'Normanın aşılması halında növbəti gün mükafat verilmir və çəki nəzarəti gücləndirilir.',
+  titleOptions: [
+    'Əlavə Yem və Mükafatın Verilməsi Qaydasını Təsdiq edən Sertifikat',
+    'Mükafat Normasının Müəyyən Edilməsinə dair Sertifikat',
+    'Komandaların İcrasına Görə Mükafatlandırma Sertifikatı',
+    'Gündəlik Şirniyyat Limitinin Təsdiqinə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Gündəlik mükafat norması üç ədəddir.',
+    'Mükafat komandanın icrasından sonra verilir.',
+    'Süfrədən yemək mükafat sayılmır.',
+    'Norma bütün ailə üzvləri üçün ümumidir.',
+    'Qonaqlar mükafat vermək hüququna malik deyil.',
+    'Gəzintidən sonra əlavə bir ədəd verilir.',
+    'Yeni növ tədricən tətbiq edilir.',
+    'Baytar tövsiyəsi normadan üstündür.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Normanın aşılması halında növbəti gün mükafat verilmir və çəki nəzarəti gücləndirilir.',
+    'Sertifikat baytar müayinəsindən sonra yenilənir.',
+    'Xəstəlik dövründə norma dayandırılır.'
+  ]
 },
 {
   id: 'lost-toy-telegram', cat: 'pets', tone: 'zarafat', layout: 'teleqram', palette: 'ink',
-  title: 'İtmiş Oyuncaq Teleqramı', tag: 'Təcili axtarış',
-  signOrg: 'İtmiş Oyuncaqlar üzrə Axtarış İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı şəxsə itmiş sevimli oyuncaq barədə təcili bildiriş göndərilir. Axtarış divanın altından başlanır və bütün ev üzvləri səfərbər edilir.',
-  powers: 'Axtarış dərhal başlanır.\nDivan qaldırılır, xalça çevrilir.\nTapan şəxs təşəkkür alır.\nTapılmadıqda ehtiyat oyuncaq açılır.',
-  penalty: 'Oyuncaq 24 saat ərzində tapılmadıqda evdə gecə yarısı müstəqil axtarış əməliyyatı başlanır.'
+  title: 'İtkin Düşmüş Oyuncağın Axtarışı haqqında Təcili Teleqram', tag: 'İtki',
+  signOrg: 'Mənzil Daxilində Ərazi Bölgüsü üzrə Komissiya',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin sevimli oyuncağı itkin düşmüşdür. {from} tərəfindən axtarış tədbirlərinin dərhal genişləndirilməsi və nəticə barədə məlumat verilməsi tələb olunur.',
+  powers: 'Divanın altı yoxlanılıb, nəticə mənfidir.\nŞkafın arxası hələ yoxlanılmayıb.\nSon görülmə yeri dəqiqləşdirilir.\nƏvəzedici variant müvəqqəti təklif edilib.',
+  penalty: 'Oyuncaq tapılmadıqda eyni növdən yenisinin alınması qaçılmaz hesab edilir və gecikdirilmir.',
+  titleOptions: [
+    'İtkin Düşmüş Oyuncağın Axtarışı haqqında Təcili Teleqram',
+    'Sevimli Oyuncağın Tapılmaması haqqında Təxirəsalınmaz Bildiriş',
+    'Axtarış Tədbirlərinin Genişləndirilməsi haqqında Teleqram',
+    'Əvəzedici Oyuncağın Alınması haqqında Təcili Xəbərdarlıq'
+  ],
+  powersOptions: [
+    'Divanın altı yoxlanılıb, nəticə mənfidir.',
+    'Şkafın arxası hələ yoxlanılmayıb.',
+    'Son görülmə yeri dəqiqləşdirilir.',
+    'Əvəzedici variant müvəqqəti təklif edilib.',
+    'Digər otaqlar da axtarışa daxil edilib.',
+    'Ailə üzvləri məlumatlandırılıb.',
+    'Yeni oyuncaq sifarişi nəzərdən keçirilir.',
+    'Axtarış üç gün davam etdiriləcək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Oyuncaq tapılmadıqda eyni növdən yenisinin alınması qaçılmaz hesab edilir və gecikdirilmir.',
+    'Teleqram yalnız məlumat xarakteri daşıyır.',
+    'Oyuncaq tapıldıqda axtarış dayandırılır.'
+  ]
 },
 {
   id: 'bed-sharing-act', cat: 'pets', tone: 'zarafat', layout: 'viza', palette: 'steel',
-  title: 'Yataq Bölüşmə Aktı', tag: 'Gecə sərhədi',
-  signOrg: 'Yataq Bölüşdürülməsi üzrə Xüsusi Komitə',
-  preamble: 'Bu aktla {from} tərəfindən {to} adlı ev heyvanına gecə saatlarında yataqdan istifadə hüququ tanınır. Aktda sərhədlər müəyyən edilsə də, səhərə qədər qorunacağına zəmanət verilmir.',
-  powers: 'Yatağın ayaq tərəfində yer tutmaq.\nGecə bir dəfə yer dəyişmək.\nYorğanın altına girmək (soyuq havalarda).\nSəhər oyatma funksiyasını icra etmək.',
-  penalty: 'Yastığın tam işğalı halında akt həmin gecə üçün dayandırılır və yerə xüsusi yataq salınır.'
+  title: 'Yataq Sahəsinin Bölüşdürülməsi və İstifadəsinə dair İcazə', tag: 'Yataq',
+  signOrg: 'Mənzil Daxilində Ərazi Bölgüsü üzrə Komissiya',
+  preamble: '{from} tərəfindən {to} adlı şəxsə yataq sahəsinin müəyyən hissəsindən istifadə icazəsi verilir. İcazə uzunmüddətli faktiki istifadənin rəsmiləşdirilməsindən ibarətdir və sahənin sərhədlərini dəqiqləşdirir.',
+  powers: 'Ayaqucu daimi istifadəyə verilir.\nYastıq sahəsi istisna zona kimi qalır.\nGecə yerdəyişməsi məhdudlaşdırılmır.\nƏdyalın bölgüsü qarşılıqlı razılıqla aparılır.',
+  penalty: 'İcazə yatağın təmizliyinin qorunması şərti ilə qüvvədədir; şərt pozulduqda sahə yenidən müəyyən edilir.',
+  titleOptions: [
+    'Yataq Sahəsinin Bölüşdürülməsi və İstifadəsinə dair İcazə',
+    'Gecə Saatlarında Yer Tutma Qaydasına dair Xüsusi İcazə',
+    'Yataq Sahəsinin Sərhədlərinin Müəyyən Edilməsinə dair İcazə',
+    'Ayaqucunda Daimi Yer Ayrılmasına dair İcazə'
+  ],
+  powersOptions: [
+    'Ayaqucu daimi istifadəyə verilir.',
+    'Yastıq sahəsi istisna zona kimi qalır.',
+    'Gecə yerdəyişməsi məhdudlaşdırılmır.',
+    'Ədyalın bölgüsü qarşılıqlı razılıqla aparılır.',
+    'Soyuq aylarda sahə genişləndirilir.',
+    'Səhər oyatma qadağan edilmir.',
+    'Qonaq gəldikdə yer müvəqqəti dəyişdirilir.',
+    'Yatağın dəyişdirilməsi əvvəlcədən bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'İcazə yatağın təmizliyinin qorunması şərti ilə qüvvədədir; şərt pozulduqda sahə yenidən müəyyən edilir.',
+    'İcazə xəstəlik dövründə genişləndirilir.',
+    'Sahə bölgüsü hər mövsüm yenidən razılaşdırılır.'
+  ]
 },
 
 /* ---------------- OYUNÇULAR / GAMER ---------------- */
 {
   id: 'rank-certificate', cat: 'gaming', tone: 'zarafat', layout: 'sertifikat', palette: 'ink',
-  title: 'Rank Təsdiq Sertifikatı', tag: 'Rəsmi səviyyə',
-  signOrg: 'Kibersport Reytinqlərinin Təsdiqi üzrə Baş İdarə',
+  title: 'Oyunçunun Mövcud Reytinq Səviyyəsini Təsdiq edən Sertifikat', tag: 'Rank',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
   powersLabel: 'RANKIN VERDİYİ SƏLAHİYYƏTLƏR',
-  preamble: 'Bu sertifikatla {from} tərəfindən {to} adlı oyunçunun mövcud rankı rəsmi olaraq təsdiq edilir. Sertifikat rankın necə qazanıldığını araşdırmır və komanda yoldaşlarının rolunu qeyd etmir.',
-  powers: 'Komanda seçimində birinci söz.\nStrategiya barədə fikir bildirmək.\nYeni oyunçulara məsləhət vermək.\nQalibiyyət ekranında birinci görünmək.',
-  penalty: 'Rank iki həftə ərzində aşağı düşdükdə sertifikat avtomatik olaraq yeni səviyyəyə uyğunlaşdırılır.'
+  preamble: 'Bununla təsdiq edilir ki, {to} adlı şəxsin reytinq səviyyəsi müstəqil qaydada, kənar köməklik olmadan qazanılmışdır. Sertifikat {from} tərəfindən verilmiş müraciət əsasında, oyun tarixçəsinin yoxlanılmasından sonra rəsmiləşdirilmişdir.',
+  powers: 'Hesab yalnız sahibi tərəfindən idarə edilib.\nReytinq mövsüm ərzində fasiləsiz artıb.\nKənar xidmətlərdən istifadə aşkarlanmayıb.\nNəticələr matç tarixçəsi ilə uyğun gəlir.',
+  penalty: 'Hesabın üçüncü şəxs tərəfindən idarə edildiyi aşkarlandıqda sertifikat qüvvədən düşür və reytinq mövsümün əvvəlinə qaytarılmış hesab edilir.',
+  titleOptions: [
+    'Oyunçunun Mövcud Reytinq Səviyyəsini Təsdiq edən Sertifikat',
+    'Reytinqin Müstəqil Qaydada Qazanıldığını Təsdiq edən Sertifikat',
+    'Hesabın Sahibi Tərəfindən İdarə Edildiyini Təsdiq edən Sertifikat',
+    'Mövsüm Ərzində Əldə Edilmiş Nəticələrə dair Şəhadətnamə'
+  ],
+  powersOptions: [
+    'Hesab yalnız sahibi tərəfindən idarə edilib.',
+    'Reytinq mövsüm ərzində fasiləsiz artıb.',
+    'Kənar xidmətlərdən istifadə aşkarlanmayıb.',
+    'Nəticələr matç tarixçəsi ilə uyğun gəlir.',
+    'Komanda tərkibi mütəmadi dəyişdirilib.',
+    'Ardıcıl məğlubiyyət seriyası qeydə alınmayıb.',
+    'Oyun saatları normal həddədir.',
+    'Şikayət qeydiyyatı təmizdir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Hesabın üçüncü şəxs tərəfindən idarə edildiyi aşkarlandıqda sertifikat qüvvədən düşür və reytinq mövsümün əvvəlinə qaytarılmış hesab edilir.',
+    'Sertifikat hər mövsümün sonunda yenidən verilir.',
+    'Nəticələr yenidən yoxlanıla bilər.'
+  ]
 },
 {
   id: 'team-contract', cat: 'gaming', tone: 'zarafat', layout: 'muqavile', palette: 'steel',
-  title: 'Komanda Müqaviləsi', tag: 'Transfer sənədi',
-  signOrg: 'Virtual Komanda Müqavilələri üzrə Xüsusi Komitə',
-  preamble: 'Bu müqavilə ilə {to} adlı oyunçu {from} tərəfindən idarə olunan komandaya qoşulur. Tərəflər mikrofonda sakit danışmaq və məğlubiyyətdən sonra bir-birini günahlandırmamaq öhdəliyi götürürlər.',
-  powers: 'Həftədə ən azı üç oyun iştirakı.\nRolun seçimində üstünlük.\nStrategiya müzakirəsində səs vermək.\nOyun vaxtını 24 saat əvvəl bilmək.',
-  penalty: 'Oyun ortasında əsassız çıxış edildikdə növbəti üç matçda rol seçimi komanda tərəfindən müəyyən edilir.'
+  title: 'Komanda Daxilində Rolların və Davranış Qaydalarının Müqaviləsi', tag: 'Komanda',
+  signOrg: 'Virtual Oyun Nəticələrinə Etirazlar üzrə Şura',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında komanda daxilində rolların bölgüsü və matç zamanı ünsiyyət qaydaları barədə razılıq əldə edilmişdir. Müqavilə mövsümün sonuna qədər qüvvədədir.',
+  powers: 'Rollar matç başlamazdan əvvəl bölüşdürülür.\nSəhvə görə komanda yoldaşı günahlandırılmır.\nMikrofon lazımsız səs ötürmür.\nMatç yarımçıq tərk edilmir.',
+  penalty: 'Matçın yarımçıq tərk edilməsi halında növbəti üç matçda xəritə və rol seçimi qalan iştirakçılar tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Komanda Daxilində Rolların və Davranış Qaydalarının Müqaviləsi',
+    'Komanda Yoldaşlarının Qarşılıqlı Öhdəlikləri üzrə Saziş',
+    'Matç Zamanı Ünsiyyət Qaydalarının Müəyyən Edilməsi üzrə Protokol',
+    'Komandadan Ayrılma Şərtlərinin Razılaşdırılması üzrə Müqavilə'
+  ],
+  powersOptions: [
+    'Rollar matç başlamazdan əvvəl bölüşdürülür.',
+    'Səhvə görə komanda yoldaşı günahlandırılmır.',
+    'Mikrofon lazımsız səs ötürmür.',
+    'Matç yarımçıq tərk edilmir.',
+    'Növbəti xəritə birgə seçilir.',
+    'Uduzulmuş matç müzakirə edilmir.',
+    'Yeni oyunçu qrupun razılığı ilə qəbul edilir.',
+    'Fasilə hər üç matçdan bir verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Matçın yarımçıq tərk edilməsi halında növbəti üç matçda xəritə və rol seçimi qalan iştirakçılar tərəfindən müəyyən edilir.',
+    'Müqavilə mövsümün sonunda yenidən bağlanır.',
+    'Şərtlərin pozulması komandadan müvəqqəti kənarlaşdırmaya əsasdır.'
+  ]
 },
 {
   id: 'screen-time-decree', cat: 'gaming', tone: 'zarafat', layout: 'blank', palette: 'ink',
-  title: 'Ekran Vaxtı Fərmanı', tag: 'Gecə rejimi',
-  signOrg: 'Oyun Vaxtı Rejiminə Nəzarət Komitəsi',
-  preamble: 'Bu fərmanla {from} tərəfindən {to} adlı oyunçu üçün gündəlik oyun vaxtı rəsmi olaraq müəyyən edilir. Fərman «son bir matç» ifadəsini vaxt vahidi kimi tanımır.',
-  powers: 'İş günü 2 saat, həftəsonu 4 saat.\nBaşlanmış matçı sona çatdırmaq hüququ.\nHər saatdan bir 10 dəqiqə fasilə.\nTurnir günləri istisna hesab olunur.',
-  penalty: 'Vaxt həddi üç gün ardıcıl aşıldıqda növbəti həftəsonu ekran vaxtı iki saata endirilir.'
+  title: 'Gündəlik Oyun Müddətinin Məhdudlaşdırılması haqqında Bildiriş', tag: 'Rejim',
+  signOrg: 'Oyun Rejimi və Ekran Vaxtı üzrə Baş İdarə',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, {to} adlı şəxs üçün gündəlik oyun müddəti müəyyən edilmişdir. Qərar {from} tərəfindən, son həftələrdə oyun saatlarının nəzərəçarpacaq dərəcədə artması nəzərə alınaraq qəbul edilmişdir.',
+  powers: 'Gündəlik limit üç saat müəyyən edilir.\n«Son matç» bir matç kimi hesablanır.\nGecə saat 01:00-dan sonra oyun dayandırılır.\nHəftəsonu limit bir saat artırılır.',
+  penalty: 'Limitin ardıcıl aşılması halında oyun rejimi növbəti iki gün üçün dayandırılır və bərpa yalnız öhdəliklər tamamlandıqdan sonra mümkündür.',
+  titleOptions: [
+    'Gündəlik Oyun Müddətinin Məhdudlaşdırılması haqqında Bildiriş',
+    'Gecə Saatlarında Oyun Rejiminin Dayandırılması haqqında Bildiriş',
+    '«Son matç» Anlayışının Hüdudlarının Müəyyən Edilməsi Bildirişi',
+    'Oyun və İstirahət Balansının Tənzimlənməsi haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Gündəlik limit üç saat müəyyən edilir.',
+    '«Son matç» bir matç kimi hesablanır.',
+    'Gecə saat 01:00-dan sonra oyun dayandırılır.',
+    'Həftəsonu limit bir saat artırılır.',
+    'Turnir günləri limitdən kənar sayılır.',
+    'Dostlarla birgə oyun ayrıca hesablanır.',
+    'Yükləmə vaxtı limitə daxil edilmir.',
+    'Fasilə hər saatdan bir verilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Limitin ardıcıl aşılması halında oyun rejimi növbəti iki gün üçün dayandırılır və bərpa yalnız öhdəliklər tamamlandıqdan sonra mümkündür.',
+    'Bildiriş hər ay yenidən nəzərdən keçirilir.',
+    'Turnir dövründə limit müvəqqəti genişləndirilir.'
+  ]
 },
 {
   id: 'keyboard-peace', cat: 'gaming', tone: 'zarafat', layout: 'notarial', palette: 'steel',
-  title: 'Klaviatura Sülh Sazişi', tag: 'Səs-küy sülhü',
-  signOrg: 'Avadanlıq Mübahisələri üzrə Xüsusi Komissiya',
-  preamble: 'Bu sazişlə {from} və {to} arasında mexaniki klaviaturanın səsi ilə bağlı uzunmüddətli münaqişəyə son qoyulur. Tərəflər səs səviyyəsi və gecə istifadə saatları barədə razılığa gəlirlər.',
-  powers: 'Gecə saat 23:00-dan sonra səssiz rejim.\nQulaqlıq daim taxılır.\nMikrofon susdurma düyməsi işlək saxlanılır.\nQələbə anında qışqırıq — qulaqlıqda.',
-  penalty: 'Saziş üç dəfə pozulduqda gecə saatlarında klaviatura digər otağa köçürülür.'
+  title: 'Oyun Avadanlığına Qarşı Fiziki Təsirin Dayandırılmasına dair Akt', tag: 'Sülh',
+  signOrg: 'Virtual Oyun Nəticələrinə Etirazlar üzrə Şura',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən {from} tərəfindən {to} adlı şəxsə oyun avadanlığının qorunması öhdəliyi həvalə edilir. Öhdəlik məğlubiyyət anlarını da əhatə edir və istisna nəzərdə tutmur.',
+  powers: 'Klaviatura masaya vurulmur.\nPult yerə atılmır və divara dəyməz.\nQulaqlıq boyundan çıxarılarkən dartılmır.\nSiçan yalnız təyinatı üzrə işlədilir.',
+  penalty: 'Avadanlığın zədələnməsi halında yenisinin alınması tam olaraq zədəni törətmiş tərəfin öz vəsaiti hesabına həyata keçirilir.',
+  titleOptions: [
+    'Oyun Avadanlığına Qarşı Fiziki Təsirin Dayandırılmasına dair Akt',
+    'Klaviatura və Pultun Qorunması üzrə Öhdəliklərə dair Akt',
+    'Məğlubiyyət Anında Özünü Saxlamaq Öhdəliyinə dair Etibarnamə',
+    'Avadanlığın Zədələnməsinin Qarşısının Alınmasına dair Akt'
+  ],
+  powersOptions: [
+    'Klaviatura masaya vurulmur.',
+    'Pult yerə atılmır və divara dəyməz.',
+    'Qulaqlıq boyundan çıxarılarkən dartılmır.',
+    'Siçan yalnız təyinatı üzrə işlədilir.',
+    'Monitor yerindən tərpədilmir.',
+    'Kabellər kəskin hərəkətlə çəkilmir.',
+    'Stul geri itələnərkən nəzarət saxlanılır.',
+    'Zədələnmə halı dərhal bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Avadanlığın zədələnməsi halında yenisinin alınması tam olaraq zədəni törətmiş tərəfin öz vəsaiti hesabına həyata keçirilir.',
+    'Təkrar hal oyun rejiminin dayandırılmasına əsasdır.',
+    'Öhdəlik bütün ev avadanlığına şamil olunur.'
+  ]
 },
 {
   id: 'mvp-diploma', cat: 'gaming', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'Matçın Ən Yaxşısı Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Oyun Nəticələrinin Qiymətləndirilməsi üzrə Məclis',
-  preamble: '{from} tərəfindən {to} adlı oyunçuya, matç boyunca göstərdiyi oyuna, komandanı kritik anda xilas etdiyinə və heç kimi günahlandırmadığına görə bu fəxri diplom təqdim olunur.',
-  powers: 'Növbəti matçda rol seçimi.\nStrategiyanı təklif etmək hüququ.\nQələbə ekranında birinci yer.\nBir dəfə «mən demişdim» demək hüququ.',
-  penalty: 'Növbəti üç matçda göstərici kəskin düşdükdə ad müvəqqəti olaraq komandaya qaytarılır.'
+  title: 'Matçda Göstərilmiş Ən Yüksək Nəticəyə Görə Verilmiş Fəxri Diplom', tag: 'Matç',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
+  preamble: 'Mərkəz {to} adlı şəxsin matçdakı fəaliyyətini təhlil edərək müəyyən etmişdir ki, komandanın nəticəsinə həlledici təsir göstərən şəxs məhz odur. Diplom {from} tərəfindən təqdim olunur və matç tarixçəsi ilə təsdiqlənir.',
+  powers: 'Həlledici anlarda düzgün qərar qəbul edilib.\nKomanda yoldaşlarına dəstək göstərilib.\nSəhvlər dərhal düzəldilib.\nMatç sona qədər tərk edilməyib.',
+  penalty: 'Diplom bir matç üçün verilir və geri alınmır. Növbəti matçın nəticəsi bu təltifin qüvvəsinə təsir göstərmir.',
+  titleOptions: [
+    'Matçda Göstərilmiş Ən Yüksək Nəticəyə Görə Verilmiş Fəxri Diplom',
+    'Komandanın Qələbəsində Həlledici Rola Görə Fəxri Diplom',
+    'Matçın Son Dəqiqələrindəki Fəaliyyətə Görə Fəxri Diplom',
+    'Mövsümün Ən Yaxşı Göstəricisinə Görə Verilmiş Fəxri Nişan'
+  ],
+  powersOptions: [
+    'Həlledici anlarda düzgün qərar qəbul edilib.',
+    'Komanda yoldaşlarına dəstək göstərilib.',
+    'Səhvlər dərhal düzəldilib.',
+    'Matç sona qədər tərk edilməyib.',
+    'Strategiya matç gedişində uyğunlaşdırılıb.',
+    'Ünsiyyət aydın və qısa olub.',
+    'Məğlubiyyət riski anında sakitlik saxlanılıb.',
+    'Nəticə şəxsi göstərici üzərində qurulmayıb.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom bir matç üçün verilir və geri alınmır. Növbəti matçın nəticəsi bu təltifin qüvvəsinə təsir göstərmir.',
+    'Təltif mövsümün sonunda ümumiləşdirilir.',
+    'Diplom komanda arxivində saxlanılır.'
+  ]
 },
 {
   id: 'lag-excuse-license', cat: 'gaming', tone: 'zarafat', layout: 'lisenziya', palette: 'forest',
-  title: 'Ping Bəhanəsi Lisenziyası', tag: 'Rəsmi bəhanə',
-  signOrg: 'Oyun Nəticələri və İnternet Bəhanələri üzrə Şura',
+  title: 'Bağlantı Gecikməsinə İstinad Etmək Hüququna dair Məhdud Lisenziya', tag: 'Bəhanə',
+  signOrg: 'Virtual Oyun Nəticələrinə Etirazlar üzrə Şura',
   powersLabel: 'LİSENZİYANIN ƏHATƏ ETDİYİ BƏHANƏLƏR',
-  preamble: '{from} tərəfindən {to} adlı oyunçuya məğlubiyyətdən sonra internet bağlantısına istinad etmək üçün məhdud lisenziya verilir. Lisenziya real ping göstəricisi ilə əsaslandırılmalıdır.',
-  powers: 'Gündə iki dəfə pinqə istinad etmək.\nEkran şəkli təqdim etmək hüququ.\n«Router yenidən başladı» arqumenti (həftədə 1).\nKompüterin köhnəliyinə istinad — ayda 1 dəfə.',
-  penalty: 'Bəhanə həddi aşıldıqda növbəti həftə bütün məğlubiyyətlər izahatsız qəbul edilir.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə məğlubiyyəti bağlantı gecikməsi ilə izah etmək hüququ verilir. Lisenziya məhdud saylı istifadə nəzərdə tutur, hər hal ayrıca qeydə alınır və göstərici ekran görüntüsü ilə təsdiqlənir.',
+  powers: 'İstinad ayda ən çoxu iki dəfə edilə bilər.\nGöstərici ekran görüntüsü ilə təsdiqlənir.\nQalib gəlinən matçda istinad edilmir.\nEyni matçda bir dəfə səsləndirilir.',
+  penalty: 'Aylıq limit aşıldıqda lisenziya növbəti ay üçün dayandırılır və bağlantı arqumenti müzakirədə nəzərə alınmır.',
+  titleOptions: [
+    'Bağlantı Gecikməsinə İstinad Etmək Hüququna dair Məhdud Lisenziya',
+    'Texniki Səbəblərə İstinadın Rəsmiləşdirilməsinə dair Lisenziya',
+    'Məğlubiyyətin Şəbəkə Amili ilə İzah Edilməsinə dair İcazə',
+    'Ping Göstəricisinə İstinad Hüququna dair Müddətli Lisenziya'
+  ],
+  powersOptions: [
+    'İstinad ayda ən çoxu iki dəfə edilə bilər.',
+    'Göstərici ekran görüntüsü ilə təsdiqlənir.',
+    'Qalib gəlinən matçda istinad edilmir.',
+    'Eyni matçda bir dəfə səsləndirilir.',
+    'Ev internetinin ümumi vəziyyəti nəzərə alınır.',
+    'Digər iştirakçıların göstəriciləri müqayisə edilir.',
+    'Yükləmə fonda aparılmamalıdır.',
+    'Kabel bağlantısı tövsiyə olunur.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Aylıq limit aşıldıqda lisenziya növbəti ay üçün dayandırılır və bağlantı arqumenti müzakirədə nəzərə alınmır.',
+    'Lisenziya hər ayın əvvəlində bərpa olunur.',
+    'Təsdiqlənməmiş istinad limitdən iki vahid tutur.'
+  ]
 },
 {
   id: 'rage-quit-decision', cat: 'gaming', tone: 'zarafat', layout: 'qerar', palette: 'burgundy',
-  title: 'Oyunu Tərketmə üzrə Qərar', tag: 'İntizam işi',
-  signOrg: 'Virtual Məğlubiyyətlərin Müdafiəsi üzrə Baş İdarə',
-  preamble: 'Zarafat Məhkəməsi {from} ilə {to} arasında matç ortasında oyunu tərk etmə hadisəsi üzrə işə baxaraq müəyyən etdi ki, hərəkət qəsdən deyil, emosional vəziyyət səbəbindən baş vermişdir.',
-  powers: 'Cavabdeh xəbərdarlıqla buraxılır.\nNövbəti matçda komandaya qayıdır.\nÜzrxahlıq komanda çatında yazılır.\nHadisə arxivə köçürülür.',
-  penalty: 'Hadisə təkrarlandıqda oyunçu iki matç ehtiyat heyətə keçirilir və rol seçimi hüququnu itirir.'
+  title: 'Matçın Yarımçıq Tərk Edilməsi Halının Qiymətləndirilməsi haqqında Qərar', tag: 'Qərar',
+  signOrg: 'Virtual Oyun Nəticələrinə Etirazlar üzrə Şura',
+  preamble: 'Şura {to} adlı şəxsin matçı yarımçıq tərk etməsi halına baxaraq müəyyən etmişdir ki, göstərilən səbəb qismən əsaslıdır, lakin komandaya dəymiş zərəri tam kompensasiya etmir. {from} tərəfindən verilmiş müraciət qismən təmin edilir.',
+  powers: 'Matçı tərk etmə faktı qeydə alınır.\nGöstərilən səbəb qismən əsaslı hesab edilir.\nKomandaya dəymiş zərər kompensasiya olunmur.\nNövbəti matçda rol seçimi məhdudlaşdırılır.',
+  penalty: 'Eyni halın bir ay ərzində təkrarlanması komanda tərkibindən müvəqqəti kənarlaşdırmaya əsas verir.',
+  titleOptions: [
+    'Matçın Yarımçıq Tərk Edilməsi Halının Qiymətləndirilməsi haqqında Qərar',
+    'Oyundan Vaxtından Əvvəl Çıxma Halı üzrə Yekun Qətnamə',
+    'Komandanın Natamam Tərkibdə Qalması haqqında Qərar',
+    'Matçı Tərk Etmə Səbəbinin Əsaslılığı haqqında Qərar'
+  ],
+  powersOptions: [
+    'Matçı tərk etmə faktı qeydə alınır.',
+    'Göstərilən səbəb qismən əsaslı hesab edilir.',
+    'Komandaya dəymiş zərər kompensasiya olunmur.',
+    'Növbəti matçda rol seçimi məhdudlaşdırılır.',
+    'Texniki səbəb sənədlə təsdiqlənməlidir.',
+    'Təkrar hal ağırlaşdırıcı şərait sayılır.',
+    'Komanda yoldaşlarının rəyi soruşulur.',
+    'Üzrxahlıq halı yüngülləşdirən şərait kimi qəbul edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Eyni halın bir ay ərzində təkrarlanması komanda tərkibindən müvəqqəti kənarlaşdırmaya əsas verir.',
+    'Qərardan narazılıq qeydə alınır, lakin nəticəyə təsir etmir.',
+    'Növbəti üç matçda iştirak qərarın icrası sayılır.'
+  ]
 },
 {
   id: 'loot-split-arayis', cat: 'gaming', tone: 'zarafat', layout: 'arayis', palette: 'gold',
-  title: 'Qənimət Bölgüsü Arayışı', tag: 'Ədalətli bölgü',
-  signOrg: 'Qənimət Bölgüsü üzrə Arbitraj Kollegiyası',
+  title: 'Birgə Oyun Nəticəsində Əldə Edilmiş Resursların Bölgüsü haqqında Arayış', tag: 'Bölgü',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
   toLabel: 'Pay alan tərəf', fromLabel: 'Bölgünü aparan',
-  preamble: 'Bu arayışla təsdiq olunur ki, {to} adlı oyunçuya reyddən sonra düşən qənimətdən pay ayrılmışdır. Bölgü {from} tərəfindən komandanın razılığı əsasında aparılmışdır.',
-  powers: 'Payını dərhal götürmək.\nBölgüyə bir dəfə etiraz etmək.\nNadir əşya üçün püşk atmaq.\nPayını komanda yoldaşına bağışlamaq.',
-  penalty: 'Bölgü qaydası pozulduqda pozan oyunçu növbəti reyddə sonuncu növbəyə keçirilir.'
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, birgə oyun nəticəsində əldə edilmiş resursların bölgüsü {from} ilə birgə aparılmış, nadir əşya püşkatma yolu ilə müəyyən edilmiş və iştirakçıların heç birindən etiraz daxil olmamışdır.',
+  powers: 'Resurslar iştirakçıların sayına bərabər bölünür.\nNadir əşya püşkatma yolu ilə müəyyən edilir.\nİştirak etməyən şəxsə pay ayrılmır.\nBölgü matç bitdikdən dərhal sonra aparılır.',
+  penalty: 'Bölgü qaydasının pozulması halında növbəti matçda nadir əşya avtomatik olaraq zərərçəkmiş iştirakçıya verilir.',
+  titleOptions: [
+    'Birgə Oyun Nəticəsində Əldə Edilmiş Resursların Bölgüsü haqqında Arayış',
+    'Komanda Daxilində Qənimət Bölgüsünün Qaydaları haqqında Arayış',
+    'Nadir Əşyanın Kimə Çatması Məsələsi haqqında Rəsmi Arayış',
+    'Resursların Bərabər Bölünməsi Prinsipi haqqında Arayış'
+  ],
+  powersOptions: [
+    'Resurslar iştirakçıların sayına bərabər bölünür.',
+    'Nadir əşya püşkatma yolu ilə müəyyən edilir.',
+    'İştirak etməyən şəxsə pay ayrılmır.',
+    'Bölgü matç bitdikdən dərhal sonra aparılır.',
+    'Əvvəlcədən razılaşdırılmış pay dəyişdirilmir.',
+    'Dublikat əşya ehtiyata götürülür.',
+    'Satış gəliri ümumi qaydada bölünür.',
+    'Mübahisə halında bölgü təxirə salınır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bölgü qaydasının pozulması halında növbəti matçda nadir əşya avtomatik olaraq zərərçəkmiş iştirakçıya verilir.',
+    'Arayış yalnız birgə oyunlara şamil edilir.',
+    'Etiraz matçdan sonra bir gün ərzində bildirilir.'
+  ]
 },
 {
   id: 'gg-telegram', cat: 'gaming', tone: 'zarafat', layout: 'teleqram', palette: 'ink',
-  title: '«GG» Teleqramı', tag: 'İdman ruhu',
-  signOrg: 'Elektron Oyun Bildirişləri üzrə Rabitə İdarəsi',
-  preamble: '{from} tərəfindən {to} adlı oyunçuya matçın nəticəsi ilə bağlı rəsmi bildiriş göndərilir. Teleqram idman ruhunu ifadə edir və heç bir istehza məzmunu daşımır (iddia olunur).',
-  powers: 'Cavab «GG» ilə verilə bilər.\nRevanş matçı təklif etmək hüququ.\nNəticə komanda çatında paylaşılır.\nStatistika ekranı əlavə olunur.',
-  penalty: 'Teleqram istehza məqsədi ilə göndərildiyi aşkarlandıqda revanş matçı məcburi qaydada təşkil edilir.'
+  title: 'Matçın Nəticəsinin Rəsmi Qaydada Etiraf Edilməsi haqqında Teleqram', tag: 'Qısa mesaj',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxs matçın nəticəsini şərtsiz qəbul edir və heç bir texniki səbəbə istinad etmir. {from} tərəfindən göstərilən üstünlük tam və mübahisəsiz hesab olunur.',
+  powers: 'Nəticə şərtsiz qəbul edilir.\nBağlantı amilinə istinad edilmir.\nKomanda tərkibi bəhanə kimi göstərilmir.\nRevanş matçı təklif olunur.',
+  penalty: 'Bu teleqram göndərildikdən sonra həmin matçla bağlı hər hansı etiraz və ya izahat qəbul edilmir.',
+  titleOptions: [
+    'Matçın Nəticəsinin Rəsmi Qaydada Etiraf Edilməsi haqqında Teleqram',
+    'Məğlubiyyətin Şərtsiz Qəbul Edilməsi haqqında Təcili Teleqram',
+    'Qarşı Tərəfin Üstünlüyünün Tanınması haqqında Teleqram',
+    'Matç Nəticəsinə Etirazın Olmaması haqqında Bildiriş'
+  ],
+  powersOptions: [
+    'Nəticə şərtsiz qəbul edilir.',
+    'Bağlantı amilinə istinad edilmir.',
+    'Komanda tərkibi bəhanə kimi göstərilmir.',
+    'Revanş matçı təklif olunur.',
+    'Qarşı tərəfin strategiyası uğurlu sayılır.',
+    'Səhvlər öz üzərinə götürülür.',
+    'Nəticə matç tarixçəsində saxlanılır.',
+    'Təbrik dərhal bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bu teleqram göndərildikdən sonra həmin matçla bağlı hər hansı etiraz və ya izahat qəbul edilmir.',
+    'Teleqram yalnız bir matça şamil edilir.',
+    'Revanş matçı ayrıca razılaşdırılır.'
+  ]
 },
 {
   id: 'player-id', cat: 'gaming', tone: 'zarafat', layout: 'vesiqe', palette: 'ink',
-  title: 'Oyunçu Vəsiqəsi', tag: 'Şəxsiyyət sənədi',
-  signOrg: 'Oyunçu Qeydiyyatı və Reytinq Şöbəsi',
+  title: 'Oyunçunun Statusunu və Oyun Rejimini Təsdiq edən Vəsiqə', tag: 'Vəsiqə',
+  signOrg: 'Oyun Rejimi və Ekran Vaxtı üzrə Baş İdarə',
   fromLabel: 'Vəsiqəni verən komanda',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin komandanın tamhüquqlu oyunçusu olduğunu təsdiq edir. Vəsiqə {from} tərəfindən verilmişdir və bütün matçlarda, turnirlərdə və komanda çatında etibarlıdır.',
-  powers: 'Komanda heyətində daimi yer.\nRol seçimində səs vermək.\nTurnirlərdə iştirak etmək.\nKomanda strategiyasına təklif vermək.',
-  penalty: 'Vəsiqə itirildikdə yenisi verilir, lakin bir həftə rol seçimində sonuncu növbəyə keçirilir.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin oyunçu statusunu və qüvvədə olan oyun rejimini təsdiq edir. Sənəd {from} tərəfindən verilmişdir, ev daxilində razılaşdırılmış qaydalara istinad edir və hər ay yenidən nəzərdən keçirilir.',
+  powers: 'Oyun saatları əvvəlcədən razılaşdırılıb.\nFasilə hər saatdan bir verilir.\nÖhdəliklər oyundan əvvəl tamamlanır.\nAvadanlıq təyinatı üzrə işlədilir.',
+  penalty: 'Vəsiqə ilə tanınan hüquqlar razılaşdırılmış öhdəliklərin icrası şərti ilə qüvvədədir; öhdəliklər pozulduqda rejim yenidən müəyyən edilir.',
+  titleOptions: [
+    'Oyunçunun Statusunu və Oyun Rejimini Təsdiq edən Vəsiqə',
+    'Oyun Hesabının Sahibliyini Təsdiq edən Rəsmi Vəsiqə',
+    'Oyunçu Statusunu və Təcrübəsini Təsbit edən Şəhadətnamə',
+    'Oyun Rejimi və Fasilə Qaydasına dair Vəsiqə'
+  ],
+  powersOptions: [
+    'Oyun saatları əvvəlcədən razılaşdırılıb.',
+    'Fasilə hər saatdan bir verilir.',
+    'Öhdəliklər oyundan əvvəl tamamlanır.',
+    'Avadanlıq təyinatı üzrə işlədilir.',
+    'Turnir günləri ayrıca planlaşdırılır.',
+    'Səs həddi gecə saatlarında azaldılır.',
+    'Dostların ziyarəti əvvəlcədən bildirilir.',
+    'Yeni oyun alışı büdcə ilə razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə ilə tanınan hüquqlar razılaşdırılmış öhdəliklərin icrası şərti ilə qüvvədədir; öhdəliklər pozulduqda rejim yenidən müəyyən edilir.',
+    'Vəsiqə hər ay yenidən təsdiq edilir.',
+    'İmtahan dövründə rejim məhdudlaşdırılır.'
+  ]
 },
 {
   id: 'controller-authority', cat: 'gaming', tone: 'zarafat', layout: 'viza', palette: 'burgundy',
-  title: 'Kontroller Səlahiyyəti', tag: 'Növbə hüququ',
-  signOrg: 'Konsol və Pult Münasibətləri üzrə Ali Məclis',
+  title: 'İkinci Kontrollerdən İstifadə Növbəsinin Müəyyən Edilməsinə dair İcazə', tag: 'Kontroller',
+  signOrg: 'Oyun Rejimi və Ekran Vaxtı üzrə Baş İdarə',
   powersLabel: 'SƏLAHİYYƏTİN HÜDUDLARI',
-  preamble: 'Bu sertifikatla {to} adlı şəxsə birinci kontrollerdən istifadə səlahiyyəti verilir. Səlahiyyət {from} tərəfindən, uzun növbə mübahisələrindən sonra rəsmiləşdirilmişdir.',
-  powers: 'Birinci kontrolleri seçmək.\nOyunu təkbaşına seçmək (növbədə).\nCanı bitdikdə növbəni ötürmək.\nKontrolleri şarjda saxlamaq öhdəliyi.',
-  penalty: 'Kontroller şarjsız qaldıqda növbəti oyunda birinci kontroller digər tərəfə keçir.'
+  preamble: '{from} tərəfindən {to} adlı şəxsə kontrollerdən istifadə növbəsini müəyyən etmək icazəsi verilir. İcazə hər iki iştirakçının bərabər vaxt alması şərti ilə qüvvədədir və birtərəfli dəyişdirilmir.',
+  powers: 'Növbə hər üç matçdan bir dəyişdirilir.\nİşlək kontroller növbə ilə istifadə edilir.\nBatareya bitdikdə növbə dayandırılmır.\nQonaq gəldikdə növbə ona güzəşt edilir.',
+  penalty: 'Növbəliliyin pozulması halında növbəti gün kontroller seçimi tam olaraq zərərçəkmiş tərəfə keçir.',
+  titleOptions: [
+    'İkinci Kontrollerdən İstifadə Növbəsinin Müəyyən Edilməsinə dair İcazə',
+    'Kontrollerin Növbə ilə Bölüşdürülməsinə dair Xüsusi İcazə',
+    'Yaxşı Kontrollerin İstifadə Qaydasına dair Məhdud İcazə',
+    'Oyun Avadanlığının Növbəliliyinə dair İcazə'
+  ],
+  powersOptions: [
+    'Növbə hər üç matçdan bir dəyişdirilir.',
+    'İşlək kontroller növbə ilə istifadə edilir.',
+    'Batareya bitdikdə növbə dayandırılmır.',
+    'Qonaq gəldikdə növbə ona güzəşt edilir.',
+    'Kontroller oyundan sonra yerinə qoyulur.',
+    'Zədələnmə halı dərhal bildirilir.',
+    'Yeni kontroller ümumi büdcədən alınır.',
+    'Tənzimləmələr birgə razılaşdırılır.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Növbəliliyin pozulması halında növbəti gün kontroller seçimi tam olaraq zərərçəkmiş tərəfə keçir.',
+    'İcazə hər həftə yenidən razılaşdırılır.',
+    'Avadanlığın zədələnməsi icazəni dayandırır.'
+  ]
 },
 {
   id: 'revenge-match-treaty', cat: 'gaming', tone: 'zarafat', layout: 'ekspertiza', palette: 'burgundy',
-  title: 'Revanş Matçı Müqaviləsi', tag: 'İkinci şans',
-  signOrg: 'Elektron Futbol Mübahisələri üzrə Komissiya',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında revanş matçının şərtləri müəyyən edilir. Tərəflər eyni xəritədə, eyni heyətlə oynamaq və nəticəni qəti qəbul etmək öhdəliyi götürürlər.',
-  powers: 'Matç 7 gün ərzində keçirilir.\nXəritə və rejim dəyişdirilmir.\nHeyət eyni saxlanılır.\nQalib nəticəni elan etmək hüququna malikdir.',
-  penalty: 'Revanş 7 gün ərzində keçirilmədikdə əvvəlki nəticə yekun sayılır və bir daha müzakirə olunmur.'
+  title: 'Revanş Matçının Təşkili Şərtlərinin Qiymətləndirilməsi haqqında Rəy', tag: 'Revanş',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
+  preamble: 'Aparılmış qiymətləndirmə nəticəsində müəyyən edilmişdir ki, {to} və {from} arasında keçirilmiş matçın nəticəsi tərəflərin real səviyyəsini tam əks etdirmir. Revanş matçının təşkili məqsədəuyğun hesab edilir.',
+  powers: 'Əvvəlki matçda hesab fərqi minimal olub.\nHər iki tərəf oxşar səhvlərə yol verib.\nNəticə son dəqiqələrdə müəyyənləşib.\nRevanş üçün kifayət qədər əsas var.',
+  penalty: 'Revanş matçının nəticəsi qəti hesab edilir və həmin mövzuda yeni müraciətlərə növbəti mövsümə qədər baxılmır.',
+  titleOptions: [
+    'Revanş Matçının Təşkili Şərtlərinin Qiymətləndirilməsi haqqında Rəy',
+    'Təkrar Görüşün Keçirilməsi Zərurəti haqqında Ekspert Rəyi',
+    'Əvvəlki Matçın Nəticəsinin Təhlili haqqında Yekun Rəy',
+    'Revanş Tələbinin Əsaslılığının Qiymətləndirilməsinə dair Rəy'
+  ],
+  powersOptions: [
+    'Əvvəlki matçda hesab fərqi minimal olub.',
+    'Hər iki tərəf oxşar səhvlərə yol verib.',
+    'Nəticə son dəqiqələrdə müəyyənləşib.',
+    'Revanş üçün kifayət qədər əsas var.',
+    'Matçın şərtləri əvvəlkindən fərqlənməməlidir.',
+    'Tarix hər iki tərəflə razılaşdırılır.',
+    'Nəticə yekun hesab edilir.',
+    'Üçüncü matç yalnız bərabərlik halında keçirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Revanş matçının nəticəsi qəti hesab edilir və həmin mövzuda yeni müraciətlərə növbəti mövsümə qədər baxılmır.',
+    'Rəy yalnız bir revanş matçına əsas verir.',
+    'Matç keçirilmədikdə əvvəlki nəticə qüvvədə qalır.'
+  ]
 },
 
 /* ==================== VİRAL ====================
@@ -1166,28 +4070,102 @@ window.TEMPLATES = [
    ki, istifadəçi dizaynı dəyişdikdə sənəd yenə oxunaqlı qalsın. */
 {
   id: 'cole-cixma-vizasi', cat: 'viral', tone: 'zarafat', layout: 'viza', palette: 'steel',
-  title: 'Çölə Çıxma Vizası', tag: 'Ən çox paylaşılan',
-  penaltyLabel: 'VİZANIN LƏĞVİ',
-  preamble: '{from} tərəfindən {to} adlı şəxsə {{teyinat}} istiqamətində, {{radius}} hüdudlarında {{qayidis_vaxti}}-a qədər evdən kənara çıxmaq üçün viza verilir. Viza şərtlər pozulduqda avtomatik olaraq etibarsız sayılır.',
-  powers: 'Hər 45 dəqiqədən bir həyat əlaməti göstərmək.\nZəngə birinci cəhddən cavab vermək.\nGöstərilən radiusdan kənara çıxmamaq.\nQayıdarkən çörək və süd gətirmək.',
-  penalty: 'Üçüncü cavabsız zəng vizanı avtomatik ləğv edir. Növbəti viza ən tezi bir həftədən sonra verilir.',
+  title: 'Evdən Kənara Çıxma və Müəyyən Saatadək Qayıtma Şərtli İcazəsi', tag: 'Ən çox paylaşılan',
+  signOrg: 'Gündəlik Həyatın Fövqəladə Halları üzrə Komissiya',
   signTitle: 'Baş İnspektor',
-  signOrg: 'Miqrasiya və Çöl İşləri Baş İdarəsi',
+  penaltyLabel: 'VİZANIN LƏĞVİ',
+  preamble: '{from} tərəfindən {to} adlı şəxsə {{teyinat}} istiqamətində, {{radius}} hüdudlarında {{qayidis_vaxti}}-a qədər evdən kənara çıxmaq üçün icazə verilir. Şərtlərdən hər hansı biri pozulduqda icazə əlavə qərar tələb edilmədən avtomatik olaraq qüvvədən düşür.',
+  powers: 'Hər 45 dəqiqədən bir həyat əlaməti göstərmək.\nZəngə birinci cəhddən cavab vermək.\nGöstərilən radiusdan kənara çıxmamaq.\nQayıdarkən çörək və süd gətirmək.',
+  penalty: 'Üçüncü cavabsız zəng icazəni avtomatik ləğv edir. Yeni icazə ən tezi bir həftədən sonra, əvvəlki pozuntunun izahı təqdim edildikdən sonra verilir.',
   share: 'Nəhayət rəsmiləşdirdim. {{qayidis_vaxti}}-a qədər etibarlıdır 🛂',
   cancelReasons: ['Cavabsız zəng', 'Gec qayıtdı', 'Çörək gətirmədi', 'Səbəb göstərilmədi'],
   fields: [
-    { k: 'soyad_ad', t: 'text', label: 'Soyad, ad', max: 40, person: true, up: true, into: 'to', row: 'SOYAD, AD / SURNAME' },
-    { k: 'teyinat', t: 'select', label: 'Təyinat yeri', free: true, max: 40, row: 'TƏYİNAT YERİ',
-      opts: ['Çayxana', 'Mangal', 'Oğlanlarla görüş', 'Toy', 'Bir işim var', 'Stadion'] },
-    { k: 'cixis_vaxti', t: 'time', label: 'Çıxış vaxtı', def: 'now', row: 'QÜVVƏYƏ MİNİR' },
-    { k: 'qayidis_vaxti', t: 'time', label: 'Qayıdış vaxtı', def: '+3h', expiry: true, row: 'QÜVVƏDƏN DÜŞÜR',
-      hint: 'Vizanın etibarlılıq müddəti bu saatdan hesablanır.' },
-    { k: 'giris_sayi', t: 'select', label: 'Giriş sayı', opts: ['01', '02', 'MULTI'], row: 'GİRİŞ SAYI' },
-    { k: 'radius', t: 'select', label: 'İcazə verilən radius', row: 'ETİBARLIDIR',
-      opts: ['Məhəllə', 'Şəhər daxili', 'Bakıdan kənar', 'Limitsiz'] },
-    { k: 'icaze_veren', t: 'select', label: 'İcazəni verən', into: 'from', row: 'VERƏN ORQAN',
-      opts: ['Həyat yoldaşı', 'Ana', 'Qaynana', 'Kollektiv qərar'] },
-    { k: 'musayiet', t: 'text', label: 'Müşayiət edən şəxslər', max: 60, opt: true, row: 'MÜŞAYİƏT' }
+    {
+      k: "soyad_ad",
+      t: "text",
+      label: "Soyad, ad",
+      max: 40,
+      person: true,
+      up: true,
+      into: "to",
+      row: "SOYAD, AD / SURNAME"
+    },
+    {
+      k: "teyinat",
+      t: "select",
+      label: "Təyinat yeri",
+      free: true,
+      max: 40,
+      row: "TƏYİNAT YERİ",
+      opts: [
+        "Çayxana",
+        "Mangal",
+        "Oğlanlarla görüş",
+        "Toy",
+        "Bir işim var",
+        "Stadion"
+      ]
+    },
+    {
+      k: "cixis_vaxti",
+      t: "time",
+      label: "Çıxış vaxtı",
+      def: "now",
+      row: "QÜVVƏYƏ MİNİR"
+    },
+    {
+      k: "qayidis_vaxti",
+      t: "time",
+      label: "Qayıdış vaxtı",
+      def: "+3h",
+      expiry: true,
+      row: "QÜVVƏDƏN DÜŞÜR",
+      hint: "Vizanın etibarlılıq müddəti bu saatdan hesablanır."
+    },
+    {
+      k: "giris_sayi",
+      t: "select",
+      label: "Giriş sayı",
+      opts: [
+        "01",
+        "02",
+        "MULTI"
+      ],
+      row: "GİRİŞ SAYI"
+    },
+    {
+      k: "radius",
+      t: "select",
+      label: "İcazə verilən radius",
+      row: "ETİBARLIDIR",
+      opts: [
+        "Məhəllə",
+        "Şəhər daxili",
+        "Bakıdan kənar",
+        "Limitsiz"
+      ]
+    },
+    {
+      k: "icaze_veren",
+      t: "select",
+      label: "İcazəni verən",
+      into: "from",
+      row: "VERƏN ORQAN",
+      opts: [
+        "Həyat yoldaşı",
+        "Ana",
+        "Qaynana",
+        "Kollektiv qərar"
+      ]
+    },
+    {
+      k: "musayiet",
+      t: "text",
+      label: "Müşayiət edən şəxslər",
+      max: 60,
+      opt: true,
+      row: "MÜŞAYİƏT"
+    }
   ],
   notes: [
     'Viza sahibi hər 45 dəqiqədən bir həyat əlaməti göstərməyə — mesaj yazmağa və ya zəngə cavab verməyə borcludur.',
@@ -1201,26 +4179,77 @@ window.TEMPLATES = [
 },
 {
   id: 'hesab-davasi-qalibi', cat: 'viral', tone: 'zarafat', layout: 'sertifikat', palette: 'forest',
-  title: 'Hesab Davası Qalibi Sertifikatı', tag: 'Süfrə arbitrajı',
+  title: 'Süfrə Hesabı üzrə Mübahisədə Qalibiyyətin Təsdiqi haqqında Sertifikat', tag: 'Süfrə arbitrajı',
+  signOrg: 'Süfrə Mübahisələri üzrə Arbitraj Kollegiyası',
+  signTitle: 'Sədr',
   powersLabel: 'SERTİFİKATIN ŞƏRTLƏRİ',
   preamble: 'Bununla təsdiq edilir ki, {{tarix}} tarixində {{mekan}} ünvanında baş vermiş hesab mübahisəsində {to} adlı şəxs qalib gəlmiş və {{mebleg}} AZN məbləğində öhdəliyi könüllü surətdə öz üzərinə götürmüşdür. Qələbə üsulu: {{usul}}.',
-  powers: 'Növbəti süfrədə ödəniş məğlub tərəfə keçir.\nQalib altı ay ərzində bu sənədə istinad edə bilər.\nSertifikat yalnız faktiki ödəyənə verilir.\nHesabın bölünməsi sertifikatı qüvvədən salır.',
-  penalty: 'Ödəniş faktiki olaraq bölünübsə, sertifikat qüvvədən düşür və mübahisə yenidən açıq elan edilir.',
-  signTitle: 'Sədr',
-  signOrg: 'Süfrə Mübahisələri üzrə Arbitraj Kollegiyası',
+  powers: 'Növbəti süfrədə ödəniş öhdəliyi məğlub tərəfə keçir.\nQalib altı ay ərzində bu sənədə istinad edə bilər.\nSertifikat yalnız hesabı faktiki ödəmiş şəxsə verilir.\nHesabın bölünməsi sertifikatı qüvvədən salır.',
+  penalty: 'Ödənişin faktiki olaraq bölündüyü aşkarlandıqda sertifikat qüvvədən düşür və mübahisə yenidən açıq elan edilir.',
   share: 'Mübahisə bitdi, sənəd əldədir. Növbəti dəfə siz 🧾',
   fields: [
-    { k: 'qalib', t: 'text', label: 'Qalib', max: 40, person: true, into: 'to', row: 'QALİB' },
-    { k: 'meglublar', t: 'list', label: 'Məğlub tərəflər', max: 40, count: 4, row: 'MƏĞLUB TƏRƏFLƏR',
-      hint: 'Ən çoxu dörd ad.' },
-    { k: 'mekan', t: 'text', label: 'Məkan', max: 40, row: 'MƏKAN' },
-    { k: 'mebleg', t: 'number', label: 'Məbləğ', min: 1, max: 999, def: 60, unit: 'AZN', row: 'MƏBLƏĞ' },
-    { k: 'usul', t: 'select', label: 'Qələbə üsulu', row: 'QƏLƏBƏ ÜSULU',
-      opts: ['Ofisianta əvvəlcədən xəbərdarlıq edilmişdi', 'Kart əl altında hazır saxlanılmışdı',
-             'Tualetə gedib ödənilmişdir', '«Mən böyüyəm» arqumenti tətbiq edilmişdir',
-             'Fiziki üstünlük', 'Qarşı tərəf ayaqqabısını bağlayırdı'] },
-    { k: 'tarix', t: 'date', label: 'Tarix', row: 'TARİX' },
-    { k: 'kollegiya', t: 'text', label: 'Kollegiya', auto: 'Arbitraj Kollegiyası', into: 'from' }
+    {
+      k: "qalib",
+      t: "text",
+      label: "Qalib",
+      max: 40,
+      person: true,
+      into: "to",
+      row: "QALİB"
+    },
+    {
+      k: "meglublar",
+      t: "list",
+      label: "Məğlub tərəflər",
+      max: 40,
+      count: 4,
+      row: "MƏĞLUB TƏRƏFLƏR",
+      hint: "Ən çoxu dörd ad."
+    },
+    {
+      k: "mekan",
+      t: "text",
+      label: "Məkan",
+      max: 40,
+      row: "MƏKAN"
+    },
+    {
+      k: "mebleg",
+      t: "number",
+      label: "Məbləğ",
+      min: 1,
+      max: 999,
+      def: 60,
+      unit: "AZN",
+      row: "MƏBLƏĞ"
+    },
+    {
+      k: "usul",
+      t: "select",
+      label: "Qələbə üsulu",
+      row: "QƏLƏBƏ ÜSULU",
+      opts: [
+        "Ofisianta əvvəlcədən xəbərdarlıq edilmişdi",
+        "Kart əl altında hazır saxlanılmışdı",
+        "Tualetə gedib ödənilmişdir",
+        "«Mən böyüyəm» arqumenti tətbiq edilmişdir",
+        "Fiziki üstünlük",
+        "Qarşı tərəf ayaqqabısını bağlayırdı"
+      ]
+    },
+    {
+      k: "tarix",
+      t: "date",
+      label: "Tarix",
+      row: "TARİX"
+    },
+    {
+      k: "kollegiya",
+      t: "text",
+      label: "Kollegiya",
+      auto: "Arbitraj Kollegiyası",
+      into: "from"
+    }
   ],
   notes: [
     'MƏĞLUB TƏRƏFLƏR: {{meglublar}}.',
@@ -1232,25 +4261,78 @@ window.TEMPLATES = [
 },
 {
   id: 'gorduldu-arayisi', cat: 'viral', tone: 'zarafat', layout: 'arayis', palette: 'ink',
-  title: '«Görüldü» Arayışı', tag: 'Cavab toxunulmazlığı',
-  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, {from} tərəfindən {{mesaj_tarixi}} tarixində göndərilmiş {{mesaj_novu}} mesaj oxunmuş, lakin cavablandırılmamışdır. Səbəb kimi göstərilir: «{{sebeb}}». Adıçəkilən şəxsə {{susqunluq_saat}} saat cavab toxunulmazlığı verilir.',
-  powers: 'Toxunulmazlıq «onlayn» görünəndə də qüvvədədir.\nStory paylaşmaq arayışı dərhal qüvvədən salır.\nEyni şəxsə ayda iki dəfədən artıq verilmir.\nTelefon söndü izahatı ilə birlikdə işlədilmir.',
-  penalty: 'Toxunulmazlıq müddəti bitdikdən sonra cavab yazılmazsa, arayış qüvvədən düşür və izahat qəbul edilmir.',
-  signTitle: 'Şöbə müdiri',
+  title: 'Mesajın Oxunduğu, Lakin Cavablandırılmadığı Halın Təsdiqi haqqında Arayış', tag: 'Cavab toxunulmazlığı',
   signOrg: 'Rəqəmsal Ünsiyyət və Susqunluq Departamenti',
+  signTitle: 'Şöbə müdiri',
+  preamble: 'Verilir {to} adlı şəxsə ondan ötrü ki, {from} tərəfindən {{mesaj_tarixi}} tarixində göndərilmiş {{mesaj_novu}} mesaj oxunmuş, lakin cavablandırılmamışdır. Səbəb kimi göstərilir: «{{sebeb}}». Adıçəkilən şəxsə {{susqunluq_saat}} saat cavab toxunulmazlığı verilir.',
+  powers: 'Toxunulmazlıq «onlayn» görünmə halında da qüvvədədir.\nSosial şəbəkədə paylaşım arayışı dərhal qüvvədən salır.\nEyni şəxsə ayda iki dəfədən artıq verilmir.\n«Telefonum söndü» izahatı ilə birlikdə işlədilmir.',
+  penalty: 'Toxunulmazlıq müddəti bitdikdən sonra cavab yazılmazsa, arayış qüvvədən düşür və sonradan təqdim edilən izahat qəbul edilmir.',
   share: 'Sənədim var, {{susqunluq_saat}} saat mənə toxunmaq olmaz ✓✓',
   cancelReasons: ['Story paylaşdı', 'Onlayn göründü', 'Cavab yazdı', 'Səbəb göstərilmədi'],
   fields: [
-    { k: 'ad', t: 'text', label: 'Arayış verilən', max: 40, person: true, into: 'to', row: 'ARAYIŞ VERİLİR' },
-    { k: 'qarsi_teref', t: 'text', label: 'Mesajı göndərən', max: 40, person: true, into: 'from', row: 'GÖNDƏRƏN' },
-    { k: 'mesaj_tarixi', t: 'datetime', label: 'Mesajın vaxtı', row: 'MESAJIN VAXTI' },
-    { k: 'mesaj_novu', t: 'select', label: 'Mesajın növü', row: 'MESAJIN NÖVÜ',
-      opts: ['Yazılı', 'Səsli', 'Şəkil', 'Link', '«Salam» (tək söz)'] },
-    { k: 'susqunluq_saat', t: 'number', label: 'Toxunulmazlıq müddəti', min: 1, max: 72, def: 24, unit: 'saat',
-      row: 'TOXUNULMAZLIQ', expiry: 'hours', hint: 'Arayışın etibarlılıq müddəti bu saatdan hesablanır.' },
-    { k: 'sebeb', t: 'select', label: 'Səbəb', row: 'GÖSTƏRİLƏN SƏBƏB',
-      opts: ['Cavab yazacaqdım, sonra unutdum', 'Fikirləşirdim', 'Nə yazacağımı bilmədim',
-             'Səsli mesaj idi, əlverişli şərait olmadı', 'Elə bir şey deyildi ki cavab verim', 'Əlim dolu idi'] }
+    {
+      k: "ad",
+      t: "text",
+      label: "Arayış verilən",
+      max: 40,
+      person: true,
+      into: "to",
+      row: "ARAYIŞ VERİLİR"
+    },
+    {
+      k: "qarsi_teref",
+      t: "text",
+      label: "Mesajı göndərən",
+      max: 40,
+      person: true,
+      into: "from",
+      row: "GÖNDƏRƏN"
+    },
+    {
+      k: "mesaj_tarixi",
+      t: "datetime",
+      label: "Mesajın vaxtı",
+      row: "MESAJIN VAXTI"
+    },
+    {
+      k: "mesaj_novu",
+      t: "select",
+      label: "Mesajın növü",
+      row: "MESAJIN NÖVÜ",
+      opts: [
+        "Yazılı",
+        "Səsli",
+        "Şəkil",
+        "Link",
+        "«Salam» (tək söz)"
+      ]
+    },
+    {
+      k: "susqunluq_saat",
+      t: "number",
+      label: "Toxunulmazlıq müddəti",
+      min: 1,
+      max: 72,
+      def: 24,
+      unit: "saat",
+      row: "TOXUNULMAZLIQ",
+      expiry: "hours",
+      hint: "Arayışın etibarlılıq müddəti bu saatdan hesablanır."
+    },
+    {
+      k: "sebeb",
+      t: "select",
+      label: "Səbəb",
+      row: "GÖSTƏRİLƏN SƏBƏB",
+      opts: [
+        "Cavab yazacaqdım, sonra unutdum",
+        "Fikirləşirdim",
+        "Nə yazacağımı bilmədim",
+        "Səsli mesaj idi, əlverişli şərait olmadı",
+        "Elə bir şey deyildi ki cavab verim",
+        "Əlim dolu idi"
+      ]
+    }
   ],
   notes: [
     'Toxunulmazlıq şəxsin «onlayn» görünməsi halında da qüvvədədir.',
@@ -1261,110 +4343,383 @@ window.TEMPLATES = [
 },
 {
   id: 'bot-kimi-oynayir', cat: 'viral', tone: 'zarafat', layout: 'ekspertiza', palette: 'forest',
-  title: 'Bot Kimi Oynayır Sertifikatı', tag: 'Texniki ekspertiza',
+  title: 'Oyun Tərzinin Süni İntellekt Davranışından Fərqləndirilməsi haqqında Rəy', tag: 'Texniki ekspertiza',
+  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
+  signTitle: 'Baş ekspert',
   penaltyLabel: 'NƏTİCƏ',
-  preamble: 'Aparılmış texniki müşahidə nəticəsində {to} adlı şəxsin {{oyun}} oyunundakı tərzinin süni intellekt davranışından fərqləndirilməsi mümkün olmamışdır. Rəy {from} tərəfindən verilmiş şikayət əsasında tərtib edilmişdir. Zəiflik dərəcəsi: {{zeiflik}}/10.',
+  preamble: 'Aparılmış texniki müşahidə nəticəsində {to} adlı şəxsin {{oyun}} oyunundakı tərzinin süni intellekt davranışından fərqləndirilməsi mümkün olmamışdır. Rəy {from} tərəfindən verilmiş müraciət əsasında tərtib edilmişdir. Zəiflik dərəcəsi: {{zeiflik}}/10.',
   powers: 'Eyni hərəkəti dövri olaraq təkrarlayır.\nUduzduqda internet bağlantısına istinad edir.\nKomanda yoldaşını günahlandırır.\n«Bir dəfə də» deyib altı dəfə oynayır.',
   penalty: 'Turinq testi keçilməmişdir. Çətinlik səviyyəsinin aşağı salınması və məşq rejiminin bərpası məqsədəuyğun hesab edilir.',
-  signTitle: 'Baş ekspert',
-  signOrg: 'Elektron Oyunlar üzrə Texniki Ekspertiza Mərkəzi',
   share: 'Rəsmi ekspertiza hazırdır. Zəiflik dərəcəsi {{zeiflik}}/10 🤖',
   fields: [
-    { k: 'ad', t: 'text', label: 'Ekspertizadan keçən', max: 40, person: true, into: 'to', row: 'BARƏSİNDƏ' },
-    { k: 'oyun', t: 'select', label: 'Oyun', free: true, max: 24, row: 'OYUN',
-      opts: ['FIFA', 'PES', 'CS', 'PUBG', 'Dota', 'Valorant', 'Nərd', 'Domino', 'Şahmat'] },
-    { k: 'si_seviyye', t: 'select', label: 'Süni intellekt səviyyəsi', row: 'SÜNİ İNTELLEKT SƏVİYYƏSİ',
-      opts: ['Amatyor', 'Yarı-professional', 'Professional', 'Əfsanəvi'] },
-    { k: 'davranislar', t: 'multi', label: 'Aşkarlanmış davranış əlamətləri', min: 2, max: 5,
-      def: ['Eyni hərəkəti dövri olaraq təkrarlayır', 'Küncdə dayanıb gözləyir'],
-      opts: ['Eyni hərəkəti dövri olaraq təkrarlayır', 'Yalnız bir komanda seçir',
-             'Avtomatik müdafiə ilə oynayır', 'Qapıçı ilə top saxlayır', 'Küncdə dayanıb gözləyir',
-             'Uduzduqda internet bağlantısına istinad edir', 'Uduzduqda pultu yerə qoyur',
-             '«Bir dəfə də» deyib altı dəfə oynayır', 'Komanda yoldaşını günahlandırır',
-             'Mikrofona ağır nəfəs alır'] },
-    { k: 'zeiflik', t: 'scale', label: 'Zəiflik dərəcəsi', min: 1, max: 10, def: 7 },
-    { k: 'ekspert', t: 'text', label: 'Ekspert', auto: 'Baş ekspert', into: 'from', row: 'EKSPERT' }
+    {
+      k: "ad",
+      t: "text",
+      label: "Ekspertizadan keçən",
+      max: 40,
+      person: true,
+      into: "to",
+      row: "BARƏSİNDƏ"
+    },
+    {
+      k: "oyun",
+      t: "select",
+      label: "Oyun",
+      free: true,
+      max: 24,
+      row: "OYUN",
+      opts: [
+        "FIFA",
+        "PES",
+        "CS",
+        "PUBG",
+        "Dota",
+        "Valorant",
+        "Nərd",
+        "Domino",
+        "Şahmat"
+      ]
+    },
+    {
+      k: "si_seviyye",
+      t: "select",
+      label: "Süni intellekt səviyyəsi",
+      row: "SÜNİ İNTELLEKT SƏVİYYƏSİ",
+      opts: [
+        "Amatyor",
+        "Yarı-professional",
+        "Professional",
+        "Əfsanəvi"
+      ]
+    },
+    {
+      k: "davranislar",
+      t: "multi",
+      label: "Aşkarlanmış davranış əlamətləri",
+      min: 2,
+      max: 5,
+      def: [
+        "Eyni hərəkəti dövri olaraq təkrarlayır",
+        "Küncdə dayanıb gözləyir"
+      ],
+      opts: [
+        "Eyni hərəkəti dövri olaraq təkrarlayır",
+        "Yalnız bir komanda seçir",
+        "Avtomatik müdafiə ilə oynayır",
+        "Qapıçı ilə top saxlayır",
+        "Küncdə dayanıb gözləyir",
+        "Uduzduqda internet bağlantısına istinad edir",
+        "Uduzduqda pultu yerə qoyur",
+        "«Bir dəfə də» deyib altı dəfə oynayır",
+        "Komanda yoldaşını günahlandırır",
+        "Mikrofona ağır nəfəs alır"
+      ]
+    },
+    {
+      k: "zeiflik",
+      t: "scale",
+      label: "Zəiflik dərəcəsi",
+      min: 1,
+      max: 10,
+      def: 7
+    },
+    {
+      k: "ekspert",
+      t: "text",
+      label: "Ekspert",
+      auto: "Baş ekspert",
+      into: "from",
+      row: "EKSPERT"
+    }
   ]
 },
 {
   id: 'immunitet-vesiqesi', cat: 'viral', tone: 'zarafat', layout: 'lisenziya', palette: 'burgundy',
-  title: '«Sənə də qismət olsun» İmmunitet Vəsiqəsi', tag: 'Toy mövsümü',
-  powersLabel: 'İMMUNİTETİN ƏHATƏ ETDİYİ SUALLAR',
-  preamble: 'Bu vəsiqə ilə {from} tərəfindən {to} adlı şəxsə ({{yas}} yaş) toy, nişan, elçilik və qohum yığıncaqlarında müəyyən suallara cavab verməkdən imtina etmək hüququ verilir. Vəsiqə {{muddet}} müddətinə etibarlıdır, süfrə arxasında da qüvvədədir.',
-  powers: 'Sualı eşitməmiş kimi davranmaq hüququ.\nMövzunu nəzakətsizlik sayılmadan dəyişmək.\nSual verəndən bir qutu şirniyyat tələb etmək.\nİSTİSNA: immunitet nənələrə şamil edilmir.',
-  penalty: '«Mən sənin xeyrini istəyirəm» ifadəsi vəsiqəni qüvvədən salmır; vəsiqə yalnız müddəti bitdikdə etibarsızdır.',
-  signTitle: 'Komissiya sədri',
+  title: 'Ailə Yığıncaqlarında Şəxsi Suallara Cavab Verməmək Hüququnun Vəsiqəsi', tag: 'Toy mövsümü',
   signOrg: 'Subaylıq Hüquqlarının Müdafiəsi üzrə Komissiya',
+  signTitle: 'Komissiya sədri',
+  powersLabel: 'İMMUNİTETİN ƏHATƏ ETDİYİ SUALLAR',
+  preamble: '{from} tərəfindən {to} adlı şəxsə ({{yas}} yaş) toy, nişan, elçilik və qohum yığıncaqlarında müəyyən suallara cavab verməkdən imtina etmək hüququ verilir. Vəsiqə {{muddet}} müddətinə etibarlıdır və süfrə arxasında da qüvvədə hesab edilir.',
+  powers: 'Sualı eşitməmiş kimi davranmaq hüququ tanınır.\nMövzunu nəzakətsizlik sayılmadan dəyişmək icazəlidir.\nSual verəndən bir qutu şirniyyat tələb edilə bilər.\nİstisna: immunitet nənə və babalara şamil edilmir.',
+  penalty: '«Mən sənin xeyrini istəyirəm» ifadəsi vəsiqəni qüvvədən salmır. Vəsiqə yalnız göstərilən müddət başa çatdıqda etibarsız hesab edilir.',
   share: 'Bu mövsüm mənə sual yoxdur, sənədim var 🛡️',
   fields: [
-    { k: 'ad_soyad', t: 'text', label: 'Ad, soyad', max: 40, person: true, into: 'to', row: 'VƏSİQƏ SAHİBİ' },
-    { k: 'yas', t: 'number', label: 'Yaş', min: 16, max: 99, def: 27, opt: true, row: 'YAŞ' },
-    { k: 'muddet', t: 'select', label: 'Etibarlılıq müddəti', row: 'ETİBARLIDIR',
-      opts: ['1 toy mövsümü', '6 ay', '1 il', 'Novruza qədər'] },
-    { k: 'qorunan_suallar', t: 'multi', label: 'Qorunan suallar', min: 2, max: 5,
-      def: ['«Sənə də qismət olsun»', '«Yaşın keçir ha»'],
-      opts: ['«Sənə də qismət olsun»', '«Nə vaxt sənin toyunda oynayacağıq?»', '«Yaşın keçir ha»',
-             '«Bir tanışım var, çox yaxşı ailədəndir»', '«Bizim vaxtımızda bu yaşda iki uşağımız vardı»',
-             '«Anan yazıq nə vaxta qədər gözləsin?»', '«Seçici olma da bir az»'] },
-    { k: 'istisna', t: 'text', label: 'İstisna şəxslər', auto: 'Nənə, baba', row: 'İSTİSNA' },
-    { k: 'komissiya', t: 'text', label: 'Verən orqan', auto: 'Subaylıq Hüquqları Komissiyası', into: 'from' }
+    {
+      k: "ad_soyad",
+      t: "text",
+      label: "Ad, soyad",
+      max: 40,
+      person: true,
+      into: "to",
+      row: "VƏSİQƏ SAHİBİ"
+    },
+    {
+      k: "yas",
+      t: "number",
+      label: "Yaş",
+      min: 16,
+      max: 99,
+      def: 27,
+      opt: true,
+      row: "YAŞ"
+    },
+    {
+      k: "muddet",
+      t: "select",
+      label: "Etibarlılıq müddəti",
+      row: "ETİBARLIDIR",
+      opts: [
+        "1 toy mövsümü",
+        "6 ay",
+        "1 il",
+        "Novruza qədər"
+      ]
+    },
+    {
+      k: "qorunan_suallar",
+      t: "multi",
+      label: "Qorunan suallar",
+      min: 2,
+      max: 5,
+      def: [
+        "«Sənə də qismət olsun»",
+        "«Yaşın keçir ha»"
+      ],
+      opts: [
+        "«Sənə də qismət olsun»",
+        "«Nə vaxt sənin toyunda oynayacağıq?»",
+        "«Yaşın keçir ha»",
+        "«Bir tanışım var, çox yaxşı ailədəndir»",
+        "«Bizim vaxtımızda bu yaşda iki uşağımız vardı»",
+        "«Anan yazıq nə vaxta qədər gözləsin?»",
+        "«Seçici olma da bir az»"
+      ]
+    },
+    {
+      k: "istisna",
+      t: "text",
+      label: "İstisna şəxslər",
+      auto: "Nənə, baba",
+      row: "İSTİSNA"
+    },
+    {
+      k: "komissiya",
+      t: "text",
+      label: "Verən orqan",
+      auto: "Subaylıq Hüquqları Komissiyası",
+      into: "from"
+    }
   ]
 },
 {
   id: 'etiraz-erizesi', cat: 'viral', tone: 'zarafat', layout: 'qerar', palette: 'ink',
-  title: '«Qardaşım Oynayırdı» Etiraz Ərizəsi', tag: 'Cavab sənədi',
+  title: 'Oyun Hesabından Üçüncü Şəxsin İstifadə Etməsi haqqında Qərar', tag: 'Cavab sənədi',
   signOrg: 'Virtual Oyun Nəticələrinə Etirazlar üzrə Şura',
-  preamble: '{from} tərəfindən verilmiş ekspertiza rəyinə etiraz olaraq {to} adlı şəxs bildirir ki, göstərilən vaxt aralığında hesabdan üçüncü şəxs — qardaşı istifadə etmişdir. Etiraz təxirəsalınmaz qaydada baxılmaq üçün təqdim edilir.',
-  powers: 'Hesabın üçüncü şəxsə verilməsi sübut edilməlidir.\nQardaşın yaşı və oyun stajı göstərilir.\nEkran görüntüsü sübut sayılmır.\nEtiraz bir dəfə verilə bilər.',
-  penalty: 'Etiraz təkrarlandıqda ekspertiza rəyi qəti qüvvəyə minir və zəiflik dərəcəsi bir bal artırılır.'
+  preamble: 'Şura {to} adlı şəxsin müraciətinə baxaraq müəyyən etmişdir ki, göstərilən vaxt aralığında oyun hesabından üçüncü şəxsin istifadə etməsi ehtimalı tam istisna edilmir. {from} tərəfindən təqdim edilmiş ekspertiza rəyinə etiraz qismən əsaslı hesab olunur.',
+  powers: 'Hesabın üçüncü şəxsə verilməsi sübut edilməlidir.\nÜçüncü şəxsin yaşı və oyun stajı ayrıca göstərilir.\nEkran görüntüsü müstəqil sübut sayılmır.\nEtiraz eyni matç üzrə bir dəfə verilə bilər.',
+  penalty: 'Etiraz təkrarlandıqda ekspertiza rəyi qəti qüvvəyə minir və zəiflik dərəcəsi bir bal artırılır.',
+  titleOptions: [
+    'Oyun Hesabından Üçüncü Şəxsin İstifadə Etməsi haqqında Qərar',
+    'Ekspertiza Rəyinə Etirazın Qismən Təmin Edilməsi haqqında Qərar',
+    'Oyun Nəticəsinin Yenidən Qiymətləndirilməsi haqqında Qətnamə',
+    'Hesabın Müvəqqəti Olaraq Başqasına Verildiyinin Tanınması haqqında Qərar'
+  ],
+  powersOptions: [
+    'Hesabın üçüncü şəxsə verilməsi sübut edilməlidir.',
+    'Üçüncü şəxsin yaşı və oyun stajı ayrıca göstərilir.',
+    'Ekran görüntüsü müstəqil sübut sayılmır.',
+    'Etiraz eyni matç üzrə bir dəfə verilə bilər.',
+    'Şahid ifadəsi yalnız oyunda iştirak etməyən şəxsdən qəbul edilir.',
+    'Bağlantı jurnalı tələb olunduqda təqdim edilir.',
+    'Etirazın baxılma müddəti üç gündür.',
+    'Təkrar matç təklifi etirazı əvəz edə bilər.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Etiraz təkrarlandıqda ekspertiza rəyi qəti qüvvəyə minir və zəiflik dərəcəsi bir bal artırılır.',
+    'Etiraz təmin edilmədikdə nəticə dəyişdirilmədən qüvvədə saxlanılır.',
+    'Sübut təqdim edilmədikdə etirazın baxılması dayandırılır.'
+  ]
 },
 {
   id: 'yuxu-rejimi-vesiqesi', cat: 'viral', tone: 'zarafat', layout: 'vesiqe', palette: 'steel',
-  title: 'Yuxu Rejimi Vəsiqəsi', tag: 'Səhər toxunulmazlığı',
+  title: 'Səhər Saatlarında Oyanma Hüdudlarının Müəyyən Edilməsinə dair Vəsiqə', tag: 'Səhər toxunulmazlığı',
   signOrg: 'Gecə Saatları üzrə Xüsusi Tənzimləmə İdarəsi',
-  preamble: 'Bu vəsiqə {to} adlı şəxsin gecə rejimini və səhər oyanma hüdudlarını təsdiq edir. Vəsiqə {from} tərəfindən uzunmüddətli müşahidə və nəticəsiz oyatma cəhdlərindən sonra rəsmiləşdirilmişdir.',
-  powers: 'Səhər saat 10:00-a qədər dinclik hüququ.\nİkinci zəngdən sonra oyanmaq öhdəliyi.\n«Beş dəqiqə də» hüququ gündə iki dəfə.\nHəftəsonu rejim tamamilə dayandırılır.',
-  penalty: 'Vəsiqə sahibi işə və ya dərsə gecikdikdə vəsiqəyə istinad edə bilməz; bu hal ayrıca qeydə alınır.'
+  preamble: 'Bu vəsiqə {to} adlı şəxsin gecə rejimini və səhər oyanma hüdudlarını təsdiq edir. Sənəd {from} tərəfindən uzunmüddətli müşahidə və nəticəsiz oyatma cəhdlərindən sonra rəsmiləşdirilmişdir. Vəsiqə iş və dərs günlərinə şamil edilmir.',
+  powers: 'Səhər saat 10:00-a qədər dinclik hüququ tanınır.\nİkinci zəngdən sonra oyanmaq öhdəliyi yaranır.\n«Beş dəqiqə də» hüququ gündə iki dəfə tətbiq edilir.\nHəftəsonu rejim tamamilə dayandırılır.',
+  penalty: 'Vəsiqə sahibi işə və ya dərsə gecikdikdə bu sənədə istinad edə bilməz; həmin hal ayrıca qeydə alınır.',
+  titleOptions: [
+    'Səhər Saatlarında Oyanma Hüdudlarının Müəyyən Edilməsinə dair Vəsiqə',
+    'Gecə Rejimi və Səhər Dincliyi Hüququnu Təsdiq edən Vəsiqə',
+    'Oyatma Cəhdlərinin Sayına Məhdudiyyət Qoyulmasına dair Vəsiqə',
+    'Həftəsonu Yuxu Rejiminin Sərbəst Müəyyən Edilməsinə dair Vəsiqə'
+  ],
+  powersOptions: [
+    'Səhər saat 10:00-a qədər dinclik hüququ tanınır.',
+    'İkinci zəngdən sonra oyanmaq öhdəliyi yaranır.',
+    '«Beş dəqiqə də» hüququ gündə iki dəfə tətbiq edilir.',
+    'Həftəsonu rejim tamamilə dayandırılır.',
+    'Pərdənin açılması oyatma cəhdi sayılır.',
+    'Səhər söhbətinə ilk on dəqiqə ərzində başlanılmır.',
+    'Qəhvə hazır olmadan sual verilmir.',
+    'Gecə yarısından sonra yatma halı izahat tələb etmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Vəsiqə sahibi işə və ya dərsə gecikdikdə bu sənədə istinad edə bilməz; həmin hal ayrıca qeydə alınır.',
+    'Üç ardıcıl gecikmə vəsiqənin yenidən baxılmasına əsas verir.',
+    'Vəsiqə səfər və bayram günlərində qüvvədə saxlanılır.'
+  ]
 },
 {
   id: 'story-izleme-muqavilesi', cat: 'viral', tone: 'zarafat', layout: 'muqavile', palette: 'gold',
-  title: 'Story İzləmə Müqaviləsi', tag: 'Rəqəmsal etiket',
-  signOrg: 'Onlayn Münasibətlərin Tənzimlənməsi üzrə Məclis',
-  preamble: 'Bu müqavilə ilə {from} və {to} arasında story izləmə qaydaları müəyyən edilir. Tərəflər bir-birinin paylaşımlarına münasibətdə şəffaflıq və qarşılıqlılıq prinsipini əsas götürürlər.',
-  powers: 'Hər story qarşılıqlı olaraq izlənilir.\nİzləyib reaksiya verməmək pozuntu sayılır.\nGizli rejimdə izləmə qadağandır.\nArxiv paylaşımlar müqaviləyə daxil deyil.',
-  penalty: 'Bir tərəf ardıcıl olaraq üç story-ni reaksiyasız izləyərsə, digər tərəf müqaviləni birtərəfli qaydada dayandıra bilər.'
+  title: 'Sosial Şəbəkədə Paylaşımlara Reaksiyanın Qaydaları üzrə Müqavilə', tag: 'Rəqəmsal etiket',
+  signOrg: 'Rəqəmsal Ünsiyyət və Susqunluq Departamenti',
+  preamble: 'Tərəflərin mövqeyi nəzərə alınmaqla, {from} və {to} arasında sosial şəbəkədə paylaşımlara baxış və reaksiya qaydaları barədə razılıq əldə edilmişdir. Müqavilə hər iki tərəfin hesablarına bərabər şəkildə şamil olunur.',
+  powers: 'Paylaşıma baxış avtomatik reaksiya öhdəliyi yaratmır.\nBaxış siyahısında görünmə izahat tələb etmir.\nReaksiya verilməməsi münasibətin göstəricisi sayılmır.\nPaylaşımın ekran görüntüsü üçüncü şəxsə ötürülmür.',
+  penalty: 'Müqavilənin şərtləri pozulduqda pozuntuya yol vermiş tərəf növbəti birgə şəklin seçimi hüququndan bir ay müddətinə məhrum edilir.',
+  titleOptions: [
+    'Sosial Şəbəkədə Paylaşımlara Reaksiyanın Qaydaları üzrə Müqavilə',
+    'Paylaşımlara Baxış və Cavab Reaksiyası üzrə Qarşılıqlı Saziş',
+    'Rəqəmsal Etiket Qaydalarının Müəyyən Edilməsi üzrə Müqavilə',
+    'Baxış Siyahısında Görünmə Halının Tənzimlənməsi üzrə Saziş'
+  ],
+  powersOptions: [
+    'Paylaşıma baxış avtomatik reaksiya öhdəliyi yaratmır.',
+    'Baxış siyahısında görünmə izahat tələb etmir.',
+    'Reaksiya verilməməsi münasibətin göstəricisi sayılmır.',
+    'Paylaşımın ekran görüntüsü üçüncü şəxsə ötürülmür.',
+    'Arxiv paylaşımlara reaksiya müddəti məhdudlaşdırılmır.',
+    'Səhv qoyulmuş reaksiya bir dəqiqə ərzində geri götürülə bilər.',
+    'Birgə şəkil paylaşılmazdan əvvəl razılıq alınır.',
+    'Gecə yarısından sonrakı paylaşımlar müzakirə edilmir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Müqavilənin şərtləri pozulduqda pozuntuya yol vermiş tərəf növbəti birgə şəklin seçimi hüququndan bir ay müddətinə məhrum edilir.',
+    'Pozuntu halında paylaşım qaydaları yenidən razılaşdırılır.',
+    'Müqavilə yalnız hər iki tərəfin razılığı ilə ləğv edilir.'
+  ]
 },
 {
   id: 'qrup-cati-fermani', cat: 'viral', tone: 'zarafat', layout: 'blank', palette: 'steel',
-  title: 'Qrup Çatında Susqunluq Fərmanı', tag: 'Bildirişlər',
-  signOrg: 'Qrup Çatı Qaydaları üzrə Xüsusi Komissiya',
-  preamble: '{from} bu fərmanla {to} adlı şəxsə qrup çatında lazımsız mesaj göndərməmək öhdəliyi qoyur. Fərman səhər saat 07:00-dan gecə 23:00-dək qüvvədədir və bütün ailə qruplarına şamil edilir.',
-  powers: 'Səhər salamlaşma şəkilləri göndərilmir.\n«Salam» tək mesaj kimi yazılmır.\nSəsli mesaj bir dəqiqədən uzun olmur.\nGecə 23:00-dan sonra yalnız təcili hallar.',
-  penalty: 'Fərman pozulduqda pozan tərəf qrupda növbəti həftənin bütün doğum günü təbriklərini təkbaşına yazmalı olur.'
+  title: 'Qrup Söhbətində Bildirişlərin Söndürülməsi Hüququna dair Bəyannamə', tag: 'Bildirişlər',
+  signOrg: 'Rəqəmsal Ünsiyyət və Susqunluq Departamenti',
+  preamble: 'Daxil olmuş müraciətə baxılaraq bildirilir ki, {to} adlı şəxs qrup söhbətindəki bildirişlərin söndürülməsi hüququndan istifadə edir. {from} tərəfindən bu qərarın qrupdan çıxmaq niyyəti kimi şərh edilməyəcəyi barədə təminat verilmişdir.',
+  powers: 'Bildirişlərin söndürülməsi qrupu tərk etmək sayılmır.\nOxunmamış mesajların sayı izahat tələb etmir.\nBirbaşa müraciət olunarsa cavab verilir.\nQrup şəklinin dəyişdirilməsi müzakirə edilmir.',
+  penalty: 'Təcili hesab edilən məsələ üzrə birbaşa müraciət olunduqda bu bəyannamə həmin gün ərzində qüvvədən düşür.',
+  titleOptions: [
+    'Qrup Söhbətində Bildirişlərin Söndürülməsi Hüququna dair Bəyannamə',
+    'Qrup Söhbətinə Cavab Verməmək Hüququnun Bəyan Edilməsi haqqında Sənəd',
+    'Bildiriş Axınının Məhdudlaşdırılması haqqında Rəsmi Bildiriş',
+    'Qrupdan Səssiz Rejimə Keçidin Rəsmiləşdirilməsi haqqında Bəyannamə'
+  ],
+  powersOptions: [
+    'Bildirişlərin söndürülməsi qrupu tərk etmək sayılmır.',
+    'Oxunmamış mesajların sayı izahat tələb etmir.',
+    'Birbaşa müraciət olunarsa cavab verilir.',
+    'Qrup şəklinin dəyişdirilməsi müzakirə edilmir.',
+    'Səhər salamlaşmasına ayrıca cavab tələb olunmur.',
+    'Yönləndirilmiş mesajlar reaksiya öhdəliyi yaratmır.',
+    'Səsli mesajın dinlənilmə müddəti məhdudlaşdırılmır.',
+    'Qrupdan çıxış barədə qərar əvvəlcədən bildirilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Təcili hesab edilən məsələ üzrə birbaşa müraciət olunduqda bu bəyannamə həmin gün ərzində qüvvədən düşür.',
+    'Bir həftə tam susqunluq halında bəyannaməyə yenidən baxılır.',
+    'Bəyannamə iş qruplarına şamil edilmir.'
+  ]
 },
 {
   id: 'gecikme-diplomu', cat: 'viral', tone: 'zarafat', layout: 'diplom', palette: 'gold',
-  title: 'Peşəkar Gecikmə Diplomu', tag: 'Fəxri ad',
-  signOrg: 'Gecikmə və İcazələr üzrə Ali Şura',
-  preamble: 'Bu diplomla {to} adlı şəxsə görüşlərə ardıcıl və sistemli gecikməkdə göstərdiyi davamlılığa görə fəxri ad verilir. Diplom {from} tərəfindən uzunmüddətli gözləmə təcrübəsi əsasında təqdim edilmişdir.',
-  powers: '«Yoldayam» ifadəsini sərbəst işlətmək.\nTıxaca istinad etmək hüququ.\nGörüş saatını on beş dəqiqə yuvarlaqlaşdırmaq.\nSon çıxan olub birinci şikayət etmək.',
-  penalty: 'Diplom sahibi bir dəfə vaxtında gəldikdə fəxri ad avtomatik olaraq dayandırılır və yenidən qazanılmalıdır.'
+  title: 'Görüş Vaxtının Sistemli Şəkildə Uzadılması Sahəsində Fəxri Diplom', tag: 'Fəxri ad',
+  signOrg: 'Sosial Öhdəliklərin Qeydiyyatı üzrə Baş İdarə',
+  preamble: 'Uzunmüddətli müşahidə nəticəsində müəyyən edilmişdir ki, {to} adlı şəxs görüş vaxtını sistemli şəkildə uzatmaq sahəsində sabit nəticələr göstərmişdir. Diplom {from} tərəfindən, heç bir gecikmənin təsadüfi olmadığı qənaəti ilə təqdim olunur.',
+  powers: '«Beş dəqiqəyə çatıram» ifadəsini yolda deyil, evdə səsləndirmək.\nGecikmənin səbəbini hər dəfə yeni formada təqdim etmək.\nGörüş yerinə çatanda heç bir izahat verməmək.\nBaşqasının gecikməsini qeyd etmək hüququ.',
+  penalty: 'Diplom geri alınmır. Lakin sahibi bir dəfə vaxtında gəldikdə bu hal istisna kimi qeydə alınır və diplomun qüvvəsinə təsir göstərmir.',
+  titleOptions: [
+    'Görüş Vaxtının Sistemli Şəkildə Uzadılması Sahəsində Fəxri Diplom',
+    'Gecikmə Sahəsində Uzunmüddətli Nəticələrə Görə Fəxri Diplom',
+    '«Beş dəqiqəyə çatıram» İfadəsinin Ustalıqla İşlədilməsinə Görə Diplom',
+    'Vaxt Anlayışına Fərdi Yanaşmaya Görə Verilmiş Fəxri Diplom'
+  ],
+  powersOptions: [
+    '«Beş dəqiqəyə çatıram» ifadəsini yolda deyil, evdə səsləndirmək.',
+    'Gecikmənin səbəbini hər dəfə yeni formada təqdim etmək.',
+    'Görüş yerinə çatanda heç bir izahat verməmək.',
+    'Başqasının gecikməsini qeyd etmək hüququ.',
+    'Taksinin gec gəlməsi arqumentini ilin istənilən fəslində işlətmək.',
+    'Görüş saatını təyin edərkən özünə iyirmi dəqiqə ehtiyat saxlamaq.',
+    'Restorana ilk gələnin masa seçməsinə razı olmaq.',
+    'Təcili hallarda vaxtında gəlmək bacarığını nümayiş etdirmək.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Diplom geri alınmır. Lakin sahibi bir dəfə vaxtında gəldikdə bu hal istisna kimi qeydə alınır və diplomun qüvvəsinə təsir göstərmir.',
+    'Diplom yalnız qeyri-rəsmi görüşlərə şamil edilir.',
+    'Ardıcıl üç dəfə vaxtında gəlmək diplomun yenidən baxılmasına əsasdır.'
+  ]
 },
 {
   id: 'internet-teleqrami', cat: 'viral', tone: 'zarafat', layout: 'teleqram', palette: 'ink',
-  title: '«İnternet Kəsildi» Təcili Teleqramı', tag: 'Təcili bildiriş',
-  signOrg: 'Oyun Nəticələri və İnternet Bəhanələri üzrə Şura',
-  preamble: '{from} tərəfindən {to} adlı şəxsə təcili bildirilir ki, oyun və ya iclas zamanı internet bağlantısının kəsilməsi barədə məlumat qeydə alınmış, lakin texniki yoxlama nəticəsində təsdiqlənməmişdir.',
-  powers: 'Bağlantının kəsilməsi ekran görüntüsü ilə sübut edilir.\nEyni izahat həftədə bir dəfə qəbul olunur.\nRouter yenidən başladılmalıdır.\nQonşunun şəbəkəsi bəhanə sayılmır.',
-  penalty: 'İzahat üçüncü dəfə təkrarlandıqda oyunun nəticəsi qarşı tərəfin xeyrinə yekunlaşdırılır.'
+  title: 'Oyun Zamanı Bağlantının Kəsilməsi Halı haqqında Təcili Xəbərdarlıq', tag: 'Təcili bildiriş',
+  signOrg: 'Virtual Futbol Bəhanələri üzrə Ali Komissiya',
+  preamble: 'Sizə bildiririk ki, {to} adlı şəxsin iştirak etdiyi oyun zamanı internet bağlantısının kəsilməsi halı qeydə alınmışdır. {from} tərəfindən nəticənin qüvvədə saxlanılması tələb edilsə də, məsələ üzrə əlavə araşdırma aparılması zəruri hesab edilir.',
+  powers: 'Bağlantının kəsilmə vaxtı dəqiqliklə göstərilir.\nNəticə araşdırma başa çatanadək qüvvədə saxlanılır.\nTəkrar matç yalnız qarşılıqlı razılıqla təşkil edilir.\nModemin yenidən işə salınması sübut sayılmır.',
+  penalty: 'Bağlantı problemi eyni oyunçu tərəfindən üç dəfə göstərildikdə bu arqument sonrakı matçlarda nəzərə alınmır.',
+  titleOptions: [
+    'Oyun Zamanı Bağlantının Kəsilməsi Halı haqqında Təcili Xəbərdarlıq',
+    'İnternet Bağlantısının Qeyri-sabitliyi haqqında Təcili Teleqram',
+    'Matçın Yarımçıq Dayandırılmasının Səbəbi haqqında Xəbərdarlıq',
+    'Bağlantı Problemi ilə Əlaqədar Nəticənin Etibarsızlığı haqqında Teleqram'
+  ],
+  powersOptions: [
+    'Bağlantının kəsilmə vaxtı dəqiqliklə göstərilir.',
+    'Nəticə araşdırma başa çatanadək qüvvədə saxlanılır.',
+    'Təkrar matç yalnız qarşılıqlı razılıqla təşkil edilir.',
+    'Modemin yenidən işə salınması sübut sayılmır.',
+    'Sürət ölçmə nəticəsi əlavə sənəd kimi qəbul edilir.',
+    'Eyni bəhanə ayda iki dəfədən artıq irəli sürülmür.',
+    'Ev internetinin ümumi vəziyyəti nəzərə alınır.',
+    'Qonşunun şəbəkəsindən istifadə halı ayrıca qeyd edilir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Bağlantı problemi eyni oyunçu tərəfindən üç dəfə göstərildikdə bu arqument sonrakı matçlarda nəzərə alınmır.',
+    'Araşdırma nəticəsində səbəb təsdiqlənməzsə, nəticə qəti qüvvəyə minir.',
+    'Xəbərdarlıq qeydə alınır və növbəti matçda nəzərə alınır.'
+  ]
 },
 {
   id: 'soz-verme-akti', cat: 'viral', tone: 'zarafat', layout: 'notarial', palette: 'burgundy',
-  title: 'Gəlmə Vədinin Pozulması Aktı', tag: 'Söz verib gəlmədi',
-  signOrg: 'Verilmiş Vədlərin İcrası üzrə Xüsusi Komitə',
-  preamble: 'Bu aktla təsdiq olunur ki, {to} adlı şəxs {from} qarşısında görüşə gəlmək barədə şifahi öhdəlik götürmüş, lakin həmin öhdəliyi yerinə yetirməmişdir. Akt şahidlərin iştirakı olmadan, birtərəfli qaydada tərtib edilmişdir.',
-  powers: 'Öhdəlik şifahi olsa da qüvvəyə malikdir.\n«Sabah mütləq» ifadəsi vəd sayılır.\nÜzrxahlıq yazılı formada təqdim edilir.\nNövbəti görüşün yeri qarşı tərəfə seçilir.',
-  penalty: 'Vəd üçüncü dəfə pozulduqda görüş təşkil etmək hüququ tamamilə digər tərəfə keçir və mübahisə predmeti sayılmır.'
+  title: 'Verilmiş Vədin İcra Edilməməsi Halının Qeydə Alınması haqqında Akt', tag: 'Söz verib gəlmədi',
+  signOrg: 'Sosial Öhdəliklərin Qeydiyyatı üzrə Baş İdarə',
+  preamble: 'İş üzrə toplanmış məlumatlara əsasən müəyyən edilmişdir ki, {to} adlı şəxs {from} tərəfindən təşkil edilmiş tədbirdə iştirak edəcəyini şifahi qaydada bildirmiş, lakin öhdəliyi yerinə yetirməmişdir. Hal bu aktla qeydə alınır.',
+  powers: 'Vəd şahidlərin iştirakı ilə verilmişdir.\nİştirakdan imtina barədə əvvəlcədən məlumat verilməmişdir.\nTəqdim edilən səbəb sənədlə təsdiqlənməmişdir.\nEyni hal son üç ayda ikinci dəfə baş vermişdir.',
+  penalty: 'Aktın tərtib edilməsindən sonra növbəti tədbirin yeri və vaxtı tam olaraq zərərçəkmiş tərəf tərəfindən müəyyən edilir.',
+  titleOptions: [
+    'Verilmiş Vədin İcra Edilməməsi Halının Qeydə Alınması haqqında Akt',
+    'Gəlmə Vədinin Yerinə Yetirilməməsi haqqında Rəsmi Akt',
+    'Şifahi Öhdəliyin Pozulması Halının Təsbit Edilməsi haqqında Akt',
+    '«Mütləq gələcəyəm» İfadəsinin İcra Statusuna dair Akt'
+  ],
+  powersOptions: [
+    'Vəd şahidlərin iştirakı ilə verilmişdir.',
+    'İştirakdan imtina barədə əvvəlcədən məlumat verilməmişdir.',
+    'Təqdim edilən səbəb sənədlə təsdiqlənməmişdir.',
+    'Eyni hal son üç ayda ikinci dəfə baş vermişdir.',
+    'Tədbirin təşkilində sənəd sahibinin payı nəzərə alınmışdır.',
+    'Yerin əvvəlcədən sifariş edildiyi müəyyən edilmişdir.',
+    'Xəbərdarlıq mesajı cavabsız qalmışdır.',
+    'Sonradan verilən izahat araşdırmaya daxil edilmişdir.'
+  ],
+  powersMin: 2, powersMax: 4,
+  penaltyOptions: [
+    'Aktın tərtib edilməsindən sonra növbəti tədbirin yeri və vaxtı tam olaraq zərərçəkmiş tərəf tərəfindən müəyyən edilir.',
+    'Üçüncü hal qeydə alındıqda dəvət siyahısı yenidən nəzərdən keçirilir.',
+    'Akt könüllü qonaqlıq təşkil edilməsi ilə qüvvədən salına bilər.'
+  ]
 },
 
 ];

@@ -2022,9 +2022,12 @@ window.DOCGEN = (function () {
       { anchor: 'end', size: 12.5, fam: SANS, weight: 'bold', fill: P.accentL, ls: 1.4 });
     y += 46 + 26;
 
-    var ts = fit(upper(doc.title || ''), CW, 17, 11, 'bold', SANS);
-    out += T(upper(doc.title || ''), M, y, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 1 });
-    y += 26;
+    /* Başlıq iki sətrə sarınır: uzun bürokratik adlar tək sətirdə `fit()`-in
+       11px dibinə çatıb səhifədən kənara daşırdı (sarğı yoxdur, kəsilmə yoxdur). */
+    var ts = fit(upper(doc.title || ''), CW, 17, 13, 'bold', SANS);
+    var tl = wrap(upper(doc.title || ''), font(ts, 'bold', SANS), CW, 2);
+    out += block(tl, M, y, ts + 5, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 1 });
+    y += 26 + (tl.length - 1) * (ts + 5);
 
     var rows = (doc.data && doc.data.length) ? doc.data : [
       [lbl(doc, 'toLabel', 'SOYAD, AD / SURNAME'), doc.to],
@@ -2113,9 +2116,11 @@ window.DOCGEN = (function () {
       { size: 10, fam: MONO, fill: P.accentL, ls: 0.6 });
     y += 64 + 26;
 
-    var ts = fit(upper(doc.title || ''), CW, 16, 11, 'bold', SANS);
-    out += T(upper(doc.title || ''), M, y, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 0.8 });
-    y += 26;
+    /* Eyni səbəb: uzun başlıq tək sətirdə səhifədən daşırdı. */
+    var ts = fit(upper(doc.title || ''), CW, 16, 12, 'bold', SANS);
+    var tl = wrap(upper(doc.title || ''), font(ts, 'bold', SANS), CW, 2);
+    out += block(tl, M, y, ts + 5, { size: ts, fam: SANS, weight: 'bold', fill: P.head, ls: 0.8 });
+    y += 26 + (tl.length - 1) * (ts + 5);
 
     out += T(CUR.expFound, M, y, { size: 8.8, fam: SANS, weight: 'bold', fill: P.accentD, ls: 1.8 });
     y += 16;
@@ -2240,8 +2245,21 @@ window.DOCGEN = (function () {
     s += '<rect width="' + SW + '" height="' + SH + '" fill="url(#' + C.idp + '-bg)"/>';
     s += '<g opacity="0.09" stroke="' + P.accentL + '" fill="none" stroke-width="1"><path d="' + rosette(SW / 2, SH / 2, 620, 13, 0.14) + '"/></g>';
     s += T(CUR.org, SW / 2, 132, { anchor: 'middle', size: 27, fam: SANS, weight: 'bold', fill: P.accentL, ls: 6 });
-    var hl = wrap(upper(doc.title), font(43, 'bold', SANS), 920, 2);
-    s += block(hl, SW / 2, 198, 50, { size: 43, weight: 'bold', fam: SANS, fill: '#fff', anchor: 'middle', ls: 1 });
+    /* Paylaşım kartının başlığı. 43px-də iki sətir cəmi ~66 simvol tutur və uzun
+       rəsmi adlar «…» ilə kəsilirdi. İndi üç sətrə icazə verilir; kəsilmə qalsa
+       ölçü 28px-ə qədər azalır. İki sətrə sığan başlıqlar üçün çıxış eynidir
+       (hs = 43, lh = 50, y = 198) — yalnız uzun adlar fərqlənir. */
+    var hs = 43, hl, fits;
+    for (;;) {
+      hl = wrap(upper(doc.title), font(hs, 'bold', SANS), 920, 3);
+      /* Blok 198-dən başlayır; sonuncu sətrin oturacağı 288-i keçməməlidir, çünki
+         sənəd vərəqi 300-dən başlayır. Başlanğıc nöqtəsi yuxarı sürüşdürülmür —
+         orada 132-də qurumun adı var və başlıq onun üstünə düşərdi. */
+      fits = hl[hl.length - 1].indexOf('…') < 0 && (hl.length - 1) * (hs + 7) <= 90;
+      if (fits || hs <= 28) break;
+      hs -= 3;
+    }
+    s += block(hl, SW / 2, 198, hs + 7, { size: hs, weight: 'bold', fam: SANS, fill: '#fff', anchor: 'middle', ls: 1 });
     s += '<g transform="translate(' + dx + ',' + dy + ') scale(' + sc + ')">';
     s += '<rect x="-6" y="-6" width="' + (W + 12) + '" height="' + (H + 12) + '" fill="#000" opacity="0.35"/>';
     s += inner(doc, C) + '</g>';
