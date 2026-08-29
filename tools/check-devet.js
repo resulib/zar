@@ -27,9 +27,17 @@ const bas = t => console.log('\n' + t);
   await new Promise(r => server.listen(PORT, r));
   const b = await chromium.launch();
   const page = await b.newPage({ viewport: { width: 1280, height: 1000 } });
-  const errs = [];
+  const errs = [], uğursuz = [];
   page.on('pageerror', e => errs.push(e.message));
-  page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+  /* Bu yoxlamada backend yoxdur, ona görə /api/ sorğularının 404 verməsi
+     GÖZLƏNİLƏNDİR — səhifə serversiz də işləməlidir. Şəbəkə səs-küyü
+     süzülür, amma /api/ xaricindəki hər uğursuz sorğu xəta sayılır. */
+  page.on('console', m => {
+    if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) errs.push(m.text());
+  });
+  page.on('response', r => {
+    if (r.status() >= 400 && r.url().indexOf('/api/') < 0) uğursuz.push(r.status() + ' ' + r.url());
+  });
 
   await page.goto('http://localhost:' + PORT + '/devet.html', { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
@@ -38,6 +46,10 @@ const bas = t => console.log('\n' + t);
 
   bas('1. Səhifə qurulur');
   check('JS xətası yoxdur', errs.length === 0, errs);
+  check('bütün assetlər yüklənir', uğursuz.length === 0, uğursuz);
+  /* Backend yoxdursa paylaşma bölməsi ümumiyyətlə göstərilmir — yükləmə
+     isə serversiz işləməyə davam edir. */
+  check('serversiz paylaşma bölməsi gizlidir', await page.$eval('#paylas', e => e.hidden));
   check('11 tədbir düyməsi', await page.$$eval('#tedbirler .tedbir', e => e.length) === 11);
   check('3 dizayn variantı', await page.$$eval('#dizaynlar .dizayn', e => e.length) === 3);
   check('12 palitra', await page.$$eval('#palitralar .palitra', e => e.length) === 12);
@@ -159,6 +171,7 @@ const bas = t => console.log('\n' + t);
     yuklenen.every(u => /devet|invite|export/.test(u)), yuklenen);
 
   check('sonda da JS xətası yoxdur', errs.length === 0, errs);
+  check('sonda da uğursuz asset yoxdur', uğursuz.length === 0, uğursuz);
 
   console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz');
   await b.close(); server.close();

@@ -200,7 +200,19 @@ check('saxta başlıq rədd edilir', ! str_contains($d['title'] ?? '', 'SAXTA'),
 check('saxta bənd rədd edilir', ! str_contains($d['powers'] ?? '', 'SAXTA'), $d['powers'] ?? null);
 check('saxta cəza rədd edilir', ! str_contains($d['penalty'] ?? '', 'SAXTA'), $d['penalty'] ?? null);
 check('saxta preamble rədd edilir', ! str_contains($d['preamble'] ?? '', 'SAXTA'), substr($d['preamble'] ?? '', 0, 80));
-check('başlıq şablondan gəlir', ($d['title'] ?? '') === 'Həftəsonu Çölə Çıxma Etibarnaməsi', $d['title'] ?? null);
+/* Gözlənilən başlıq kataloqun ÖZÜNDƏN alınır. Sabit sətir yazılsaydı
+   (əvvəl belə idi) hər mətn redaktəsi bu təhlükəsizlik testini yalançı
+   şəkildə qırardı — yoxlanan şey isə başlığın mətni deyil, onun
+   MÜŞTƏRİDƏN YOX, ŞABLONDAN gəlməsidir. */
+$kat = json_decode(req($base . '/api/catalog', 'GET')['body'], true);
+$gozlenen = '';
+foreach ($kat['templates'] ?? [] as $t) {
+    if (($t['id'] ?? '') === 'weekend-pass') {
+        $gozlenen = (string) ($t['title'] ?? '');
+    }
+}
+check('kataloqda weekend-pass var', $gozlenen !== '', $gozlenen);
+check('başlıq şablondan gəlir', ($d['title'] ?? '') === $gozlenen, [$d['title'] ?? null, $gozlenen]);
 check('preamble göndərilən adlarla qurulur',
     str_contains($d['preamble'] ?? '', 'Günel Şəkərova') && str_contains($d['preamble'] ?? '', 'Elvin Məmmədov'),
     substr($d['preamble'] ?? '', 0, 120));

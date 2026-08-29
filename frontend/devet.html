@@ -156,7 +156,50 @@
     </div>
   </section>
 
+  <section class="addim" id="paylas" hidden>
+    <div class="wrap">
+      <div class="addim-bas"><span class="nomre">5</span><h2>Paylaşın</h2>
+        <p class="addim-qeyd">Dəvətnamənin öz linki olur. Linki açan qonaq dəvəti tam görür,
+          məkanın xəritədəki yerinə keçir və «Gəlirəm / Gələ bilmirəm / Hələ bilmirəm» seçir.
+          Cavabları bu səhifədən izləyirsiniz.</p></div>
+
+      <div class="paylas-qutu">
+        <div id="paylasEvvel">
+          <p class="paylas-metn">Link yaradıldıqdan sonra dəvətnamə su nişanısız olur və
+            bütün formatları təmiz yükləyə bilərsiniz.</p>
+          <button type="button" class="dugme dugme-boyuk" id="btnDerc">Linki yarat</button>
+          <p class="kicik" id="qiymetQeyd"></p>
+        </div>
+
+        <div id="paylasSonra" hidden>
+          <div class="link-setir">
+            <input class="giris-sahe" id="linkSahe" readonly>
+            <button type="button" class="dugme" id="btnKopyala">Kopyala</button>
+          </div>
+          <div class="format-dugmeler">
+            <a class="dugme dugme-ikinci" id="btnWa" target="_blank" rel="noopener">WhatsApp-da göndər</a>
+            <a class="dugme dugme-ikinci" id="btnBax" target="_blank" rel="noopener">Qonaq nə görür?</a>
+          </div>
+          <p class="kicik" id="paylasHal"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
+
+<div class="modal" id="odenisModal" hidden>
+  <div class="modal-qutu" role="dialog" aria-modal="true" aria-labelledby="odenisBaslik">
+    <div class="modal-bas">
+      <h3 id="odenisBaslik">Kredit alın</h3>
+      <button type="button" class="modal-bagla" data-bagla aria-label="Bağla">×</button>
+    </div>
+    <div class="modal-govde">
+      <p class="kicik" id="odenisQeyd"></p>
+      <div class="paketler" id="paketler"></div>
+    </div>
+  </div>
+</div>
 
 <footer class="alt">
   <div class="wrap alt-in">

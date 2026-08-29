@@ -33,6 +33,12 @@
 
 * { box-sizing: border-box; }
 
+/* `hidden` atributu sinifdəki `display` bəyannaməsindən ZƏİFDİR: brauzerin
+   öz [hidden]{display:none} qaydası ilə .dugme{display:inline-flex} toqquşanda
+   ikincisi qalib gəlir və element gizlənmir. JS-in hər `hidden = true`
+   sətrinin işləməsi üçün qayda burada birdəfəlik bərkidilir. */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -205,6 +211,51 @@ h1, h2, h3 { margin: 0; font-weight: 400; letter-spacing: -0.01em; }
 .dugme-kicik:hover { border-color: var(--xett-tund); }
 
 .hamisi { margin-top: 26px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+/* ---------------- paylaşma ---------------- */
+
+.paylas-qutu {
+  background: var(--seth); border: 1px solid var(--xett); border-radius: var(--radius);
+  padding: 24px; max-width: 640px;
+}
+.paylas-metn { margin: 0 0 18px; color: var(--murekkeb2); font-size: 15px; }
+
+.link-setir { display: flex; gap: 8px; margin-bottom: 14px; }
+.link-setir .giris-sahe { font-family: var(--sans); font-size: 14px; }
+
+/* ---------------- ödəniş pəncərəsi ---------------- */
+
+.modal {
+  position: fixed; inset: 0; z-index: 80; display: grid; place-items: center;
+  background: rgba(34, 30, 27, .42); padding: 20px;
+}
+.modal[hidden] { display: none; }
+.modal-qutu {
+  background: var(--seth); border-radius: var(--radius); width: 100%; max-width: 440px;
+  box-shadow: 0 20px 60px rgba(34,30,27,.3); overflow: hidden;
+}
+.modal-bas {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid var(--xett);
+}
+.modal-bas h3 { font: 400 20px/1.2 var(--display); }
+.modal-bagla {
+  border: 0; background: none; cursor: pointer; font-size: 24px; line-height: 1;
+  color: var(--murekkeb3); padding: 0 4px;
+}
+.modal-govde { padding: 20px; }
+.paketler { display: grid; gap: 10px; margin-top: 14px; }
+.paket {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  border: 1px solid var(--xett); border-radius: 11px; padding: 14px 16px;
+  background: var(--seth); cursor: pointer; font: inherit; color: inherit; text-align: left;
+}
+.paket:hover { border-color: var(--vurgu); }
+.paket-az { opacity: .5; cursor: default; }
+.paket-az:hover { border-color: var(--xett); }
+.paket .paket-ad { font-weight: 600; }
+.paket .paket-qeyd { font-size: 12.5px; color: var(--murekkeb3); }
+.paket .paket-qiymet { font: 600 16px/1 var(--sans); color: var(--vurgu); white-space: nowrap; }
 
 /* ---------------- altlıq və bildiriş ---------------- */
 

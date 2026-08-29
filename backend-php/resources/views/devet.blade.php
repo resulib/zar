@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#f7f4ef">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a2683f'/%3E%3Cpath d='M14 22h36v22a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z' fill='none' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M14 22l18 13 18-13' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/devet-fonts.css') }}?v=38e3d822">
-<link rel="stylesheet" href="{{ asset('assets/devet.css') }}?v=c45b6bbe">
+<link rel="stylesheet" href="{{ asset('assets/devet.css') }}?v=bc008258">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -157,7 +157,50 @@
     </div>
   </section>
 
+  <section class="addim" id="paylas" hidden>
+    <div class="wrap">
+      <div class="addim-bas"><span class="nomre">5</span><h2>Paylaşın</h2>
+        <p class="addim-qeyd">Dəvətnamənin öz linki olur. Linki açan qonaq dəvəti tam görür,
+          məkanın xəritədəki yerinə keçir və «Gəlirəm / Gələ bilmirəm / Hələ bilmirəm» seçir.
+          Cavabları bu səhifədən izləyirsiniz.</p></div>
+
+      <div class="paylas-qutu">
+        <div id="paylasEvvel">
+          <p class="paylas-metn">Link yaradıldıqdan sonra dəvətnamə su nişanısız olur və
+            bütün formatları təmiz yükləyə bilərsiniz.</p>
+          <button type="button" class="dugme dugme-boyuk" id="btnDerc">Linki yarat</button>
+          <p class="kicik" id="qiymetQeyd"></p>
+        </div>
+
+        <div id="paylasSonra" hidden>
+          <div class="link-setir">
+            <input class="giris-sahe" id="linkSahe" readonly>
+            <button type="button" class="dugme" id="btnKopyala">Kopyala</button>
+          </div>
+          <div class="format-dugmeler">
+            <a class="dugme dugme-ikinci" id="btnWa" target="_blank" rel="noopener">WhatsApp-da göndər</a>
+            <a class="dugme dugme-ikinci" id="btnBax" target="_blank" rel="noopener">Qonaq nə görür?</a>
+          </div>
+          <p class="kicik" id="paylasHal"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
+
+<div class="modal" id="odenisModal" hidden>
+  <div class="modal-qutu" role="dialog" aria-modal="true" aria-labelledby="odenisBaslik">
+    <div class="modal-bas">
+      <h3 id="odenisBaslik">Kredit alın</h3>
+      <button type="button" class="modal-bagla" data-bagla aria-label="Bağla">×</button>
+    </div>
+    <div class="modal-govde">
+      <p class="kicik" id="odenisQeyd"></p>
+      <div class="paketler" id="paketler"></div>
+    </div>
+  </div>
+</div>
 
 <footer class="alt">
   <div class="wrap alt-in">
@@ -170,6 +213,6 @@
 <script src="{{ asset('assets/devet-designs.js') }}?v=249bedab"></script>
 <script src="{{ asset('assets/invite.js') }}?v=2883d959"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
-<script src="{{ asset('assets/devet-app.js') }}?v=eb90b0cc"></script>
+<script src="{{ asset('assets/devet-app.js') }}?v=30012663"></script>
 </body>
 </html>

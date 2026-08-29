@@ -20,6 +20,7 @@ require __DIR__ . '/../app/Support/Moderation.php';
 require __DIR__ . '/../app/Support/Sanitizer.php';
 require __DIR__ . '/../app/Support/TemplateSchema.php';
 require __DIR__ . '/../app/Support/Answers.php';
+require __DIR__ . '/../app/Support/Devet.php';
 require __DIR__ . '/../app/Support/Payments/PaymentProvider.php';
 require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
@@ -33,6 +34,7 @@ use App\Support\RegistryPrefix;
 use App\Support\ReplyKinds;
 use App\Support\Sanitizer;
 use App\Support\Answers;
+use App\Support\Devet;
 use App\Support\TemplateSchema;
 
 $pass = 0;
@@ -424,6 +426,74 @@ check('rədd cavabı qırmızı nişan verir', ReplyKinds::verdict('redd')['dot'
 check('qəbul cavabı yaşıl nişan verir', ReplyKinds::verdict('qebul')['dot'] === 'ok');
 check('etiraz gözləmə nişanı verir', ReplyKinds::verdict('etiraz')['dot'] === 'wait');
 check('naməlum niyyətdə nişan yoxdur', ReplyKinds::verdict('yoxdur') === null);
+
+
+echo "\nDəvətnamə — token, xəritə, qonaqlar\n";
+
+/* Token dəvətnamənin YEGANƏ qorunmasıdır: ünvan, telefon və qonaq siyahısı
+   onun arxasındadır. Uzunluq və əlifba marşrut məhdudiyyəti ilə üst-üstə
+   düşməlidir, yoxsa yaradılan link 404 verər. */
+$t = Devet::token();
+check('token 22 simvoldur', strlen($t) === 22, $t);
+check('token yalnız ASCII hərf-rəqəmdir', preg_match('/^[A-Za-z0-9]+$/', $t) === 1, $t);
+check('token marşrut şablonuna uyğundur', Devet::isToken($t));
+check('iki token eyni deyil', Devet::token() !== Devet::token());
+check('qısa sətir token sayılmır', ! Devet::isToken('qisa'));
+check('boşluqlu sətir token sayılmır', ! Devet::isToken(str_repeat('a', 21) . ' '));
+check('massiv token sayılmır', ! Devet::isToken(['a']));
+
+check('gelirem qəbul olunur', Devet::isRsvp('gelirem'));
+check('uydurma cavab rədd olunur', ! Devet::isRsvp('gelecem'));
+check('boş cavab rədd olunur', ! Devet::isRsvp(''));
+
+/* Xəritə linki ağ siyahıdan keçir — əks halda dəvətnamə açıq yönləndirmə
+   vasitəsi olardı: qonaq düyməyə basıb kənar sayta düşərdi. */
+$hosts = ['google.com', 'www.google.com', 'maps.app.goo.gl'];
+check('icazəli host saxlanılır',
+    Devet::mapUrl('https://maps.app.goo.gl/abc', 'Bakı', $hosts) === 'https://maps.app.goo.gl/abc');
+check('kənar host atılır və ünvandan link qurulur',
+    str_starts_with(Devet::mapUrl('https://pis.example/x', 'Bakı', $hosts),
+        'https://www.google.com/maps/search/'));
+check('http link qəbul edilmir',
+    str_starts_with(Devet::mapUrl('http://google.com/x', 'Bakı', $hosts),
+        'https://www.google.com/maps/search/'));
+check('oxşar ada malik host aldatmır',
+    str_starts_with(Devet::mapUrl('https://google.com.pis.example/x', 'Bakı', $hosts),
+        'https://www.google.com/maps/search/'));
+check('portlu icazəli host saxlanılır',
+    Devet::mapUrl('https://google.com:443/x', 'Bakı', $hosts) === 'https://google.com:443/x');
+check('ünvan da yoxdursa link boş qalır', Devet::mapUrl('', '', $hosts) === '');
+check('ünvan URL kodlaşdırılır',
+    str_contains(Devet::mapUrl('', 'Bakı, Nizami küç. 12', $hosts), 'Bak%C4%B1'));
+
+check('link qonaqsız qurulur',
+    Devet::link('https://a.az/', 'T', null) === 'https://a.az/d/T');
+check('adlı qonaq linki qurulur',
+    Devet::link('https://a.az', 'T', 'Q') === 'https://a.az/d/T/q/Q');
+
+/* Siyahı: boş sətirlər və təkrarlar atılır, sıra qorunur — istifadəçi
+   öz siyahısını tanımalıdır. */
+$adlar = Devet::guestNames("Rəşad\n\n Aygün \nRəşad\nNərmin", 10, 80);
+check('boş sətirlər atılır', count($adlar) === 3, $adlar);
+check('təkrar ad bir dəfə düşür', $adlar === ['Rəşad', 'Aygün', 'Nərmin'], $adlar);
+check('siyahı həddi işləyir', count(Devet::guestNames("a\nb\nc\nd", 2, 80)) === 2);
+check('uzun ad kəsilir', mb_strlen(Devet::guestNames(str_repeat('ə', 200), 10, 80)[0]) === 80);
+check('massiv giriş də qəbul olunur', Devet::guestNames(['Ali', 'Vəli'], 10, 80) === ['Ali', 'Vəli']);
+
+/* Yekun serverdə hesablanır ki, kabinetdəki rəqəm qonaq siyahısını
+   müştəriyə vermədən də düzgün olsun. */
+$q = [
+    (object) ['rsvp' => 'gelirem',  'rsvp_count' => 3],
+    (object) ['rsvp' => 'gelirem',  'rsvp_count' => null],
+    (object) ['rsvp' => 'gelmirem', 'rsvp_count' => null],
+    (object) ['rsvp' => null,       'rsvp_count' => null],
+    (object) ['rsvp' => 'uydurma',  'rsvp_count' => 9],
+];
+$y = Devet::tally($q);
+check('gələn sayı düzdür', $y['gelirem'] === 2, $y);
+check('nəfər sayı boş dəyəri 1 sayır', $y['nefer'] === 4, $y);
+check('cavabsızlar sayılır', $y['cavabsiz'] === 2, $y);
+check('yekun ümumi say düzdür', $y['hamisi'] === 5, $y);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

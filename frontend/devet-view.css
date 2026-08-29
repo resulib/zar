@@ -1,0 +1,159 @@
+/* Qonağın gördüyü səhifə. devet.css-dən ayrıdır: burada forma yoxdur,
+   yerləşdirmə isə telefon ekranına görə qurulub — dəvətnamələr demək olar
+   ki, həmişə WhatsApp-dan, telefonda açılır.
+
+   `@media` blokları MÜTLƏQ bu faylda qalır — build skripti HTML-də «@»
+   ardıcıllığı görsə dayanır. */
+
+:root {
+  --kagiz:      #f2eee7;
+  --seth:       #ffffff;
+  --murekkeb:   #221e1b;
+  --murekkeb2:  #6b6259;
+  --murekkeb3:  #9c938a;
+  --vurgu:      #a2683f;
+  --vurgu-tund: #85512e;
+  --vurgu-soft: #f2e6da;
+  --xett:       #e4dcd2;
+  --yasil:      #3d7a5c;
+  --yasil-soft: #e3f0e9;
+
+  --serif:   'Davet Serif', Georgia, serif;
+  --display: 'Davet Display', Georgia, serif;
+  --sans:    'Davet Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* `hidden` atributu sinifdəki `display` bəyannaməsindən ZƏİFDİR: brauzerin
+   öz [hidden]{display:none} qaydası ilə .dugme{display:inline-flex} toqquşanda
+   ikincisi qalib gəlir və element gizlənmir. JS-in hər `hidden = true`
+   sətrinin işləməsi üçün qayda burada birdəfəlik bərkidilir. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--kagiz);
+  color: var(--murekkeb);
+  font: 400 16px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  padding: 0 16px calc(28px + env(safe-area-inset-bottom));
+}
+
+main { max-width: 560px; margin: 0 auto; }
+
+/* ---------------- hallar ---------------- */
+
+.hal {
+  min-height: 70vh; display: grid; place-content: center; justify-items: center;
+  gap: 16px; text-align: center; color: var(--murekkeb2);
+}
+.hal p { margin: 0; }
+.hal h1 { font: 400 26px/1.3 var(--display); color: var(--murekkeb); margin: 0; }
+.firlanan {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 2px solid var(--xett); border-top-color: var(--vurgu);
+  animation: fir 0.8s linear infinite;
+}
+@keyframes fir { to { transform: rotate(360deg); } }
+
+/* ---------------- kart ---------------- */
+
+.kart-yer { padding: 26px 0 22px; display: grid; place-items: center; }
+#kart {
+  max-width: 100%; height: auto; display: block; border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(34,30,27,.10), 0 18px 44px rgba(34,30,27,.14);
+}
+
+/* ---------------- lövhə ---------------- */
+
+.lovhe, .cavab {
+  background: var(--seth); border: 1px solid var(--xett); border-radius: 16px;
+  padding: 22px; margin-bottom: 16px;
+}
+
+.setirler { margin: 0; display: grid; gap: 14px; }
+.setirler > div { display: grid; gap: 2px; }
+.setirler dt {
+  font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--murekkeb3); font-weight: 600;
+}
+.setirler dd { margin: 0; font-size: 16.5px; }
+.setirler dd.iri { font: 400 20px/1.35 var(--display); }
+
+.dugme-setir { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+.dugme {
+  border: 1px solid var(--vurgu); background: var(--vurgu); color: #fff; cursor: pointer;
+  padding: 12px 20px; border-radius: 11px; font: 600 14.5px/1 var(--sans);
+  text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+}
+.dugme:hover { background: var(--vurgu-tund); border-color: var(--vurgu-tund); }
+.dugme-ikinci { background: none; color: var(--vurgu); }
+.dugme-ikinci:hover { background: var(--vurgu-soft); color: var(--vurgu-tund); }
+.dugme-genis { width: 100%; padding: 14px; margin-top: 6px; }
+
+.dugme-kicik {
+  border: 1px solid var(--xett); background: var(--seth); color: var(--murekkeb2); cursor: pointer;
+  padding: 10px 15px; border-radius: 10px; font: 500 13.5px/1 var(--sans);
+}
+.dugme-kicik:hover { border-color: var(--murekkeb3); }
+
+/* ---------------- cavab ---------------- */
+
+.cavab h2 { margin: 0 0 16px; font: 400 21px/1.3 var(--display); }
+
+.secimler { display: grid; gap: 9px; grid-template-columns: 1fr; }
+.secim {
+  display: flex; align-items: center; gap: 11px; text-align: left; cursor: pointer;
+  background: var(--seth); border: 1px solid var(--xett); border-radius: 12px;
+  padding: 14px 16px; font: 500 15px/1.2 var(--sans); color: var(--murekkeb); width: 100%;
+}
+.secim:hover { border-color: var(--murekkeb3); }
+.secim .qutu {
+  width: 20px; height: 20px; flex: 0 0 20px; border-radius: 50%;
+  border: 2px solid var(--xett); display: grid; place-items: center;
+}
+.secim[aria-pressed="true"] { border-color: var(--vurgu); background: var(--vurgu-soft); }
+.secim[aria-pressed="true"] .qutu { border-color: var(--vurgu); background: var(--vurgu); }
+.secim[aria-pressed="true"] .qutu::after {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff;
+}
+
+.cavab-detal { margin-top: 16px; }
+.sahe { display: block; margin-bottom: 13px; }
+.etiket { display: block; font-size: 12.5px; font-weight: 600; color: var(--murekkeb2); margin-bottom: 6px; }
+.etiket em { font-style: normal; font-weight: 400; color: var(--murekkeb3); }
+.giris-sahe {
+  width: 100%; padding: 12px 13px; font: 400 16px/1.4 var(--sans); color: var(--murekkeb);
+  background: var(--seth); border: 1px solid var(--xett); border-radius: 10px;
+}
+.giris-sahe:focus { outline: none; border-color: var(--vurgu); box-shadow: 0 0 0 3px var(--vurgu-soft); }
+
+.cavab-hal { margin: 14px 0 0; font-size: 14px; color: var(--murekkeb2); }
+.cavab-hal.yaxsi {
+  background: var(--yasil-soft); color: var(--yasil); padding: 11px 14px; border-radius: 10px;
+}
+
+/* ---------------- alt ---------------- */
+
+.alt-setir { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 4px 0 10px; }
+
+.bildiris {
+  position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 18px);
+  background: var(--murekkeb); color: #fff; padding: 12px 20px; border-radius: 11px;
+  font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  z-index: 60; max-width: calc(100vw - 32px); text-align: center;
+}
+.bildiris.gorunur { opacity: 1; transform: translate(-50%, 0); }
+
+@media (min-width: 620px) {
+  .kart-yer { padding: 40px 0 30px; }
+  #kart { max-width: 460px; }
+  .secimler { grid-template-columns: repeat(3, 1fr); }
+  .secim { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

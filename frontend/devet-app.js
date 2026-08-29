@@ -15,6 +15,10 @@
     palette: null,          /* null → dizaynın öz palitrası */
     ratio: 'kart',
     paid: false,
+    online: false,        /* backend varmı — dist/statik rejimdə yoxdur */
+    token: null,          /* dərc olunmuş dəvətnamənin açarı */
+    link: '',
+    price: 0,
     m: {                    /* forma məlumatları */
       hosts: '', title: '', date: '', time: '',
       venue: '', address: '', phone: '', note: '', guest: ''
@@ -251,6 +255,209 @@
     });
   }
 
+  /* ---------- API ---------- */
+
+  var API = {
+    csrf: function () {
+      var m = document.querySelector('meta[name=csrf-token]');
+      return m ? m.getAttribute('content') : '';
+    },
+
+    post: function (url, govde, xam) {
+      var bas = { 'X-CSRF-TOKEN': API.csrf(), 'Accept': 'application/json' };
+      if (!xam) bas['Content-Type'] = 'application/json';
+      else bas['Content-Type'] = 'image/jpeg';
+      return fetch(url, {
+        method: 'POST', credentials: 'same-origin', headers: bas,
+        body: xam ? govde : JSON.stringify(govde)
+      }).then(API.oxu);
+    },
+
+    get: function (url) {
+      return fetch(url, { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+        .then(API.oxu);
+    },
+
+    /* Cavab əvvəlcə mətn kimi oxunur: 419/500 səhifələri həmişə JSON olmur. */
+    oxu: function (r) {
+      return r.text().then(function (t) {
+        var j = null;
+        try { j = JSON.parse(t); } catch (e) { /* HTML səhifəsi */ }
+        if (!r.ok) {
+          var xeta = new Error((j && j.message) || 'Əməliyyat alınmadı.');
+          xeta.kod = j && j.error;
+          xeta.status = r.status;
+          xeta.data = j || {};
+          throw xeta;
+        }
+        return j || {};
+      });
+    }
+  };
+
+  /* Serverə göndərilən sahələr. Dizayn, palitra və tədbir server tərəfdə
+     ağ siyahıdan keçir — buradan gələn sətir XAHİŞDİR, dəyər deyil. */
+  function govde() {
+    var m = state.m, n = D.eventOf(state.event).numune || {};
+    return {
+      event: state.event,
+      design: state.design,
+      palette: state.palette || D.designOf(state.design).palette,
+      hosts: m.hosts || n.adlar || '',
+      title: m.title || n.baslik || '',
+      date: m.date, time: m.time,
+      venue: m.venue || n.mekan || '',
+      address: m.address,
+      phone: m.phone,
+      note: m.note || n.qeyd || '',
+      rsvp: true
+    };
+  }
+
+  /* ---------- dərc ---------- */
+
+  /* Önizləmə şəkli brauzerdə hazırlanır və serverə xam JPEG kimi gedir:
+     serverdə şəkil çəkən motor yoxdur, üstəlik belədə önizləmə tam olaraq
+     istifadəçinin gördüyü kartdır. Ünvan və telefon bu şəkildə YOXDUR. */
+  function onizlemeGonder(token) {
+    return D.ready().then(function () {
+      var cv = document.createElement('canvas');
+      cv.width = D.OG.w; cv.height = D.OG.h;
+      D.drawOg(cv.getContext('2d'), sened());
+      return new Promise(function (res) { cv.toBlob(res, 'image/jpeg', 0.88); });
+    }).then(function (blob) {
+      if (!blob) return null;
+      return API.post('/api/devet/' + token + '/onizleme', blob, true);
+    }).catch(function () {
+      /* Önizləmə şəkli olmasa link yenə işləyir — sadəcə söhbətdə şəkilsiz görünür. */
+      return null;
+    });
+  }
+
+  function dercEt() {
+    var b = $('btnDerc');
+    b.disabled = true;
+    var kohne = b.textContent;
+    b.textContent = 'Hazırlanır…';
+
+    var addim = state.token
+      ? API.post('/api/devet/' + state.token, govde())
+      : API.post('/api/devet', govde());
+
+    return addim.then(function (inv) {
+      state.token = inv.token;
+      return API.post('/api/devet/' + inv.token + '/derc', {});
+    }).then(function (inv) {
+      state.paid = true;
+      state.link = inv.link;
+      $('odenisModal').hidden = true;
+      linkGoster();
+      onizle();
+      return onizlemeGonder(inv.token).then(function () { bildir('Link hazırdır.'); });
+    }).catch(function (e) {
+      if (e.kod === 'no_credits') odenisAc(e.data.need, e.data.have);
+      else bildir(e.message);
+    }).then(function () {
+      b.disabled = false; b.textContent = kohne;
+    });
+  }
+
+  function linkGoster() {
+    $('paylasEvvel').hidden = true;
+    $('paylasSonra').hidden = false;
+    $('linkSahe').value = state.link;
+    $('btnBax').href = state.link;
+    $('btnWa').href = 'https://wa.me/?text=' + encodeURIComponent(
+      (state.m.hosts || D.eventOf(state.event).ad) + ' — dəvətnamə: ' + state.link);
+    $('paylasHal').textContent = 'Dəvətnamə yalnız bu linki bilən adama görünür.';
+    $('yukleQeyd').textContent = 'Ödəniş edilib — fayllar su nişanısız yüklənir.';
+  }
+
+  function linkKopyala() {
+    var s = $('linkSahe');
+    s.select();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(s.value)
+        .then(function () { bildir('Link kopyalandı.'); })
+        .catch(function () { bildir('Linki əl ilə kopyalayın.'); });
+    } else { bildir('Linki əl ilə kopyalayın.'); }
+  }
+
+  /* ---------- ödəniş ---------- */
+
+  /* Neçə kredit lazımdır və neçəsi var — ikisi də göstərilir, çatmayan
+     paketlər isə söndürülür. Əks halda istifadəçi yetərsiz paket alıb
+     eyni pəncərəyə qayıdar və səbəbini anlamaz. */
+  function odenisAc(lazim, var_) {
+    state.price = lazim || state.price;
+    var catismir = Math.max(0, state.price - (var_ || 0));
+
+    $('odenisModal').hidden = false;
+    $('odenisQeyd').textContent = 'Bu tədbir üçün ' + state.price + ' kredit lazımdır' +
+      (var_ ? ' — sizdə ' + var_ + ' var.' : '.') +
+      ' Ödəniş bir dəfə olur: sonra bütün formatlar, paylaşım linki və qonaq cavabları açılır.';
+
+    Array.prototype.forEach.call($('paketler').children, function (b) {
+      var kifayet = parseInt(b.dataset.credits, 10) >= catismir;
+      b.disabled = !kifayet;
+      b.classList.toggle('paket-az', !kifayet);
+      var q = b.querySelector('.paket-qeyd');
+      if (!kifayet) q.textContent = 'Bu tədbir üçün kifayət etmir';
+      else q.textContent = b.dataset.note;
+    });
+  }
+
+  function paketleriCiz(list) {
+    var kok = $('paketler');
+    kok.innerHTML = '';
+    list.forEach(function (p) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'paket';
+      b.dataset.pack = p.id;
+      b.dataset.credits = p.credits;
+      b.dataset.note = p.note;
+      var sol = document.createElement('span');
+      sol.innerHTML = '<span class="paket-ad"></span><br><span class="paket-qeyd"></span>';
+      sol.querySelector('.paket-ad').textContent = p.label;
+      sol.querySelector('.paket-qeyd').textContent = p.note;
+      var sag = document.createElement('span');
+      sag.className = 'paket-qiymet';
+      sag.textContent = Number(p.amount).toFixed(2) + ' AZN';
+      b.appendChild(sol); b.appendChild(sag);
+      kok.appendChild(b);
+    });
+  }
+
+  /* Əvvəlcə test ödənişi sınanır; istehsalatda o söndürülüdür və sorğu
+     403 verir — həmin halda real provayderin səhifəsinə yönləndirilir. */
+  function paketAl(id) {
+    return API.post('/api/payments/simulate', { packId: id }).then(function (r) {
+      if (r && r.redirectUrl) { location.href = r.redirectUrl; return; }
+      bildir('Kredit əlavə olundu.');
+      return dercEt();
+    }).catch(function () {
+      return API.post('/api/payments/checkout', { packId: id }).then(function (r) {
+        if (r && r.redirectUrl) location.href = r.redirectUrl;
+        else bildir('Ödəniş başlanmadı.');
+      }).catch(function (e) { bildir(e.message); });
+    });
+  }
+
+  /* Backend varmı? Yoxdursa paylaşma bölməsi ümumiyyətlə göstərilmir —
+     yükləmə isə serversiz də işləyir. */
+  function serveriYoxla() {
+    return API.get('/api/devet/paketler').then(function (r) {
+      state.online = true;
+      state.price = r.price || 0;
+      paketleriCiz(r.packs || []);
+      $('paylas').hidden = false;
+      $('qiymetQeyd').textContent = 'Bir tədbir üçün ' + state.price + ' kredit.';
+    }).catch(function () {
+      state.online = false;
+    });
+  }
+
   /* ---------- nümunə mətnlər ---------- */
 
   function numuneDoldur() {
@@ -309,6 +516,18 @@
     });
 
     $('btnNumune').addEventListener('click', numuneDoldur);
+    $('btnDerc').addEventListener('click', dercEt);
+    $('btnKopyala').addEventListener('click', linkKopyala);
+
+    $('paketler').addEventListener('click', function (e) {
+      var b = e.target.closest('.paket');
+      if (b) paketAl(b.dataset.pack);
+    });
+    $('odenisModal').addEventListener('click', function (e) {
+      if (e.target === e.currentTarget || e.target.closest('[data-bagla]')) {
+        $('odenisModal').hidden = true;
+      }
+    });
     $('btnHamisi').addEventListener('click', hamisiniYukle);
 
     document.addEventListener('click', function (e) {
@@ -332,6 +551,7 @@
       dizaynlariCiz();
       onizle();
     });
+    serveriYoxla();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bas);
