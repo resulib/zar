@@ -20,6 +20,14 @@ Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
 
 /*
 |--------------------------------------------------------------------------
+| Dəvətnamələr — ayrı bölmə, ayrı görünüş
+|--------------------------------------------------------------------------
+| Yollar neytraldır: paylaşılan link qonağa göstərilir.
+*/
+Route::get('/devetname', [Web\DevetController::class, 'builder'])->name('devet.builder');
+
+/*
+|--------------------------------------------------------------------------
 | API — frontend ilə eyni müqavilə (Node backend-i ilə uyğun)
 |--------------------------------------------------------------------------
 | Bu marşrutlar `web` qrupundadır: sessiya, cookie və CSRF qorunması işləyir.

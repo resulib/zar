@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dəvətnamə hazırla</title>
+<meta name="description" content="Toy, nişan, ad günü və digər tədbirlər üçün dəvətnamə hazırlayın: çap kartı, Instagram kvadratı və status formatı bir formadan.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f4ef">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a2683f'/%3E%3Cpath d='M14 22h36v22a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z' fill='none' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M14 22l18 13 18-13' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/devet-fonts.css">
+<link rel="stylesheet" href="/devet.css">
+</head>
+<body>
+
+<header class="ust">
+  <div class="wrap ust-in">
+    <a class="marka" href="/devetname">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14"/><path d="M14 22h36v22a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z" class="zarf"/><path d="M14 22l18 13 18-13" class="zarf"/></svg>
+      <span>Dəvətnamə</span>
+    </a>
+    <nav class="ust-nav">
+      <a href="/kabinet/devetler">Dəvətnamələrim</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="giris">
+    <div class="wrap">
+      <p class="gozucu">Toy · Nişan · Ad günü · Korporativ</p>
+      <h1>Tədbiriniz üçün dəvətnamə</h1>
+      <p class="lede">Tədbiri seçin, məlumatları bir dəfə yazın — çap kartını, Instagram kvadratını
+        və status formatını birlikdə götürün. Yazdıqca nəticəni dərhal görürsünüz.</p>
+    </div>
+  </section>
+
+  <section class="addim" id="tedbir">
+    <div class="wrap">
+      <div class="addim-bas"><span class="nomre">1</span><h2>Tədbiri seçin</h2></div>
+      <div class="tedbir-setir" id="tedbirler"></div>
+    </div>
+  </section>
+
+  <section class="addim" id="dizayn">
+    <div class="wrap">
+      <div class="addim-bas"><span class="nomre">2</span><h2>Dizaynı seçin</h2>
+        <p class="addim-qeyd" id="dizaynQeyd">Hər tədbir üçün üç fərqli variant var.</p></div>
+      <div class="dizayn-setir" id="dizaynlar"></div>
+    </div>
+  </section>
+
+  <section class="addim" id="melumat">
+    <div class="wrap qurucu">
+
+      <div class="forma-sutun">
+        <div class="addim-bas"><span class="nomre">3</span><h2>Məlumatları yazın</h2></div>
+        <form id="forma" autocomplete="off">
+          <label class="sahe">
+            <span class="etiket">Kimin adına</span>
+            <input class="giris-sahe" id="fHosts" maxlength="120" placeholder="Aygün &amp; Rəşad">
+          </label>
+          <label class="sahe">
+            <span class="etiket">Dəvət cümləsi</span>
+            <input class="giris-sahe" id="fTitle" maxlength="140" placeholder="Toy şənliyimizə dəvətlisiniz">
+          </label>
+          <div class="cut">
+            <label class="sahe">
+              <span class="etiket">Tarix</span>
+              <input class="giris-sahe" id="fDate" type="date">
+            </label>
+            <label class="sahe">
+              <span class="etiket">Saat</span>
+              <input class="giris-sahe" id="fTime" type="time">
+            </label>
+          </div>
+          <label class="sahe">
+            <span class="etiket">Məkanın adı</span>
+            <input class="giris-sahe" id="fVenue" maxlength="120" placeholder="Gülüstan Şadlıq Sarayı">
+          </label>
+          <label class="sahe">
+            <span class="etiket">Ünvan</span>
+            <input class="giris-sahe" id="fAddress" maxlength="200" placeholder="Bakı, Nizami küç. 12">
+            <span class="ipucu">Ünvan yalnız linki açan qonağa görünür — paylaşım önizləməsində yer almır.</span>
+          </label>
+          <label class="sahe">
+            <span class="etiket">Əlaqə nömrəsi</span>
+            <input class="giris-sahe" id="fPhone" maxlength="40" inputmode="tel" placeholder="+994 50 123 45 67">
+          </label>
+          <label class="sahe">
+            <span class="etiket">Qısa qeyd</span>
+            <input class="giris-sahe" id="fNote" maxlength="300" placeholder="Təşrifinizi gözləyirik">
+          </label>
+          <label class="sahe">
+            <span class="etiket">Qonağın adı <em>(istəyə bağlı)</em></span>
+            <input class="giris-sahe" id="fGuest" maxlength="80" placeholder="Rəşad müəllim">
+            <span class="ipucu">Yazsanız dəvətnamənin başında «Əziz …» sətri görünür.</span>
+          </label>
+
+          <div class="palitra-blok">
+            <span class="etiket">Rəng</span>
+            <div class="palitralar" id="palitralar"></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="onizleme-sutun">
+        <div class="onizleme-bas">
+          <div class="nisbetler" id="nisbetler" role="tablist"></div>
+          <button type="button" class="dugme-kicik" id="btnNumune">Nümunə mətnlər</button>
+        </div>
+        <div class="kagiz-cerceve">
+          <canvas id="onizleme" width="620" height="874"></canvas>
+        </div>
+        <p class="onizleme-qeyd" id="onizlemeQeyd">Pulsuz variantda su nişanı olur. Təmiz variant ödənişlidir.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="addim" id="yukle">
+    <div class="wrap">
+      <div class="addim-bas"><span class="nomre">4</span><h2>Yükləyin</h2></div>
+      <div class="format-setir">
+        <div class="format" data-nisbet="kart">
+          <div class="format-ad">Çap kartı</div>
+          <div class="format-olcu">A6 · 1240 × 1748</div>
+          <p>Çapxanaya vermək və ya evdə çap etmək üçün.</p>
+          <div class="format-dugmeler">
+            <button type="button" class="dugme" data-yukle="kart" data-tip="png">PNG</button>
+            <button type="button" class="dugme dugme-ikinci" data-yukle="kart" data-tip="pdf">PDF</button>
+          </div>
+        </div>
+        <div class="format" data-nisbet="kvadrat">
+          <div class="format-ad">Instagram</div>
+          <div class="format-olcu">Kvadrat · 1080 × 1080</div>
+          <p>Lentə və ya paylaşıma uyğun kvadrat format.</p>
+          <div class="format-dugmeler">
+            <button type="button" class="dugme" data-yukle="kvadrat" data-tip="png">PNG</button>
+          </div>
+        </div>
+        <div class="format" data-nisbet="hekaye">
+          <div class="format-ad">Status</div>
+          <div class="format-olcu">Dik · 1080 × 1920</div>
+          <p>WhatsApp statusu və hekayələr üçün dik format.</p>
+          <div class="format-dugmeler">
+            <button type="button" class="dugme" data-yukle="hekaye" data-tip="png">PNG</button>
+          </div>
+        </div>
+      </div>
+      <div class="hamisi">
+        <button type="button" class="dugme dugme-boyuk" id="btnHamisi">Üç formatı da yüklə</button>
+        <p class="kicik" id="yukleQeyd">Fayllar cihazınızda hazırlanır — heç nə serverə göndərilmir.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="alt">
+  <div class="wrap alt-in">
+    <p>Dəvətnamələr yalnız linki bilən adama görünür və axtarış sistemlərinə düşmür.</p>
+  </div>
+</footer>
+
+<div id="bildiris" class="bildiris"><span class="mesaj"></span></div>
+
+<script src="/devet-designs.js"></script>
+<script src="/invite.js"></script>
+<script src="/export.js"></script>
+<script src="/devet-app.js"></script>
+</body>
+</html>

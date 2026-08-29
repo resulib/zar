@@ -6,10 +6,14 @@ const APP  = path.join(__dirname, '..', 'backend-php');
 const OUT  = path.join(APP, 'public', 'assets');
 const VIEW = path.join(APP, 'resources', 'views', 'spa.blade.php');
 const VIEW_VIEWER = path.join(APP, 'resources', 'views', 'viewer.blade.php');
+const VIEW_DEVET  = path.join(APP, 'resources', 'views', 'devet.blade.php');
 
 const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
                  'replies.js', 'doc.js', 'export.js', 'app.js',
-                 'viewer.css', 'viewer.js'];
+                 'viewer.css', 'viewer.js',
+                 /* Dəvətnamə bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
+                    export.js ortaqdır (kətandan PDF), qalanı bu bölməyə məxsusdur. */
+                 'devet.css', 'devet-fonts.css', 'devet-designs.js', 'invite.js', 'devet-app.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
@@ -83,3 +87,4 @@ const OG = [
 console.log('Assetlər:', OUT);
 emitView('index.html', VIEW, CSRF);
 emitView('viewer.html', VIEW_VIEWER, CSRF + '\n' + OG);
+emitView('devet.html', VIEW_DEVET, CSRF);

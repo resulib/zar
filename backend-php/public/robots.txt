@@ -1,0 +1,9 @@
+# Dəvətnamələr, kabinet və idarə paneli axtarış sistemlərinə düşməməlidir.
+# Dəvətnamə linki yalnız qonağa göndərilir — indekslənməsi məxfilik pozuntusudur.
+User-agent: *
+Disallow: /d/
+Disallow: /devetname
+Disallow: /kabinet
+Disallow: /admin
+Disallow: /r/
+Allow: /

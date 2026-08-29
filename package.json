@@ -26,7 +26,8 @@
     "test:viewer": "node tools/check-viewer.js",
     "test:fonts": "node tools/check-fonts.js",
     "test:devet": "node tools/check-devet-designs.js",
-    "render:devet": "node tools/render-davet.js hamisi kart"
+    "render:devet": "node tools/render-davet.js hamisi kart",
+    "test:devet-flow": "node tools/check-devet.js"
   },
   "keywords": [],
   "author": "",

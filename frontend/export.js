@@ -54,7 +54,12 @@ window.ZEXPORT = (function () {
 
   function pad10(n) { return ('0000000000' + n).slice(-10); }
 
-  function buildPdf(jpg, cw, ch, title) {
+  /* `o` — {pw, ph, producer}. Səhifə ölçüsü parametrdir, çünki dəvətnamə
+     kartı A6-dır; `producer` də parametrdir ki, dəvətnamə PDF-inə kənar
+     məhsulun adı düşməsin. Verilməsə köhnə davranış qalır (A4). */
+  function buildPdf(jpg, cw, ch, title, o) {
+    o = o || {};
+    var PW = o.pw || A4_W, PH = o.ph || A4_H;
     var TE = new TextEncoder();
     var parts = [], len = 0, offs = [];
 
@@ -68,10 +73,10 @@ window.ZEXPORT = (function () {
 
     obj(1, '<</Type/Catalog/Pages 2 0 R>>');
     obj(2, '<</Type/Pages/Kids[3 0 R]/Count 1>>');
-    obj(3, '<</Type/Page/Parent 2 0 R/MediaBox[0 0 ' + A4_W + ' ' + A4_H + ']' +
+    obj(3, '<</Type/Page/Parent 2 0 R/MediaBox[0 0 ' + PW + ' ' + PH + ']' +
            '/Resources<</XObject<</Im0 5 0 R>>/ProcSet[/PDF/ImageC]>>/Contents 4 0 R>>');
 
-    var content = 'q\n' + A4_W + ' 0 0 ' + A4_H + ' 0 0 cm\n/Im0 Do\nQ\n';
+    var content = 'q\n' + PW + ' 0 0 ' + PH + ' 0 0 cm\n/Im0 Do\nQ\n';
     obj(4, '<</Length ' + TE.encode(content).length + '>>\nstream\n' + content + 'endstream');
 
     /* 5-ci obyekt yeganədir ki, binar məzmun daşıyır */
@@ -81,7 +86,7 @@ window.ZEXPORT = (function () {
     put(jpg);
     putA('\nendstream\nendobj\n');
 
-    obj(6, '<</Title(' + title + ')/Producer(Zarafat Notariat Palatasi)>>');
+    obj(6, '<</Title(' + title + ')/Producer(' + (o.producer || 'Zarafat Notariat Palatasi') + ')>>');
 
     var xrefAt = len;
     var x = 'xref\n0 7\n0000000000 65535 f \n';
@@ -94,23 +99,37 @@ window.ZEXPORT = (function () {
   }
 
   /* Miqyas 3 → 2382×3369 (288 dpi). Zəif cihazda kətan alınmasa 2-yə enir. */
-  function pdfBlob(svg, w, h, scale, title) {
+  function pdfBlob(svg, w, h, scale, title, o) {
     var q = 0.92;
     function attempt(s) {
       return svgToCanvas(svg, w, h, s)
-        .then(function (c) {
-          return toBlob(c, 'image/jpeg', q).then(function (b) {
-            return b.arrayBuffer().then(function (buf) {
-              return buildPdf(new Uint8Array(buf), c.width, c.height, safeName(title));
-            });
-          });
-        });
+        .then(function (c) { return canvasPdf(c, title, o); });
     }
     return attempt(scale).catch(function (e) {
       if (scale <= 2) throw e;
       return attempt(2);
     });
   }
+
+  /* Hazır kətandan PDF. Dəvətnamə motoru birbaşa canvas-a çəkir (veb şriftlər
+     SVG→<img> yolunda itdiyi üçün), ona görə SVG-siz giriş nöqtəsi lazımdır.
+     `o` — {pw, ph, producer, quality}. */
+  function canvasPdf(canvas, title, o) {
+    o = o || {};
+    return toBlob(canvas, 'image/jpeg', o.quality || 0.92)
+      .then(function (b) { return b.arrayBuffer(); })
+      .then(function (buf) {
+        return buildPdf(new Uint8Array(buf), canvas.width, canvas.height,
+                        safeName(title, o.fallback), o);
+      });
+  }
+
+  /* Kağız ölçüləri punktla — buildPdf `pw`/`ph` gözləyir. */
+  var PAGE = {
+    a4: { pw: A4_W, ph: A4_H },
+    a6: { pw: 297.64, ph: 419.53 },
+    kvadrat: { pw: 419.53, ph: 419.53 }
+  };
 
   /* ---------------- yükləmə ---------------- */
 
@@ -125,8 +144,8 @@ window.ZEXPORT = (function () {
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 10000);
   }
 
-  function safeName(s) {
-    return String(s == null ? '' : s).replace(/[^A-Za-z0-9-]+/g, '') || 'sened';
+  function safeName(s, fallback) {
+    return String(s == null ? '' : s).replace(/[^A-Za-z0-9-]+/g, '') || (fallback || 'sened');
   }
 
   /* ---------------- nativ paylaşma ----------------
@@ -160,6 +179,8 @@ window.ZEXPORT = (function () {
     svgToCanvas: svgToCanvas,
     pngBlob: pngBlob,
     pdfBlob: pdfBlob,
+    canvasPdf: canvasPdf,
+    PAGE: PAGE,
     saveBlob: saveBlob,
     safeName: safeName,
     canShareFiles: canShareFiles,
