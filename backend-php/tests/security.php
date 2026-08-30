@@ -82,6 +82,15 @@ function session(string $url): array
     return ['token' => $m[1] ?? '', 'cookies' => $r['cookies']];
 }
 
+/** Dəvətnamə səhifələrində CSRF tokeni meta teqindədir, forma sahəsində yox. */
+function metaSession(string $url): array
+{
+    $r = req($url);
+    preg_match('/name="csrf-token" content="([^"]+)"/', $r['body'], $m);
+
+    return ['token' => $m[1] ?? '', 'cookies' => $r['cookies']];
+}
+
 function usersCount(): int
 {
     $db = new PDO('sqlite:' . __DIR__ . '/../database/database.sqlite');
@@ -200,7 +209,19 @@ check('saxta başlıq rədd edilir', ! str_contains($d['title'] ?? '', 'SAXTA'),
 check('saxta bənd rədd edilir', ! str_contains($d['powers'] ?? '', 'SAXTA'), $d['powers'] ?? null);
 check('saxta cəza rədd edilir', ! str_contains($d['penalty'] ?? '', 'SAXTA'), $d['penalty'] ?? null);
 check('saxta preamble rədd edilir', ! str_contains($d['preamble'] ?? '', 'SAXTA'), substr($d['preamble'] ?? '', 0, 80));
-check('başlıq şablondan gəlir', ($d['title'] ?? '') === 'Həftəsonu Çölə Çıxma Etibarnaməsi', $d['title'] ?? null);
+/* Gözlənilən başlıq kataloqun ÖZÜNDƏN alınır. Sabit sətir yazılsaydı
+   (əvvəl belə idi) hər mətn redaktəsi bu təhlükəsizlik testini yalançı
+   şəkildə qırardı — yoxlanan şey isə başlığın mətni deyil, onun
+   MÜŞTƏRİDƏN YOX, ŞABLONDAN gəlməsidir. */
+$kat = json_decode(req($base . '/api/catalog', 'GET')['body'], true);
+$gozlenen = '';
+foreach ($kat['templates'] ?? [] as $t) {
+    if (($t['id'] ?? '') === 'weekend-pass') {
+        $gozlenen = (string) ($t['title'] ?? '');
+    }
+}
+check('kataloqda weekend-pass var', $gozlenen !== '', $gozlenen);
+check('başlıq şablondan gəlir', ($d['title'] ?? '') === $gozlenen, [$d['title'] ?? null, $gozlenen]);
 check('preamble göndərilən adlarla qurulur',
     str_contains($d['preamble'] ?? '', 'Günel Şəkərova') && str_contains($d['preamble'] ?? '', 'Elvin Məmmədov'),
     substr($d['preamble'] ?? '', 0, 120));
@@ -367,6 +388,76 @@ check('server hadisəsi klientdən qəbul edilmir', $r['status'] === 422, [$r['s
 
 $r = req($base . '/api/olcu', 'POST', ['event' => 'reply_click']);
 check('tokensiz ölçmə 419', $r['status'] === 419, $r['status']);
+
+echo "\n13. Dəvətnamə — server məzmuna sahibdir\n";
+
+$ds = metaSession($base . '/devetname');
+check('dəvətnamə səhifəsi CSRF tokeni verir', $ds['token'] !== '');
+
+/* CSRF olmadan yazma yolu bağlıdır. */
+$r = req($base . '/api/devet', 'POST', ['design' => 'toy-qizil'], $ds['cookies']);
+check('tokensiz dəvətnamə yaradılmır', $r['status'] === 419, $r['status']);
+
+/* Dizayn adı ağ siyahıdadır — müştəri uydurma dizayn göndərə bilmir. */
+$r = req($base . '/api/devet', 'POST',
+    ['_token' => $ds['token'], 'design' => 'yoxdur-bele-dizayn'], $ds['cookies']);
+check('naməlum dizayn 422', $r['status'] === 422, [$r['status'], substr($r['body'], 0, 90)]);
+
+/* Xəritə linki server tərəfdə ağ siyahıdan keçir: əks halda dəvətnamə
+   açıq yönləndirmə vasitəsinə çevrilərdi — qonaq «Xəritədə göstər»
+   düyməsinə basıb kənar sayta düşərdi. */
+$r = req($base . '/api/devet', 'POST', [
+    '_token'  => $ds['token'],
+    'design'  => 'toy-qizil',
+    'hosts'   => 'Test Tədbiri',
+    'address' => 'Bakı, Test küç. 1',
+    'mapUrl'  => 'https://pis.example/yonlendirme',
+    'phone'   => '+994 55 555 55 55',
+], $ds['cookies']);
+$own = $ds['cookies'] . ($r['cookies'] !== '' ? '; ' . $r['cookies'] : '');
+$inv = json_decode($r['body'], true);
+check('dəvətnamə yaradıldı', ($inv['token'] ?? null) !== null, [$r['status'], substr($r['body'], 0, 120)]);
+check('kənar xəritə linki saxlanılmır',
+    ! str_contains((string) ($inv['mapUrl'] ?? ''), 'pis.example'), $inv['mapUrl'] ?? null);
+check('ünvandan təhlükəsiz xəritə linki qurulur',
+    str_starts_with((string) ($inv['mapUrl'] ?? ''), 'https://www.google.com/maps/search/'), $inv['mapUrl'] ?? null);
+
+$tok = (string) ($inv['token'] ?? '');
+check('token 22 simvoldur', strlen($tok) === 22, $tok);
+
+/* Dərc olunmayan dəvətnamə heç kimə görünmür. */
+check('dərc olunmamış dəvətnamə API-də yoxdur',
+    req($base . '/api/devet/' . $tok, 'GET', [], $own)['status'] === 404);
+check('dərc olunmamışa cavab verilmir',
+    req($base . '/api/devet/' . $tok . '/cavab', 'POST',
+        ['_token' => $ds['token'], 'rsvp' => 'gelirem', 'name' => 'X Y'], $own)['status'] === 404);
+check('önizləmə şəkli yoxdursa 404', req($base . '/d/' . $tok . '/on.jpg')['status'] === 404);
+
+/* Şəkil açıq verildiyi üçün növü və ölçüsü mütləq yoxlanılmalıdır. */
+$r = req($base . '/api/devet/' . $tok . '/onizleme', 'POST',
+    ['_token' => $ds['token'], 'x' => 'bu JPEG deyil'], $own);
+check('JPEG olmayan önizləmə rədd edilir', $r['status'] === 422, $r['status']);
+
+/* Başqasının dəvətnaməsində 403 yox, 404 qaytarılır — «403» cavabı
+   tokenin mövcudluğunu təsdiqləyərdi. */
+$yad = metaSession($base . '/devetname');
+check('yad adam qonaq siyahısını görmür',
+    req($base . '/api/devet/' . $tok . '/qonaqlar', 'GET', [], $yad['cookies'])['status'] === 404);
+check('yad adam lövhəni görmür',
+    req($base . '/devetnamelerim/' . $tok, 'GET', [], $yad['cookies'])['status'] === 404);
+check('yad adam dərc edə bilmir',
+    in_array(req($base . '/api/devet/' . $tok . '/derc', 'POST',
+        ['_token' => $yad['token']], $yad['cookies'])['status'], [403, 404], true));
+
+check('qısa token marşrutu tutmur', req($base . '/d/qisa')['status'] === 404);
+check('uzun token marşrutu tutmur', req($base . '/d/' . str_repeat('a', 30))['status'] === 404);
+
+$r = req($base . '/devetname');
+check('redaktor səhifəsi noindex-dir', str_contains(strtolower($r['body']), 'noindex'));
+$rob = req($base . '/robots.txt');
+check('robots.txt dəvətnamə yollarını bağlayır',
+    str_contains($rob['body'], 'Disallow: /d/')
+    && str_contains($rob['body'], 'Disallow: /devetnamelerim'), substr($rob['body'], 0, 160));
 
 echo "\n" . $pass . ' keçdi, ' . $fail . " uğursuz\n";
 exit($fail > 0 ? 1 : 0);

@@ -39,14 +39,30 @@ let pass = 0, fail = 0, warn = 0;
 const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
                              : (fail++, console.log('  ✗', n, x === undefined ? '' : JSON.stringify(x)));
 
+/* `active: false` — qaralama şablon: bazaya deaktiv yazılır, `/api/catalog`-a
+   düşmür və `dist` rejimində də süzülür. Struktur invariantları (216 · hər
+   kateqoriyada 12 · 12 dizaynın bijeksiyası) YALNIZ canlı kataloqa aiddir;
+   sxem, mətn büdcəsi və qurum yoxlamaları isə qaralamalara da tətbiq olunur —
+   admin onları bir kliklə açır, o an mətn hazır olmalıdır. */
+const A = T.filter(t => t.active !== false);
+const DRAFT = T.filter(t => t.active === false);
+
 console.log('\n1. Say və struktur');
+/* Massivdə boşluq (elision) — `[{…}, , {…}]` — artıq vergüldən yaranır və
+   bütün digər yoxlamalardan səssizcə keçir, çünki `filter`/`every` boşluqları
+   atlayır. `length` isə onları sayır, ona görə sayım bir vahid sürüşür. */
+check('massivdə boşluq yoxdur', Array.from(T).every(t => t && typeof t === 'object'),
+  Array.from(T).map((t, i) => (t && typeof t === 'object') ? null : i).filter(i => i !== null));
+check('«active» yalnız false ola bilər', T.every(t => t.active === undefined || t.active === false),
+  T.filter(t => !(t.active === undefined || t.active === false)).map(t => t.id));
 check('18 kateqoriya', C.length === 18, C.length);
-check('216 şablon', T.length === 216, T.length);
+check('216 aktiv şablon', A.length === 216, A.length);
+if (DRAFT.length) console.log('  · ' + DRAFT.length + ' qaralama şablon (deaktiv, sayıma daxil deyil)');
 const catByTone = tone => C.filter(c => c.tone === tone).length;
-const tplByTone = tone => T.filter(t => t.tone === tone).length;
-check('zarafat: 12 kateqoriya · 144 şablon', catByTone('zarafat') === 12 && tplByTone('zarafat') === 144,
+const tplByTone = tone => A.filter(t => t.tone === tone).length;
+check('zarafat: 12 kateqoriya · 144 aktiv şablon', catByTone('zarafat') === 12 && tplByTone('zarafat') === 144,
   [catByTone('zarafat'), tplByTone('zarafat')]);
-check('xatire: 6 kateqoriya · 72 şablon', catByTone('xatire') === 6 && tplByTone('xatire') === 72,
+check('xatire: 6 kateqoriya · 72 aktiv şablon', catByTone('xatire') === 6 && tplByTone('xatire') === 72,
   [catByTone('xatire'), tplByTone('xatire')]);
 const ids = T.map(t => t.id);
 check('id-lər unikaldır', new Set(ids).size === ids.length,
@@ -69,8 +85,8 @@ check('şablonun tonu kateqoriyasının tonu ilə üst-üstə düşür',
   T.every(t => { const c = C.filter(x => x.id === t.cat)[0]; return c && c.tone === t.tone; }),
   T.filter(t => { const c = C.filter(x => x.id === t.cat)[0]; return !c || c.tone !== t.tone; }).map(t => t.id));
 const perCat = {};
-catIds.forEach(c => perCat[c] = T.filter(t => t.cat === c).length);
-check('hər kateqoriyada 12 şablon', catIds.every(c => perCat[c] === 12), perCat);
+catIds.forEach(c => perCat[c] = A.filter(t => t.cat === c).length);
+check('hər kateqoriyada 12 aktiv şablon', catIds.every(c => perCat[c] === 12), perCat);
 
 console.log('\n3. Layout və palitra');
 check('layoutlar doc.js-də mövcuddur', T.every(t => LAYOUTS.indexOf(t.layout) >= 0),
@@ -78,14 +94,14 @@ check('layoutlar doc.js-də mövcuddur', T.every(t => LAYOUTS.indexOf(t.layout) 
 check('palitralar doc.js-də mövcuddur', T.every(t => PALETTES.indexOf(t.palette) >= 0),
   T.filter(t => PALETTES.indexOf(t.palette) < 0).map(t => t.id + ':' + t.palette));
 const missL = catIds.filter(c => {
-  const used = new Set(T.filter(t => t.cat === c).map(t => t.layout));
+  const used = new Set(A.filter(t => t.cat === c).map(t => t.layout));
   return LAYOUTS.some(l => !used.has(l));
 });
-check('hər kateqoriya 12 dizaynın hamısını əhatə edir', missL.length === 0, missL);
+check('hər aktiv kateqoriya 12 dizaynın hamısını əhatə edir', missL.length === 0, missL);
 /* Palitra əhatəsi tona bağlı deyil: `rose` yalnız xatirə kataloqunda işlənir,
    ona görə hər kateqoriyadan ən azı 5 fərqli palitra tələb olunur, qlobal
    səviyyədə isə hər palitranın işləndiyi yoxlanılır. */
-const thinP = catIds.filter(c => new Set(T.filter(t => t.cat === c).map(t => t.palette)).size < 5);
+const thinP = catIds.filter(c => new Set(A.filter(t => t.cat === c).map(t => t.palette)).size < 5);
 check('hər kateqoriya ən azı 5 palitra işlədir', thinP.length === 0, thinP);
 const unusedP = PALETTES.filter(pl => !T.some(t => t.palette === pl));
 check('hər palitra ən azı bir şablonda işlənir', unusedP.length === 0, unusedP);

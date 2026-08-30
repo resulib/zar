@@ -110,9 +110,12 @@ class CatalogSeeder extends Seeder
                 }
             }
 
+            /* `is_active` YALNIZ sətir ilk dəfə yaradılanda toxumdan götürülür —
+               mövcud sətirdə adminin açıb-bağladığı vəziyyət toxunulmaz qalır.
+               Qaralama şablonlar toxumda `is_active: false` ilə gəlir. */
             if ($new) {
                 $tpl->sort      = $t['sort'] ?? 0;
-                $tpl->is_active = true;
+                $tpl->is_active = $t['is_active'] ?? true;
             }
 
             $tpl->save();

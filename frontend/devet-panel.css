@@ -1,0 +1,76 @@
+/* Tədbir sahibinin lövhəsi — cədvəllər və qonaq siyahısı.
+   devet.css-in tokenləri üzərinə qurulur, ayrı token dəsti elan etmir. */
+
+.panel-bas { padding: 34px 0 22px; }
+.panel-bas h1 { font: 400 30px/1.15 var(--display); margin: 0 0 8px; }
+.panel-bas p { margin: 0; color: var(--murekkeb2); font-size: 15px; }
+.geri { display: inline-block; margin-bottom: 14px; font-size: 13.5px; color: var(--vurgu); text-decoration: none; }
+.geri:hover { text-decoration: underline; }
+
+/* --- yekun rəqəmləri --- */
+.yekun { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 0 0 26px; }
+.yekun div {
+  background: var(--seth); border: 1px solid var(--xett); border-radius: var(--radius); padding: 16px 18px;
+}
+.yekun dt { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--murekkeb3); font-weight: 600; }
+.yekun dd { margin: 6px 0 0; font: 400 30px/1 var(--display); }
+.yekun dd.yasil { color: var(--yasil); }
+.yekun dd.solgun { color: var(--murekkeb3); }
+
+/* --- cədvəl --- */
+.cedvel-cerceve {
+  background: var(--seth); border: 1px solid var(--xett); border-radius: var(--radius); overflow: hidden;
+}
+.cedvel-sar { overflow-x: auto; }
+table.cedvel { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 640px; }
+table.cedvel th, table.cedvel td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--xett); }
+table.cedvel th {
+  font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--murekkeb3); font-weight: 600; background: var(--kagiz);
+}
+table.cedvel tr:last-child td { border-bottom: 0; }
+table.cedvel td.ad { font-weight: 600; }
+
+.nisan-cavab {
+  display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12.5px; font-weight: 600;
+}
+.nisan-gelirem  { background: var(--yasil-soft, #e3f0e9); color: var(--yasil); }
+.nisan-gelmirem { background: #f6e6e6; color: #a63f3f; }
+.nisan-bilmirem { background: var(--vurgu-soft); color: var(--vurgu-tund); }
+.nisan-cavabsiz { background: #eee9e2; color: var(--murekkeb3); }
+
+.sira { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* --- boş hal --- */
+.bos {
+  background: var(--seth); border: 1px dashed var(--xett-tund); border-radius: var(--radius);
+  padding: 40px 24px; text-align: center; color: var(--murekkeb2);
+}
+.bos p { margin: 0 0 18px; }
+
+/* --- dəvətnamə siyahısı --- */
+.devet-siyahi { display: grid; gap: 14px; }
+.devet-setir {
+  background: var(--seth); border: 1px solid var(--xett); border-radius: var(--radius); padding: 18px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.devet-setir .ad { font: 400 20px/1.25 var(--display); margin: 0 0 4px; }
+.devet-setir .alt { font-size: 13px; color: var(--murekkeb3); }
+.hal-nisan { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.hal-derc { background: var(--yasil-soft, #e3f0e9); color: var(--yasil); }
+.hal-qaralama { background: #eee9e2; color: var(--murekkeb2); }
+
+/* --- toplu qonaq --- */
+.toplu { margin-top: 26px; }
+.toplu textarea {
+  width: 100%; min-height: 150px; resize: vertical;
+  padding: 12px 13px; font: 400 15px/1.6 var(--sans); color: var(--murekkeb);
+  background: var(--seth); border: 1px solid var(--xett); border-radius: 10px;
+}
+.toplu textarea:focus { outline: none; border-color: var(--vurgu); box-shadow: 0 0 0 3px var(--vurgu-soft); }
+.toplu-dugmeler { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+
+.proqres { flex: 1 1 160px; height: 6px; background: var(--xett); border-radius: 4px; overflow: hidden; }
+.proqres span { display: block; height: 100%; width: 0; background: var(--vurgu); transition: width .2s; }
+
+.link-hucre { font-size: 12.5px; color: var(--murekkeb3); word-break: break-all; max-width: 260px; }

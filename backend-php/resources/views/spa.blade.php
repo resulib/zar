@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e2340">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=6c442191">
+<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=a070d95e">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -299,6 +299,12 @@
           <li><a href="#nece">Qaydalar</a></li>
           <li><a href="/kabinet" id="footAccount" hidden>Kabinet</a></li>
         </ul>
+        <!-- Dəvətnamələr ayrı məhsuldur: keçid YALNIZ bu istiqamətdədir,
+             dəvətnamə səhifələri bu saytı heç vaxt xatırlatmır. -->
+        <p class="foot-ayri">
+          Real tədbiriniz üçün ciddi dəvətnamə lazımdırsa —
+          <a href="/devetname">Dəvətnamələr</a> bölməsi.
+        </p>
       </div>
       <div>
         <h4>Müraciət</h4>
@@ -393,11 +399,11 @@
 <div id="toast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/templates.js') }}?v=78abc20c"></script>
+<script src="{{ asset('assets/templates.js') }}?v=48244b0c"></script>
 <script src="{{ asset('assets/templates-xatire.js') }}?v=ecc1485b"></script>
 <script src="{{ asset('assets/replies.js') }}?v=ec438984"></script>
 <script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
-<script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
-<script src="{{ asset('assets/app.js') }}?v=3ebb1de7"></script>
+<script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
+<script src="{{ asset('assets/app.js') }}?v=3ebcf161"></script>
 </body>
 </html>

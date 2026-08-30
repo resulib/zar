@@ -20,6 +20,39 @@ Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
 
 /*
 |--------------------------------------------------------------------------
+| Dəvətnamələr — ayrı bölmə, ayrı görünüş
+|--------------------------------------------------------------------------
+| Yollar neytraldır: paylaşılan link qonağa göstərilir.
+*/
+Route::get('/devetname', [Web\DevetController::class, 'builder'])->name('devet.builder');
+
+/* Tədbir sahibinin lövhəsi. Kabinetdən ayrıdır və öz görünüş çərçivəsini
+   işlədir — alıcı burada saytın digər məhsulunun adını görməməlidir. */
+Route::get('/devetnamelerim', [Web\DevetAccountController::class, 'index'])->name('devet.list');
+Route::get('/devetnamelerim/{token}', [Web\DevetAccountController::class, 'board'])
+    ->where('token', '[A-Za-z0-9]{22}')->name('devet.board');
+Route::get('/devetnamelerim/{token}/cedvel.csv', [Web\DevetAccountController::class, 'csv'])
+    ->where('token', '[A-Za-z0-9]{22}')->name('devet.csv');
+
+/* Şəkil marşrutu adlı qonaq marşrutundan ƏVVƏL elan olunur, yoxsa
+   `/d/{token}/on.jpg` «q» olmayan seqment kimi tutulmazdı. */
+Route::get('/d/{token}/on.jpg', [Web\DevetController::class, 'preview'])
+    ->where('token', '[A-Za-z0-9]{22}')
+    ->middleware('throttle:devet-read')
+    ->name('devet.preview');
+
+Route::get('/d/{token}/q/{guest}', [Web\DevetController::class, 'show'])
+    ->where(['token' => '[A-Za-z0-9]{22}', 'guest' => '[A-Za-z0-9]{22}'])
+    ->middleware('throttle:devet-read')
+    ->name('devet.show.guest');
+
+Route::get('/d/{token}', [Web\DevetController::class, 'show'])
+    ->where('token', '[A-Za-z0-9]{22}')
+    ->middleware('throttle:devet-read')
+    ->name('devet.show');
+
+/*
+|--------------------------------------------------------------------------
 | API — frontend ilə eyni müqavilə (Node backend-i ilə uyğun)
 |--------------------------------------------------------------------------
 | Bu marşrutlar `web` qrupundadır: sessiya, cookie və CSRF qorunması işləyir.
@@ -49,6 +82,23 @@ Route::prefix('api')->group(function (): void {
     Route::post('/payments/callback', [Api\PaymentController::class, 'callback']);
 
     Route::post('/reports', [Api\ReportController::class, 'store'])->middleware('throttle:reports');
+
+    /* Dəvətnamələr. Yazma yolları `devet`, açıq oxuma `devet-read`,
+       qonaq cavabı isə ayrıca `rsvp` limiti ilə gedir — cavab uc nöqtəsi
+       hər kəsə açıqdır, ona görə ən sərt limit ondadır. */
+    Route::get('/devet/paketler', [Api\DevetController::class, 'packs']);
+
+    Route::post('/devet', [Api\DevetController::class, 'store'])->middleware('throttle:devet');
+    Route::post('/devet/{token}', [Api\DevetController::class, 'update'])->middleware('throttle:devet');
+    Route::post('/devet/{token}/derc', [Api\DevetController::class, 'publish'])->middleware('throttle:devet');
+    Route::post('/devet/{token}/onizleme', [Api\DevetController::class, 'storeOg'])->middleware('throttle:devet');
+    Route::post('/devet/{token}/qonaqlar', [Api\DevetController::class, 'syncGuests'])->middleware('throttle:devet');
+    Route::get('/devet/{token}/qonaqlar', [Api\DevetController::class, 'guests'])->middleware('throttle:devet-read');
+
+    Route::get('/devet/{token}', [Api\DevetController::class, 'show'])->middleware('throttle:devet-read');
+    Route::get('/devet/{token}/q/{guest}', [Api\DevetController::class, 'show'])->middleware('throttle:devet-read');
+    Route::post('/devet/{token}/cavab', [Api\DevetController::class, 'rsvp'])->middleware('throttle:rsvp');
+    Route::post('/devet/{token}/q/{guest}/cavab', [Api\DevetController::class, 'rsvp'])->middleware('throttle:rsvp');
 });
 
 /*

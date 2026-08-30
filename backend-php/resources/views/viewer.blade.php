@@ -92,7 +92,7 @@
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
 <script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
-<script src="{{ asset('assets/export.js') }}?v=85c3fca0"></script>
+<script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
 <script src="{{ asset('assets/viewer.js') }}?v=bb5dcfad"></script>
 </body>
 </html>

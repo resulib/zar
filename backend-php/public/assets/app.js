@@ -322,8 +322,11 @@
   function catsOf(mode) {
     return CATEGORIES.filter(function (c) { return c.tone === mode; });
   }
+  /* `active: false` — qaralama şablon. Serverdə `CatalogService` onsuz da
+     deaktivləri süzür; bu filtr `dist`/offline rejim üçündür, orada kataloq
+     statik fayldan gəlir və heç bir server süzgəcindən keçmir. */
   function tplsOf(mode) {
-    return TEMPLATES.filter(function (t) { return t.tone === mode; });
+    return TEMPLATES.filter(function (t) { return t.tone === mode && t.active !== false; });
   }
 
   var LAYOUT_EDGE = {

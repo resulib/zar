@@ -44,6 +44,9 @@ const out = {
     title_options: t.titleOptions || null, powers_options: t.powersOptions || null,
     powers_min: t.powersMin || 1, powers_max: t.powersMax || 4,
     penalty_options: t.penaltyOptions || null,
+    /* Qaralama şablonlar: `active: false` daşıyanlar bazaya DEAKTİV yazılır və
+       `GET /api/catalog`-a düşmür. Admin panelindən bir kliklə açılır. */
+    is_active: t.active !== false,
     sort: (i + 1) * 10
   }))
 };

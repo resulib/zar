@@ -6,10 +6,16 @@ const APP  = path.join(__dirname, '..', 'backend-php');
 const OUT  = path.join(APP, 'public', 'assets');
 const VIEW = path.join(APP, 'resources', 'views', 'spa.blade.php');
 const VIEW_VIEWER = path.join(APP, 'resources', 'views', 'viewer.blade.php');
+const VIEW_DEVET  = path.join(APP, 'resources', 'views', 'devet.blade.php');
+const VIEW_DEVET_V = path.join(APP, 'resources', 'views', 'devet-view.blade.php');
 
 const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
                  'replies.js', 'doc.js', 'export.js', 'app.js',
-                 'viewer.css', 'viewer.js'];
+                 'viewer.css', 'viewer.js',
+                 /* Dəvətnamə bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
+                    export.js ortaqdır (kətandan PDF), qalanı bu bölməyə məxsusdur. */
+                 'devet.css', 'devet-fonts.css', 'devet-designs.js', 'invite.js', 'devet-app.js',
+                 'devet-view.css', 'devet-view.js', 'devet-panel.css', 'devet-board.js', 'zip.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
@@ -80,6 +86,32 @@ const OG = [
   `<meta name="twitter:card" content="summary">`
 ].join('\n');
 
+/* Qonağın gördüyü səhifənin sosial önizləməsi.
+   Səhifə faylında <title> QƏSDƏN yoxdur — başlıq burada, serverdən gəlir.
+
+   `og:image` var (dərc anında brauzerin göndərdiyi 1200×630 JPEG), amma
+   ÜNVAN VƏ TELEFON nə şəkildə, nə də təsvirdə yoxdur: link önizləməsi
+   hər söhbətdə görünür, məkan və nömrə isə yalnız dəvəti açan qonağa
+   aiddir. Eyni qayda Invite::ogMeta() və invite.js drawOg()-də saxlanılır. */
+const OG_DEVET = [
+  `<title>{{ $og['title'] }}</title>`,
+  `<meta name="description" content="{{ $og['description'] }}">`,
+  `<meta property="og:type" content="website">`,
+  `<meta property="og:title" content="{{ $og['title'] }}">`,
+  `<meta property="og:description" content="{{ $og['description'] }}">`,
+  `<meta property="og:url" content="{{ url()->current() }}">`,
+  `@if($og['image'] !== '')`,
+  `<meta property="og:image" content="{{ $og['image'] }}">`,
+  `<meta property="og:image:width" content="1200">`,
+  `<meta property="og:image:height" content="630">`,
+  `<meta name="twitter:card" content="summary_large_image">`,
+  `@else`,
+  `<meta name="twitter:card" content="summary">`,
+  `@endif`
+].join('\n');
+
 console.log('Assetlər:', OUT);
 emitView('index.html', VIEW, CSRF);
 emitView('viewer.html', VIEW_VIEWER, CSRF + '\n' + OG);
+emitView('devet.html', VIEW_DEVET, CSRF);
+emitView('devet-view.html', VIEW_DEVET_V, CSRF + '\n' + OG_DEVET);

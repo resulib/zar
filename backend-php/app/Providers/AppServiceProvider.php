@@ -71,6 +71,24 @@ class AppServiceProvider extends ServiceProvider
         // document_events cədvəli sadə döngə ilə doldurula bilər.
         RateLimiter::for('events',    fn (Request $r) => Limit::perMinute(30)->by($key($r)));
 
+        // Dəvətnamə yazma yolları: sahib öz tədbirini redaktə edir.
+        RateLimiter::for('devet', fn (Request $r) => Limit::perMinute(30)->by($key($r)));
+
+        // Açıq oxuma: qonaq linki açır, şəkil və məzmun sorğusu gedir.
+        // Token 22 simvoldur, yəni sadalamaq mümkün deyil — limit yalnız
+        // sui-istifadəyə qarşıdır, ona görə səxavətlidir.
+        RateLimiter::for('devet-read', fn (Request $r) => [
+            Limit::perMinute(90)->by($key($r)),
+            Limit::perMinute(180)->by('ip:' . $r->ip()),
+        ]);
+
+        // Qonaq cavabı HƏR KƏSƏ açıqdır — ən sərt limit buradadır, yoxsa
+        // linki bilən bir nəfər qonaq siyahısını uydurma adlarla doldura bilər.
+        RateLimiter::for('rsvp', fn (Request $r) => [
+            Limit::perMinute(8)->by($key($r)),
+            Limit::perMinute(20)->by('ip:' . $r->ip()),
+        ]);
+
         // Reyestr açıqdır və qeydiyyat nömrəsi cəmi 4 rəqəmdir — limitsiz qalsa
         // bütün reyestri sadalamaq və baxış sayğacını şişirtmək olar.
         RateLimiter::for('registry', fn (Request $r) => [
