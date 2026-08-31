@@ -46,6 +46,8 @@ npm run test:reply-flow  # the SPA reply editor (/?cavab=…) in a real browser 
 node tools/decode-test.js  # real jsQR scan of generated QR
 npm run test:fields      # dynamic questionnaire layer in a real browser (no backend needed)
 npm run test:admin       # admin catalog CRUD end-to-end (needs `php artisan serve` on :8080)
+npm run test:ai          # AI template assistant end-to-end — starts its own fake OpenAI on :8099;
+                         #   the backend must be served with OPENAI_ENDPOINT pointed at it (see file header)
 npm run test:viewer      # the bare /r/{regNo} document viewer + PDF structure (no backend needed)
 npm run test:fonts       # every shipped woff2 covers the full Azerbaijani alphabet (WOFF2 cmap reader)
 npm run test:devet       # invitation catalog: 11 events × 3 designs, config whitelists, brand-leak scan
@@ -67,7 +69,8 @@ touch database/database.sqlite
 php artisan migrate --seed      # seeds the catalog (catalog.json) + admin from ADMIN_EMAIL / ADMIN_PASSWORD
 php artisan db:seed --class=CatalogSeeder   # re-import the catalog without touching the admin
 php artisan serve
-php tests/logic.php             # framework-free logic: packs, Epoint signature, reg no, moderation, sanitizer
+php tests/logic.php             # framework-free logic: packs, Epoint signature, reg no, moderation,
+                                #   sanitizer, AI prompt/normalizer (OpenAiClient · TemplateBrief)
 php tests/audit.php             # static: PHP syntax, Blade balance, route names, view paths, PSR-4
 php tests/security.php http://127.0.0.1:8000   # behavioural: rate limits, CSRF, admin guard, guest-row creation
                                 #   (needs a running `php artisan serve`)
@@ -147,8 +150,9 @@ gate would emit a second watermark for every layout in that tone.
 **Adding a layout** touches four places:
 `doc.js` (`L_x`, `LAYOUTS`, `LAYOUT_NAMES`) → `app.js` (`LAYOUT_EDGE`, `LAYOUT_ICON`) →
 `backend-php/config/zarafat.php` `'layouts'` whitelist (server rejects unknown values via
-`Sanitizer::pick`) → the hard-coded counts in `tools/check-doc.js`, `tools/check-templates.js`,
-`tools/dist-check.js`. `site.css` `.layouts` grid is `repeat(6, 1fr)`, sized for 12.
+`Sanitizer::pick`) **and its `'layout_meta'` entry** (name / type word / title tail / trap note,
+shown on the admin form's blank picker) → the hard-coded counts in `tools/check-doc.js`,
+`tools/check-templates.js`, `tools/dist-check.js`. `site.css` `.layouts` grid is `repeat(6, 1fr)`, sized for 12.
 
 > **The bijection trap.** `check-templates.js` requires every category to cover every layout,
 > and every category holds exactly 12 templates. With 12 layouts that is now a **bijection** —
@@ -288,6 +292,28 @@ validates them.
   previews show real `data`/`checks`/`scale` blocks. It also runs a light client-side copy of the
   schema check and prints the errors under the sheet — the authoritative check is still
   `TemplateSchema` on save. Toggles for the paid view and the registry stamp sit above the sheet.
+  Under the errors it also prints non-blocking **tövsiyə** warnings for the catalog invariants the
+  server does not enforce (`tools/check-copy.js` §10: first option = own text; title tail word vs
+  layout; empty `signOrg`) — the admin is one click from shipping copy the static checker rejects.
+- **The template form is written for a non-coder.** Everything that used to be a raw value is now a
+  control, and none of it changes the wire format — the server contract is untouched:
+  - **Questionnaire card builder.** `#fbList` renders one card per `fields[]` entry (type dropdown,
+    question, `{{key}}` chip, ↑/↓/×, plus a per-type body and an «Əlavə tənzimləmələr» details).
+    The cards are a *writer*, not the model: `#fields` (the JSON textarea, now inside a
+    `<details id="fieldsRaw">`) stays the submitted value, and the sync is two-way — editing the
+    JSON rebuilds the cards. **Broken JSON never clobbers the textarea**: the builder reports the
+    parse error and leaves the text alone, so a half-typed schema is not lost. Keys are
+    transliterated from the question (`Təyinat yeri` → `teyinat_yeri`) and stop auto-following once
+    the admin edits the key by hand.
+  - **Layout and palette are radio-card grids**, not `<select>`s (`label[data-layout="…"]` /
+    `[data-palette="…"]`). Each layout card prints the **document-type word the layout itself
+    writes** and `#layoutNote` spells out the title's required tail word and that layout's trap —
+    the `vesiqe`/`viza` render quirks documented above are surfaced where the copy is written.
+  - `notes` and `cancel_reasons` are **line-per-item textareas**, not JSON. `CatalogController::decodeList()`
+    accepts either, so a value pasted from `catalog.json` still parses.
+  - Live character counters attach to every `maxlength` input, and `[data-lines="max,len"]` fields
+    get a line/longest-line counter. Placeholder chips under the preamble insert `{to}` / `{from}` /
+    `{{key}}` at the cursor.
 - A category's edit page doubles as its template list: every template in it is listed with
   edit/toggle links, and "Şablon əlavə et" opens the new-template form with
   `?kateqoriya=<id>` so the category and the next `sort` are pre-filled. The count column on the
@@ -306,6 +332,41 @@ validates them.
   `NOT NULL DEFAULT ''`; Laravel's `ConvertEmptyStringsToNull` turns an empty form field into
   `null`, which 500s on insert. Both are coalesced to `''` in the controller — do the same for any
   new non-nullable text column.
+
+### The AI template assistant (OpenAI)
+
+`/admin/sablonlar/{id}` carries an **«AI ilə hazırla»** panel: a one-line brief plus a mode
+(`full` · `metn` · `variant` · `anket`) produces a draft that is written **into the form fields**.
+Nothing is stored — the admin still reviews the live sheet and presses «Yadda saxla», and the save
+goes through the same `templateSave()` validation as a hand-typed template. The assistant is
+therefore never a write path into the catalog; that is the point.
+
+- **The key lives in `.env` only** (`OPENAI_API_KEY`), never in the database — a DB backup and the
+  admin's «Kataloqu ixrac et» would otherwise carry it. `/admin/parametrler` shows it masked.
+  **The model, by contrast, is admin-editable** (`settings.ai_model` → `AI_MODEL` →
+  `config('ai.model')`, default `gpt-5.5-mini`) and validated by **format**, not by an allowlist —
+  a new OpenAI model must not require a deploy. Empty key ⇒ the panel is not rendered at all.
+- Three layers, split so the two hard parts stay framework-free and testable:
+  - `App\Support\Ai\OpenAiClient` — Chat Completions over curl, with the same injectable-`callable`
+    shape as `EpointProvider`. It absorbs **model-generation drift**: on a 400 whose `error.param`
+    names one of `temperature` / `max_completion_tokens` / `max_tokens` / `response_format`, it drops
+    that parameter and retries (and falls back from `max_completion_tokens` to `max_tokens`). Without
+    this, every new model family would break the panel until someone edited the payload.
+  - `App\Support\Ai\TemplateBrief` — the prompt (legal shield + tone + the layout's required title
+    tail word), the strict `json_schema`, and **`normalize()`, which does not trust the model**: it
+    strips emoji from document text (but not from `share`), removes the numbering models like to add
+    to clauses, drops duplicates, **blanks `signOrg` if it matches `ORG_BAN`**, and *constructs* the
+    §10 invariants (`titleOptions[0] === title`, first `powersMax` options === `powers`,
+    `penaltyOptions[0] === penalty`) rather than asking for them. `problems()` returns the
+    non-fixable leftovers as Azerbaijani advice shown next to the panel.
+  - `App\Services\AiService` — config, model resolution, the prompt context (sibling titles and the
+    category's «qurum ailəsi»), and the **`Moderation` filter over the generated text**: the banned
+    word list applies to AI output exactly as it applies to visitor text.
+- `POST /admin/sablonlar-ai` is `web` + `admin` + `throttle:ai` (8/min per visitor) — each call costs
+  real money, so it is limited like the payment routes.
+- `TemplateBrief::ORG_BAN` mirrors `tools/check-templates.js` `ORG_BAN`; the length bands mirror
+  `tools/copy-rules.js` `BAND`. Both are duplicated on purpose: the JS list guards the **static
+  catalog**, the PHP list guards the **model's output**.
 
 ### The editor is locked — the server owns the document text
 
@@ -619,7 +680,15 @@ occasional runtime wrinkle on first run.
 - **Answer cleaning**: `App\Support\Answers::clean/fill` ↔ `app.js` `readFields()`/`fill()`.
 - **Pick bounds**: `app.js` `powRange()` ↔ `TemplateSchema::pickRange()` (cap `MAX_PICK` = 4).
 - **Document state logic**: `Document::state()` ↔ `frontend/app.js` `docState()` (offline branch).
-- **Palette labels/swatches**: `doc.js` `PALETTES` ↔ `app.js` `PAL_LABEL` / `PAL_SWATCH`.
+- **Palette labels/swatches**: `doc.js` `PALETTES` ↔ `app.js` `PAL_LABEL` / `PAL_SWATCH`
+  ↔ `config/zarafat.php` `palette_meta` (admin panel only — name + the three swatch colours).
+- **Layout labels**: `doc.js` `LAYOUT_NAMES` ↔ `config/zarafat.php` `layout_meta` (admin panel
+  only — Azerbaijani name, the type word the layout prints, and the title tail words mirrored from
+  `tools/copy-rules.js` `DOC_TYPE`). Neither meta map is a whitelist: `Sanitizer::pick` still reads
+  `layouts` / `palettes`, and a slug missing from the meta simply falls back to itself.
+- **AI guard lists**: `tools/check-templates.js` `ORG_BAN` ↔ `App\Support\Ai\TemplateBrief::ORG_BAN`;
+  `tools/copy-rules.js` `BAND` ↔ that class's `TITLE_MIN`…`POWER_LINE` constants and `DOC_TYPE`
+  ↔ `config/zarafat.php` `layout_meta.tail` (which is what the prompt actually sends).
 - **Counts (216 / 18 / 12 / 6 / 2)**: asserted literally in `tools/check-templates.js`,
   `tools/check-doc.js`, `tools/dist-check.js`, `tools/e2e.js`.
 - **Reply intents**: `frontend/replies.js` `REPLY_KINDS` ↔ `App\Support\ReplyKinds` (`KINDS`,

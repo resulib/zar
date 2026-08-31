@@ -24,6 +24,8 @@ require __DIR__ . '/../app/Support/Devet.php';
 require __DIR__ . '/../app/Support/Payments/PaymentProvider.php';
 require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
+require __DIR__ . '/../app/Support/Ai/OpenAiClient.php';
+require __DIR__ . '/../app/Support/Ai/TemplateBrief.php';
 
 use App\Support\Moderation;
 use App\Support\Packs;
@@ -36,6 +38,8 @@ use App\Support\Sanitizer;
 use App\Support\Answers;
 use App\Support\Devet;
 use App\Support\TemplateSchema;
+use App\Support\Ai\OpenAiClient;
+use App\Support\Ai\TemplateBrief;
 
 $pass = 0;
 $fail = 0;
@@ -494,6 +498,164 @@ check('gələn sayı düzdür', $y['gelirem'] === 2, $y);
 check('nəfər sayı boş dəyəri 1 sayır', $y['nefer'] === 4, $y);
 check('cavabsızlar sayılır', $y['cavabsiz'] === 2, $y);
 check('yekun ümumi say düzdür', $y['hamisi'] === 5, $y);
+
+/* ==================== AI şablon köməkçisi ==================== */
+echo "\nAI köməkçisi — OpenAiClient\n";
+
+/* Saxta HTTP: hər çağırışı yazır və növbədəki cavabı qaytarır. */
+$calls = [];
+$replies = [];
+$http = function (string $ep, array $payload, array $headers, int $t) use (&$calls, &$replies): array {
+    $calls[] = $payload;
+
+    return array_shift($replies) ?: ['status' => 200, 'body' => '{}'];
+};
+
+$replies = [['status' => 200, 'body' => json_encode([
+    'model'   => 'gpt-5.5-mini',
+    'choices' => [['message' => ['content' => '{"title":"Salam"}']]],
+    'usage'   => ['prompt_tokens' => 10, 'completion_tokens' => 20],
+])]];
+$c = new OpenAiClient('sk-test', 'https://x/y', 10, $http);
+$r = $c->chat([['role' => 'user', 'content' => 'a']], ['model' => 'm', 'temperature' => 0.7]);
+check('uğurlu cavab oxunur', $r['text'] === '{"title":"Salam"}' && $r['usage']['completion_tokens'] === 20);
+check('atılan parametr yoxdur', $r['dropped'] === []);
+
+/* Model `temperature` tanımırsa parametr atılıb yenidən cəhd edilir —
+   yeni model çıxanda kodu dəyişmək lazım gəlməsin deyə. */
+$calls = [];
+$replies = [
+    ['status' => 400, 'body' => json_encode(['error' => ['param' => 'temperature', 'message' => 'Unsupported value']])],
+    ['status' => 200, 'body' => json_encode(['choices' => [['message' => ['content' => '{}']]]])],
+];
+$r = (new OpenAiClient('sk-test', 'https://x/y', 10, $http))
+    ->chat([['role' => 'user', 'content' => 'a']], ['model' => 'm', 'temperature' => 0.7]);
+check('dəstəklənməyən parametr atılır', $r['dropped'] === ['temperature'], $r['dropped']);
+check('ikinci cəhddə parametr göndərilmir', ! array_key_exists('temperature', $calls[1]), $calls[1]);
+
+/* `max_completion_tokens` rədd olunanda köhnə ad sınanır. */
+$calls = [];
+$replies = [
+    ['status' => 400, 'body' => json_encode(['error' => ['param' => 'max_completion_tokens', 'message' => 'not supported']])],
+    ['status' => 200, 'body' => json_encode(['choices' => [['message' => ['content' => '{}']]]])],
+];
+(new OpenAiClient('sk-test', 'https://x/y', 10, $http))
+    ->chat([['role' => 'user', 'content' => 'a']], ['model' => 'm', 'max_completion_tokens' => 100]);
+check('köhnə nəsil üçün max_tokens sınanır', ($calls[1]['max_tokens'] ?? null) === 100, $calls[1]);
+
+$err = null;
+$replies = [['status' => 401, 'body' => json_encode(['error' => ['message' => 'bad key']])]];
+try {
+    (new OpenAiClient('sk-test', 'https://x/y', 10, $http))->chat([], ['model' => 'm']);
+} catch (\RuntimeException $e) {
+    $err = $e->getMessage();
+}
+check('401 aydın mesaj verir', $err !== null && str_contains($err, 'OPENAI_API_KEY'), $err);
+
+echo "\nAI köməkçisi — TemplateBrief\n";
+
+$ctx = [
+    'tone' => 'zarafat', 'layout' => 'lisenziya', 'layoutName' => 'Lisenziya kartı',
+    'typeWord' => 'LİSENZİYA', 'tails' => ['lisenziyası', 'icazəsi', 'vəsiqəsi'],
+    'categoryName' => 'Ailə', 'limits' => ['title' => 110, 'preamble' => 700, 'penalty' => 300, 'power_lines' => 8],
+];
+
+$sys = TemplateBrief::system($ctx);
+check('sistem promptu qadağaları daşıyır',
+    str_contains($sys, 'Azərbaycan Respublikası') && str_contains($sys, 'EMOJI OLMAZ'));
+check('xatirə tonu ayrıca qaydalar verir',
+    str_contains(TemplateBrief::system(['tone' => 'xatire']), 'hədiyyədir'));
+
+$usr = TemplateBrief::user('Xoruldama lisenziyası', $ctx, 'full');
+check('istifadəçi promptu başlığın son sözünü tələb edir', str_contains($usr, 'lisenziyası · icazəsi'));
+
+$sc = TemplateBrief::schema('full');
+check('sxem strictdir və hər açar məcburidir',
+    $sc['strict'] === true
+    && $sc['schema']['required'] === array_keys($sc['schema']['properties'])
+    && $sc['schema']['additionalProperties'] === false);
+check('variant rejimi mətn sahələri istəmir',
+    ! array_key_exists('title', TemplateBrief::schema('variant')['schema']['properties']));
+
+/* Model qaydaları pozur: emoji, nömrələnmiş bənd, təkrar variant, real qurum,
+   variant siyahısının səhv sırası. `normalize()` hamısını düzəltməlidir. */
+$raw = [
+    'title'     => 'Gecə Xoruldama Lisenziyası 😀',
+    'tag'       => 'Ən çox seçilən',
+    'preamble'  => '{from} tərəfindən {to} adlı şəxsə gecə saat 23:00-dan sonra xoruldamaq üçün icazə verilir.',
+    'powers'    => ['1. Birinci bənd.', '2. İkinci bənd.', '- Üçüncü bənd.', 'Dördüncü bənd.', 'Dördüncü bənd.'],
+    'penalty'   => 'Şərtlər pozulduqda lisenziya dayandırılır.',
+    'signOrg'   => 'Səhiyyə Nazirliyi',
+    'signTitle' => 'Baş İnspektor',
+    'share'     => 'Rəsmiləşdirdim 🛂',
+    'titleOptions'   => ['Tamam başqa başlıq', 'Gecə Xoruldama Lisenziyası 😀'],
+    'powersOptions'  => ['Beşinci bənd.', 'Birinci bənd.'],
+    'penaltyOptions' => ['Başqa cəza bəndi.'],
+];
+$nz = TemplateBrief::normalize($raw, $ctx, 'full');
+$v  = $nz['values'];
+
+check('emoji sənəd mətnindən silinir', ! str_contains($v['title'], '😀'), $v['title']);
+check('paylaşım mətnində emoji qalır', str_contains($v['share'], '🛂'), $v['share']);
+check('bəndlərdən nömrə atılır', explode("\n", $v['powers'])[0] === 'Birinci bənd.', $v['powers']);
+check('təkrar bənd atılır', count(explode("\n", $v['powers'])) === 4, $v['powers']);
+check('real qurum adı silinir', $v['sign_org'] === '', $v['sign_org']);
+check('real qurum barədə xəbərdarlıq var',
+    (bool) array_filter($nz['warnings'], fn ($w) => str_contains($w, 'real qurumu')), $nz['warnings']);
+
+$tOpt = explode("\n", $v['title_options']);
+check('titleOptions[0] şablonun öz başlığıdır', $tOpt[0] === $v['title'], $tOpt);
+check('təkrarlanan variant atılır', count($tOpt) === count(array_unique($tOpt)), $tOpt);
+$pOpt = explode("\n", $v['powers_options']);
+check('ilk bənd variantları şablonun öz bəndləridir',
+    array_slice($pOpt, 0, 4) === explode("\n", $v['powers']), $pOpt);
+check('penaltyOptions[0] şablonun öz cəza bəndidir',
+    explode("\n", $v['penalty_options'])[0] === $v['penalty']);
+check('powersMax görünən bənd sayını aşmır', (int) $v['powers_max'] <= TemplateSchema::MAX_PICK);
+
+/* Tək variantlı siyahı ziyarətçiyə seçim vermir — boş qaytarılır. */
+$one = TemplateBrief::normalize(
+    ['title' => str_repeat('a', 60), 'powers' => ['Bir.'], 'penalty' => 'İki.',
+     'titleOptions' => [], 'powersOptions' => [], 'penaltyOptions' => []],
+    $ctx, 'full',
+);
+check('boş variant siyahısı boş qalır', $one['values']['title_options'] === '');
+
+/* Başlığın son sözü blanka uymursa xəbərdarlıq verilir. */
+$bad = TemplateBrief::normalize(
+    ['title' => 'Gecə Xoruldama Haqqında Rəsmi Qərar', 'preamble' => '{to} üçün.',
+     'powers' => ['Bir.'], 'penalty' => 'İki.'],
+    $ctx, 'metn',
+);
+check('yanlış növ sözü tutulur',
+    (bool) array_filter($bad['warnings'], fn ($w) => str_contains($w, 'gözlənilən')), $bad['warnings']);
+check('{to}/{from} yoxdursa xəbərdarlıq yoxdur (biri var)',
+    ! array_filter($bad['warnings'], fn ($w) => str_contains($w, 'nə {to}')), $bad['warnings']);
+
+/* Anket sxemi: «-1» və boş sətir «yoxdur» deməkdir. */
+$an = TemplateBrief::normalize([
+    'title' => 'A', 'preamble' => '{to}', 'powers' => ['Bir.'], 'penalty' => 'İki.',
+    'notes' => ['Birinci qeyd', 'Birinci qeyd', ''],
+    'fields' => [
+        ['k' => 'Təyinat', 't' => 'select', 'label' => 'Təyinat yeri', 'row' => 'TƏYİNAT',
+         'opts' => ['Çayxana', 'Mangal'], 'min' => -1, 'max' => -1, 'unit' => '', 'hint' => ''],
+        ['k' => 'ohde', 't' => 'multi', 'label' => 'Öhdəliklər', 'row' => '',
+         'opts' => ['Bir', 'İki', 'Üç'], 'min' => -1, 'max' => -1, 'unit' => '', 'hint' => ''],
+        ['k' => 'ohde', 't' => 'text', 'label' => 'Təkrar', 'row' => '', 'opts' => [], 'min' => -1, 'max' => -1, 'unit' => '', 'hint' => ''],
+        ['k' => 'x', 't' => 'yoxdur', 'label' => 'Naməlum', 'row' => '', 'opts' => [], 'min' => -1, 'max' => -1, 'unit' => '', 'hint' => ''],
+    ],
+], $ctx, 'anket');
+$fields = json_decode($an['values']['fields'], true);
+check('naməlum tip və təkrar açar atılır', count($fields) === 2, $fields);
+check('açar kiçildilir və ASCII-yə salınır', $fields[0]['k'] === 'teyinat', $fields[0]['k']);
+check('boş modifikator serializasiya olunmur', ! array_key_exists('unit', $fields[0]), $fields[0]);
+check('multi üçün min/max qurulur',
+    $fields[1]['min'] === 1 && $fields[1]['max'] === 3, $fields[1]);
+check('anket rejimi variant siyahılarını boşaldır', $an['values']['title_options'] === '');
+check('təkrar qeyd atılır', $an['values']['notes'] === 'Birinci qeyd', $an['values']['notes']);
+check('sxem serverin öz yoxlamasından keçir',
+    TemplateSchema::validate($fields, [], null, '{to}') === [],
+    TemplateSchema::validate($fields, [], null, '{to}'));
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

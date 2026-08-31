@@ -156,6 +156,24 @@ php artisan migrate --seed
 Admin məlumatları `.env`-dəki `ADMIN_EMAIL` və `ADMIN_PASSWORD` dəyərlərindən götürülür
 (ilkin: `admin@zarafat.az` / `admin12345`). **İstehsalatda mütləq dəyişin.**
 
+### AI şablon köməkçisi (istəyə bağlı)
+
+Admin paneldə şablonu OpenAI ilə hazırlamaq üçün `.env` faylına açar yazın:
+
+```env
+OPENAI_API_KEY=sk-...
+AI_MODEL=gpt-5.5-mini
+```
+
+- Açar **yalnız `.env`-dədir** — bazaya yazılmır ki, baza ehtiyat nüsxəsi və
+  «Kataloqu ixrac et» ilə birlikdə yayılmasın.
+- **Modeli admin paneldən dəyişmək olar**: `/admin/parametrler` → «AI şablon köməkçisi».
+  Oradakı dəyər `.env`-dəkindən üstündür, boş qoysanız `AI_MODEL` işlənir.
+  İstənilən OpenAI model adı yazıla bilər — icazə siyahısı yoxdur, yalnız format yoxlanılır.
+- Açar yoxdursa bölmə sadəcə görünmür; qalan hər şey əvvəlki kimi işləyir.
+- Köməkçi kataloqa **heç nə yazmır** — yalnız formanı doldurur. Sənəd yalnız siz
+  «Yadda saxla» düyməsinə basanda yaranır və adi yoxlamalardan keçir.
+
 ---
 
 ## 4. İşə salın
@@ -289,6 +307,9 @@ chmod -R 775 storage bootstrap/cache
 | Admin girişi işləmir | `php artisan db:seed` işlədin; `.env`-dəki `ADMIN_EMAIL`/`ADMIN_PASSWORD`-a baxın |
 | Şriftlər görünmür | `npm run build:laravel` işlədilməyib — `public/assets/fonts/` boşdur |
 | QR kod səhv ünvana aparır | `.env`-də `APP_URL` yanlışdır; `php artisan config:clear` |
+| «AI ilə hazırla» bölməsi görünmür | `.env`-də `OPENAI_API_KEY` boşdur; yazandan sonra `php artisan config:clear` |
+| AI «Model tapılmadı (404)» deyir | `/admin/parametrler`-dəki model adı yanlışdır və ya hesabınıza açıq deyil |
+| AI «OpenAI açarı qəbul edilmədi (401)» deyir | Açar səhvdir və ya vaxtı bitib |
 
 ---
 

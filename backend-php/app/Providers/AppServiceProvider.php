@@ -67,6 +67,10 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('payments',  fn (Request $r) => Limit::perMinute(12)->by($key($r)));
         RateLimiter::for('reports',   fn (Request $r) => Limit::perMinute(10)->by($key($r)));
 
+        // AI köməkçisi: hər çağırış OpenAI-yə pul xərcləyir. Yalnız admin panelə
+        // açıqdır, amma oğurlanmış sessiya ilə hesabı boşaltmaq mümkün olmasın.
+        RateLimiter::for('ai', fn (Request $r) => Limit::perMinute(8)->by($key($r)));
+
         // Ölçmə hadisələri: sənəd yaratmaqdan ucuzdur, amma limitsiz qalsa
         // document_events cədvəli sadə döngə ilə doldurula bilər.
         RateLimiter::for('events',    fn (Request $r) => Limit::perMinute(30)->by($key($r)));

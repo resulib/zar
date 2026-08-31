@@ -108,6 +108,15 @@ if ($env !== []) {
             note('İstehsalatda ALLOW_SIMULATED_PAYMENTS=false edin');
         }
     }
+
+    /* AI köməkçisi istəyə bağlıdır — açar yoxdursa bu, səhv deyil. */
+    $aiKey = trim((string) ($env['OPENAI_API_KEY'] ?? ''));
+    if ($aiKey === '') {
+        note('AI şablon köməkçisi bağlıdır (OPENAI_API_KEY boşdur) — istəyə bağlıdır');
+    } else {
+        good('AI köməkçisi açıqdır · model: ' . (($env['AI_MODEL'] ?? '') ?: 'gpt-5.5-mini')
+            . ' (admin paneldən dəyişilə bilər)');
+    }
 }
 
 /* ---------------------------------------------------------------- Baza */

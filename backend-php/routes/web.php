@@ -170,7 +170,12 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('/sablonlar/{template}/nusxe',  [Admin\CatalogController::class, 'templateDuplicate'])->name('catalog.templates.duplicate');
         Route::post('/sablonlar/{template}/sil',    [Admin\CatalogController::class, 'templateDelete'])->name('catalog.templates.delete');
 
+        /* Şablon formasının AI köməkçisi — kataloqa yazmır, yalnız formanı doldurur. */
+        Route::post('/sablonlar-ai', [Admin\AiController::class, 'draft'])
+            ->middleware('throttle:ai')->name('catalog.ai');
+
         Route::get('/parametrler',  [Admin\SettingController::class, 'edit'])->name('settings');
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');
+        Route::post('/parametrler/ai', [Admin\SettingController::class, 'updateAi'])->name('settings.ai');
     });
 });
