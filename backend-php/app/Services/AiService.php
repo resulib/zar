@@ -58,7 +58,12 @@ class AiService
             return '';
         }
 
-        return mb_substr($key, 0, 3) . str_repeat('•', 6) . mb_substr($key, -4);
+        /* Qısa açarda «ilk 3 + son 4» açarın demək olar hamısını göstərərdi. */
+        if (mb_strlen($key) < 16) {
+            return str_repeat('•', 8);
+        }
+
+        return mb_substr($key, 0, 6) . str_repeat('•', 8) . mb_substr($key, -4);
     }
 
     /**

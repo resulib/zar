@@ -512,7 +512,7 @@ $http = function (string $ep, array $payload, array $headers, int $t) use (&$cal
 };
 
 $replies = [['status' => 200, 'body' => json_encode([
-    'model'   => 'gpt-5.5-mini',
+    'model'   => 'gpt-5.4-mini',
     'choices' => [['message' => ['content' => '{"title":"Salam"}']]],
     'usage'   => ['prompt_tokens' => 10, 'completion_tokens' => 20],
 ])]];
@@ -620,6 +620,26 @@ $one = TemplateBrief::normalize(
     $ctx, 'full',
 );
 check('boş variant siyahısı boş qalır', $one['values']['title_options'] === '');
+
+/* Uzun mətn SÖZ SƏRHƏDİNDƏ kəsilir — «…təsdiqedic» kimi qırıq söz qalmamalıdır. */
+$long = TemplateBrief::normalize([
+    'title'   => 'Bir İki Üç Dörd Beş Altı Yeddi Səkkiz Doqquz On Onbir Onikinci Söz Buradadır',
+    'preamble' => '{to}',
+    'powers'  => [str_repeat('sozcuk ', 30) . 'sonuncusozcuk.'],
+    'penalty' => 'İki.',
+], ['tone' => 'zarafat', 'limits' => ['title' => 40, 'preamble' => 700, 'penalty' => 300, 'power_lines' => 8]], 'metn');
+check('başlıq söz ortasından kəsilmir',
+    ! str_ends_with($long['values']['title'], 'Alt') && ! str_contains($long['values']['title'], 'Alt '),
+    $long['values']['title']);
+check('kəsilmiş başlıq boşluqla bitmir', rtrim($long['values']['title']) === $long['values']['title']);
+check('kəsilmə barədə xəbərdarlıq verilir',
+    (bool) array_filter($long['warnings'], fn ($w) => str_contains($w, 'qısaldıldı')), $long['warnings']);
+check('uzun bənd hədd daxilində qalır',
+    mb_strlen(explode("\n", $long['values']['powers'])[0]) <= TemplateBrief::POWER_LINE,
+    mb_strlen(explode("\n", $long['values']['powers'])[0]));
+check('kəsilmiş bənd tam sözlə bitir',
+    str_ends_with(explode("\n", $long['values']['powers'])[0], 'sozcuk'),
+    explode("\n", $long['values']['powers'])[0]);
 
 /* Başlığın son sözü blanka uymursa xəbərdarlıq verilir. */
 $bad = TemplateBrief::normalize(

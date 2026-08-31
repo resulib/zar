@@ -16,19 +16,19 @@ return [
     'enabled'  => env('AI_ENABLED', true),
     'key'      => env('OPENAI_API_KEY'),
     'endpoint' => env('OPENAI_ENDPOINT', 'https://api.openai.com/v1/chat/completions'),
-    'model'    => env('AI_MODEL', 'gpt-5.5-mini'),
+    'model'    => env('AI_MODEL', 'gpt-5.4-mini'),
     'timeout'  => (int) env('AI_TIMEOUT', 90),
 
     // Panelin açılan siyahısı. İcazə siyahısı DEYİL — admin sahəyə istənilən
     // model adı yaza bilər, yoxlanan yalnız formatdır (`AiSettings::validModel`).
     // Yeni model çıxanda kodu dəyişmək lazım gəlməsin deyə belədir.
     'suggested' => [
-        'gpt-5.5-mini',
-        'gpt-5.5',
+        'gpt-5.4-mini',   // default — ucuz və yeni
+        'gpt-5.4-nano',   // ən ucuzu
+        'gpt-5.4',
+        'gpt-5.5',        // ən keyfiyyətlisi, bahalıdır
         'gpt-5-mini',
-        'gpt-5',
         'gpt-4.1-mini',
-        'gpt-4o-mini',
     ],
 
     // Bir çağırışda gözlənilən ən böyük cavab. Variant siyahıları uzun olur.

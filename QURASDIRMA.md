@@ -162,7 +162,7 @@ Admin paneldə şablonu OpenAI ilə hazırlamaq üçün `.env` faylına açar ya
 
 ```env
 OPENAI_API_KEY=sk-...
-AI_MODEL=gpt-5.5-mini
+AI_MODEL=gpt-5.4-mini
 ```
 
 - Açar **yalnız `.env`-dədir** — bazaya yazılmır ki, baza ehtiyat nüsxəsi və
