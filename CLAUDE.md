@@ -344,7 +344,7 @@ therefore never a write path into the catalog; that is the point.
 - **The key lives in `.env` only** (`OPENAI_API_KEY`), never in the database — a DB backup and the
   admin's «Kataloqu ixrac et» would otherwise carry it. `/admin/parametrler` shows it masked.
   **The model, by contrast, is admin-editable** (`settings.ai_model` → `AI_MODEL` →
-  `config('ai.model')`, default `gpt-5.5-mini`) and validated by **format**, not by an allowlist —
+  `config('ai.model')`, default `gpt-5.4-mini`) and validated by **format**, not by an allowlist —
   a new OpenAI model must not require a deploy. Empty key ⇒ the panel is not rendered at all.
 - Three layers, split so the two hard parts stay framework-free and testable:
   - `App\Support\Ai\OpenAiClient` — Chat Completions over curl, with the same injectable-`callable`

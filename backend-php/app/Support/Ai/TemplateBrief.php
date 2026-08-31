@@ -327,6 +327,20 @@ final class TemplateBrief
                 }
             }
 
+            /* Kəsilmiş mətn adminin gözündən qaçmasın: fikir yarımçıq qalır. */
+            self::cutNote('Başlıq', $raw['title'] ?? '', $title, $warn);
+            self::cutNote('Cəza bəndi', $raw['penalty'] ?? '', $penalty, $warn);
+            $long = 0;
+            foreach (self::lineList($raw['powers'] ?? [], 4000, 99, true) as $i => $src) {
+                if (mb_strlen($src) > self::POWER_LINE) {
+                    $long++;
+                }
+            }
+            if ($long > 0) {
+                $warn[] = $long . ' bənd ' . self::POWER_LINE . ' simvoldan uzun idi və qısaldıldı — '
+                    . 'fikir yarımçıq qalıbsa özünüz tamamlayın.';
+            }
+
             $values['title']      = $title;
             $values['tag']        = $doc($raw['tag'] ?? '', self::TAG_MAX);
             $values['preamble']   = $doc($raw['preamble'] ?? '', self::lim($ctx, 'preamble'));
@@ -459,7 +473,31 @@ final class TemplateBrief
 
         $s = trim((string) preg_replace('/ {2,}/u', ' ', $s));
 
-        return mb_substr($s, 0, $max);
+        return self::cut($s, $max);
+    }
+
+    /**
+     * Həddi aşan mətni SÖZ SƏRHƏDİNDƏ kəsir.
+     *
+     * `mb_substr` ilə düz kəsmək sözü ortadan qırır («…təsdiqedic») və nəticə
+     * sənədə elə düşür. Ona görə həddən əvvəlki son boşluğa qayıdılır; sonda
+     * qalan vergül/tire kimi işarələr də atılır. Bir söz tək başına həddi
+     * aşırsa (praktikada olmur) düz kəsməyə qayıdılır.
+     */
+    private static function cut(string $s, int $max): string
+    {
+        if ($max < 1 || mb_strlen($s) <= $max) {
+            return $s;
+        }
+
+        $head = mb_substr($s, 0, $max);
+        $sp   = mb_strrpos($head, ' ');
+
+        if ($sp !== false && $sp >= (int) ($max * 0.6)) {
+            $head = mb_substr($head, 0, $sp);
+        }
+
+        return rtrim($head, " ,;:-–—«(");
     }
 
     /**
@@ -597,6 +635,20 @@ final class TemplateBrief
         }
 
         return $out;
+    }
+
+    /**
+     * Kəsilmə xəbərdarlığı — mənbə mətn nəticədən uzundursa.
+     *
+     * @param  list<string>  $warn
+     */
+    private static function cutNote(string $label, mixed $src, string $out, array &$warn): void
+    {
+        $raw = self::clean($src, 100000, false);
+
+        if ($out !== '' && mb_strlen($raw) > mb_strlen($out)) {
+            $warn[] = "{$label} server həddini aşırdı və qısaldıldı — fikir yarımçıq qalıbsa özünüz tamamlayın.";
+        }
     }
 
     /** Server həddi: kontekstdən gəlir (config/zarafat.php `limits`), yoxsa ehtiyat. */

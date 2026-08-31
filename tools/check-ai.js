@@ -7,7 +7,7 @@
      cd backend-php
      OPENAI_API_KEY=sk-test \
      OPENAI_ENDPOINT=http://127.0.0.1:8099/v1/chat/completions \
-     AI_MODEL=gpt-5.5-mini \
+     AI_MODEL=gpt-5.4-mini \
      php artisan serve --port=8080
 
    sonra:  npm run test:ai
@@ -83,7 +83,7 @@ const fake = http.createServer((req, res) => {
     const anket = req_.messages.some(m => m.content.indexOf('ANKET SXEMİ') >= 0);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
-      model: 'gpt-5.5-mini-2026-01-01',
+      model: 'gpt-5.4-mini-2026-03-17',
       choices: [{ message: { content: JSON.stringify(anket ? ANKET : REPLY) } }],
       usage: { prompt_tokens: 1240, completion_tokens: 680 },
     }));
@@ -105,22 +105,23 @@ const fake = http.createServer((req, res) => {
   bas('1. Parametrlər — model dəyişilir');
   await page.goto(B + '/admin/parametrler', { waitUntil: 'domcontentloaded' });
   check('AI paneli açıq görünür', (await page.$eval('.panel:has(#ai_model) .pill', e => e.textContent.trim())) === 'açıqdır');
-  check('açar maskalanır', /^sk-•+ocal$/.test(await page.$eval('.panel:has(#ai_model) .mono', e => e.textContent.trim())),
-    await page.$eval('.panel:has(#ai_model) .mono', e => e.textContent.trim()));
+  /* Açarın özü heç vaxt səhifəyə düşməməlidir — yalnız maska. */
+  const hint = await page.$eval('.panel:has(#ai_model) .mono', e => e.textContent.trim());
+  check('açar maskalanır', /•{8}/.test(hint) && hint.length <= 20, hint);
   await page.fill('#ai_model', 'gpt-5.5');
   await page.click('button:has-text("Modeli yadda saxla")'); await page.waitForTimeout(600);
   check('model saxlanıldı', (await page.$eval('#ai_model', e => e.value)) === 'gpt-5.5');
   await page.fill('#ai_model', 'pis model!!');
   await page.click('button:has-text("Modeli yadda saxla")'); await page.waitForTimeout(600);
   check('yanlış model adı rədd edilir', /yalnız hərf, rəqəm/.test(await page.content()));
-  await page.fill('#ai_model', 'gpt-5.5-mini');
+  await page.fill('#ai_model', 'gpt-5.4-mini');
   await page.click('button:has-text("Modeli yadda saxla")'); await page.waitForTimeout(600);
 
   bas('2. Şablon forması — qaralama');
   await page.goto(B + '/admin/sablonlar/yeni', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1000);
   check('formada AI paneli var', (await page.$('#aiRun')) !== null);
-  check('panel cari modeli göstərir', (await page.$eval('#aiModelName', e => e.textContent.trim())) === 'gpt-5.5-mini');
+  check('panel cari modeli göstərir', (await page.$eval('#aiModelName', e => e.textContent.trim())) === 'gpt-5.4-mini');
 
   await page.click('label[data-layout="lisenziya"]');
   await page.fill('#aiBrief', 'Gecə xoruldayan ər üçün lisenziya.');
@@ -152,7 +153,7 @@ const fake = http.createServer((req, res) => {
   check('powersMax 4-ü aşmır', +v.pMax <= 4 && +v.pMin >= 1, [v.pMin, v.pMax]);
   check('uğur mesajı göstərilir', /forma sahələrinə yazıldı/.test(v.msg), v.msg.slice(0, 120));
   check('token statistikası göstərilir', /1240 \+ 680/.test(v.state), v.state);
-  check('serverin qaytardığı model adı yazılır', v.model === 'gpt-5.5-mini-2026-01-01', v.model);
+  check('serverin qaytardığı model adı yazılır', v.model === 'gpt-5.4-mini-2026-03-17', v.model);
 
   bas('3. Təmizləmə və önizləmə');
   const prev = await page.$eval('#prevDoc', e => e.textContent);

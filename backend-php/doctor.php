@@ -114,7 +114,7 @@ if ($env !== []) {
     if ($aiKey === '') {
         note('AI şablon köməkçisi bağlıdır (OPENAI_API_KEY boşdur) — istəyə bağlıdır');
     } else {
-        good('AI köməkçisi açıqdır · model: ' . (($env['AI_MODEL'] ?? '') ?: 'gpt-5.5-mini')
+        good('AI köməkçisi açıqdır · model: ' . (($env['AI_MODEL'] ?? '') ?: 'gpt-5.4-mini')
             . ' (admin paneldən dəyişilə bilər)');
     }
 }
