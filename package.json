@@ -22,6 +22,7 @@
     "test:title": "node tools/check-title-fit.js",
     "test:fields": "node tools/check-fields.js",
     "test:admin": "node tools/check-admin-catalog.js",
+    "test:ai": "node tools/check-ai.js",
     "catalog:export": "node tools/export-catalog.js",
     "test:viewer": "node tools/check-viewer.js",
     "test:fonts": "node tools/check-fonts.js",

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Template;
+use App\Services\AiService;
 use App\Services\CatalogService;
 use App\Support\ReplyKinds;
 use App\Support\TemplateSchema;
@@ -152,7 +153,7 @@ class CatalogController extends Controller
         ]);
     }
 
-    public function templateForm(Request $request, ?Template $template = null): View
+    public function templateForm(Request $request, ?Template $template = null, ?AiService $ai = null): View
     {
         /* `?kateqoriya=` ilə gəlindikdə kateqoriya öncədən seçilir və yeni şablon
            həmin kateqoriyanın sonuna düşür. */
@@ -171,6 +172,13 @@ class CatalogController extends Controller
             'palettes'   => config('zarafat.palettes'),
             'tones'      => config('zarafat.tones'),
             'types'      => TemplateSchema::TYPES,
+            /* Yalnız görünüş üçün: dizaynın azərbaycanca adı, yazdığı növ sözü
+               və tələsi; palitranın adı və üç rəngi. İcazə siyahısı yuxarıdadır. */
+            'layoutMeta'  => config('zarafat.layout_meta'),
+            'paletteMeta' => config('zarafat.palette_meta'),
+            /* AI köməkçisi yalnız açar qoyulubsa görünür. */
+            'aiEnabled'   => ($ai ?? app(AiService::class))->enabled(),
+            'aiModel'     => ($ai ?? app(AiService::class))->model(),
             /* Cavab qatı: niyyət siyahısı və hədəf kateqoriyalar.
                Hədəflər YALNIZ ana kateqoriyalardır — cavaba cavab zəncirin
                özü ilə idarə olunur, `reply_cats` ilə deyil. */
@@ -239,14 +247,11 @@ class CatalogController extends Controller
         }
 
         $fields = $this->decodeJson($data['fields'] ?? null, 'fields', 'Anket sxemi');
-        $notes  = $this->decodeJson($data['notes'] ?? null, 'notes', 'Qeydlər');
-        $reasons = $this->decodeJson($data['cancel_reasons'] ?? null, 'cancel_reasons', 'Ləğv səbəbləri');
-
-        foreach (['notes' => $notes, 'cancel_reasons' => $reasons] as $key => $value) {
-            if ($value !== null && (! array_is_list($value) || array_filter($value, fn ($v) => ! is_string($v)))) {
-                throw ValidationException::withMessages([$key => 'Yalnız mətn siyahısı ola bilər, məsələn: ["Birinci", "İkinci"]']);
-            }
-        }
+        /* Bu ikisi sadə mətn siyahısıdır — admin sətir-sətir yazır. Köhnə
+           JSON formatı da qəbul olunur ki, kataloqdan kopyalanan dəyər
+           («["Bir","İki"]») itməsin. */
+        $notes   = $this->decodeList($data['notes'] ?? null, 'notes', 'Qeydlər');
+        $reasons = $this->decodeList($data['cancel_reasons'] ?? null, 'cancel_reasons', 'Ləğv səbəbləri');
 
         /* İstifadəçi seçimləri */
         $optErr = array_merge(
@@ -449,6 +454,43 @@ class CatalogController extends Controller
         }
 
         return $value;
+    }
+
+    /**
+     * Sətir-sətir mətn siyahısı. Köhnə JSON massivi də oxunur — admin
+     * kataloqdan kopyaladığı dəyəri yapışdıra bilir.
+     *
+     * @return list<string>|null
+     */
+    private function decodeList(?string $raw, string $field, string $label): ?array
+    {
+        $raw = trim((string) $raw);
+
+        if ($raw === '' || $raw === 'null' || $raw === '[]') {
+            return null;
+        }
+
+        if (str_starts_with($raw, '[')) {
+            $value = $this->decodeJson($raw, $field, $label) ?? [];
+
+            if (array_filter($value, fn ($v) => ! is_string($v))) {
+                throw ValidationException::withMessages([
+                    $field => $label . ': yalnız mətn sətirləri ola bilər.',
+                ]);
+            }
+        } else {
+            $value = preg_split('/\R/u', $raw) ?: [];
+        }
+
+        $out = [];
+        foreach ($value as $line) {
+            $line = trim(preg_replace('/[ \t]+/u', ' ', (string) $line) ?? '');
+            if ($line !== '') {
+                $out[] = $line;
+            }
+        }
+
+        return $out ?: null;
     }
 
     private function uniqueSlug(string $base): string

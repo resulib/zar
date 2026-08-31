@@ -13,6 +13,11 @@ let pass = 0, fail = 0;
 const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
                              : (fail++, console.log('  ✗', n, x === undefined ? '' : JSON.stringify(x)));
 
+/* Anketin xam JSON sahəsi kart qurucusunun altında <details> içindədir —
+   `page.fill` görünməyən elementi doldurmur, ona görə əvvəlcə açılır. */
+const openJson = (page) =>
+  page.evaluate(() => { const d = document.getElementById('fieldsRaw'); if (d) d.open = true; });
+
 (async () => {
   const b = await chromium.launch();
   const page = await b.newPage({ viewport: { width: 1400, height: 1100 } });
@@ -21,6 +26,7 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
 
   /* --- giriş --- */
   await page.goto(BASE + '/admin/giris', { waitUntil: 'domcontentloaded' });
+  page.on('dialog', d => d.accept());
   await page.fill('input[name="email"]', EMAIL);
   await page.fill('input[name="password"]', PASS);
   await page.click('form[action*="giris"] button[type="submit"]');
@@ -124,7 +130,9 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   await page.fill('#title', 'Önizləmə Sınağı'); await page.waitForTimeout(600);
   check('başlıq dəyişikliyi önizləməyə düşür',
     (await page.$eval('#prevDoc', e => e.textContent)).indexOf('ÖNİZLƏMƏ SINAĞI') >= 0);
-  await page.selectOption('#layout', 'viza'); await page.waitForTimeout(700);
+  await page.click('label[data-layout="viza"]'); await page.waitForTimeout(700);
+  check('blank qeydi seçilən blanka uyğundur',
+    (await page.$eval('#layoutNote', e => e.textContent)).indexOf('Viza') >= 0);
   check('dizayn dəyişikliyi önizləməyə düşür',
     (await page.$eval('#prevDoc', e => e.textContent)).indexOf('VİZA / VISA') >= 0);
   check('ödənişsiz görünüşdə NÜMUNƏ var',
@@ -132,9 +140,12 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   await page.check('#prevPaid'); await page.waitForTimeout(600);
   check('ödənişli görünüşdə QR bloku var',
     (await page.$eval('#prevDoc', e => e.textContent)).indexOf('REYESTRDƏ YOXLA') >= 0);
+  await openJson(page);
   await page.fill('#fields', '[{"k":"a",]'); await page.waitForTimeout(600);
   check('sınmış JSON önizləmədə dərhal bildirilir',
     (await page.$eval('#prevMsg', e => e.textContent)).indexOf('JSON oxunmadı') >= 0);
+  check('sınmış JSON qurucuda da bildirilir',
+    (await page.$eval('#fbErr', e => e.textContent)).indexOf('JSON oxunmadı') >= 0);
 
   /* --- anketli şablonun önizləməsi --- */
   await page.goto(BASE + '/admin/sablonlar?q=cole-cixma-vizasi', { waitUntil: 'domcontentloaded' });
@@ -143,6 +154,28 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   check('anket cavabları önizləmə cədvəlində',
     pv.indexOf('TƏYİNAT YERİ') >= 0 && pv.indexOf('Çayxana') >= 0);
   check('önizləmədə yer tutucu qalmır', pv.indexOf('{{') < 0);
+
+  /* --- anket qurucusu: kart ⇄ JSON --- */
+  check('anket kartları JSON-dan qurulur',
+    (await page.$$eval('#fbList .fb-card', e => e.length)) >= 3);
+  check('kartın etiketi sxemdən gəlir',
+    (await page.$eval('#fbList .fb-card .fb-label', e => e.value)).length > 0);
+  const beforeAdd = await page.$$eval('#fbList .fb-card', e => e.length);
+  await page.selectOption('#fbType', 'select');
+  await page.click('#fbAdd'); await page.waitForTimeout(400);
+  check('«Sahə əlavə et» yeni kart yaradır',
+    (await page.$$eval('#fbList .fb-card', e => e.length)) === beforeAdd + 1);
+  await openJson(page);
+  const grown = JSON.parse(await page.$eval('#fields', e => e.value));
+  check('yeni sahə JSON-a yazılır',
+    grown.length === beforeAdd + 1 && grown[grown.length - 1].t === 'select' &&
+    /^[a-z0-9_]+$/.test(grown[grown.length - 1].k || ''),
+    grown[grown.length - 1]);
+  check('yer tutucu düymələri sahələri sadalayır',
+    (await page.$$eval('#phChips [data-ins]', e => e.length)) === grown.length + 2);
+  await page.click('#fbList .fb-card:last-child [data-act="del"]'); await page.waitForTimeout(400);
+  check('kart silinir',
+    (await page.$$eval('#fbList .fb-card', e => e.length)) === beforeAdd);
 
   /* --- kateqoriyadan öz şablonlarına keçid --- */
   await page.goto(BASE + '/admin/kateqoriyalar', { waitUntil: 'domcontentloaded' });
@@ -181,6 +214,7 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   await page.fill('#preamble', '{from} tərəfindən {to} adlı şəxsə sınaq icazəsi verilir.');
   await page.fill('#powers', 'Bir.\nİki.\nÜç.\nDörd.');
   await page.fill('#penalty', 'Sınaq şərtləri pozulduqda sənəd qüvvədən düşür.');
+  await openJson(page);
   await page.fill('#fields', '[{"k":"BAD KEY","t":"yoxdur","label":"X"}]');
   await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(700);
   let html = await page.content();
@@ -188,11 +222,13 @@ const check = (n, c, x) => c ? (pass++, console.log('  ✓', n))
   check('yanlış açar tutulur', /yalnız kiçik hərf/i.test(html));
 
   /* --- şablon: sınmış JSON --- */
+  await openJson(page);
   await page.fill('#fields', '[{"k":"a",]');
   await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(700);
   check('sınmış JSON tutulur', /JSON oxunmadı/i.test(await page.content()));
 
   /* --- şablon: uyğunsuz yer tutucu --- */
+  await openJson(page);
   await page.fill('#fields', '[{"k":"teyinat","t":"select","label":"Təyinat","opts":["Bir","İki"]}]');
   await page.fill('#preamble', '{from} tərəfindən {to} adlı şəxsə {{yoxdur}} üçün icazə verilir.');
   await page.click('button:has-text("Yadda saxla")'); await page.waitForTimeout(700);

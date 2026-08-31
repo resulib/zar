@@ -50,6 +50,48 @@
 
 <div class="panel" style="margin-top:22px">
   <div class="panel-head">
+    <span class="label">AI şablon köməkçisi</span>
+    <span class="right"><span class="pill {{ $aiEnabled ? 'ok' : 'mute' }}">{{ $aiEnabled ? 'açıqdır' : 'bağlıdır' }}</span></span>
+  </div>
+  <div class="panel-body">
+    @if ($aiEnabled)
+      <p class="micro" style="margin-bottom:14px;line-height:1.65">
+        Açar <code>.env</code> faylındadır: <span class="mono">{{ $aiKeyHint }}</span>.
+        Şablon formasında «AI ilə hazırla» bölməsi işləyir.
+      </p>
+    @else
+      <p class="note-box">
+        Köməkçi bağlıdır. Açmaq üçün <code>.env</code> faylına
+        <code>OPENAI_API_KEY=sk-…</code> yazın və serveri yenidən başladın.
+        <br>Açar qəsdən bazada saxlanılmır — baza ehtiyat nüsxəsi və kataloq
+        ixracı ilə birlikdə yayılmasın deyə.
+      </p>
+    @endif
+
+    <form method="POST" action="{{ route('admin.settings.ai') }}">
+      @csrf
+      <div class="field" style="margin-bottom:10px">
+        <label class="label" for="ai_model">Model</label>
+        <input class="input mono" id="ai_model" name="ai_model" maxlength="60"
+               list="aiModels" placeholder="{{ config('ai.model') }}"
+               value="{{ old('ai_model', $aiModel) }}">
+        <datalist id="aiModels">
+          @foreach ($aiSuggested as $m)<option value="{{ $m }}">@endforeach
+        </datalist>
+        <span class="hint">
+          İstənilən OpenAI model adı yazıla bilər — siyahı yalnız təklifdir.
+          Boş qoysanız <code>.env</code>-dəki <code>AI_MODEL</code> (default
+          <code>{{ config('ai.model') }}</code>) işlənir.
+        </span>
+        @error('ai_model')<span class="err">{{ $message }}</span>@enderror
+      </div>
+      <button class="btn" type="submit">Modeli yadda saxla</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:22px">
+  <div class="panel-head">
     <span class="label">Moderasiya siyahısı</span>
     <span class="right label">{{ $wordCount }} söz</span>
   </div>
