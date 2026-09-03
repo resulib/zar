@@ -1,0 +1,601 @@
+/* İş qovluğu bölməsinin stili.
+   Ayrıdır: site.css və panel.css bu tərəfdə heç vaxt yüklənmir.
+   Şriftlər lokaldır (dossier-fonts.css), CDN yoxdur.
+
+   Fayl beş hissədir: tokenlər → sənəd → oyun qabığı → sayt → ölçülər.
+   Telefon-əvvəl yazılıb (`min-width` sorğuları) — site.css-in əksinə,
+   ona görə oradan gələn oxucu diqqətli olsun.
+
+   Ölçülər: 720px planşet, 1080px kompüter. Rəqəmlər sütunların cəmidir,
+   dəb deyil — izahı «ÖLÇÜLƏR» bölməsindədir. */
+
+:root{
+  --desk:#191C1A; --desk2:#22261F; --line:#343A33;
+  --buff:#C2A468; --buff2:#A8894F; --buff3:#8A6F3C;
+  --paper:#E9E4D6; --paper2:#DED7C4; --paper3:#CFC6AE;
+  --ink:#26221D; --ink2:#5D564A; --ink3:#8B8271;
+  --stamp:#5A3E8C; --red:#A8382C; --pen:#24417E;
+  --mono:"Dossier Mono",ui-monospace,Menlo,monospace;
+  --sans:"Dossier Sans",system-ui,-apple-system,sans-serif;
+  --tab:64px;
+
+  /* Kağızın həndəsəsi. Telefonda kağız çərçivənin eni qədərdir. */
+  --rail:300px;          /* masaüstündə materiallar sütunu */
+  --paper-w:none;
+  --paper-x:20px;
+
+  /* SƏTİR UZUNLUĞU. IBM Plex Mono-nun addımı 600/1000 em-dir, yəni
+     1ch = 0.6em DƏQİQ — burada `ch` təxmin deyil, həqiqi simvol sayıdır.
+     13.5px-də 72ch = 583px; 80 simvol həddi 648px olardı. */
+  --measure:72ch;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{background:#0E100F;font-family:var(--sans);color:var(--paper);
+  display:flex;align-items:center;justify-content:center}
+
+/* Oyun qabığı. Telefonda ekranı tam tutur, kompüterdə açılır (ÖLÇÜLƏR).
+   Əvvəllər burada telefon maketi vardı — yumru künc və böyük kölgə;
+   silinib, çünki məhsulun tonu maket deyil, sənəddir. */
+.frame{width:100%;max-width:412px;height:100dvh;max-height:880px;position:relative;
+  background:var(--desk);overflow:hidden;display:flex;flex-direction:column}
+
+/* Satış səhifələrinin sarğısı — tam en, öz sütunu içəridə. */
+.sayt{width:100%;min-height:100dvh;background:var(--desk)}
+.sayt-en{width:100%;max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- üst lent ---------- */
+#topbar{flex:0 0 auto;height:50px;display:none;align-items:center;gap:10px;
+  padding:0 14px;background:var(--desk2);border-bottom:1px solid var(--line)}
+#topbar.on{display:flex}
+.tb-back{background:none;border:0;color:var(--buff);font:500 15px var(--sans);padding:8px 4px;cursor:pointer}
+.tb-title{flex:1;font:500 13px var(--sans);color:var(--paper3);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-clock{font:500 13px var(--mono);color:var(--ink3);letter-spacing:.04em}
+
+/* ---------- ekranlar ---------- */
+main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.screen{display:none;min-height:100%}
+.screen.on{display:block}
+
+/* ---------- üz qabığı ---------- */
+/* `display` yalnız `.on` ilə birlikdə verilir. ID seçicisi `.screen{display:none}`
+   qaydasını üstələyir — display burada şərtsiz yazılsa, üz qabığı qovluq
+   açıldıqdan sonra da ekranda qalardı. */
+#s-cover{background:
+  radial-gradient(120% 80% at 50% 0%,#D0B378 0%,var(--buff) 45%,var(--buff2) 100%);
+  color:#3A2E14;padding:0}
+#s-cover.on{display:flex;flex-direction:column}
+.cov-edge{height:14px;background:linear-gradient(var(--buff3),rgba(0,0,0,0));flex:0 0 auto}
+.cov{flex:1;padding:26px 24px 30px;display:flex;flex-direction:column}
+.cov-org{font:500 11px var(--mono);letter-spacing:.16em;color:#6B5525;line-height:1.7}
+.cov-rule{height:1px;background:#8A6F3C;opacity:.5;margin:14px 0 22px}
+.cov-kind{font:600 13px var(--mono);letter-spacing:.2em;color:#5C4A1E}
+.cov-kod{font:600 12px var(--mono);letter-spacing:.22em;color:#5C4A1E;margin-top:10px}
+.cov-no{font:600 46px/1 var(--mono);letter-spacing:-.02em;margin:2px 0 4px;color:#2E2410}
+.cov-sub{font:400 14px var(--mono);color:#6B5525}
+.cov-body{margin-top:26px;font:400 14px/1.85 var(--mono);color:#4A3A16}
+.cov-body b{font-weight:600}
+.cov-blurb{margin-top:18px;font:400 13px/1.8 var(--mono);color:#5C4A1E}
+.blank{display:inline-block;min-width:150px;border:0;border-bottom:1px solid #7A6230;
+  color:var(--pen);font:400 15px var(--mono);font-style:italic;background:none;
+  outline:none;padding:2px 4px;transform:rotate(-.5deg)}
+.blank::placeholder{color:#8A7340;font-style:normal;font-size:13px}
+.cov-spacer{flex:1;min-height:18px}
+.stamp{position:absolute;right:18px;top:300px;width:132px;height:132px;
+  border:2.5px solid var(--stamp);border-radius:50%;color:var(--stamp);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  transform:rotate(-13deg);opacity:.62;pointer-events:none}
+.stamp::before{content:"";position:absolute;inset:7px;border:1px solid var(--stamp);border-radius:50%}
+.stamp span{font:600 9.5px/1.5 var(--mono);letter-spacing:.06em;max-width:104px}
+.btn-open{width:100%;padding:17px;background:#2E2410;color:var(--buff);border:0;
+  font:600 15px var(--sans);letter-spacing:.02em;cursor:pointer}
+.btn-open:disabled{opacity:.35}
+.cov-note{margin-top:14px;font:400 11px/1.6 var(--mono);color:#6B5525;opacity:.85}
+.cov-price{margin-top:12px;font:500 12.5px var(--mono);color:#4A3A16}
+
+/* ---------- materiallar siyahısı ---------- */
+.pad{padding:18px 16px 22px}
+.sect-h{font:600 12px var(--mono);letter-spacing:.14em;color:var(--ink3);
+  padding:0 16px;margin:20px 0 10px}
+.meta{margin:0 16px 4px;padding:14px;background:var(--desk2);border-left:2px solid var(--buff2)}
+.meta dl{margin:0;display:grid;grid-template-columns:96px 1fr;gap:7px 10px;
+  font:400 12.5px var(--mono);line-height:1.5}
+.meta dt{color:var(--ink3)}
+.meta dd{margin:0;color:var(--paper2)}
+.docrow{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;
+  padding:14px 16px;background:none;border:0;border-bottom:1px solid var(--line);
+  color:inherit;font:inherit;cursor:pointer}
+.docrow:active{background:var(--desk2)}
+.docrow[disabled]{cursor:default;opacity:.55}
+.dr-no{flex:0 0 44px;font:500 11px var(--mono);color:var(--ink3);padding-top:2px}
+.dr-mid{flex:1;min-width:0}
+.dr-name{display:block;font:500 14.5px/1.35 var(--sans);color:var(--paper)}
+.dr-kind{display:block;font:400 11.5px var(--mono);color:var(--ink3);margin-top:4px}
+.dr-mark{flex:0 0 auto;width:18px;text-align:center;font:400 13px var(--mono);color:var(--buff);padding-top:2px}
+.docrow.read .dr-name{color:var(--ink3)}
+.docrow.locked .dr-name{color:var(--buff)}
+
+/* ---------- kağız ---------- */
+/* ÖLÇÜ TƏLƏSİ: `ch` elementin ÖZ `font-size`-ına görə hesablanır. `.paper`
+   `font-size` elan etmir və `body`-dən 16px miras alır — `max-width` burada
+   `ch` ilə yazılsaydı hesab 18% sürüşərdi. Ona görə sətir uzunluğu aşağıda,
+   öz ölçüsünü elan edən elementlərin üstündədir. */
+.paper{background:var(--paper);color:var(--ink);margin-inline:auto;
+  padding:22px var(--paper-x) 34px;max-width:var(--paper-w);
+  min-height:100%;font-family:var(--mono);position:relative}
+.paper::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 78%,rgba(0,0,0,.05) 100%)}
+.p-head{text-align:center;font:500 11px/1.75 var(--mono);letter-spacing:.06em;color:var(--ink2)}
+.p-rule{height:1px;background:var(--ink3);opacity:.55;margin:12px 0}
+.p-title{text-align:center;font:600 15.5px/1.4 var(--mono);letter-spacing:.02em;margin:14px 0 4px}
+.p-sub{text-align:center;font:400 11.5px var(--mono);color:var(--ink2);margin-bottom:16px}
+.p-body{font:400 13.5px/1.95 var(--mono);text-align:justify;hyphens:auto;
+  max-width:var(--measure);margin-inline:auto}
+.p-body p{margin:0 0 13px}
+.p-fields{font:400 13px/2.1 var(--mono);margin:0 0 14px}
+.p-fields div{display:flex;gap:8px;align-items:baseline}
+.p-fields b{font-weight:400;color:var(--ink2);flex:0 0 auto}
+.p-fields i{flex:1;border-bottom:1px dotted var(--ink3);font-style:normal;
+  align-self:flex-end;transform:translateY(-4px);min-width:10px}
+.p-fields span{font-weight:500}
+.p-sign{margin-top:24px;display:flex;justify-content:space-between;align-items:flex-end;
+  font:400 12px var(--mono);color:var(--ink2);gap:16px}
+.p-sign .sig{color:var(--pen);font-style:italic;font-size:15px;transform:rotate(-2deg)}
+.p-note{margin:18px auto 0;padding:11px 12px;border:1px solid var(--paper3);
+  background:var(--paper2);font:400 12px/1.75 var(--mono);color:var(--ink2);
+  max-width:var(--measure)}
+.redpen{color:var(--red);font-style:italic}
+.p-sxem svg{width:100%;height:auto;font-family:var(--mono)}
+
+/* Fiktivlik qeydi — HƏR sənədin altında. `sened.blade.php` sarğısı onu
+   məcburi əlavə edir; burada yalnız görkəmi var. Sənədi boğmur, amma
+   ekran görüntüsü kəsiləndə də kadrda qalsın deyə kağızın içindədir. */
+.p-fiktiv{margin-top:26px;padding-top:10px;border-top:1px dotted var(--ink3);
+  font:400 10.5px/1.65 var(--mono);color:var(--ink2);letter-spacing:.01em}
+
+/* cədvəl */
+.p-tbl{width:100%;border-collapse:collapse;font:400 11.5px/1.5 var(--mono);margin:6px 0 12px}
+.p-tbl th{text-align:left;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--ink3);padding:7px 6px}
+.p-tbl td{border-bottom:1px solid var(--paper3);padding:8px 6px;vertical-align:top}
+.p-tbl tr.hi td{background:#E3DCC6}
+
+/* maddi sübutlar */
+.ev{border:1px solid var(--paper3);padding:12px;margin:0 0 10px;background:#EFEADD}
+.ev-h{display:flex;gap:9px;align-items:baseline;margin-bottom:7px}
+.ev-n{font:600 12px var(--mono);color:#fff;background:var(--ink);padding:2px 7px}
+.ev-t{font:600 13.5px var(--mono)}
+.ev-d{font:400 12.5px/1.8 var(--mono);color:var(--ink2);max-width:var(--measure)}
+.ev-d.ev-el{font-style:italic;color:var(--pen)}
+
+/* kağızın üstünə çap edilmiş yazışma */
+.shot{border:1px solid var(--ink3);background:#ECE5DC;padding:9px;margin:4px 0 8px}
+.shot-bar{display:flex;align-items:center;gap:8px;background:#0B3D36;color:#DDEDE8;
+  padding:8px 10px;margin:-9px -9px 9px}
+.shot-av{width:26px;height:26px;border-radius:50%;background:#3E6E62;flex:0 0 auto}
+.shot-nm{font:500 12.5px var(--sans);line-height:1.25}
+.shot-nm small{display:block;font:400 10px var(--sans);opacity:.7}
+.bub{max-width:min(78%,30em);padding:7px 9px 5px;margin:0 0 7px;font:400 12.5px/1.55 var(--sans);
+  color:#12211E;position:relative}
+.bub.i{background:#D6EFC7;margin-left:auto}
+.bub.u{background:#FCFAF4}
+.bub time{display:block;text-align:right;font:400 9.5px var(--mono);color:#6C7A72;margin-top:3px}
+.bub.del{background:#EFEAE0;color:#7C776C;font-style:italic}
+.shot-day{text-align:center;font:400 10px var(--mono);color:#6C7A72;margin:2px 0 9px}
+.cap{font:400 11px/1.6 var(--mono);color:var(--ink2);text-align:center}
+
+/* zəng tarixçəsi */
+.calls{font:400 12px/1.6 var(--mono);max-width:var(--measure);margin-inline:auto}
+.call{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--paper3)}
+.call-t{flex:0 0 52px;font-weight:600}
+.call-b{flex:1}
+.call-b small{display:block;color:var(--ink2);margin-top:2px}
+
+/* klaviatura */
+.lockwrap{padding:34px 22px;text-align:center}
+.lock-t{font:600 16px var(--mono);margin-bottom:6px}
+.lock-s{font:400 12.5px/1.7 var(--mono);color:var(--ink2);margin:0 auto 22px;
+  max-width:var(--measure)}
+.lock-hint{text-align:left;margin-top:22px}
+.dots{display:flex;gap:12px;justify-content:center;margin-bottom:22px}
+.dot{width:42px;height:52px;border:1px solid var(--ink3);background:var(--paper2);
+  display:flex;align-items:center;justify-content:center;font:600 22px var(--mono)}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:250px;margin:0 auto}
+.key{padding:15px 0;background:var(--paper2);border:1px solid var(--paper3);
+  font:500 19px var(--mono);color:var(--ink);cursor:pointer}
+.key:active{background:var(--paper3)}
+.lock-err{color:var(--red);font:400 12px var(--mono);height:18px;margin-top:12px}
+.shake{animation:sh .32s}
+@keyframes sh{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ---------- şübhəlilər ---------- */
+.sus{margin:0 16px 12px;background:var(--desk2);border:1px solid var(--line)}
+.sus-h{display:flex;gap:12px;padding:13px 14px;align-items:center}
+.sus-init{width:38px;height:38px;flex:0 0 auto;background:var(--buff2);color:#241C08;
+  display:flex;align-items:center;justify-content:center;font:600 14px var(--mono)}
+.sus-n{font:500 14.5px var(--sans)}
+.sus-r{font:400 11.5px var(--mono);color:var(--ink3);margin-top:3px}
+/* `.sus-b` sarğısı açılıb: alibi zolağı müstəqil qardaş olmalıdır ki,
+   kompüterdə bioqrafiya mətni onun enini təyin etməsin (ÖLÇÜLƏR). */
+.sus-bio,.sus-cam{padding:0 14px;font:400 12.5px/1.75 var(--mono);color:var(--paper2)}
+.sus-cam{margin-top:8px;padding-bottom:14px}
+.sus-cam em{color:var(--ink3);font-style:normal}
+.bar{height:22px;background:#2E332D;position:relative;margin:9px 14px 5px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;background:var(--buff2)}
+.bar-l{display:flex;justify-content:space-between;margin:0 14px;
+  font:400 10px var(--mono);color:var(--ink3)}
+
+/* ---------- qeydlər ---------- */
+.empty{padding:60px 30px;text-align:center;font:400 13px/1.9 var(--mono);color:var(--ink3)}
+.note{margin:0 16px 10px;padding:12px 13px;background:var(--desk2);border-left:2px solid var(--buff2);
+  cursor:pointer}
+.note-t{font:500 13.5px var(--sans)}
+.note-s{font:400 11.5px var(--mono);color:var(--ink3);margin-top:4px}
+
+/* ---------- cavab ---------- */
+.q{margin:0 16px 18px}
+.q-t{font:500 14px/1.5 var(--sans);margin-bottom:9px}
+.opt{display:block;width:100%;text-align:left;padding:13px 14px;margin-bottom:7px;
+  background:var(--desk2);border:1px solid var(--line);color:var(--paper2);
+  font:400 13.5px var(--sans);cursor:pointer}
+.opt.sel{border-color:var(--buff);background:#2C2A1E;color:var(--buff)}
+.btn{display:block;width:min(100% - 32px,420px);margin:22px auto 30px;padding:16px;
+  background:var(--buff);color:#241C08;border:0;font:600 15px var(--sans);cursor:pointer}
+.btn:disabled{background:#3A3E38;color:var(--ink3);cursor:default}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--paper2)}
+.left-note{padding:0 16px;font:400 12px var(--mono);color:var(--ink3)}
+
+/* ---------- nəticə ---------- */
+.cert{margin:16px;background:var(--paper);color:var(--ink);padding:26px 20px 22px;text-align:center;position:relative}
+.cert-k{font:500 10.5px var(--mono);letter-spacing:.18em;color:var(--ink2)}
+.cert-t{font:600 19px/1.35 var(--mono);margin:14px 0 6px}
+.cert-n{font:400 13px var(--mono);color:var(--ink2);margin-bottom:18px}
+.cert-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--paper3);margin:16px 0}
+.cert-g div{background:var(--paper);padding:12px 8px}
+.cert-g b{display:block;font:600 20px var(--mono)}
+.cert-g small{font:400 10.5px var(--mono);color:var(--ink2)}
+.cert-f{font:400 11px/1.7 var(--mono);color:var(--ink2);margin-top:14px}
+.cert-fiktiv{margin-top:14px;padding-top:10px;border-top:1px dotted var(--paper3);
+  font:400 10px/1.65 var(--mono);color:var(--ink2)}
+.verdict{padding:12px 16px;margin:0 16px 14px;font:500 13.5px/1.6 var(--sans)}
+.verdict.ok{background:#22301F;color:#B9D6A8;border-left:3px solid #6E9E56}
+.verdict.no{background:#2E211F;color:#E0B0A8;border-left:3px solid var(--red)}
+.expl{padding:0 16px;font:400 13.5px/1.9 var(--sans);color:var(--paper2);
+  max-width:60ch;margin-inline:auto}
+.expl p{margin:0 0 13px}
+
+/* ---------- alt lent ---------- */
+#tabbar{flex:0 0 auto;height:var(--tab);display:none;background:var(--desk2);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+#tabbar.on{display:flex}
+.tab{flex:1;background:none;border:0;color:var(--ink3);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font:500 10.5px var(--sans);padding:0}
+.tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6}
+.tab.on{color:var(--buff)}
+.badge{position:absolute;transform:translate(14px,-8px);background:var(--red);color:#fff;
+  font:600 9px var(--mono);border-radius:8px;padding:1px 5px}
+
+.pinbtn{display:block;width:min(100% - 40px,var(--paper-w,100%));margin:20px auto;padding:13px;
+  background:none;border:1px dashed var(--ink3);color:var(--ink2);
+  font:500 13px var(--sans);cursor:pointer}
+.pinbtn.on{border-style:solid;border-color:var(--pen);color:var(--pen)}
+
+/* ---------- bildiriş ---------- */
+.bildiris{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(14px);
+  background:#2E2410;color:var(--buff);padding:11px 16px;font:500 13px var(--sans);
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:9;max-width:340px;text-align:center}
+.bildiris.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SAYT — ana səhifə, kataloq, təqdimat, qaydalar
+   Ton: arxiv/nəşriyyat. Giriş animasiyası, sürüşərək görünən bölmə,
+   kölgə-yumru künc yığını və ulduz reytinqi bilərəkdən yoxdur.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sayt-ust{border-bottom:1px solid var(--line);background:var(--desk2)}
+.sayt-ust-in{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
+.marka{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--buff);
+  font:600 15px var(--sans);letter-spacing:.01em}
+.marka svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4}
+.marka .afib-h{font:600 9px var(--mono);fill:currentColor;stroke:none;letter-spacing:.04em}
+.sayt-nav{display:flex;gap:20px}
+.sayt-nav a{color:var(--ink3);text-decoration:none;font:500 13.5px var(--sans)}
+.sayt-nav a:hover{color:var(--paper2)}
+
+.bolme-bas{font:600 12px var(--mono);letter-spacing:.16em;color:var(--ink3);
+  margin:0 0 18px;text-transform:uppercase}
+.bolme-l{font:400 13px/1.8 var(--mono);color:var(--ink3);margin:-8px 0 22px;max-width:60ch}
+
+.duyme{display:inline-block;padding:15px 26px;background:var(--buff);color:#241C08;
+  border:0;text-decoration:none;font:600 15px var(--sans);cursor:pointer}
+.duyme:hover{background:#D0B378}
+
+/* ---------- 1. birinci ekran ---------- */
+.hero{border-bottom:1px solid var(--line);overflow:hidden}
+.hero-in{padding:44px 20px 0;display:flex;flex-direction:column;gap:30px}
+.hero-ust{font:500 11px var(--mono);letter-spacing:.2em;color:var(--buff2);margin:0 0 14px}
+.hero-metn h1{font:600 27px/1.28 var(--sans);margin:0 0 16px;max-width:16ch}
+.hero-l{font:400 14.5px/1.85 var(--sans);color:var(--paper2);margin:0 0 24px;max-width:46ch}
+.hero-alt{font:400 12px var(--mono);color:var(--ink3);margin:14px 0 0}
+.hero-fiktiv{font:400 11px/1.7 var(--mono);color:var(--ink3);margin:10px 0 0;
+  padding:0 20px 18px;text-align:center}
+
+/* Vərəq aşağıdan kəsilir: davamı olduğu bilinsin deyə. Maska yox, sadə
+   kəsim — kölgə və solğunlaşma bu məhsulun dili deyil. */
+.hero-sened{max-height:340px;overflow:hidden;position:relative;
+  margin:0 -20px;border-top:1px solid var(--line)}
+.hero-sened .paper{min-height:0;padding-bottom:0}
+
+/* ---------- 2. necə işləyir ---------- */
+.addimlar{padding:44px 0;border-bottom:1px solid var(--line)}
+.addim-list{display:flex;flex-direction:column;gap:34px}
+.addim{display:flex;flex-direction:column;gap:16px}
+.addim-no{font:600 11px var(--mono);letter-spacing:.18em;color:var(--buff2)}
+.addim-metn h3{font:600 17px var(--sans);margin:8px 0 8px}
+.addim-metn p{font:400 13.5px/1.8 var(--sans);color:var(--ink3);margin:0;max-width:44ch}
+.addim-numune{background:var(--desk2);border:1px solid var(--line);padding:18px;
+  display:flex;align-items:center;justify-content:center;min-height:190px;overflow:hidden}
+
+.mini-qab{background:linear-gradient(160deg,#D0B378,var(--buff2));color:#3A2E14;
+  padding:18px 16px;width:100%;max-width:250px}
+.mini-org{font:500 8px var(--mono);letter-spacing:.14em;color:#6B5525;line-height:1.7}
+.mini-kind{font:600 9px var(--mono);letter-spacing:.2em;color:#5C4A1E;margin-top:12px}
+.mini-no{font:600 30px/1 var(--mono);color:#2E2410;margin:6px 0 4px}
+.mini-sub{font:400 9px var(--mono);color:#6B5525}
+
+.mini-telefon{width:200px;border:6px solid #2A2E2A;background:var(--paper);
+  height:230px;overflow:hidden}
+.mini-ekran{transform:scale(.56);transform-origin:top left;width:357px}
+.mini-ekran .paper{min-height:0;padding:14px 12px}
+
+.mini-cavab{width:100%;max-width:280px}
+.mini-cavab .q-t{margin-bottom:10px}
+.mini-cavab .opt{cursor:default}
+
+/* ---------- 3. kataloq ---------- */
+.kataloq{padding:44px 0;border-bottom:1px solid var(--line)}
+.suzgec{display:flex;flex-direction:column;gap:12px;margin:0 0 22px}
+.suzgec-q{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.suzgec-l{font:500 11px var(--mono);letter-spacing:.12em;color:var(--ink3);
+  margin-right:4px;min-width:74px}
+.suzgec-d{background:none;border:1px solid var(--line);color:var(--ink3);
+  padding:7px 13px;font:400 12.5px var(--sans);cursor:pointer}
+.suzgec-d.on{border-color:var(--buff2);color:var(--buff);background:#2C2A1E}
+
+.kataloq-list{display:grid;gap:14px}
+.kataloq-bos{font:400 13px var(--mono);color:var(--ink3);padding:26px 0}
+
+/* Kart = qovluğun üz qabığı. Karton sarısı fon, maşınyazısı ilə nömrə, möhür. */
+.kart{position:relative;display:flex;flex-direction:column;text-decoration:none;
+  color:#3A2E14;padding:20px 18px 16px;overflow:hidden;
+  background:linear-gradient(160deg,#D0B378 0%,var(--buff) 55%,var(--buff2) 100%)}
+.kart:hover{background:linear-gradient(160deg,#D8BC82 0%,#C9AC72 55%,#B2935A 100%)}
+.kart-no{font:600 11px var(--mono);letter-spacing:.16em;color:#5C4A1E}
+.kart-ad{font:600 18px/1.3 var(--sans);color:#2E2410;margin:8px 0 4px;max-width:20ch}
+.kart-yer{font:400 12px var(--mono);color:#6B5525;padding-right:88px}
+.kart-alt{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;padding-right:88px;
+  font:400 11.5px var(--mono);color:#6B5525}
+.kart-qiymet{margin-top:10px;padding-right:88px;font:400 12px var(--mono);color:#5C4A1E}
+.kart-qiymet b{font-weight:600;color:#2E2410}
+
+/* Lent — qovluğun küncünə vurulmuş zolaq. Eni SABİTDİR və 45° ilə küncü
+   simmetrik kəsir: mətnə görə uzanan zolağın başı kartın kənarında kəsilirdi. */
+.kart-lent{position:absolute;top:20px;right:-56px;width:190px;
+  transform:rotate(45deg);background:var(--stamp);color:#F0EAF7;
+  font:600 8.5px var(--mono);letter-spacing:.1em;padding:6px 0;text-align:center}
+.kart-mohur{position:absolute;right:14px;bottom:12px;width:74px;height:74px;
+  border:2px solid var(--stamp);border-radius:50%;color:var(--stamp);opacity:.42;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  transform:rotate(-12deg);pointer-events:none}
+.kart-mohur span{font:600 7px/1.4 var(--mono);letter-spacing:.07em;max-width:56px}
+
+/* ---------- 4. nümunə vərəqlər ---------- */
+.numune{padding:44px 0;border-bottom:1px solid var(--line)}
+.numune-qutu{position:relative}
+.numune-lent{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;padding-bottom:4px}
+.numune-lent::-webkit-scrollbar{display:none}
+.numune-verq{flex:0 0 min(100%,520px);scroll-snap-align:start;
+  background:var(--desk2);border:1px solid var(--line)}
+.numune-ad{font:500 11px var(--mono);letter-spacing:.1em;color:var(--ink3);
+  padding:12px 14px;border-bottom:1px solid var(--line)}
+.numune-verq .paper{max-height:430px;overflow:hidden;min-height:0}
+.numune-ox{display:none}
+.numune-alt{font:400 12.5px var(--mono);color:var(--ink3);margin:16px 0 0}
+
+/* ---------- 5. qiymət ---------- */
+.qiymet{padding:44px 0;border-bottom:1px solid var(--line)}
+.qiymet-m{font:400 14.5px/1.9 var(--sans);color:var(--paper2);margin:0 0 24px;max-width:56ch}
+
+/* ---------- 6. suallar ---------- */
+.suallar{padding:44px 0}
+.sual{border-bottom:1px solid var(--line)}
+.sual summary{cursor:pointer;padding:16px 0;font:500 14.5px var(--sans);color:var(--paper);
+  list-style:none}
+.sual summary::-webkit-details-marker{display:none}
+.sual summary::after{content:"+";float:right;color:var(--buff2);font:400 18px var(--mono)}
+.sual[open] summary::after{content:"–"}
+.sual p{margin:0 0 18px;font:400 13.5px/1.9 var(--sans);color:var(--ink3);max-width:64ch}
+
+/* ---------- footer ---------- */
+.altliq{border-top:1px solid var(--line);background:var(--desk2);padding:30px 0 40px}
+.altliq-s{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 16px}
+.altliq-s a{color:var(--ink3);text-decoration:none;font:500 13px var(--sans)}
+.altliq-s a:hover{color:var(--paper2)}
+.altliq-q{font:400 11.5px/1.8 var(--mono);color:var(--ink3);margin:0;max-width:64ch}
+
+/* ---------- işin təqdimat səhifəsi ---------- */
+.teq{padding:38px 0 50px}
+.teq-in{display:flex;flex-direction:column;gap:36px}
+.teq-no{font:600 11px var(--mono);letter-spacing:.18em;color:var(--buff2);margin:0}
+.teq-ad{font:600 26px/1.3 var(--sans);margin:10px 0 6px}
+.teq-yer{font:400 13px var(--mono);color:var(--ink3);margin:0 0 22px}
+.teq-giris{font:400 14.5px/1.9 var(--sans);color:var(--paper2);margin:0 0 26px;max-width:56ch}
+.teq-fakt{margin:0 0 28px;display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.teq-fakt>div{display:flex;justify-content:space-between;gap:16px;
+  background:var(--desk2);padding:12px 14px}
+.teq-fakt dt{font:400 12.5px var(--mono);color:var(--ink3);margin:0}
+.teq-fakt dd{font:500 12.5px var(--mono);color:var(--paper2);margin:0}
+/* Faiz ən güclü arqumentdir — görünən yerdə saxlanılır. */
+.teq-vurgu{border-left:2px solid var(--buff2)}
+.teq-vurgu dd{color:var(--buff);font-weight:600}
+.teq-qeyd{font:400 11.5px/1.7 var(--mono);color:var(--ink3);margin:16px 0 0}
+.teq-bas{font:600 12px var(--mono);letter-spacing:.16em;color:var(--ink3);margin:0 0 6px}
+.teq-l{font:400 12px/1.7 var(--mono);color:var(--ink3);margin:0 0 16px}
+.teq-siyahi{list-style:none;margin:0;padding:0;counter-reset:v}
+.teq-siyahi li{display:flex;gap:12px;align-items:baseline;padding:11px 0;
+  border-bottom:1px solid var(--line)}
+.teq-v{flex:0 0 52px;font:500 11px var(--mono);color:var(--ink3)}
+.teq-n{flex:1;font:500 13.5px/1.4 var(--sans);color:var(--paper2)}
+.teq-k{font:400 11px var(--mono);color:var(--ink3);text-align:right;flex:0 0 auto}
+
+/* ---------- mətn səhifəsi (qaydalar) ---------- */
+.metn-sehife{padding:38px 0 50px}
+.metn-sehife h1{font:600 24px/1.3 var(--sans);margin:0 0 24px;max-width:24ch}
+.metn-sehife h2{font:600 12px var(--mono);letter-spacing:.14em;color:var(--buff2);
+  margin:30px 0 10px;text-transform:uppercase}
+.metn-sehife p{font:400 14px/1.9 var(--sans);color:var(--paper2);margin:0 0 12px;max-width:66ch}
+.metn-sehife a{color:var(--buff)}
+
+:focus-visible{outline:2px solid var(--buff);outline-offset:2px}
+/* ═══════════════════════════════════════════════════════════════════════
+   ÖLÇÜLƏR
+   Bir dizaynı dartıb uzatmaq deyil, üç ayrı yanaşma.
+
+   720  = kağız 620 + 2×50 boşluq. Portret planşet (768) və landşaft telefon
+          buraya düşür: hər ikisi tək sütun istəyir, sadəcə daha geniş kənarla.
+   1080 = --rail 300 + 24 boşluq + --paper-w 700 + 2×28 kənar.
+          iPad landşaftı (1024) BİLƏRƏKDƏN planşetdə qalır — 1024-də iki panel
+          kağızı boşluqsuz sıxardı, yəni «kağız kağız qalsın» qaydası pozulardı.
+
+   Üçüncü sınıq nöqtəsi yoxdur: 1080-dən yuxarıda sütunlar sabitdir və artıq
+   yer yazı masası olur.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ---------------------------- PLANŞET ---------------------------- */
+@media(min-width:720px){
+  :root{--paper-w:620px;--paper-x:34px}
+
+  /* Telefon çərçivəsi bitir: qovluq bütün pəncərəni tutur. */
+  body{display:block}
+  .frame{max-width:none;max-height:none;height:100dvh;margin:0}
+
+  /* Masaüstündə vərəq bitdiyi yerdə bitir — altında yazı masası qalır. */
+  .paper{min-height:0}
+  #s-doc{padding:24px 0 48px}
+
+  /* Üz qabığı geniş ekrana yayılmır. `.stamp` indiyə qədər `.frame`-ə görə
+     yerləşirdi (o, position:relative-dir) və geniş ekranda sağ kənara uçardı;
+     `.cov` yerləşdirilmiş valideyn olur və möhür ona bağlanır. */
+  #s-cover.on{overflow-y:auto}
+  .cov{position:relative;width:100%;max-width:560px;margin-inline:auto}
+  #s-cover .stamp{top:286px}
+
+  .sayt-en{padding:0 32px}
+  .hero-in{padding:56px 32px 0;flex-direction:row;align-items:flex-start;gap:44px}
+  .hero-metn{flex:1 1 46%;padding-bottom:56px}
+  .hero-metn h1{font-size:32px}
+  .hero-sened{flex:1 1 54%;margin:0;max-height:520px;border:1px solid var(--line);border-bottom:0}
+
+  .addim{flex-direction:row;align-items:center;gap:28px}
+  .addim-metn{flex:1 1 52%}
+  .addim-numune{flex:1 1 48%;min-height:220px}
+  .addim:nth-child(even){flex-direction:row-reverse}
+
+  .kataloq-list{grid-template-columns:1fr 1fr;gap:18px}
+  .suzgec{flex-direction:row;gap:28px;flex-wrap:wrap}
+
+  .numune-verq{flex:0 0 min(100%,560px)}
+  .numune-ox{display:block;position:absolute;top:50%;transform:translateY(-50%);
+    width:40px;height:40px;background:var(--desk2);border:1px solid var(--line);
+    color:var(--buff);font:400 20px var(--mono);cursor:pointer;z-index:2}
+  .numune-ox:disabled{opacity:.3;cursor:default}
+  .numune-ox.sol{left:-8px}
+  .numune-ox.sag{right:-8px}
+
+  .teq-in{flex-direction:row;gap:52px}
+  .teq-sol{flex:1 1 52%}
+  .teq-sag{flex:1 1 48%}
+  .teq-ad{font-size:30px}
+}
+
+/* ---------------------------- KOMPÜTER --------------------------- */
+@media(min-width:1080px){
+  :root{--paper-w:700px;--paper-x:56px;--tab:44px}
+
+  /* --- naviqasiya lenti yuxarıya ---
+     Markup İKİLƏŞDİRİLMİR: `#tabbar` DOM-da `main`-dən sonradır, sadəcə
+     flex sırası dəyişir. Beləliklə `.tab` klik işləyicisi və `data-go`
+     atributları toxunulmaz qalır. */
+  #tabbar{order:1;height:var(--tab);border-top:0;border-bottom:1px solid var(--line);
+    padding-bottom:0}
+  #topbar{order:2}
+  main{order:3}
+  #tabbar.on{justify-content:flex-start;padding:0 24px}
+  .tab{flex:0 0 auto;flex-direction:row;gap:8px;height:var(--tab);padding:0 16px;
+    font:500 13px var(--sans);border-bottom:2px solid transparent}
+  .tab.on{border-bottom-color:var(--buff)}
+  .tab svg{width:16px;height:16px}
+  /* `.badge` mütləqdir və yerləşdirilmiş valideyni yoxdur — statik mövqedən
+     sürüşür, sətir düzülüşündə isə həmin mövqe dəyişir. */
+  .badge{transform:translate(3px,-9px)}
+  .tb-back{display:none}          /* siyahı həmişə açıqdır, geri yer yoxdur */
+  .tb-title{font-size:14px}
+  .bildiris{bottom:28px}          /* 84px lentin aşağıda olmasına bağlı idi */
+
+  /* --- iki panel ---
+     `go()` yenidən yazılmır: o, yalnız birini `.on` edir, cütün o biri
+     yarısını `:has()` açır. Xüsusiyyət (3,1,0) — `.screen{display:none}`
+     və `.screen.on`-dan yüksəkdir, `#s-cover.on`-a isə toxunmur.
+     `:has()` tanımayan brauzerdə telefondakı kimi bir-bir keçid işləyir:
+     geriyə düşmə pozulma deyil, köhnə davranışdır. */
+  main{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);column-gap:24px;padding:0 28px;overflow:hidden}
+  .screen{grid-column:1 / -1;grid-row:1;height:100%;min-height:0;overflow-y:auto}
+  #s-index{grid-column:1;border-right:1px solid var(--line)}
+  #s-doc{grid-column:2}
+  #main:has(#s-index.on) #s-doc,
+  #main:has(#s-doc.on) #s-index{display:block}
+
+  /* Sağ panel boş ikən. `ac()` #docbody-ni dərhal doldurduğu üçün `:empty`
+     ilk seçimdən sonra bir daha uyğun gəlmir; `:not(.on)` isə lentə qayıdanda
+     açıq vərəqin yerində qalmasını təmin edir. */
+  #s-doc:not(.on) #docbody:empty::before{content:"Soldakı siyahıdan bir vərəq seç.";
+    display:block;padding:96px 40px;text-align:center;
+    font:400 13px/1.9 var(--mono);color:var(--ink3)}
+
+  /* Tam enli ekranlar 412px üçün qurulmuş kənarlarla açılıb qalmasın. */
+  #s-suspects{max-width:1040px;margin-inline:auto;width:100%}
+  #s-notes,#s-result{max-width:760px;margin-inline:auto;width:100%}
+  #s-answer{max-width:640px;margin-inline:auto;width:100%}
+  #s-cover{overflow-y:auto}
+
+  /* Açıq vərəq siyahıda işarələnir — siyahı daim göründüyü üçün lazımdır. */
+  .docrow.cari{background:var(--desk2);border-left:2px solid var(--buff)}
+
+  /* --- alibi: bir ortaq vaxt oxu ---
+     Hər kart eyni iki sütun tərifini işlədir, ona görə ikinci sütun hər
+     kartda eyni x-dən başlayır — `subgrid` olmadan ortaq ox. Vaxt nişanları
+     dörd dəfə yox, bir dəfə, ən altda: orada onlar oxun tərifidir. */
+  #sus{max-width:1040px;margin-inline:auto}
+  .sus{display:grid;grid-template-columns:minmax(0,1fr) 440px;column-gap:24px;
+    align-items:start;margin:0;padding-bottom:14px;background:none;border:0;
+    border-bottom:1px solid var(--line)}
+  .sus-h{grid-column:1;grid-row:1;padding:14px 0 6px}
+  .sus-bio{grid-column:1;grid-row:2;padding:0}
+  .bar{grid-column:2;grid-row:1;margin:18px 0 0}
+  .sus-cam{grid-column:2;grid-row:2;padding:0;margin-top:10px}
+  .bar-l{grid-column:2;grid-row:3;display:none;margin:8px 0 0}
+  .sus:last-child{border-bottom:0}
+  .sus:last-child .bar-l{display:flex}
+
+  /* --- sayt --- */
+  .kataloq-list{grid-template-columns:repeat(3,1fr)}
+  .hero-metn h1{font-size:38px}
+  .hero-sened{max-height:600px}
+  .numune-verq{flex:0 0 min(100%,600px)}
+}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

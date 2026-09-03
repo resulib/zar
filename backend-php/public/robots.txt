@@ -1,4 +1,6 @@
 # Dəvətnamələr, kabinet və idarə paneli axtarış sistemlərinə düşməməlidir.
+# İş qovluğu bölməsində isə YALNIZ oyun və sertifikat bağlıdır: ana səhifə
+# və işin təqdimatı satış üzüdür və tapılmalıdır.
 # Dəvətnamə linki yalnız qonağa göndərilir — indekslənməsi məxfilik pozuntusudur.
 User-agent: *
 Disallow: /d/
@@ -7,4 +9,6 @@ Disallow: /kabinet
 Disallow: /admin
 Disallow: /r/
 Disallow: /devetnamelerim
+Disallow: /is/*/qovluq
+Disallow: /is/*/hesabat/
 Allow: /

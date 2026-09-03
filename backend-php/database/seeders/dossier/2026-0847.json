@@ -1,0 +1,900 @@
+{
+  "slug": "2026-0847",
+  "no": "AFİB-2026/0847",
+  "title": "«Sədəf» şadlıq sarayı",
+  "blurb": "Toy gecəsi işıq kəsilir, generator dəhlizində meyit tapılır. 34 vərəq material, dörd dindirilən, bir kodla bağlı metal qutu.",
+  "place": "«Sədəf» şadlıq sarayı, Xırdalan",
+  "period": "Avqust 2026",
+  "intro": "Toy gecəsi saat yarımda rayonda işıq kəsilir. Kamera qeydi bir saat susur, generator işə düşür, səhər saat 07:40-da texniki dəhlizdə şadlıq sarayının qonağı — 58 yaşlı kişi — meyit halında tapılır. Masada sayılan qırx bir min manat yerindədir, cibindəki borc qəbzi toxunulmayıb. Dörd nəfər dindirilir və hər dördünün gecəyə dair öz izahı var. Materialların içində bir ziddiyyət var: iki sənəd eyni saat haqqında fərqli şey deyir. Onu tapmaq sənin işindir.",
+  "badge": "en-cox",
+  "showcase": true,
+  "difficulty": "orta",
+  "readMinutes": 35,
+  "priceCredits": 0,
+  "sort": 1,
+  "status": "published",
+  "cover": {
+    "org": [
+      "AZƏRBAYCAN FİKTİV İSTİNTAQ BÜROSU",
+      "AFİB · İSTİNTAQ BÖLMƏSİ",
+      "OYUN MATERİALLARI ARXİVİ"
+    ],
+    "kind": "CİNAYƏT İŞİ",
+    "opened": "Başlanıb: 16.08.2026, saat 08:05",
+    "stamp": [
+      "AFİB",
+      "FİKTİV",
+      "OYUN",
+      "MATERİALI"
+    ],
+    "assign": [
+      "İş üzrə istintaq aparmaq",
+      "**AFİB müstəntiqi**"
+    ],
+    "paperHead": [
+      "AZƏRBAYCAN FİKTİV İSTİNTAQ BÜROSU (AFİB)",
+      "İSTİNTAQ BÖLMƏSİ · İŞ № AFİB-2026/0847"
+    ],
+    "closeStamp": [
+      "İŞ",
+      "BAĞLANDI",
+      "AFİB-2026/0847"
+    ]
+  },
+  "meta": [
+    [
+      "Hadisə",
+      "Qəsdən adam öldürmə"
+    ],
+    [
+      "Yer",
+      "«Sədəf» şadlıq sarayı, Xırdalan"
+    ],
+    [
+      "Tarix",
+      "16.08.2026, gecə"
+    ],
+    [
+      "Zərərçəkən",
+      "Mehdiyev Tofiq Zahid oğlu, 58 yaş"
+    ],
+    [
+      "Vərəq sayı",
+      "34"
+    ]
+  ],
+  "suspects": [
+    {
+      "init": "SH",
+      "name": "Səbinə Hüseynova",
+      "role": "38 yaş · zərərçəkənin qardaşı qızı",
+      "bio": "Novxanıdakı 12 sot torpaq üzrə yeddi ildir pay tələb edir. Toy gecəsi masada eşidib ki, sahə bəyin adına rəsmiləşib.",
+      "bars": [
+        [
+          0,
+          42
+        ]
+      ],
+      "camera": "23:51-də ön qapıdan çıxıb"
+    },
+    {
+      "init": "EQ",
+      "name": "Elxan Qasımov",
+      "role": "46 yaş · şadlıq sarayının sahibi",
+      "bio": "İki il əvvəl 25 000 manat borc alıb, qaytarmayıb. Həmin gecə hesablaşmada zərərçəkən pulu tələb edib.",
+      "bars": [
+        [
+          0,
+          20
+        ],
+        [
+          52,
+          100
+        ]
+      ],
+      "camera": "00:35–01:20 mətbəxdə, üç işçi ilə"
+    },
+    {
+      "init": "KN",
+      "name": "Kamran Nəsirov",
+      "role": "31 yaş · zərərçəkənin bacısı oğlu",
+      "bio": "12 000 manat borcu var. Zərərçəkən mikrofonla, iki yüz nəfərin qarşısında borcu xatırladıb.",
+      "bars": [
+        [
+          0,
+          12
+        ]
+      ],
+      "camera": "00:25-də sürücü ilə evə aparılıb"
+    },
+    {
+      "init": "RN",
+      "name": "Ramil Nəbiyev",
+      "role": "29 yaş · toy operatoru",
+      "bio": "Kamerası sındırılıb, ziyanın ödənilməsini tələb edir. Görüşü özü təklif edib, meyitin tapıldığı dəhlizdə olub.",
+      "bars": [
+        [
+          0,
+          32
+        ]
+      ],
+      "camera": "00:37-də binadan çıxıb"
+    }
+  ],
+  "chronology": [
+    [
+      "23:30",
+      "Musiqi dayanır, qonaqlar dağılışır"
+    ],
+    [
+      "23:51",
+      "S.Hüseynova ön qapıdan çıxır (kamera)"
+    ],
+    [
+      "23:40–00:15",
+      "Yuxarı otaqda nəmər sayılır"
+    ],
+    [
+      "00:12",
+      "R.Nəbiyev görüş üçün mesaj yazır"
+    ],
+    [
+      "00:25",
+      "K.Nəsirov evə aparılır"
+    ],
+    [
+      "00:25–00:35",
+      "Dəhlizdə mübahisə, 300 manat verilir"
+    ],
+    [
+      "00:30",
+      "Rayonda işıq kəsilir"
+    ],
+    [
+      "00:32",
+      "Generator işə düşür"
+    ],
+    [
+      "00:37",
+      "R.Nəbiyev binadan çıxır (kamera)"
+    ],
+    [
+      "00:44",
+      "Zərərçəkən oğluna zəng edir, 40 saniyə"
+    ],
+    [
+      "01:15",
+      "Cərəyan bərpa olunur, kamera qeydi davam edir"
+    ],
+    [
+      "07:40",
+      "Meyit generator dəhlizində tapılır"
+    ]
+  ],
+  "axis": [
+    "23:30",
+    "00:30",
+    "01:30"
+  ],
+  "solution": [
+    "Pul yerində qalıb, borc qəbzi cibdə toxunulmamışdır. Deməli motiv pul deyil. Bəyin ifadəsinə görə 00:15-də cibə qoyulan qovluq isə meyitin üstündən çıxmayıb — sənəd götürülüb.",
+    "00:44-dəki zəng göstərir ki, zərərçəkən o vaxt sağdır. Bu, 00:25-də aparılan Nəsirovu və 00:37-də çıxan Nəbiyevi kənarlaşdırır. Qasımov 00:35–01:20 arasında üç işçi ilə mətbəxdədir.",
+    "Hüseynova 23:51-də çıxıb və qayıtmayıb — kameraya görə. Ancaq öz izahatında çıxanda generatorun səsini eşitdiyini yazır. Generator 00:32-də işə düşüb. Deməli o, ən azı 00:32-yə qədər binada olub və kameranın görmədiyi arxa qapıdan çıxıb. Qırılan daban ucluğu da elə orada tapılıb.",
+    "Ən acısı: apardığı qovluq surət idi. Əsl sənəd maşındakı qutuda qalmışdı, içindəki qeyddə isə payının saxlandığı yazılmışdı."
+  ],
+  "questions": [
+    {
+      "prompt": "Ölüm kimin əlindən olub?",
+      "options": [
+        "Səbinə Hüseynova",
+        "Elxan Qasımov",
+        "Kamran Nəsirov",
+        "Ramil Nəbiyev"
+      ],
+      "correct": 0
+    },
+    {
+      "prompt": "Motiv nə olub?",
+      "options": [
+        "Nəmər pulu",
+        "Novxanıdakı torpaq sahəsi",
+        "12 000 manatlıq borc",
+        "Sındırılmış kameranın ziyanı"
+      ],
+      "correct": 1
+    },
+    {
+      "prompt": "Hansı iki sənədin ziddiyyəti bunu sübut edir?",
+      "options": [
+        "Videomüşahidə çıxarışı və taksi sifarişi",
+        "Generator jurnalı və S.Hüseynovanın izahatı",
+        "Zəng detallaşdırması və nəmər vərəqəsi",
+        "Ekspert rəyi və hadisə yeri sxemi"
+      ],
+      "correct": 1
+    }
+  ],
+  "documents": [
+    {
+      "page": "1",
+      "name": "İstintaq qrupunun təyin edilməsi haqqında qərar",
+      "kind": "Qərar",
+      "type": "qerar",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "QƏRAR",
+        "subtitle": "istintaq qrupunun təyin edilməsi haqqında",
+        "body": [
+          "Xırdalan şəhəri, Sülh küçəsi 14 ünvanında yerləşən «Sədəf» şadlıq sarayının texniki dəhlizində Mehdiyev Tofiq Zahid oğlunun meyitinin aşkar edilməsi barədə 16.08.2026-cı il tarixdə saat 07:52-də məlumat daxil olmuşdur.",
+          "Baxış zamanı zərərçəkənin baş nahiyəsində küt alətlə vurulmadan əmələ gələn zədə müəyyən edilmiş, hadisə yerindən qan izləri olan mərmər lövhə götürülmüşdür.",
+          "Yuxarıda göstərilənləri nəzərə alaraq, iş üzrə istintaqın **{{mustentiq}}** tərəfindən aparılması qərara alınır."
+        ],
+        "sign": {
+          "who": "R.Səfərov",
+          "post": "AFİB bölmə rəisi",
+          "date": "16.08.2026"
+        },
+        "note": "[[Qeyd:]] ilkin dindirmələr saat 09:00-dan başlanılsın. Qonaq siyahısı — 214 nəfər, tam dindirmə mümkün deyil."
+      },
+      "sample": false
+    },
+    {
+      "page": "2–4",
+      "name": "Hadisə yerinə baxış protokolu",
+      "kind": "Protokol",
+      "type": "protokol",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "HADİSƏ YERİNƏ BAXIŞ PROTOKOLU",
+        "fields": [
+          [
+            "Baxış başlandı",
+            "08:20"
+          ],
+          [
+            "Baxış bitdi",
+            "10:05"
+          ],
+          [
+            "Hava",
+            "açıq, +29°C"
+          ],
+          [
+            "İştirak edib",
+            "2 hal şahidi"
+          ]
+        ],
+        "body": [
+          "Baxış «Sədəf» şadlıq sarayının mətbəx blokunun arxasındakı texniki dəhlizdə aparılmışdır. Dəhliz eni 1 m 40 sm, uzunluğu 9 m olub, bir tərəfdən mətbəxə, digər tərəfdən generator otağına açılır. Süni işıqlandırma bir divar çırağı ilə təmin olunur, çıraq baxış anında yanır.",
+          "Meyit dəhlizin generator otağına yaxın hissəsində, üzü aşağı, başı generator otağına tərəf vəziyyətdə aşkar edilmişdir. Meyitin altında və başın sağ tərəfində qan ləkəsi var, ləkənin ölçüsü 42×30 sm-dir. Meyitin ayaq tərəfində, divarın dibində üzəri qan izləri olan mərmər lövhə yerləşir.",
+          "Meyitin sağ ayağının yanında qara rəngli çanta durur. Çanta bağlıdır, açıldıqda içərisində müxtəlif nominallı pul nişanları müəyyən edilmişdir. Sayılma nəticəsində məbləğ 41 300 manat təşkil etmişdir.",
+          "Zərərçəkənin pencəyinin sağ iç cibindən üzərində «Nəsirov K.V. — 12 000 (on iki min) manat» yazısı olan əl ilə yazılmış qəbz götürülmüşdür. Sol iç cib boşdur. Cibin ağzı yırtılmışdır, yırtıq təzədir.",
+          "Mətbəx blokunun arxa qapısı baxış anında bağlı, lakin kilidlənməmişdir. Qapının kilid dilçəyi lentlə bərkidilmişdir. Mətbəx işçisi Ə.Musayevanın izahatına görə qapı isti mövsümdə bu üsulla daim açıq saxlanılır.",
+          "Arxa qapıdan çıxışda, beton döşəmənin üzərində qadın ayaqqabısının dabanına məxsus metal ucluq aşkar edilmiş və götürülmüşdür."
+        ],
+        "sign": {
+          "who": "N.Abbasov",
+          "post": "Baxışı aparan, AFİB müstəntiqi",
+          "date": "16.08.2026"
+        }
+      },
+      "sample": true
+    },
+    {
+      "page": "5",
+      "name": "Hadisə yerinin sxemi",
+      "kind": "Sxem",
+      "type": "sxem",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "HADİSƏ YERİNİN SXEMİ",
+        "subtitle": "miqyassız, ölçülər metrlədir",
+        "svg": "<svg viewBox=\"0 0 340 420\" class=\"sxem\">\n<g stroke=\"#26221D\" fill=\"none\" stroke-width=\"1.6\">\n<rect x=\"24\" y=\"24\" width=\"180\" height=\"140\"/>\n<rect x=\"24\" y=\"164\" width=\"180\" height=\"80\"/>\n<rect x=\"204\" y=\"164\" width=\"52\" height=\"200\"/>\n<rect x=\"204\" y=\"364\" width=\"52\" height=\"32\"/>\n<rect x=\"24\" y=\"244\" width=\"180\" height=\"60\"/>\n</g>\n<g fill=\"#26221D\" font-size=\"10.5\">\n<text x=\"34\" y=\"44\">SALON (əsas)</text>\n<text x=\"34\" y=\"184\">MƏTBƏX</text>\n<text x=\"34\" y=\"264\">ANBAR</text>\n<text x=\"210\" y=\"184\" transform=\"rotate(90 210 184)\">TEXNİKİ DƏHLİZ</text>\n<text x=\"210\" y=\"384\">GEN.</text>\n</g>\n<g stroke=\"#26221D\" stroke-width=\"3.2\">\n<line x1=\"104\" y1=\"24\" x2=\"140\" y2=\"24\"/>\n<line x1=\"204\" y1=\"196\" x2=\"204\" y2=\"222\"/>\n<line x1=\"256\" y1=\"300\" x2=\"256\" y2=\"326\"/>\n</g>\n<g font-size=\"9.5\" fill=\"#5D564A\">\n<text x=\"108\" y=\"18\">ön qapı</text>\n<text x=\"196\" y=\"214\" text-anchor=\"end\">mətbəx→dəhliz</text>\n<text x=\"262\" y=\"316\">arxa çıxış</text>\n</g>\n<g fill=\"#A8382C\">\n<circle cx=\"230\" cy=\"330\" r=\"9\"/><text x=\"226\" y=\"334\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">1</text>\n<circle cx=\"230\" cy=\"352\" r=\"9\"/><text x=\"226\" y=\"356\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">2</text>\n<circle cx=\"230\" cy=\"312\" r=\"9\"/><text x=\"226\" y=\"316\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">3</text>\n<circle cx=\"278\" cy=\"330\" r=\"9\"/><text x=\"274\" y=\"334\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">4</text>\n</g>\n<g stroke=\"#24417E\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\" fill=\"none\">\n<path d=\"M122 24 L122 8 L300 8 L300 250 L262 250 L262 300\"/>\n</g>\n<text x=\"298\" y=\"19\" fill=\"#24417E\" font-size=\"9.5\" text-anchor=\"end\">ön qapıdan çıxış, 23:51</text>\n</svg>",
+        "note": "1 — meyitin vəziyyəti · 2 — mərmər lövhə · 3 — pul çantası · 4 — dabanın metal ucluğu.\n[[Əl ilə:]] arxa qapı kameranın görmə bucağından kənardadır."
+      },
+      "sample": true
+    },
+    {
+      "page": "6–7",
+      "name": "Meyitin xarici müayinə aktı",
+      "kind": "Ekspert rəyi",
+      "type": "ekspert",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "MEYİTİN XARİCİ MÜAYİNƏ AKTI",
+        "fields": [
+          [
+            "Müayinə",
+            "16.08.2026, 09:10"
+          ],
+          [
+            "Yaş",
+            "58"
+          ],
+          [
+            "Boy / çəki",
+            "176 sm / 94 kq"
+          ]
+        ],
+        "body": [
+          "Baş nahiyəsinin sağ təpə hissəsində ölçüsü 7×4 sm olan, kənarları qeyri-hamar, dərinliyə gedən yara aşkar olunur. Yaranın forması küt, düzbucaqlı kənarı olan ağır cismin bir dəfə vurulmasına uyğundur. Təkrar zərbənin izi müəyyən edilməmişdir.",
+          "Zərbənin istiqaməti yuxarıdan aşağıya və arxadan qabağadır. Zərbə vuran şəxsin zərərçəkəndən boyca alçaq olması ehtimalı yüksəkdir.",
+          "Əllərin barmaqlarında və biləklərində müdafiə zədələri yoxdur. Bu, zərbənin gözlənilmədən vurulduğunu göstərir.",
+          "Ölümün baş vermə vaxtı meyit ləkələrinin və bədən temperaturunun vəziyyətinə görə müayinədən 8–10 saat əvvələ, yəni **23:10–01:10** aralığına aid edilir. Daha dəqiq vaxt laboratoriya nəticələrindən sonra göstəriləcək.",
+          "Qanda etil spirtinin qatılığı 1,4 promil təşkil edir — orta dərəcəli sərxoşluğa uyğundur."
+        ],
+        "sign": {
+          "who": "F.Rzayeva",
+          "post": "AFİB tibbi eksperti",
+          "date": "16.08.2026"
+        }
+      },
+      "sample": false
+    },
+    {
+      "page": "8–10",
+      "name": "Maddi sübutların siyahısı",
+      "kind": "Siyahı",
+      "type": "subutlar",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "MADDİ SÜBUTLARIN SİYAHISI",
+        "items": [
+          {
+            "t": "Mərmər xatirə lövhəsi",
+            "d": "Ölçü 24×16×3 sm, çəki 2,1 kq. Üzərində «Nicat və Aysel — 15.08.2026» yazısı. Bir küncündə qan izi. Səthdə istifadəyə yararlı barmaq izi aşkar edilməmişdir — lövhə toxunulmadan əvvəl salfetlə örtülmüş ola bilər. Toy masasının üstündən götürülmüşdür."
+          },
+          {
+            "t": "Qara çanta və pul nişanları",
+            "d": "41 300 manat. Çanta bağlı vəziyyətdə, meyitin ayağının yanında. Kənar şəxsin toxunma izi yoxdur."
+          },
+          {
+            "t": "Əl yazısı ilə qəbz",
+            "d": "«Nəsirov K.V. — 12 000 manat». Zərərçəkənin sağ iç cibindən götürülüb, zədəsizdir."
+          },
+          {
+            "t": "Ayaqqabı dabanının metal ucluğu",
+            "d": "Qadın ayaqqabısına məxsusdur, diametri 9 mm. Arxa çıxışın qarşısındakı betonun üzərində. Yeni qırılmışdır, kənarları oksidləşməyib."
+          },
+          {
+            "t": "Zərərçəkənin pencəyi",
+            "d": "Sol iç cibin ağzı təzə yırtılmışdır. Cib boşdur. Astarda kağız qırıntısı qalıb — sənəd blankına məxsusdur."
+          },
+          {
+            "t": "Kod kilidli metal qutu",
+            "d": "Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 23]]."
+          }
+        ]
+      },
+      "sample": true
+    },
+    {
+      "page": "11",
+      "name": "Videomüşahidə qeydlərindən çıxarış",
+      "kind": "Arayış",
+      "type": "cedvel",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "VİDEOMÜŞAHİDƏ QEYDLƏRİNDƏN ÇIXARIŞ",
+        "subtitle": "kamera № 2 — ön giriş · kamera № 5 — avtomobil dayanacağı",
+        "table": {
+          "head": [
+            "Vaxt",
+            "Kam.",
+            "Qeyd"
+          ],
+          "rows": [
+            [
+              "23:44",
+              "2",
+              "Qonaqlar qrup halında çıxır"
+            ],
+            [
+              "23:51",
+              "2",
+              "S.Hüseynova tək çıxır, sağa dönür"
+            ],
+            [
+              "00:25",
+              "5",
+              "K.Nəsirov sürücü tərəfindən avtomobilə mindirilir"
+            ],
+            [
+              "00:30",
+              "—",
+              "[[Qeyd kəsilir]]"
+            ],
+            [
+              "00:30\n01:15",
+              "—",
+              "**Qeyd yoxdur.** Qeydedici cihaz generator xəttinə qoşulmayıb, cərəyan kəsildikdə işləmir."
+            ],
+            [
+              "01:15",
+              "2,5",
+              "Qeyd bərpa olunur"
+            ],
+            [
+              "01:15–07:40",
+              "2",
+              "Giriş-çıxış qeydə alınmayıb"
+            ]
+          ],
+          "hi": [
+            4
+          ]
+        },
+        "note": "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 21.]]"
+      },
+      "sample": false
+    },
+    {
+      "page": "12",
+      "name": "Generator qurğusunun istismar jurnalı",
+      "kind": "Sənəd",
+      "type": "cedvel",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "GENERATOR QURĞUSUNUN İSTİSMAR JURNALI",
+        "subtitle": "«Sədəf» şadlıq sarayı · avqust 2026",
+        "table": {
+          "head": [
+            "Tarix",
+            "İşə düşdü",
+            "Söndü",
+            "Yanacaq"
+          ],
+          "rows": [
+            [
+              "09.08",
+              "21:14",
+              "21:50",
+              "4 l"
+            ],
+            [
+              "13.08",
+              "19:02",
+              "19:40",
+              "4 l"
+            ],
+            [
+              "**16.08**",
+              "**00:32**",
+              "**01:40**",
+              "9 l"
+            ]
+          ],
+          "hi": [
+            2
+          ]
+        },
+        "body": [
+          "Qurğu avtomatik rejimdə işləyir, şəbəkə cərəyanı kəsildikdən 90–120 saniyə sonra qoşulur. Qidalandırdığı xətlər: mətbəx soyuducuları, salon işıqlandırması, su nasosu.",
+          "Qurğunun səsi mətbəx blokunda və binanın arxa hissəsində aydın eşidilir. Salonun ön hissəsində səs səviyyəsi aşağıdır."
+        ],
+        "sign": {
+          "who": "E.Qasımov",
+          "post": "Obyektin sahibi",
+          "date": "16.08.2026"
+        }
+      },
+      "sample": false,
+      "key": true
+    },
+    {
+      "page": "13",
+      "name": "Telefon danışıqlarının detallaşdırılması",
+      "kind": "Arayış",
+      "type": "zengler",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "TELEFON DANIŞIQLARININ DETALLAŞDIRILMASI",
+        "subtitle": "abunəçi: Mehdiyev T.Z. · 15–16 avqust",
+        "calls": [
+          {
+            "t": "22:18",
+            "line": "Çıxan — «Qardaş Elxan»",
+            "sub": "2 dəq 40 san"
+          },
+          {
+            "t": "23:58",
+            "line": "Gələn — nömrə adsız",
+            "sub": "cavabsız"
+          },
+          {
+            "t": "00:12",
+            "line": "Mesaj — «Operator Ramil»",
+            "sub": "gəldi"
+          },
+          {
+            "t": "00:44",
+            "line": "Çıxan — «Nicat oğlum»",
+            "sub": "40 saniyə · son danışıq",
+            "hi": true
+          },
+          {
+            "t": "01:20",
+            "line": "Gələn — «Nicat oğlum»",
+            "sub": "cavabsız"
+          },
+          {
+            "t": "02:05",
+            "line": "Gələn — «Həyat yoldaşı»",
+            "sub": "cavabsız"
+          }
+        ],
+        "note": "N.Mehdiyevin izahatından: atası 00:44-də zəng edib demişdir ki, sənədləri sabah gətirəcək, hazırda maşına qoyub."
+      },
+      "sample": false
+    },
+    {
+      "page": "14–15",
+      "name": "Yazışma çıxarışı: R.Nəbiyev — T.Mehdiyev",
+      "kind": "Ekran görüntüsü",
+      "type": "yazisma",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "YAZIŞMA ÇIXARIŞI",
+        "subtitle": "R.Nəbiyevin telefonundan · «Tofiq müəllim» adlı söhbət",
+        "chat": {
+          "name": "Tofiq müəllim",
+          "seen": "son görülmə 00:46",
+          "days": [
+            {
+              "label": "16 avqust",
+              "messages": [
+                {
+                  "yon": "cixan",
+                  "text": "Tofiq müəllim, kamera dağıldı. Obyektiv ayrıca 800 manatdır.",
+                  "time": "00:12"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Toyu çəkməyimin haqqını demirəm, onu bağışlayıram. Amma kamera mənim çörəyimdir.",
+                  "time": "00:12"
+                },
+                {
+                  "yon": "gelen",
+                  "text": "Səhər danışarıq",
+                  "time": "00:14"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Səhər getmiş olacam. 5 dəqiqə. Arxa dəhlizdəyəm, mətbəxin yanı.",
+                  "time": "00:19"
+                },
+                {
+                  "yon": "gelen",
+                  "text": "Gəlirəm",
+                  "time": "00:23"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Sağ olun. Halallıq verirəm, kin saxlamıram.",
+                  "time": "00:36"
+                }
+              ]
+            }
+          ]
+        },
+        "cap": "Şəkil 1 — ekran görüntüsü, 2 vərəqdə",
+        "note": "[[Diqqət:]] son mesaj 00:36-dır. Söhbətdə silinmiş mesaj yoxdur."
+      },
+      "sample": true
+    },
+    {
+      "page": "16",
+      "name": "Yazışma çıxarışı: S.Hüseynova — həyat yoldaşı",
+      "kind": "Ekran görüntüsü",
+      "type": "yazisma",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "YAZIŞMA ÇIXARIŞI",
+        "subtitle": "S.Hüseynovanın telefonundan · «Ev» adlı söhbət",
+        "chat": {
+          "name": "Ev",
+          "seen": "onlayn",
+          "days": [
+            {
+              "label": "16 avqust",
+              "messages": [
+                {
+                  "yon": "gelen",
+                  "text": "Uşaqlar yatdı. Nə vaxt gəlirsən",
+                  "time": "23:20"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Bilmirəm",
+                  "time": "23:47"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Novxananı Nicatın adına keçirib. Masada dedi. Hamının yanında.",
+                  "time": "23:49"
+                },
+                {
+                  "yon": "gelen",
+                  "text": "Səbinə",
+                  "time": "23:52"
+                },
+                {
+                  "yon": "gelen",
+                  "text": "Səbinə cavab yaz",
+                  "time": "00:08"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "",
+                  "time": "00:41",
+                  "kind": "silinmis"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Gəlirəm",
+                  "time": "01:12"
+                },
+                {
+                  "yon": "gelen",
+                  "text": "Taksi çağırım?",
+                  "time": "01:12"
+                },
+                {
+                  "yon": "cixan",
+                  "text": "Çağırdım artıq",
+                  "time": "01:13"
+                }
+              ]
+            }
+          ]
+        },
+        "cap": "Şəkil 1 — ekran görüntüsü",
+        "note": "Taksi xidmətindən alınan arayışa görə sifariş 01:12-də «Sülh küçəsi 16» ünvanından, yəni obyektdən bir bina aşağıdan verilmişdir."
+      },
+      "sample": false
+    },
+    {
+      "page": "17–18",
+      "name": "İzahat: Hüseynova Səbinə Zahid qızı",
+      "kind": "İzahat",
+      "type": "protokol",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "İZAHAT",
+        "fields": [
+          [
+            "Kimdən",
+            "Hüseynova Səbinə Zahid qızı"
+          ],
+          [
+            "Doğum ili",
+            "1988"
+          ],
+          [
+            "Qohumluq",
+            "zərərçəkənin qardaşı qızı"
+          ]
+        ],
+        "body": [
+          "Toya ailəliklə dəvətli idik, amma ərim işdə olduğuna görə mən tək getdim. Axşam saat səkkizdə gəlmişəm. Masada bacım və uşaqları ilə oturmuşdum.",
+          "Atam 2019-cu ildə vəfat edəndən sonra Novxanıdakı sahə üzrə əmimlə danışıqlarımız vardı. Hər dəfə «sənədləri düzəldəcəyəm» deyirdi. Toy günü masada bəyə hədiyyə kimi həmin sahəni verdiyini elan etdi. Mən buna bir söz demədim, çünki toy günü idi. Ayıbdır.",
+          "Musiqi qurtarandan sonra durub çıxdım. Əmimlə o gecə heç danışmadım, salamlaşmaqdan başqa.",
+          "Çıxanda salonun işıqları artıq sönmüşdü, ancaq mətbəx tərəfdən generatorun səsi gəlirdi, o səsdən başım ağrıyırdı. Ayaqqabımın dabanı sınmışdı, ona görə maşına qədər asta getdim və küçənin aşağısından taksi çağırdım. Evə təxminən bir yarımda çatdım.",
+          "Əmimin ölümündən səhər saat doqquzda bacımın zəngi ilə xəbər tutdum."
+        ],
+        "sign": {
+          "who": "S.Hüseynova",
+          "post": "İzahatı verən",
+          "date": "16.08.2026"
+        },
+        "note": "[[Müstəntiqin qeydi:]] izahat 16.08.2026, saat 11:20-də alınıb. Ayaqqabı təqdim edilməyib."
+      },
+      "sample": false,
+      "key": true
+    },
+    {
+      "page": "19",
+      "name": "İzahat: Qasımov Elxan Rəşid oğlu",
+      "kind": "İzahat",
+      "type": "protokol",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "İZAHAT",
+        "fields": [
+          [
+            "Kimdən",
+            "Qasımov Elxan Rəşid oğlu"
+          ],
+          [
+            "Vəzifə",
+            "obyektin sahibi"
+          ]
+        ],
+        "body": [
+          "Tofiq mənim on beş illik dostumdur. Borc məsələsi var idi, düzdür, 25 min. Amma o pulu mən qaçırmırdım, obyektin ikinci mərtəbəsi tikilib qurtaranda qaytaracaqdım və bunu ona demişəm.",
+          "Həmin gecə hesablaşdıq. Toyun haqqını sildim, borcun içindən getsin dedim. O razılaşmadı, «nağd istəyirəm» dedi. Səsimizi qaldırmadıq.",
+          "Sonra işıq getdi. Generator qoşulandan sonra mətbəxə düşdüm, çünki soyuducularda ət qalmışdı. Saat təxminən yarım-otuz beş. Üç işçi ilə birlikdə inventarizasiya etdik, bir yarıma qədər ordaydıq, siyahını da imzalamışıq.",
+          "Kameranın yazmamasına gəlincə — qeydedici adi rozetkadadır, generator xəttinə salınmayıb. Bunu neçə dəfə düzəltmək istəmişəm, əlim çatmayıb."
+        ],
+        "sign": {
+          "who": "E.Qasımov",
+          "post": "İzahatı verən",
+          "date": "16.08.2026"
+        }
+      },
+      "sample": false
+    },
+    {
+      "page": "20",
+      "name": "İzahat: Nəsirov Kamran Vaqif oğlu",
+      "kind": "İzahat",
+      "type": "protokol",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "İZAHAT",
+        "fields": [
+          [
+            "Kimdən",
+            "Nəsirov Kamran Vaqif oğlu"
+          ],
+          [
+            "Qohumluq",
+            "zərərçəkənin bacısı oğlu"
+          ]
+        ],
+        "body": [
+          "Bəli, borcum var idi. Bəli, mikrofonla dedi. «Kamran, maşını sürürsən, dayının pulunu yadına salmırsan» dedi, camaat güldü. Mən də güldüm, başqa nə edəydim.",
+          "Ondan sonra çox içdim. Necə çıxdığımı yadıma sala bilmirəm. Səhər Fərid dedi ki, məni özü aparıb, qapıda düşürüb.",
+          "Dayımla aramızda pul məsələsindən başqa heç nə yox idi. O pulu qaytaracaqdım, mənim işim var, maşınım var."
+        ],
+        "sign": {
+          "who": "K.Nəsirov",
+          "post": "İzahatı verən",
+          "date": "16.08.2026"
+        },
+        "note": "Sürücü F.Həsənovun izahatı ilə təsdiqlənir: 00:25-də mindirib, 00:58-də Binəqədidə evinin qarşısında düşürüb."
+      },
+      "sample": false
+    },
+    {
+      "page": "21",
+      "name": "İzahat: Nəbiyev Ramil Əli oğlu",
+      "kind": "İzahat",
+      "type": "protokol",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "İZAHAT",
+        "fields": [
+          [
+            "Kimdən",
+            "Nəbiyev Ramil Əli oğlu"
+          ],
+          [
+            "Peşə",
+            "video operator"
+          ]
+        ],
+        "body": [
+          "Toyu çəkirdim. Gecənin ortasında Tofiq müəllim yanıma gəldi, dedi çəkmə. Mən dedim iş belədir. O da kameranı əlimdən alıb yerə çırpdı. Camaatın yanında.",
+          "Sonra ona yazdım, dedim gəlin danışaq. Arxa dəhlizdə görüşdük. Əvvəl səsini qaldırdı, sonra sakitləşdi, cibindən üç yüz manat çıxarıb verdi. «Qalanını sonra» dedi. Mən də «sağ olun» dedim və çıxdım.",
+          "Çıxanda saat yarımı keçmişdi. Maşınım küçədə idi, qonşu toyxananın kamerası məni görüb.",
+          "Onu sağ qoyub getmişəm. Nə üçün öldürüm, pulumun bir hissəsini almışdım."
+        ],
+        "sign": {
+          "who": "R.Nəbiyev",
+          "post": "İzahatı verən",
+          "date": "16.08.2026"
+        }
+      },
+      "sample": false
+    },
+    {
+      "page": "22",
+      "name": "Nəmərin sayılması üzrə vərəqə",
+      "kind": "Sənəd",
+      "type": "cedvel",
+      "locked": false,
+      "code": "",
+      "hint": "",
+      "content": {
+        "title": "NƏMƏRİN SAYILMASI ÜZRƏ VƏRƏQƏ",
+        "subtitle": "yuxarı otaq · 23:40–00:15",
+        "table": {
+          "head": [
+            "Nominal",
+            "Say",
+            "Məbləğ"
+          ],
+          "rows": [
+            [
+              "100 AZN",
+              "212",
+              "21 200"
+            ],
+            [
+              "50 AZN",
+              "284",
+              "14 200"
+            ],
+            [
+              "20 AZN",
+              "295",
+              "5 900"
+            ]
+          ],
+          "foot": [
+            "Cəmi",
+            "",
+            "41 300"
+          ]
+        },
+        "body": [
+          "Sayımda iştirak edənlər: T.Mehdiyev, E.Qasımov, K.Nəsirov, N.Mehdiyev (bəy).",
+          "Bəy N.Mehdiyevin izahatından: «Sayım qurtarandan sonra atam pulu çantaya yığdı. Sonra cibindən bir qovluq çıxarıb mənə göstərdi, dedi Novxananın sənədidir, sabah rəsmi verəcəyəm. Qovluğu pencəyinin iç cibinə qoydu.»"
+        ],
+        "note": "[[Müstəntiqin qeydi:]] 00:14-də çəkilmiş şəkildə masanın üstündə mərmər xatirə lövhəsi görünür. Səhər lövhə masada yoxdur."
+      },
+      "sample": false
+    },
+    {
+      "page": "23",
+      "name": "Avtomobildən götürülmüş metal qutu",
+      "kind": "Kodla bağlıdır",
+      "type": "kilid",
+      "locked": true,
+      "code": "0903",
+      "hint": "Həyat yoldaşı G.Mehdiyevanın izahatından: «Bütün şifrələrində Novxananı aldığı günü yazırdı. Nə telefonun kodu, nə seyfin — hamısı o tarixdir.»",
+      "content": {
+        "lockTitle": "METAL QUTU",
+        "lockSub": "Zərərçəkənin avtomobilinin baqajından götürülüb.\nDördrəqəmli kodla bağlanır.",
+        "title": "QUTUNUN İÇİNDƏKİLƏRİN SİYAHISI",
+        "subtitle": "açılma tarixi: 17.08.2026",
+        "items": [
+          {
+            "t": "Notarial qaydada təsdiq edilmiş sənəd",
+            "d": "12.08.2026 tarixli. Novxanı qəsəbəsindəki 12 sot torpaq sahəsinin Mehdiyev Nicat Tofiq oğlunun adına keçirilməsi barədə. **Əsl nüsxə.**"
+          },
+          {
+            "t": "2011-ci il alqı-satqı müqaviləsi",
+            "d": "09.03.2011 tarixli. Sahənin ilkin alınması barədə. Alıcı: Mehdiyev Tofiq Zahid oğlu."
+          },
+          {
+            "t": "Əl yazısı ilə qeyd",
+            "pen": true,
+            "d": "«Səbinəyə deyəcəm ki, Nicatın adınadır, amma sənəddə payı saxlamışam. Toydan sonra oturub danışarıq. Qoy bir az əsəbləşsin.»"
+          }
+        ],
+        "note": "[[Qeyd:]] pencəkdən yırtılan cibdə saxlanan qovluq həmin sənədin surəti olmuşdur. Surət hüquqi qüvvəyə malik deyil."
+      },
+      "sample": false
+    }
+  ]
+}

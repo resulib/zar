@@ -14,6 +14,11 @@
   window.REPLY_CATEGORIES = window.REPLY_CATEGORIES || [];
   window.REPLIES = window.REPLIES || [];
 
+  /* Sosial kimlik kartları da ayrıca fayldadır (`sosial.js`) — eyni qayda. */
+  window.SOSIAL_KINDS = window.SOSIAL_KINDS || [];
+  window.SOSIAL_CATEGORIES = window.SOSIAL_CATEGORIES || [];
+  window.SOSIAL_CARDS = window.SOSIAL_CARDS || [];
+
   var PACKS = [
     { id: 'p1',  credits: 1,  price: 1, label: '1 sənəd',  note: 'Tək sənəd üçün' },
     { id: 'p3',  credits: 3,  price: 2, label: '3 sənəd',  note: 'Ən çox seçilən', best: true },
@@ -100,6 +105,33 @@
         return r;
       });
     },
+    /* Sosial profil axtarışı. Oflayn rejimdə (dist, `file://`) kənar sorğu
+       mümkün deyil — yalnız linkdən platforma və istifadəçi adı çıxarılır və
+       istifadəçi qalan sahələri özü doldurur. */
+    sosialProfil: function (url, platform) {
+      var parsed = window.SOSIAL_PARSE ? window.SOSIAL_PARSE.parse(url, platform) : null;
+      if (!API.online) {
+        return Promise.resolve(parsed
+          ? { ok: true, social: parsed, avatar: null, source: 'əl', note: null }
+          : { ok: false, social: {}, avatar: null, source: 'yox',
+              note: 'Link tanınmadı. TikTok və ya Instagram profil linkini yapışdırın.' });
+      }
+      return API._post('/api/sosial/profil', { url: url, platform: platform || null });
+    },
+
+    /* Avatar dərcdən SONRA göndərilir: reyestrdəki nüsxə də şəkilli olsun deyə.
+       Gövdə xam JPEG-dir — base64 onu 33% şişirdərdi. Uğursuzluq sənədi
+       pozmur, sadəcə baxış səhifəsində siluet çıxır. */
+    sosialAvatar: function (regNo, blob) {
+      if (!API.online || !blob) return Promise.resolve(null);
+      var headers = { 'Content-Type': 'image/jpeg', 'Accept': 'application/json' };
+      var m = document.querySelector('meta[name=csrf-token]');
+      if (m) headers['X-CSRF-TOKEN'] = m.getAttribute('content');
+      return fetch('/api/documents/' + regNo + '/avatar', {
+        method: 'POST', credentials: 'same-origin', headers: headers, body: blob
+      }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    },
+
     create: function (payload) {
       if (!API.online) {
         var docs = LS.get('zrf_docs', {});
@@ -236,7 +268,10 @@
     answers: {},              // anket cavabları — yalnız `fields` daşıyan şablonlarda
     powerPicks: [],           // seçilmiş bəndlər — variant sırasında saxlanılır
     storyBlob: null,          // əvvəlcədən hazırlanmış story şəkli (iOS paylaşma jesti üçün)
-    replyTo: null             // cavab rejimi: {regNo, title, to, from, cat, tone}
+    replyTo: null,            // cavab rejimi: {regNo, title, to, from, cat, tone}
+    social: null,             // sosial rejim: {platform, username, name, bio, followers, posts, verified}
+    avatar: null,             // profil şəkli — `data:` URI; sənədə birbaşa yerləşdirilir
+    cardStyle: null           // kart stili — istifadəçi seçimi; boşdursa şablonun öz stili
   };
 
   /* Rejimə görə dəyişən sayt mətnləri. Sənədin öz mətnləri doc.js-dədir. */
@@ -295,6 +330,18 @@
     if (payload.replyCategories && payload.replyCategories.length) {
       REPLY_CATEGORIES.length = 0;
       payload.replyCategories.forEach(function (c) { REPLY_CATEGORIES.push(c); });
+    }
+
+    /* Sosial kartlar da ayrıca açardadır — ana kataloqa qarışsalar kateqoriya
+       zolağında «Sosial kimlik kartı» tabı çıxar və `tplsOf()` onları adi
+       şablon kimi verərdi. */
+    if (payload.socialCards && payload.socialCards.length) {
+      SOSIAL_CARDS.length = 0;
+      payload.socialCards.forEach(function (t) { SOSIAL_CARDS.push(t); });
+    }
+    if (payload.socialCategories && payload.socialCategories.length) {
+      SOSIAL_CATEGORIES.length = 0;
+      payload.socialCategories.forEach(function (c) { SOSIAL_CATEGORIES.push(c); });
     }
     return true;
   }
@@ -405,6 +452,9 @@
 
   function setMode(mode) {
     if (!MODE_COPY[mode] || mode === state.mode) return;
+    /* Sosial kartlar yalnız `zarafat` tonundadır: ton dəyişəndə rejimdən
+       çıxılır, əks halda kart siyahısı boşalar və panel asılı qalardı. */
+    if (state.social) { state.social = null; state.avatar = null; state.socialNote = ''; renderSocialPanel(); }
     state.mode = mode;
     LS.set('zrf_mode', mode);
     state.q = '';
@@ -435,6 +485,28 @@
         b.onclick = function () {
           state.cat = b.dataset.kind;
           renderTabs(); renderCards();
+        };
+      });
+      return;
+    }
+
+    /* Sosial rejimdə zolaq platforma seçicisinə çevrilir. */
+    if (state.social) {
+      $('#tabs').innerHTML = SOSIAL_KINDS.map(function (k) {
+        return '<button type="button" data-sk="' + k.k + '"' +
+          ' aria-pressed="' + (state.social.platform === k.k) + '">' +
+          k.icon + ' ' + esc(k.name) +
+          '<span class="n">' + sosialCardsFor(k.k).length + '</span></button>';
+      }).join('');
+      $('#catBlurb').textContent = 'Kartın dizaynını seçin — məlumatlar profildən gəlir.';
+      $$('#tabs button').forEach(function (b) {
+        b.onclick = function () {
+          state.social.platform = b.dataset.sk;
+          state.cat = b.dataset.sk;
+          renderTabs(); renderCards(); renderSocialPanel();
+          var pool = sosialCardsFor(state.social.platform);
+          if (pool.length && (!state.tpl || pool.indexOf(state.tpl) < 0)) pickTemplate(pool[0].id);
+          else updatePreview();
         };
       });
       return;
@@ -476,6 +548,10 @@
       pool = REPLIES;
       var kind = replyKindsFor(r.tone).some(function (k) { return k.k === state.cat; }) ? state.cat : null;
       list = repliesFor(r.cat, r.tone, kind).filter(function (t) { return matches(t, q); });
+    } else if (state.social) {
+      /* Sosial rejim: `state.cat` seçilmiş platformadır. */
+      pool = SOSIAL_CARDS;
+      list = sosialCardsFor(state.social.platform).filter(function (t) { return matches(t, q); });
     } else {
       /* Axtarış da rejim daxilində işləyir — başqa tonun şablonu siyahıya düşmür. */
       list = tplsOf(state.mode).filter(function (t) { return (q ? true : t.cat === state.cat) && matches(t, q); });
@@ -487,7 +563,7 @@
       return '<button type="button" class="tmpl" data-tpl="' + t.id + '"' +
         ' aria-pressed="' + (!!state.tpl && state.tpl.id === t.id) + '"' +
         ' style="border-left-color:' + LAYOUT_EDGE[t.layout] + '">' +
-        '<span class="code">' + (state.replyTo ? 'CVB-' : 'ZNP-') +
+        '<span class="code">' + (state.replyTo ? 'CVB-' : (state.social ? 'SOS-' : 'ZNP-')) +
           String(idx).padStart(3, '0') + ' · ' + esc(t.tag) + '</span>' +
         '<h3>' + esc(t.title) + '</h3>' +
         '<span class="desc">' + esc(t.powers.split('\n')[0]) + '</span>' +
@@ -567,6 +643,207 @@
     if (t) pickTemplate(t.id); else { renderDesign(); updatePreview(); }
   }
 
+  /* ---------------- sosial kimlik kartı rejimi ----------------
+     İstifadəçi TikTok/Instagram linkini yapışdırır; `SOSIAL_PARSE` platformanı
+     və istifadəçi adını çıxarır, server isə profilin qalan sahələrini «ən yaxşı
+     cəhd» ilə gətirir. Gəlməsə heç nə pozulmur — sahələr boş qalır və istifadəçi
+     özü doldurur. Bütün dəyərlər onsuz da redaktə edilə biləndir.
+
+     Kilid burada DEYİL: server bloku `Sosial::clean()` ilə təmizləyir, mətni isə
+     həmişəki kimi kataloqdan qurur (`DocumentService::create`). */
+
+  /* Seçilmiş platformaya uyğun kartlar. `socialKind` boş olan kart hər ikisinə
+     yarayır — istifadəçi heç vaxt boş siyahı görmür. */
+  function sosialCardsFor(platform) {
+    return SOSIAL_CARDS.filter(function (t) {
+      return t.active !== false && (!t.socialKind || t.socialKind === platform);
+    });
+  }
+
+  function sosialKindOf(k) {
+    return SOSIAL_KINDS.filter(function (x) { return x.k === k; })[0] || null;
+  }
+
+  /* `{{username}}` · `{{followers}}` · `{{posts}}` dəyərləri.
+     Server güzgüsü: App\Support\Sosial\Sosial::vals(). `DOCGEN` say formatını
+     ixrac etmir, ona görə eyni funksiya burada da var — üçüncü nüsxə DEYİL,
+     `sosial.js` onu `SOSIAL_VALS`-a ötürür. */
+  function sosialSayi(n) {
+    if (n === null || n === undefined || n === '') return '—';
+    n = Number(n);
+    if (!isFinite(n) || n < 0) return '—';
+    n = Math.floor(n);
+    if (n < 1000) return String(n);
+    var v = n < 1000000 ? Math.round(n / 100) / 10 : Math.round(n / 100000) / 10;
+    return String(v).replace('.', ',') + (n < 1000000 ? ' K' : ' M');
+  }
+
+  function sosialVals() {
+    if (!state.social || !window.SOSIAL_VALS) return {};
+    return window.SOSIAL_VALS(state.social, sosialSayi);
+  }
+
+  /* Şəkli mərkəzdən kvadrat kəsib 256×256 JPEG `data:` URI-yə çevirir.
+     Serverin avatar yoxlaması məhz bu ölçünü tələb edir. */
+  var AVATAR_SIZE = 256;
+
+  function avatarFromFile(file) {
+    return new Promise(function (res, rej) {
+      if (!file || file.size > 8 * 1024 * 1024) { rej(new Error('böyük')); return; }
+      var fr = new FileReader();
+      fr.onerror = function () { rej(new Error('oxunmadı')); };
+      fr.onload = function () {
+        var img = new Image();
+        img.onerror = function () { rej(new Error('şəkil deyil')); };
+        img.onload = function () {
+          var c = document.createElement('canvas');
+          c.width = c.height = AVATAR_SIZE;
+          var x = c.getContext('2d');
+          x.fillStyle = '#ffffff'; x.fillRect(0, 0, AVATAR_SIZE, AVATAR_SIZE);
+          var s = Math.min(img.width, img.height);
+          x.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, AVATAR_SIZE, AVATAR_SIZE);
+          res(c.toDataURL('image/jpeg', 0.88));
+        };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+
+  /* `data:` URI → Blob. Dərcdən sonra serverə xam JPEG göndərmək üçün. */
+  function avatarBlob(uri) {
+    if (!uri || uri.indexOf('data:image/jpeg;base64,') !== 0) return null;
+    try {
+      var bin = atob(uri.slice('data:image/jpeg;base64,'.length));
+      var buf = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+      return new Blob([buf], { type: 'image/jpeg' });
+    } catch (e) { return null; }
+  }
+
+  /* Kartın üzərində görünən HƏR sahə buradan redaktə oluna bilməlidir —
+     `doc.js kartOn()` dördünü də çəkir. */
+  var SOSIAL_FIELDS = [
+    { k: 'name',      label: 'Görünən ad',    type: 'text',   max: 40 },
+    { k: 'followers', label: 'İzləyici sayı', type: 'number' },
+    { k: 'posts',     label: 'Paylaşım sayı', type: 'number' },
+    { k: 'following', label: 'İzlənilən sayı', type: 'number' }
+  ];
+
+  function renderSocialPanel() {
+    var box = $('#socialPanel');
+    if (!box) return;
+    if (!state.social) { box.hidden = true; box.innerHTML = ''; return; }
+
+    var s = state.social, kind = sosialKindOf(s.platform);
+    box.hidden = false;
+    box.innerHTML =
+      '<div class="sos-head">' +
+        '<div class="sos-av">' +
+          (state.avatar ? '<img src="' + esc(state.avatar) + '" alt="">' : '<span>foto</span>') +
+        '</div>' +
+        '<div class="sos-id">' +
+          '<strong>@' + esc(s.username || '—') + '</strong>' +
+          '<span>' + esc(kind ? kind.name : '—') + '</span>' +
+        '</div>' +
+        '<div class="sos-act">' +
+          '<label class="btn ghost sm">Şəkil seç<input type="file" id="sosAvatar" accept="image/*" hidden></label>' +
+          (state.avatar ? '<button type="button" class="btn ghost sm" id="sosAvatarDel">Sil</button>' : '') +
+          '<button type="button" class="btn ghost sm" id="sosExit">Başqa profil</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sos-grid">' + SOSIAL_FIELDS.map(function (f) {
+        var v = s[f.k];
+        return '<label class="f"><span>' + esc(f.label) + '</span>' +
+          '<input type="' + f.type + '" data-sos="' + f.k + '"' +
+          (f.max ? ' maxlength="' + f.max + '"' : ' min="0"') +
+          ' value="' + esc(v === null || v === undefined ? '' : String(v)) + '"' +
+          ' placeholder="—"></label>';
+      }).join('') + '</div>' +
+      '<p class="hint" id="sosNote">' + esc(state.socialNote || '') + '</p>';
+
+    var file = $('#sosAvatar');
+    if (file) file.onchange = function () {
+      var f = file.files && file.files[0];
+      if (!f) return;
+      avatarFromFile(f).then(function (uri) {
+        state.avatar = uri; renderSocialPanel(); updatePreview();
+      }).catch(function () { toast('Şəkil oxunmadı — başqa fayl seçin', 'err'); });
+    };
+    var del = $('#sosAvatarDel');
+    if (del) del.onclick = function () { state.avatar = null; renderSocialPanel(); updatePreview(); };
+    $('#sosExit').onclick = exitSocialMode;
+
+    /* Sahələr `state.social`-ı birbaşa yeniləyir — panel şablon dəyişəndə
+       yenidən qurulduğu üçün dinləyici hər dəfə bağlanır. */
+    $$('#socialPanel input[data-sos]').forEach(function (el) {
+      el.oninput = function () {
+        var k = el.dataset.sos, v = el.value;
+        if (el.type === 'number') {
+          v = v.replace(/[^\d]/g, '');
+          state.social[k] = v === '' ? null : Math.min(999999999, parseInt(v, 10));
+        } else {
+          state.social[k] = v.trim();
+        }
+        touch();
+      };
+    });
+  }
+
+  function exitSocialMode() {
+    state.social = null; state.avatar = null; state.socialNote = ''; state.cardStyle = null;
+    state.doc = null; state.tpl = null; state.layout = null; state.palette = null;
+    renderSocialPanel();
+    renderTabs(); renderCards();
+    var t = tplsOf(state.mode)[0];
+    if (t) pickTemplate(t.id); else { renderDesign(); updatePreview(); }
+  }
+
+  /* Yapışdırılan mətndən kart rejimini açır. */
+  function enterSocialMode(paste, platform) {
+    if (!SOSIAL_CARDS.length) {
+      toast('Sosial kart kataloqu yüklənməyib', 'err');
+      return Promise.resolve();
+    }
+    return API.sosialProfil(paste, platform).then(function (r) {
+      if (!r || !r.ok || !r.social || !r.social.username) {
+        toast((r && r.note) || 'Link tanınmadı', 'err');
+        return;
+      }
+
+      /* Kartlar yalnız `zarafat` tonundadır — cavab rejimindəki kimi
+         `setMode()` çağırılmır, o sosial vəziyyəti sıfırlayardı. */
+      if (state.mode !== 'zarafat' && MODE_COPY.zarafat) {
+        state.mode = 'zarafat';
+        LS.set('zrf_mode', 'zarafat');
+        renderModeSwitch(); applyModeCopy(); renderSpecimen();
+      }
+
+      state.replyTo = null;
+      state.social = r.social;
+      state.avatar = r.avatar || null;
+      state.socialNote = r.note || '';
+      state.cat = r.social.platform;
+      state.q = '';
+      if ($('#fSearch')) $('#fSearch').value = '';
+
+      var pool = sosialCardsFor(r.social.platform);
+      if (!pool.length) {
+        state.social = null;
+        toast('Bu platforma üçün kart tapılmadı', 'err');
+        return;
+      }
+
+      renderSocialPanel();
+      renderTabs(); renderCards();
+      pickTemplate(pool[0].id);
+
+      $('#yarat').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }).catch(function (e) {
+      toast(apiError(e, 'Profil yüklənə bilmədi'), 'err');
+    });
+  }
+
   /* Ölçmə — `viewer.js` `track()` ilə eyni müqavilə. Səhvi udur. */
   function track(event, kind, regNo) {
     if (!API.online) return;
@@ -591,6 +868,10 @@
         LS.set('zrf_mode', tone);
         renderModeSwitch(); applyModeCopy(); renderSpecimen();
       }
+
+      /* İki rejim eyni anda ola bilməz — kart şəbəkəsi hansı kataloqdan
+         qurulacağını bilməzdi. */
+      if (state.social) { state.social = null; state.avatar = null; state.socialNote = ''; renderSocialPanel(); }
 
       state.replyTo = { regNo: d.regNo, title: d.title, to: d.to, from: d.from, cat: cat, tone: tone };
       state.q = '';
@@ -630,10 +911,11 @@
   function pickTemplate(id) {
     /* Cavab rejimində şablon cavab kataloqundan da gələ bilər. */
     var t = TEMPLATES.filter(function (x) { return x.id === id; })[0] ||
-      (state.replyTo ? REPLIES.filter(function (x) { return x.id === id; })[0] : null);
+      (state.replyTo ? REPLIES.filter(function (x) { return x.id === id; })[0] : null) ||
+      (state.social ? SOSIAL_CARDS.filter(function (x) { return x.id === id; })[0] : null);
     if (!t) return;
     state.tpl = t; state.doc = null;
-    state.layout = null; state.palette = null;
+    state.layout = null; state.palette = null; state.cardStyle = null;
     renderPicks();
     renderFields();
     /* Anketli şablonda bəndlər `notes`-dan gəlir — sərbəst mətn sahəsi yalnız
@@ -642,13 +924,61 @@
     $('#fPowersField').hidden  = anket;
     $('#fTitleField').hidden   = anket;
     $('#fPenaltyField').hidden = anket;
-    $('#fNamesRow').hidden     = anket;
+    /* Sosial kartda adlar profildən gəlir — sərbəst ad sahələri yalnız
+       ziddiyyət yaradardı (panel «Görünən ad»ı onsuz da redaktə edir). */
+    $('#fNamesRow').hidden     = anket || !!state.social;
     renderCards(); renderDesign(); updatePreview();
   }
 
   /* ---------------- blank forması seçicisi ---------------- */
+  var KART_ICON = {
+    resmi: '<rect x="2" y="4" width="32" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/>' +
+           '<rect x="2" y="4" width="32" height="5" fill="currentColor" opacity="0.5"/>' +
+           '<rect x="5" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.35"/>',
+    tund:  '<rect x="2" y="4" width="32" height="18" rx="3" fill="currentColor" opacity="0.75"/>' +
+           '<rect x="5" y="12" width="8" height="8" rx="1.5" fill="#fff" opacity="0.7"/>' +
+           '<circle cx="29" cy="9" r="4" fill="#fff" opacity="0.35"/>',
+    sade:  '<rect x="2" y="4" width="32" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/>' +
+           '<rect x="2" y="4" width="3" height="18" fill="currentColor"/>' +
+           '<rect x="9" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.3"/>'
+  };
+
+  function curCardStyle() {
+    return state.cardStyle || (state.tpl && state.tpl.cardStyle) || DOCGEN.KART_STILLER[0];
+  }
+
   function renderDesign() {
     var L = curLayout(), P = curPalette();
+
+    /* Sosial kartda blank forması seçimi mənasızdır — kart `LAYOUTS`
+       reyestrindən kənardadır. Onun yerinə kart stilləri göstərilir. */
+    if (state.social) {
+      var CS = curCardStyle();
+      if ($('#designLabel')) $('#designLabel').textContent = 'Kartın stili';
+      if ($('#btnResetDesign')) $('#btnResetDesign').textContent = 'Şablonun öz stili';
+      $('#layoutPicker').innerHTML = DOCGEN.KART_STILLER.map(function (id) {
+        return '<button type="button" data-cardstyle="' + id + '" aria-pressed="' + (id === CS) + '"' +
+          ' title="' + esc(DOCGEN.KART_STIL_ADI[id]) + '">' +
+          '<svg width="36" height="26" viewBox="0 0 36 26" fill="none" style="color:' +
+          (id === CS ? LAYOUT_EDGE.vesiqe : '#8a8c93') + '">' + KART_ICON[id] + '</svg>' +
+          '<span>' + esc(DOCGEN.KART_STIL_ADI[id]) + '</span></button>';
+      }).join('');
+      $('#palettePicker').innerHTML = DOCGEN.PALETTES.map(function (id) {
+        return '<button type="button" data-palette="' + id + '" aria-pressed="' + (id === P) + '">' +
+          '<span class="swatch" style="background:' + PAL_SWATCH[id] + '"></span>' + PAL_LABEL[id] + '</button>';
+      }).join('');
+      $$('#layoutPicker button').forEach(function (b) {
+        b.onclick = function () { state.cardStyle = b.dataset.cardstyle; state.doc = null; renderDesign(); updatePreview(); };
+      });
+      $$('#palettePicker button').forEach(function (b) {
+        b.onclick = function () { state.palette = b.dataset.palette; state.doc = null; renderDesign(); updatePreview(); };
+      });
+      return;
+    }
+
+    if ($('#designLabel')) $('#designLabel').textContent = 'Blank forması';
+    if ($('#btnResetDesign')) $('#btnResetDesign').textContent = 'Şablonun öz forması';
+
     $('#layoutPicker').innerHTML = DOCGEN.LAYOUTS.map(function (id) {
       return '<button type="button" data-layout="' + id + '" aria-pressed="' + (id === L) + '" title="' + esc(DOCGEN.LAYOUT_NAMES[id]) + '">' +
         '<svg width="36" height="26" viewBox="0 0 36 26" fill="none" style="color:' + (id === L ? LAYOUT_EDGE[id] : '#8a8c93') + '">' +
@@ -924,10 +1254,16 @@
        yazılmış ad `doc.to`-ya sızırdı. Sahəni təmizləmirik — istifadəçi
        şablonlara baxarkən yazdığı adı itirməsin. */
     var freeNames = !$('#fNamesRow').hidden;
-    var to   = (F && F.into.to)   || (freeNames ? $('#fTo').value.trim()   : '') || 'Ad Soyad';
-    var from = (F && F.into.from) || (freeNames ? $('#fFrom').value.trim() : '') || 'Ad Soyad';
+    /* Sosial kartda adlar profildən gəlir: `to` — kartın sahibi, `from` —
+       platformanın adı, ona görə preamble «{from} platformasında…» oxunur. */
+    var sv = sosialVals(), sk = state.social ? sosialKindOf(state.social.platform) : null;
+    var to   = (state.social ? (state.social.name || sv.username) : '') ||
+               (F && F.into.to)   || (freeNames ? $('#fTo').value.trim()   : '') || 'Ad Soyad';
+    var from = (sk ? sk.name : '') ||
+               (F && F.into.from) || (freeNames ? $('#fFrom').value.trim() : '') || 'Ad Soyad';
     var pre = (t.preamble || '').replace(/\{to\}/g, to).replace(/\{from\}/g, from);
     if (F) pre = fill(pre, F.vals);
+    if (state.social) pre = fill(pre, sv);
     /* Hibrid qat: cavablar həm struktur bloklara, həm də `powers`-ə düşür ki,
        anketli şablon istifadəçi dizaynı dəyişdikdə köhnə on dizaynda da oxunsun. */
     var extra = F ? {
@@ -958,15 +1294,28 @@
       /* Cavab bağlantısı. `doc.js` `inner()` məhz bu açara baxıb künc lentini
          çəkir, server isə valideyni bu nömrədən həll edir. */
       replyTo: state.replyTo ? state.replyTo.regNo : null,
+      /* Sosial kimlik kartı. `doc.js` `L_vesiqe` bu iki açara baxıb sətirləri
+         və foto xanasını dəyişir; ikisi də yoxdursa çıxış əvvəlki kimi qalır. */
+      social: state.social || null,
+      avatar: state.avatar || null,
+      /* Kartın stili şablondan gəlir; istifadəçi onu dizayn seçicisindən dəyişə bilir. */
+      cardStyle: state.cardStyle || t.cardStyle || null,
       regNo: regPrefix(t) + '-' + new Date().getFullYear() + '-————',
       date: fmtDate(new Date()),
       paid: false, verifyUrl: ''
     }, extra, base || {});
   }
 
+  /* Önizləməni gecikdirilmiş yeniləyir. Modul səviyyəsindədir, çünki həm
+     `init()`-dəki forma dinləyiciləri, həm də `renderSocialPanel()` onu çağırır. */
+  var _deb = null;
+  function touch() { state.doc = null; clearTimeout(_deb); _deb = setTimeout(updatePreview, 180); }
+
   function updatePreview() {
     var doc = state.doc || formDoc();
-    $('#preview').innerHTML = DOCGEN.a4(doc, { idPrefix: 'pv' });
+    /* `sheet()` formatı özü seçir: sosial profil varsa kimlik kartı (1080×1350,
+       iki üzlü), yoxsa adi A4 sənəd. Çağıran tərəf fərqi bilməməlidir. */
+    $('#preview').innerHTML = DOCGEN.sheet(doc, { idPrefix: 'pv' }).svg;
     $('#regBadge').textContent = doc.regNo;
     renderActions();
   }
@@ -1059,7 +1408,8 @@
     if (d.paid && ZEXPORT.canShareFiles() &&
         (!state.storyBlob || state.storyBlob.regNo !== d.regNo)) {
       state.storyBlob = { regNo: d.regNo, blob: null };
-      ZEXPORT.pngBlob(DOCGEN.story(d, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+      (function () { var sh = DOCGEN.share(d, { idPrefix: 'sh' });
+      return ZEXPORT.pngBlob(sh.svg, sh.w, sh.h, 1); })()
         .then(function (b) {
           if (state.storyBlob && state.storyBlob.regNo === d.regNo) state.storyBlob.blob = b;
         })
@@ -1069,8 +1419,8 @@
 
   function downloadPdf(doc) {
     toast('PDF hazırlanır…');
-    var svg = DOCGEN.a4(doc, { idPrefix: 'ex' });
-    ZEXPORT.pdfBlob(svg, DOCGEN.W, DOCGEN.H, doc.paid ? 3 : 2, doc.regNo).then(function (b) {
+    var sh = DOCGEN.sheet(doc, { idPrefix: 'ex' });
+    ZEXPORT.pdfBlob(sh.svg, sh.w, sh.h, doc.paid ? 3 : 2, doc.regNo).then(function (b) {
       ZEXPORT.saveBlob(b, 'zarafat-' + ZEXPORT.safeName(doc.regNo) + '.pdf');
       toast('PDF yükləndi');
     }).catch(function () { toast('PDF yaratmaq alınmadı', 'err'); });
@@ -1096,7 +1446,8 @@
     }
 
     toast('Şəkil hazırlanır…');
-    ZEXPORT.pngBlob(DOCGEN.story(doc, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+    var shs = DOCGEN.share(doc, { idPrefix: 'sh' });
+    ZEXPORT.pngBlob(shs.svg, shs.w, shs.h, 1)
       .then(function (b) {
         if (!ZEXPORT.canShareFiles()) return fallback(b);
         return ZEXPORT.shareFile(b, name, 'image/png', meta).catch(function (e) {
@@ -1108,11 +1459,9 @@
   }
 
   function download(doc, isStory, scale) {
-    var svg = isStory ? DOCGEN.story(doc, { idPrefix: 'ex' }) : DOCGEN.a4(doc, { idPrefix: 'ex' });
-    var w = isStory ? DOCGEN.STORY_W : DOCGEN.W;
-    var h = isStory ? DOCGEN.STORY_H : DOCGEN.H;
+    var o = isStory ? DOCGEN.share(doc, { idPrefix: 'ex' }) : DOCGEN.sheet(doc, { idPrefix: 'ex' });
     toast('Şəkil hazırlanır…');
-    ZEXPORT.pngBlob(svg, w, h, scale).then(function (b) {
+    ZEXPORT.pngBlob(o.svg, o.w, o.h, scale).then(function (b) {
       ZEXPORT.saveBlob(b, 'zarafat-' + ZEXPORT.safeName(doc.regNo) + (isStory ? '-story' : '') + '.png');
       toast('Yükləndi');
     }).catch(function () { toast('Şəkli yaratmaq alınmadı', 'err'); });
@@ -1149,7 +1498,14 @@
     if (state.credits < 1) { renderPacks(); openModal('#payModal'); return; }
     API.publish(doc.regNo).then(function (d) {
       state.doc = d;
-      return refreshCredits().then(function () {
+      /* Avatar dərcdən SONRA gedir ki, reyestrdəki nüsxə də şəkilli olsun.
+         Uğursuzluq sənədi pozmur — baxış səhifəsində sadəcə siluet çıxar. */
+      var av = state.avatar ? API.sosialAvatar(d.regNo, avatarBlob(state.avatar)) : Promise.resolve(null);
+      return av.then(function () { return refreshCredits(); }).then(function () {
+        /* Server `avatarUrl` qaytarır, amma önizləmə onsuz da `state.avatar`
+           daşıyır — sənəd obyektindəki `avatar` açarını itirməmək üçün. */
+        if (state.avatar) state.doc.avatar = state.avatar;
+        if (state.social) state.doc.social = state.social;
         updatePreview(); renderMine();
         toast('Sənəd reyestrə yazıldı: ' + d.regNo);
       });
@@ -1204,7 +1560,7 @@
           'Qeydiyyat: ' + esc(d.regNo) + ' · Tarix: ' + esc(d.date));
       }
       $('#searchResult').innerHTML =
-        '<div class="sheet-wrap"><div class="paper">' + DOCGEN.a4(d, { idPrefix: 'sr', verified: true }) + '</div></div>' +
+        '<div class="sheet-wrap"><div class="paper">' + DOCGEN.sheet(d, { idPrefix: 'sr', verified: true }).svg + '</div></div>' +
         '<div style="margin-top:10px"><button id="srReport" class="btn btn-danger btn-sm" type="button">Şikayət et / sil</button></div>';
       $('#srReport').onclick = function () { openReport(d.regNo); };
     }).catch(function (e) {
@@ -1315,9 +1671,8 @@
     renderSpecimen();
 
     /* Delegasiya olunan dinləyici: `#fFields` hər şablon seçimində yenidən qurulur,
-       ona görə element səviyyəsində bağlanan dinləyicilər itərdi. */
-    var deb;
-    function touch() { state.doc = null; clearTimeout(deb); deb = setTimeout(updatePreview, 180); }
+       ona görə element səviyyəsində bağlanan dinləyicilər itərdi.
+       `touch()` modul səviyyəsindədir — sosial panel də onu işlədir. */
 
     $('#editorForm').addEventListener('input', function (e) {
       var el = e.target, k = el.getAttribute && el.getAttribute('data-fk');
@@ -1393,8 +1748,23 @@
       clearTimeout(sdeb); sdeb = setTimeout(renderCards, 140);
     });
 
+    /* Sosial kart girişi. `sosial.js` yüklənməyibsə qutu heç göstərilmir. */
+    if ($('#sosialBox')) {
+      $('#sosialBox').hidden = !SOSIAL_CARDS.length;
+      $('#sosialGo').onclick = function () {
+        var v = $('#sosialUrl').value.trim();
+        if (!v) { toast('Profil linkini yapışdırın', 'err'); return; }
+        var plat = $('#sosialPlat') ? $('#sosialPlat').value : null;
+        $('#sosialGo').disabled = true;
+        enterSocialMode(v, plat).then(function () { $('#sosialGo').disabled = false; });
+      };
+      $('#sosialUrl').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); $('#sosialGo').click(); }
+      });
+    }
+
     $('#btnResetDesign').onclick = function () {
-      state.layout = null; state.palette = null; state.doc = null;
+      state.layout = null; state.palette = null; state.cardStyle = null; state.doc = null;
       renderDesign(); updatePreview();
     };
 
@@ -1407,6 +1777,11 @@
       /* `replyTo` QALIR — server valideyni məhz bu nömrədən həll edir.
          Adi sənəddə açar boşdur və göndərilmir. */
       if (!payload.replyTo) delete payload.replyTo;
+      /* `social` QALIR (server `Sosial::clean()` ilə təmizləyir), `avatar` isə
+         YOX: şəkil dərcdən sonra ayrıca, xam JPEG kimi gedir — base64 blob
+         sənəd yükünü üç dəfə şişirdərdi. */
+      delete payload.avatar;
+      if (!payload.social) delete payload.social;
       $('#btnCreate').disabled = true;
       API.create(payload).then(function (d) {
         state.doc = d; updatePreview(); renderMine();
@@ -1422,6 +1797,14 @@
       var a = pick(), b; do { b = pick(); } while (b === a);
       /* Yalnız cari rejimin şablonlarından — əks halda state.cat başqa rejimin
          kateqoriyasına düşüb tabları pozar. */
+      /* Sosial rejimdə təsadüfi seçim profili pozmamalıdır — yalnız kart
+         dizaynı dəyişir, adlar profildən gəlməyə davam edir. */
+      if (state.social) {
+        var sp = sosialCardsFor(state.social.platform);
+        if (sp.length) pickTemplate(sp[Math.floor(Math.random() * sp.length)].id);
+        state.doc = null; updatePreview();
+        return;
+      }
       var pool = tplsOf(state.mode);
       var t = pool[Math.floor(Math.random() * pool.length)];
       state.cat = t.cat; state.q = ''; $('#fSearch').value = '';

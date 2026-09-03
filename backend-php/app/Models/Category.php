@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    protected $fillable = ['slug', 'tone', 'name', 'icon', 'blurb', 'sort', 'is_active', 'is_reply'];
+    protected $fillable = ['slug', 'tone', 'name', 'icon', 'blurb', 'sort', 'is_active', 'is_reply', 'is_social'];
 
     protected function casts(): array
     {
@@ -18,6 +18,7 @@ class Category extends Model
             'sort'      => 'integer',
             'is_active' => 'boolean',
             'is_reply'  => 'boolean',
+            'is_social' => 'boolean',
         ];
     }
 
@@ -64,6 +65,10 @@ class Category extends Model
            yükü olduğu kimi qalsın deyə. */
         if ($this->is_reply) {
             $out['isReply'] = true;
+        }
+
+        if ($this->is_social) {
+            $out['isSocial'] = true;
         }
 
         return $out;

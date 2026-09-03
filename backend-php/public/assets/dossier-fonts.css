@@ -1,0 +1,16 @@
+/* İş qovluğu bölməsinin şriftləri — Azərbaycan əlifbasına görə kəsilmiş.
+   CDN yoxdur. Hər üz tools/check-fonts.js yoxlamasından keçir. */
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dossier-mono-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dossier-mono-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Mono';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/dossier-mono-400i-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Mono';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/dossier-mono-400i-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dossier-mono-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dossier-mono-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dossier-mono-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Mono';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dossier-mono-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dossier-sans-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dossier-sans-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dossier-sans-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dossier-sans-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dossier-sans-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026}
+@font-face{font-family:'Dossier Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dossier-sans-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+1E00-1E9F}

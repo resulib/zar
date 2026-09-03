@@ -13,6 +13,7 @@ use App\Support\RegistryNumber;
 use App\Support\RegistryPrefix;
 use App\Support\ReplyKinds;
 use App\Support\Sanitizer;
+use App\Support\Sosial\Sosial;
 use App\Support\TemplateSchema;
 use Illuminate\Support\Carbon;
 
@@ -74,6 +75,15 @@ class DocumentService
             [$to !== '' ? $to : 'Ad Soyad', $from !== '' ? $from : 'Ad Soyad'],
             (string) $tpl->preamble
         );
+
+        /* Sosial kartın `{{username}}` · `{{followers}}` · `{{posts}}` yer
+           tutucuları anket cavabları ilə eyni mexanizmdən keçir. Blok özü də
+           `extraFrom()`-da təmizlənir; burada yalnız mətnə düşən dəyərlər
+           lazımdır. Klient güzgüsü: app.js formDoc() → SOSIAL_VALS. */
+        $social = Sosial::clean($input['social'] ?? null, (array) config('sosial'));
+        if ($social !== []) {
+            $answers = array_merge(Sosial::vals($social, (array) config('sosial.names')), $answers);
+        }
 
         $document = Document::create([
             'extra'         => $this->extraFrom($input, $tpl) ?: null,
@@ -356,6 +366,13 @@ class DocumentService
             if ($v !== '') {
                 $extra[$key] = $v;
             }
+        }
+
+        /* Sosial profil bloku. Yalnız təmizlənmiş sahələr keçir; `bio` sənədə
+           düşmədiyi üçün burada saxlanılmır. */
+        $social = Sosial::clean($input['social'] ?? null, (array) config('sosial'));
+        if ($social !== []) {
+            $extra['social'] = $social;
         }
 
         /* İmza vəzifəsi və verən qurum KLİENTDƏN DEYİL, kataloqdan gəlir —

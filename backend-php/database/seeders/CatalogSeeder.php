@@ -52,7 +52,8 @@ class CatalogSeeder extends Seeder
                 'blurb' => $c['blurb'] ?? '',
                 /* Cavab kateqoriyası bayrağı toxumun bir hissəsidir: səhv
                    dəyər cavab şablonlarını ana səhifənin şəbəkəsinə tökərdi. */
-                'is_reply' => (bool) ($c['is_reply'] ?? false),
+                'is_reply'  => (bool) ($c['is_reply'] ?? false),
+                'is_social' => (bool) ($c['is_social'] ?? false),
             ]);
 
             if ($new) {
@@ -92,6 +93,8 @@ class CatalogSeeder extends Seeder
                    nəzərdə tutulmayıb, toxum isə həmişə doğru dəyəri daşıyır. */
                 'reply_kind'     => $t['reply_kind'] ?? null,
                 'reply_cats'     => $t['reply_cats'] ?? null,
+                'social_kind'    => $t['social_kind'] ?? null,
+                'card_style'     => $t['card_style'] ?? null,
                 'sign_title'     => $t['sign_title'] ?? null,
                 'sign_org'       => $t['sign_org'] ?? null,
                 'share'          => $t['share'] ?? null,

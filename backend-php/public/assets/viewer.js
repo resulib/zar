@@ -129,24 +129,64 @@
       ref.hidden = true;
     }
 
-    $('doc').innerHTML = DOCGEN.a4(d, { idPrefix: 'vw', verified: true });
+    /* `sheet()` formatı özü seçir — sosial profil varsa kimlik kartı. */
+    $('doc').innerHTML = DOCGEN.sheet(d, { idPrefix: 'vw', verified: true }).svg;
     $('doc').hidden = false;
     $('vwBar').hidden = false;
     $('vwCta').hidden = false;
     document.title = d.title + ' — ' + d.regNo;
+
+    /* Sosial kimlik kartının profil şəkli. Sənəd XARİCİ şəkil saxlaya bilməz
+       (PNG ixracı kətandan keçir və kənar link itərdi), ona görə şəkil
+       `data:` URI-yə çevrilib vərəq YENİDƏN çəkilir. Gəlməsə kart siluetlə
+       qalır — hazırkı görünüş onsuz da düzgündür. */
+    if (d.avatarUrl) loadAvatar(d);
 
     loadChain(d.regNo);
 
     /* iOS `navigator.share()` jest tapşırığının içində çağırılmalıdır,
        rasterləşdirmə isə asinxrondur — story şəklini indidən hazırlayırıq. */
     if (ZEXPORT.canShareFiles()) {
-      ZEXPORT.pngBlob(DOCGEN.story(d, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+      var sh0 = DOCGEN.share(d, { idPrefix: 'sh' });
+      ZEXPORT.pngBlob(sh0.svg, sh0.w, sh0.h, 1)
         .then(function (b) { storyBlob = b; })
         .catch(function () { storyBlob = null; });
     }
   }
 
   var storyBlob = null;
+
+  /* Şəkil öz serverimizdən gəlir (kontroller onu sabit `image/jpeg` başlığı ilə
+     axıdır), ona görə CORS problemi yoxdur.
+
+     `d.avatarUrl` yalnız ŞƏKLİN VARLIĞININ göstəricisi kimi işlədilir; sorğu
+     NİSBİ yola gedir. Səbəb: `avatarUrl` `APP_URL`-dan qurulur və o, saytın
+     real host-undan fərqlənə bilər (fərqli port, arxa plan domeni) — belədə
+     mütləq ünvan başqa mənşəyə düşərdi. Marşrut sabitdir: /r/{regNo}/avatar.jpg */
+  function loadAvatar(d) {
+    fetch('/r/' + encodeURIComponent(d.regNo) + '/avatar.jpg', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.blob() : Promise.reject(); })
+      .then(function (b) {
+        return new Promise(function (res, rej) {
+          var fr = new FileReader();
+          fr.onload = function () { res(fr.result); };
+          fr.onerror = rej;
+          fr.readAsDataURL(b);
+        });
+      })
+      .then(function (uri) {
+        if (doc !== d) return;                 /* aralıqda başqa sənəd açılıb */
+        d.avatar = uri;
+        $('doc').innerHTML = DOCGEN.sheet(d, { idPrefix: 'vw', verified: true }).svg;
+        if (ZEXPORT.canShareFiles()) {
+          var sh1 = DOCGEN.share(d, { idPrefix: 'sh' });
+          ZEXPORT.pngBlob(sh1.svg, sh1.w, sh1.h, 1)
+            .then(function (b) { storyBlob = b; })
+            .catch(function () { storyBlob = null; });
+        }
+      })
+      .catch(function () { /* şəkilsiz kart tam işlək sənəddir */ });
+  }
 
   /* ---------------- cavab zənciri ----------------
      Serverdən gələn siyahı `reply_root_id` üzərindən bir SELECT-lə qurulur.
@@ -295,14 +335,16 @@
   function bindBar() {
     $('vwPdf').onclick = function () {
       toast('PDF hazırlanır…');
-      ZEXPORT.pdfBlob(DOCGEN.a4(doc, { idPrefix: 'ex' }), DOCGEN.W, DOCGEN.H, 3, doc.regNo)
+      (function () { var e = DOCGEN.sheet(doc, { idPrefix: 'ex' });
+      return ZEXPORT.pdfBlob(e.svg, e.w, e.h, 3, doc.regNo); })()
         .then(function (b) { ZEXPORT.saveBlob(b, fileName('', 'pdf')); toast('PDF yükləndi'); })
         .catch(function () { toast('PDF yaratmaq alınmadı', 'err'); });
     };
 
     $('vwPng').onclick = function () {
       toast('Şəkil hazırlanır…');
-      ZEXPORT.pngBlob(DOCGEN.a4(doc, { idPrefix: 'ex' }), DOCGEN.W, DOCGEN.H, 3)
+      (function () { var e = DOCGEN.sheet(doc, { idPrefix: 'ex' });
+      return ZEXPORT.pngBlob(e.svg, e.w, e.h, 3); })()
         .then(function (b) { ZEXPORT.saveBlob(b, fileName('', 'png')); toast('Yükləndi'); })
         .catch(function () { toast('Şəkli yaratmaq alınmadı', 'err'); });
     };
@@ -320,7 +362,8 @@
         return;
       }
       toast('Şəkil hazırlanır…');
-      ZEXPORT.pngBlob(DOCGEN.story(doc, { idPrefix: 'sh' }), DOCGEN.STORY_W, DOCGEN.STORY_H, 1)
+      (function () { var e = DOCGEN.share(doc, { idPrefix: 'sh' });
+      return ZEXPORT.pngBlob(e.svg, e.w, e.h, 1); })()
         .then(function (b) {
           if (!ZEXPORT.canShareFiles()) return fallback(b);
           return ZEXPORT.shareFile(b, name, 'image/png', shareMeta()).catch(function (e) {

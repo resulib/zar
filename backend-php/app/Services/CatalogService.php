@@ -14,15 +14,20 @@ use Illuminate\Support\Facades\Cache;
  * Kataloq hər səhifə açılışında oxunur, ona görə keşlənir; admin paneldəki
  * hər dəyişiklik {@see self::forget()} ilə keşi sıfırlayır.
  *
- * Yük DÖRD açara bölünür. Cavab şablonları `templates` açarına düşsə,
- * `applyCatalog()` onları `window.TEMPLATES`-ə tökər, ana səhifənin kateqoriya
- * zolağı və `catsOf`/`tplsOf` süzgəcləri sınardı. Ayırma məhz bunun üçündür.
+ * Yük ALTI açara bölünür. Cavab şablonları və sosial kimlik kartları
+ * `templates` açarına düşsə, `applyCatalog()` onları `window.TEMPLATES`-ə
+ * tökər, ana səhifənin kateqoriya zolağı və `catsOf`/`tplsOf` süzgəcləri
+ * sınardı. Ayırma məhz bunun üçündür.
+ *
+ * Cavablar şablonun öz sütunu (`reply_kind`) ilə, sosial kartlar isə
+ * KATEQORİYASININ `is_social` bayrağı ilə ayrılır: `social_kind` boş ola
+ * bilər (kart hər iki platformaya uyğundursa), ona görə o, ayırıcı deyil.
  */
 class CatalogService
 {
     /* Yükün forması dəyişdiyi üçün açar da yenilənir — köhnə keşdə
-       `replies` yoxdur və sayt cavab kataloqunu boş görərdi. */
-    public const CACHE_KEY = 'catalog:v2';
+       `socialCards` yoxdur və sayt sosial kartları boş görərdi. */
+    public const CACHE_KEY = 'catalog:v3';
 
     /** @return array<string, list<array<string, mixed>>> */
     public function payload(): array
@@ -33,6 +38,7 @@ class CatalogService
     public static function forget(): void
     {
         Cache::forget(self::CACHE_KEY);
+        Cache::forget('catalog:v2');
         Cache::forget('catalog:v1');
     }
 
@@ -49,25 +55,39 @@ class CatalogService
             ->ordered()
             ->get();
 
-        $cats = function (bool $reply) use ($categories): array {
+        $socialCatIds = $categories->filter(fn (Category $c): bool => (bool) $c->is_social)
+            ->pluck('id')->all();
+
+        /* 'main' | 'reply' | 'social' — hər kateqoriya və şablon dəqiq birinə düşür. */
+        $catBucket = static fn (Category $c): string => $c->is_reply
+            ? 'reply'
+            : ((bool) $c->is_social ? 'social' : 'main');
+
+        $tplBucket = static fn (Template $t): string => $t->isReply()
+            ? 'reply'
+            : (in_array($t->category_id, $socialCatIds, true) ? 'social' : 'main');
+
+        $cats = function (string $bucket) use ($categories, $catBucket): array {
             return $categories
-                ->filter(fn (Category $c): bool => $c->is_reply === $reply)
+                ->filter(fn (Category $c): bool => $catBucket($c) === $bucket)
                 ->map(fn (Category $c): array => $c->toCatalogArray())
                 ->values()->all();
         };
 
-        $tpls = function (bool $reply) use ($templates, $slugs): array {
+        $tpls = function (string $bucket) use ($templates, $slugs, $tplBucket): array {
             return $templates
-                ->filter(fn (Template $t): bool => $t->isReply() === $reply)
+                ->filter(fn (Template $t): bool => $tplBucket($t) === $bucket)
                 ->map(fn (Template $t): array => $t->toCatalogArray($slugs[$t->category_id] ?? null))
                 ->values()->all();
         };
 
         return [
-            'categories'      => $cats(false),
-            'templates'       => $tpls(false),
-            'replyCategories' => $cats(true),
-            'replies'         => $tpls(true),
+            'categories'       => $cats('main'),
+            'templates'        => $tpls('main'),
+            'replyCategories'  => $cats('reply'),
+            'replies'          => $tpls('reply'),
+            'socialCategories' => $cats('social'),
+            'socialCards'      => $tpls('social'),
         ];
     }
 }

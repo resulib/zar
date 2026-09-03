@@ -26,7 +26,21 @@ require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
 require __DIR__ . '/../app/Support/Ai/OpenAiClient.php';
 require __DIR__ . '/../app/Support/Ai/TemplateBrief.php';
+require __DIR__ . '/../app/Support/Sosial/SosialProvider.php';
+require __DIR__ . '/../app/Support/Sosial/ProfilUrl.php';
+require __DIR__ . '/../app/Support/Sosial/PublicProvider.php';
+require __DIR__ . '/../app/Support/Sosial/Sosial.php';
+require __DIR__ . '/../app/Support/Dossier/Dossier.php';
+require __DIR__ . '/../app/Support/Dossier/Byuro.php';
+require __DIR__ . '/../app/Support/Dossier/Metn.php';
+require __DIR__ . '/../app/Support/Dossier/Sxem.php';
+require __DIR__ . '/../app/Support/Dossier/Rey.php';
 
+use App\Support\Dossier\Byuro;
+use App\Support\Dossier\Dossier as IsQovlugu;
+use App\Support\Dossier\Metn;
+use App\Support\Dossier\Rey;
+use App\Support\Dossier\Sxem;
 use App\Support\Moderation;
 use App\Support\Packs;
 use App\Support\Payments\EpointProvider;
@@ -38,6 +52,9 @@ use App\Support\Sanitizer;
 use App\Support\Answers;
 use App\Support\Devet;
 use App\Support\TemplateSchema;
+use App\Support\Sosial\ProfilUrl;
+use App\Support\Sosial\PublicProvider;
+use App\Support\Sosial\Sosial;
 use App\Support\Ai\OpenAiClient;
 use App\Support\Ai\TemplateBrief;
 
@@ -676,6 +693,193 @@ check('təkrar qeyd atılır', $an['values']['notes'] === 'Birinci qeyd', $an['v
 check('sxem serverin öz yoxlamasından keçir',
     TemplateSchema::validate($fields, [], null, '{to}') === [],
     TemplateSchema::validate($fields, [], null, '{to}'));
+
+/* ==================================================================
+   Sosial kimlik kartı — link parsinqi, say formatı, kənar mənbə
+   ================================================================== */
+echo "\nSosial kimlik kartı\n";
+
+$HOSTS = [
+    'tiktok'    => ['tiktok.com', 'www.tiktok.com', 'vm.tiktok.com', 'm.tiktok.com'],
+    'instagram' => ['instagram.com', 'www.instagram.com', 'instagr.am'],
+];
+$NAMES = ['tiktok' => 'TikTok', 'instagram' => 'Instagram'];
+$CFG   = ['platforms' => ['tiktok', 'instagram'], 'limits' => ['name' => 40, 'followers' => 999999999]];
+
+$p = static fn (mixed $t, ?string $fb = null): ?array => ProfilUrl::parse($t, $HOSTS, $fb);
+
+check('tam TikTok linki', $p('https://www.tiktok.com/@aysel_92') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('sxemsiz link və sorğu sətri',
+    $p('tiktok.com/@aysel_92?is_from_webapp=1') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('video linkindən istifadəçi adı',
+    $p('https://www.tiktok.com/@scout2015/video/6718335390845095173')['username'] === 'scout2015');
+check('Instagram linki və sondakı kəsik',
+    $p('https://instagram.com/aysel.92/') === ['platform' => 'instagram', 'username' => 'aysel.92']);
+check('paylaşım linki profil deyil', $p('https://www.instagram.com/p/CXY123/') === null);
+check('naməlum host rədd edilir', $p('https://facebook.com/aysel') === null);
+check('boşluqlu mətn ad sayılmır', $p('salam dunya', 'tiktok') === null);
+check('«@ad» seçilmiş platforma ilə',
+    $p('@aysel_92', 'tiktok') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('platforma seçilməyibsə «@ad» rədd edilir', $p('@aysel_92') === null);
+check('boş giriş', $p('') === null && $p(null) === null);
+check('ad təmizlənir', ProfilUrl::cleanUsername('@.Ay sel_92!.') === 'Aysel_92');
+
+/* `sosialSayi()` güzgüsü — frontend/doc.js. İki tərəf ayrılsa, endirilmiş PNG
+   ilə reyestrdəki nüsxə fərqlənər. */
+check('say: minlikdən aşağı olduğu kimi', Sosial::sayi(999) === '999');
+check('say: minlik K ilə', Sosial::sayi(12437) === '12,4 K');
+check('say: tam K sonda sıfır yazmır', Sosial::sayi(12000) === '12 K');
+check('say: milyon M ilə', Sosial::sayi(686358095) === '686,4 M');
+check('say: naməlum tire verir (null sıfır DEYİL)', Sosial::sayi(null) === '—');
+check('say: mənfi və mətn tire verir', Sosial::sayi(-5) === '—' && Sosial::sayi('abc') === '—');
+
+$vals = Sosial::vals(['platform' => 'tiktok', 'username' => 'aysel_92', 'followers' => 12437], $NAMES);
+check('vals: istifadəçi adı @ ilə', $vals['username'] === '@aysel_92', $vals);
+check('vals: platformanın görünən adı', $vals['platform'] === 'TikTok');
+check('vals: olmayan sahə tire', $vals['posts'] === '—' && $vals['name'] === '—');
+
+check('clean: platformasız blok atılır', Sosial::clean(['username' => 'a'], $CFG) === []);
+check('clean: naməlum platforma atılır',
+    Sosial::clean(['platform' => 'twitter', 'username' => 'a'], $CFG) === []);
+$cl = Sosial::clean([
+    'platform' => 'instagram', 'username' => '@Ay sel.92', 'name' => '  Aysel   M.  ',
+    'followers' => '12437', 'posts' => -3, 'verified' => true, 'bio' => 'gizli',
+], $CFG);
+check('clean: ad təmizlənir', $cl['username'] === 'Aysel.92', $cl);
+check('clean: boşluqlar yığılır', $cl['name'] === 'Aysel M.', $cl);
+check('clean: rəqəm sətri ədədə çevrilir', $cl['followers'] === 12437, $cl);
+check('clean: mənfi say qəbul edilmir', ! array_key_exists('posts', $cl), $cl);
+check('clean: bio sənədə düşmür', ! array_key_exists('bio', $cl), $cl);
+check('texts: moderasiyaya ad və istifadəçi adı gedir',
+    Sosial::texts($cl) === ['Aysel.92', 'Aysel M.'], Sosial::texts($cl));
+
+/* PublicProvider — saxta HTTP ilə (OpenAiClient testindəki eyni üsul) */
+$EP = ['tiktok_oembed' => 'https://x/oembed', 'instagram_web' => 'https://x/ig', 'instagram_app_id' => '1'];
+$calls = [];
+$reply = ['status' => 200, 'body' => '{}'];
+$http  = static function (string $url, array $h, int $t) use (&$calls, &$reply): array {
+    $calls[] = ['url' => $url, 'headers' => $h];
+    return $reply;
+};
+
+$prov  = new PublicProvider($EP, 5, $http);
+$reply = ['status' => 200, 'body' => json_encode(['author_name' => 'Aysel M.'])];
+check('tiktok: yalnız görünən ad qayıdır', $prov->fetch('tiktok', 'aysel_92') === ['name' => 'Aysel M.']);
+check('tiktok: profil ünvanı kodlanaraq göndərilir',
+    str_contains($calls[0]['url'], rawurlencode('https://www.tiktok.com/@aysel_92')), $calls[0]['url']);
+
+$reply = ['status' => 200, 'body' => json_encode(['data' => ['user' => [
+    'full_name' => 'Aysel', 'biography' => 'salam', 'is_verified' => true, 'is_private' => false,
+    'profile_pic_url_hd' => 'https://cdn/x.jpg',
+    'edge_followed_by' => ['count' => 12437], 'edge_owner_to_timeline_media' => ['count' => 284],
+]]])];
+$ig = $prov->fetch('instagram', 'aysel');
+check('instagram: tam dəst açılır',
+    $ig['name'] === 'Aysel' && $ig['followers'] === 12437 && $ig['posts'] === 284
+    && $ig['verified'] === true && $ig['avatarUrl'] === 'https://cdn/x.jpg', $ig);
+check('instagram: app-id başlığı göndərilir',
+    in_array('x-ig-app-id: 1', end($calls)['headers'], true), end($calls)['headers']);
+
+/* Uğursuzluq XƏTA DEYİL — kartın yaradılması dayanmamalıdır. */
+$reply = ['status' => 403, 'body' => 'Forbidden'];
+check('403 boş massiv verir, istisna atmır', $prov->fetch('tiktok', 'aysel_92') === []);
+$reply = ['status' => 200, 'body' => 'not json'];
+check('pozuq JSON boş massiv verir', $prov->fetch('instagram', 'aysel') === []);
+$boom = new PublicProvider($EP, 5, static function (): array { throw new RuntimeException('şəbəkə'); });
+check('HTTP istisnası udulur', $boom->fetch('instagram', 'aysel') === []);
+check('naməlum platforma sorğu etmir', $prov->fetch('twitter', 'aysel') === []);
+
+echo "\nİş qovluğu\n";
+
+check('slug formatı tanınır', IsQovlugu::isSlug('2026-0847'));
+check('səhv slug rədd olunur', ! IsQovlugu::isSlug('2026/0847') && ! IsQovlugu::isSlug('abc-1234'));
+check('slug nömrəyə çevrilir', IsQovlugu::nomre('2026-0847') === '2026/0847');
+check('nömrə sluga çevrilir', IsQovlugu::slug('2026/0847') === '2026-0847');
+check('token 22 simvoldur', strlen(IsQovlugu::token()) === 22 && IsQovlugu::isToken(IsQovlugu::token()));
+check('səhv token rədd olunur', ! IsQovlugu::isToken('qisa') && ! IsQovlugu::isToken(str_repeat('a', 30)));
+check('tokenlər təkrarlanmır', IsQovlugu::token() !== IsQovlugu::token());
+
+/* «0 dəqiqəyə həll etdi» sertifikatda saxta görünür — ən azı 1 dəqiqə. */
+check('dəqiqə yuxarı yuvarlaqlaşır', IsQovlugu::deqiqe(61) === 2, IsQovlugu::deqiqe(61));
+check('sıfır saniyə 1 dəqiqədir', IsQovlugu::deqiqe(0) === 1 && IsQovlugu::deqiqe(null) === 1);
+check('sertifikat linki qurulur',
+    IsQovlugu::certLink('https://x.az/', '2026-0847', str_repeat('a', 22))
+    === 'https://x.az/is/2026-0847/hesabat/' . str_repeat('a', 22));
+
+echo "\nİş qovluğu — fiktiv qurum\n";
+
+/* Mətn hüquqi tələbdir, ona görə hərfi yoxlanılır. Sinif sabitidir və
+   config deyil: config `.env`-dən oxuna və idarə panelindən boşaldıla bilər. */
+check('məcburi qeydin mətni dəqiqdir',
+    Byuro::QEYD === 'FİKTİV OYUN SƏNƏDİ — yalnız əyləncə məqsədi ilə hazırlanmışdır. '
+        . 'Real hüquqi və ya rəsmi sənəd deyil.', Byuro::QEYD);
+check('qısa forma da fiktivliyi deyir',
+    str_contains(Byuro::QEYD_QISA, 'FİKTİV') && str_contains(Byuro::QEYD_QISA, 'DEYİL'));
+check('büro adı uydurma olduğunu özü deyir', str_contains(Byuro::AD, 'FİKTİV'));
+check('büro kodu AFİB-dir', Byuro::QISA === 'AFİB');
+check('möhürdə «FİKTİV» var', in_array('FİKTİV', Byuro::MOHUR, true), Byuro::MOHUR);
+
+check('qurum sətirləri üç dənədir', count(Byuro::qurumSetirleri()) === 3);
+check('birinci sətir büronun tam adıdır', Byuro::qurumSetirleri()[0] === Byuro::AD);
+
+$bas = Byuro::verqBasligi('AFİB-2026/0847');
+check('vərəq başlığı büro kodu daşıyır', str_contains($bas[0], 'AFİB'), $bas[0]);
+check('vərəq başlığı iş nömrəsini daşıyır', str_contains($bas[1], 'AFİB-2026/0847'), $bas[1]);
+
+check('iş nömrəsi büro kodu ilə qurulur',
+    Byuro::isNomresi('2026-0847') === 'AFİB-2026/0847', Byuro::isNomresi('2026-0847'));
+check('səhv slug boş nömrə verir', Byuro::isNomresi('pis-slug') === '');
+
+echo "\nİş qovluğu — sənəd mətni\n";
+
+check('teqlər escape olunur',
+    Metn::inline('<b>pis</b>') === '&lt;b&gt;pis&lt;/b&gt;', Metn::inline('<b>pis</b>'));
+check('qalın işarəsi açılır', Metn::inline('bir **iki** üç') === 'bir <b>iki</b> üç');
+check('qırmızı qeyd açılır',
+    Metn::inline('[[Qeyd:]] mətn') === '<span class="redpen">Qeyd:</span> mətn');
+check('sətir sonu <br> olur', Metn::inline("bir\niki") === 'bir<br>iki');
+check('əvəzləmə işləyir', Metn::inline('{{mustentiq}} gəldi', ['mustentiq' => 'Elçin']) === 'Elçin gəldi');
+/* Əvəzləmə ƏN AXIRDA gedir: dəyərin içindəki işarə markup kimi oxunmamalıdır. */
+check('əvəzlənən dəyər escape olunur',
+    Metn::inline('{{ad}}', ['ad' => '<i>x</i>']) === '&lt;i&gt;x&lt;/i&gt;');
+check('dəyərin içindəki qalın işarəsi açılmır',
+    Metn::inline('{{ad}}', ['ad' => '**x**']) === '**x**');
+check('qalın içindəki əvəzləmə işləyir',
+    Metn::inline('**{{ad}}**', ['ad' => 'Elçin']) === '<b>Elçin</b>');
+check('massiv boş sətir verir', Metn::inline([]) === '');
+
+echo "\nİş qovluğu — sxem süzgəci\n";
+
+check('adi SVG keçir', Sxem::temizle('<svg><rect x="1"/></svg>') === '<svg><rect x="1"/></svg>');
+check('SVG olmayan rədd olunur', Sxem::temizle('<div>x</div>') === '' && Sxem::temizle('salam') === '');
+check('script atılır',
+    strpos(Sxem::temizle('<svg><script>alert(1)</script><rect/></svg>'), 'script') === false);
+check('hadisə atributu atılır',
+    strpos(Sxem::temizle('<svg><rect onclick="x()"/></svg>'), 'onclick') === false);
+check('kənar href atılır',
+    strpos(Sxem::temizle('<svg><a href="https://pis.example">x</a></svg>'), 'pis.example') === false);
+check('daxili istinad qalır',
+    strpos(Sxem::temizle('<svg><use href="#a"/></svg>'), '#a') !== false ||
+    Sxem::temizle('<svg><rect fill="url(#a)"/></svg>') === '<svg><rect fill="url(#a)"/></svg>');
+check('foreignObject atılır',
+    strpos(Sxem::temizle('<svg><foreignObject><b>x</b></foreignObject></svg>'), 'foreignObject') === false);
+check('kənar şəkil atılır',
+    strpos(Sxem::temizle('<svg><image href="https://pis.example/a.png"/></svg>'), 'image') === false);
+
+echo "\nİş qovluğu — yekun rəy\n";
+
+$duz = [0, 1, 1];
+check('düzgün cavab tanınır', Rey::yoxla([0, 1, 1], $duz) === ['ok' => true, 'tam' => true]);
+check('səhv cavab rədd olunur', Rey::yoxla([1, 1, 1], $duz) === ['ok' => false, 'tam' => true]);
+/* Natamam cavab cəhd sayılmır — yoxsa səhvən göndərilən forma cəhd yeyərdi. */
+check('natamam cavab tam deyil', Rey::yoxla([0, 1], $duz) === ['ok' => false, 'tam' => false]);
+check('boş cavab tam deyil', Rey::yoxla([], $duz) === ['ok' => false, 'tam' => false]);
+check('mətn cavab tam deyil', Rey::yoxla(['a', 'b', 'c'], $duz)['tam'] === false);
+check('artıq cavablar kəsilir', Rey::yoxla([0, 1, 1, 9, 9], $duz)['ok'] === true);
+check('normalizasiya sual sayına uyğundur', Rey::normalize([2], 3) === [2, null, null]);
+/* Nəticə HANSI bəndin səhv olduğunu heç vaxt açmır. */
+check('nəticədə səhv bəndin indeksi yoxdur',
+    array_keys(Rey::yoxla([1, 0, 0], $duz)) === ['ok', 'tam']);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

@@ -18,7 +18,7 @@ class Document extends Model
     protected $fillable = [
         'reg_no', 'user_id', 'template_id', 'title', 'to_name', 'from_name',
         'powers', 'penalty', 'preamble', 'date_label', 'layout', 'palette', 'tone',
-        'labels', 'extra', 'status', 'views', 'published_at',
+        'labels', 'extra', 'avatar_ready', 'status', 'views', 'published_at',
         'expires_at', 'cancelled_at', 'cancel_reason',
         'reply_to_id', 'reply_root_id', 'reply_depth', 'reply_topic',
     ];
@@ -28,6 +28,7 @@ class Document extends Model
         return [
             'labels'       => 'array',
             'extra'        => 'array',
+            'avatar_ready' => 'boolean',
             'views'        => 'integer',
             'reply_depth'  => 'integer',
             'published_at' => 'datetime',
@@ -104,6 +105,18 @@ class Document extends Model
     }
 
     /** Frontend-in gözlədiyi forma — Node backend-i ilə eyni müqavilə. */
+    /**
+     * Kartın profil şəkli. Şəkil public kökdən kənarda fayldır və kontroller
+     * sabit `image/jpeg` başlığı ilə axıdır — dəvətnamənin OG şəkli ilə eyni
+     * model. Şəkil yoxdursa null qayıdır və kart siluetlə çəkilir.
+     */
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar_ready
+            ? rtrim((string) config('zarafat.public_url'), '/') . '/r/' . $this->reg_no . '/avatar.jpg'
+            : null;
+    }
+
     public function toApiArray(bool $withOwner = false): array
     {
         $labels = $this->labels ?? [];
@@ -133,6 +146,12 @@ class Document extends Model
             'signTitle'    => $extra['signTitle'] ?? null,
             'signOrg'      => $extra['signOrg']   ?? null,
             'share'        => $extra['share']     ?? null,
+
+            /* Sosial kimlik kartı. `social` blokunu `doc.js socialRows()` oxuyur;
+               `avatarUrl` isə şəklin ÖZÜ deyil, onu axıdan ünvandır — base64
+               blob hər API cavabını şişirdərdi. */
+            'social'       => $extra['social']    ?? null,
+            'avatarUrl'    => $this->avatarUrl(),
             'state'        => $this->state(),
             'expiresAt'    => $this->expires_at?->getTimestampMs(),
             'cancelledAt'  => $this->cancelled_at?->getTimestampMs(),

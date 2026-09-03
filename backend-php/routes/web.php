@@ -18,6 +18,14 @@ Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
     ->middleware('throttle:registry')
     ->name('registry.show');
 
+/* Sosial kimlik kartının profil şəkli. Public kökdən kənardakı fayl sabit
+   `image/jpeg` başlığı ilə axıdılır — dəvətnamənin /d/{token}/on.jpg yolu ilə
+   eyni model. */
+Route::get('/r/{regNo}/avatar.jpg', [Api\SosialController::class, 'showAvatar'])
+    ->where('regNo', '[A-Za-z]{2,4}-\d{4}-\d{4}')
+    ->middleware('throttle:registry')
+    ->name('registry.avatar');
+
 /*
 |--------------------------------------------------------------------------
 | Dəvətnamələr — ayrı bölmə, ayrı görünüş
@@ -53,6 +61,43 @@ Route::get('/d/{token}', [Web\DevetController::class, 'show'])
 
 /*
 |--------------------------------------------------------------------------
+| İş qovluğu — ayrı bölmə, ayrı görünüş
+|--------------------------------------------------------------------------
+| Saytın digər məhsulu ilə heç bir link paylaşmır. Yollar neytraldır və
+| `robots.txt` bunları indeksləməyə bağlayır.
+*/
+Route::get('/is', [Web\DossierController::class, 'index'])->name('dossier.index');
+
+/* Sabit yollar slug marşrutundan ƏVVƏL elan olunur. */
+Route::get('/is/qaydalar', [Web\DossierController::class, 'terms'])->name('dossier.terms');
+
+/* Şəkil marşrutu sertifikat səhifəsindən ƏVVƏL elan olunur, yoxsa
+   `.../on.jpg` ayrıca seqment kimi tutulmazdı. */
+Route::get('/is/{slug}/hesabat/{token}/on.jpg', [Web\DossierController::class, 'certificateImage'])
+    ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'token' => '[A-Za-z0-9]{22}'])
+    ->middleware('throttle:dossier-read')
+    ->name('dossier.cert.image');
+
+Route::get('/is/{slug}/hesabat/{token}', [Web\DossierController::class, 'certificate'])
+    ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'token' => '[A-Za-z0-9]{22}'])
+    ->middleware('throttle:dossier-read')
+    ->name('dossier.cert');
+
+/* Oyun təqdimat səhifəsindən ƏVVƏL elan olunur: `/is/{slug}/qovluq`
+   iki seqmentdir və slug marşrutu onu onsuz da tutmazdı, amma sıra
+   oxunuşu asanlaşdırır — geniş yol axırda gəlir. */
+Route::get('/is/{slug}/qovluq', [Web\DossierController::class, 'play'])
+    ->where('slug', '[0-9]{4}-[0-9]{4}')
+    ->middleware('throttle:dossier-read')
+    ->name('dossier.play');
+
+Route::get('/is/{slug}', [Web\DossierController::class, 'show'])
+    ->where('slug', '[0-9]{4}-[0-9]{4}')
+    ->middleware('throttle:dossier-read')
+    ->name('dossier.show');
+
+/*
+|--------------------------------------------------------------------------
 | API — frontend ilə eyni müqavilə (Node backend-i ilə uyğun)
 |--------------------------------------------------------------------------
 | Bu marşrutlar `web` qrupundadır: sessiya, cookie və CSRF qorunması işləyir.
@@ -70,6 +115,11 @@ Route::prefix('api')->group(function (): void {
     Route::post('/documents/{regNo}/publish', [Api\DocumentController::class, 'publish'])->middleware('throttle:documents');
     Route::post('/documents/{regNo}/cancel', [Api\DocumentController::class, 'cancel'])->middleware('throttle:documents');
 
+    /* Sosial kimlik kartı. `profil` kənar sorğu edir — ona görə ayrıca, daha
+       dar limit altındadır; avatar yükləmə isə adi sənəd yazma yoludur. */
+    Route::post('/sosial/profil', [Api\SosialController::class, 'profil'])->middleware('throttle:sosial');
+    Route::post('/documents/{regNo}/avatar', [Api\SosialController::class, 'storeAvatar'])->middleware('throttle:documents');
+
     Route::get('/registry/{regNo}', [Api\RegistryController::class, 'show'])->middleware('throttle:registry');
     // Cavab zənciri — /r/{regNo} səhifəsindəki «Sənəd tarixçəsi» bölməsi.
     Route::get('/registry/{regNo}/zencir', [Api\RegistryController::class, 'chain'])->middleware('throttle:registry');
@@ -82,6 +132,15 @@ Route::prefix('api')->group(function (): void {
     Route::post('/payments/callback', [Api\PaymentController::class, 'callback']);
 
     Route::post('/reports', [Api\ReportController::class, 'store'])->middleware('throttle:reports');
+
+    /* İş qovluğu. Sənədin məzmunu YALNIZ `sened` ucundan çıxır və hər
+       çağırışda giriş yoxlanılır — ödəniş qatı yalnız görünüş deyil. */
+    Route::post('/is/{slug}/ac',           [Api\DossierController::class, 'open'])->middleware('throttle:dossier');
+    Route::get('/is/{slug}/sened/{id}',    [Api\DossierController::class, 'document'])->middleware('throttle:dossier-read');
+    Route::post('/is/{slug}/qeyd/{id}',    [Api\DossierController::class, 'pin'])->middleware('throttle:dossier');
+    Route::post('/is/{slug}/kilid/{id}',   [Api\DossierController::class, 'unlock'])->middleware('throttle:dossier-kilid');
+    Route::post('/is/{slug}/rey',          [Api\DossierController::class, 'verdict'])->middleware('throttle:dossier-rey');
+    Route::post('/is/{slug}/sertifikat',   [Api\DossierController::class, 'certificate'])->middleware('throttle:dossier');
 
     /* Dəvətnamələr. Yazma yolları `devet`, açıq oxuma `devet-read`,
        qonaq cavabı isə ayrıca `rsvp` limiti ilə gedir — cavab uc nöqtəsi
