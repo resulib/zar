@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Dossier;
 use App\Models\DossierDocument;
 use App\Models\DossierQuestion;
+use App\Support\Dossier\BlokSxemi;
 use App\Support\Sanitizer;
 use Illuminate\Database\Seeder;
 
@@ -43,7 +44,6 @@ class DossierSeeder extends Seeder
             return;
         }
 
-        $types = (array) config('dossier.types');
         $sayi = 0;
 
         foreach ($files as $file) {
@@ -55,14 +55,58 @@ class DossierSeeder extends Seeder
                 continue;
             }
 
-            $sayi += $this->qovluq($data, $types) ? 1 : 0;
+            /* Blok quruluşu bazaya YÜKLƏNMƏZDƏN ƏVVƏL yoxlanılır: qovluqları
+               əl ilə yazan adam səhv etsə, bunu dərhal bilməli, render zamanı
+               ağ ekran görməməlidir. Bir səhv varsa fayl ÜMUMİYYƏTLƏ yüklənmir
+               — yarımçıq qovluq yüklənmiş qovluqdan pisdir. */
+            if (! $this->sxemYoxla($data)) {
+                continue;
+            }
+
+            $sayi += $this->qovluq($data) ? 1 : 0;
         }
 
         $this->command?->info($sayi . ' iş qovluğu seed edildi.');
     }
 
-    /** @param array<string,mixed> $data @param list<string> $types */
-    protected function qovluq(array $data, array $types): bool
+    /**
+     * Faylın bütün sənədlərini `BlokSxemi` ilə yoxlayır.
+     *
+     * Xətalar birdən yazılır — bir qovluqda on səhv varsa, onunu birdən
+     * görmək lazımdır, bir-bir deyil.
+     *
+     * @param array<string,mixed> $data
+     */
+    protected function sxemYoxla(array $data): bool
+    {
+        $err = [];
+        $xeb = [];
+
+        foreach ((array) ($data['documents'] ?? []) as $sened) {
+            [$e, $x] = BlokSxemi::yoxla((array) $sened);
+            $err = array_merge($err, $e);
+            $xeb = array_merge($xeb, $x);
+        }
+
+        foreach ($xeb as $x) {
+            $this->command?->warn('  ~ ' . $data['slug'] . ' ' . $x);
+        }
+
+        if ($err === []) {
+            return true;
+        }
+
+        $this->command?->error($data['slug'] . ' — blok quruluşunda ' . count($err) . ' səhv, fayl yüklənmədi:');
+
+        foreach ($err as $e) {
+            $this->command?->error('    ' . $e);
+        }
+
+        return false;
+    }
+
+    /** @param array<string,mixed> $data */
+    protected function qovluq(array $data): bool
     {
         $dossier = Dossier::query()->firstOrNew(['slug' => (string) $data['slug']]);
         $yeni = ! $dossier->exists;
@@ -94,26 +138,20 @@ class DossierSeeder extends Seeder
 
         $dossier->save();
 
-        $this->senedler($dossier, (array) $data['documents'], $types);
+        $this->senedler($dossier, (array) $data['documents']);
         $this->suallar($dossier, (array) ($data['questions'] ?? []));
 
         return true;
     }
 
-    /** @param list<array<string,mixed>> $rows @param list<string> $types */
-    protected function senedler(Dossier $dossier, array $rows, array $types): void
+    /** @param list<array<string,mixed>> $rows */
+    protected function senedler(Dossier $dossier, array $rows): void
     {
         $qalan = $dossier->documents()->pluck('id', 'sort')->all();
 
         foreach (array_values($rows) as $i => $row) {
             $sort = $i + 1;
-            $type = Sanitizer::pick($row['type'] ?? '', $types, '');
-
-            if ($type === '') {
-                $this->command?->error($dossier->slug . ' — naməlum sənəd növü: ' . (string) ($row['type'] ?? ''));
-
-                continue;
-            }
+            $kilid = (array) ($row['kilid'] ?? []);
 
             $doc = DossierDocument::query()->firstOrNew([
                 'dossier_id' => $dossier->id,
@@ -124,11 +162,11 @@ class DossierSeeder extends Seeder
                 'page'      => (string) ($row['page'] ?? ''),
                 'name'      => (string) ($row['name'] ?? ''),
                 'kind'      => (string) ($row['kind'] ?? ''),
-                'type'      => $type,
                 'is_locked' => (bool) ($row['locked'] ?? false),
                 'is_sample' => (bool) ($row['sample'] ?? false),
-                'lock_code' => (string) ($row['code'] ?? ''),
-                'lock_hint' => (string) ($row['hint'] ?? ''),
+                'lock_kind' => Sanitizer::pick($kilid['nov'] ?? 'reqem', BlokSxemi::KILID_NOV, 'reqem'),
+                'lock_code' => (string) ($kilid['kod'] ?? ''),
+                'lock_hint' => (string) ($kilid['ipucu'] ?? ''),
                 'content'   => (array) ($row['content'] ?? []),
             ])->save();
 

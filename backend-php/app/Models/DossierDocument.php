@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class DossierDocument extends Model
 {
     protected $fillable = [
-        'dossier_id', 'page', 'name', 'kind', 'type', 'sort',
-        'is_locked', 'is_sample', 'lock_code', 'lock_hint', 'content',
+        'dossier_id', 'page', 'name', 'kind', 'sort',
+        'is_locked', 'is_sample', 'lock_kind', 'lock_code', 'lock_hint', 'content',
     ];
 
     /**
@@ -57,7 +57,6 @@ class DossierDocument extends Model
             'page'   => (string) $this->page,
             'name'   => (string) $this->name,
             'kind'   => (string) $this->kind,
-            'type'   => (string) $this->type,
             'locked' => $this->isLockedFor($unlocked),
         ];
     }

@@ -71,6 +71,13 @@ Route::get('/is', [Web\DossierController::class, 'index'])->name('dossier.index'
 /* Sabit yollar slug marşrutundan ƏVVƏL elan olunur. */
 Route::get('/is/qaydalar', [Web\DossierController::class, 'terms'])->name('dossier.terms');
 
+/* Komponent qalereyası — YALNIZ İŞLƏYİCİLƏR ÜÇÜN.
+   Marşrut istehsalatda QEYDİYYATDAN KEÇMİR: ünvan orada mövcud deyil və
+   404 verir. Parolla qorumaqdansa bu daha etibarlıdır — unudulacaq parol yoxdur. */
+if (app()->environment(['local', 'testing']) || env('DOSSIER_GALLERY')) {
+    Route::get('/is/qalereya', [Web\DossierController::class, 'gallery'])->name('dossier.gallery');
+}
+
 /* Şəkil marşrutu sertifikat səhifəsindən ƏVVƏL elan olunur, yoxsa
    `.../on.jpg` ayrıca seqment kimi tutulmazdı. */
 Route::get('/is/{slug}/hesabat/{token}/on.jpg', [Web\DossierController::class, 'certificateImage'])

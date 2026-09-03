@@ -116,20 +116,50 @@ class DossierService
         return ! $doc->is_locked || $p->marked('unlocked_ids', (int) $doc->id);
     }
 
-    /** Sənədin HTML gövdəsi. Yalnız bu metod məzmunu brauzerə buraxır. */
+    /**
+     * Sənədin HTML gövdəsi. Yalnız bu metod məzmunu brauzerə buraxır.
+     *
+     * Sənəd şablon deyil, blokların ardıcıllığıdır: burada heç bir növ
+     * seçilmir, `sened.blade.php` sadəcə siyahını gəzir.
+     */
     public function renderDocument(Dossier $dossier, DossierDocument $doc, DossierProgress $p): string
     {
         $bagli = ! $this->isUnlocked($p, $doc);
+        $c = (array) $doc->content;
+        $kagiz = (array) ($c['kagiz'] ?? []);
 
         return view('dossier.sened', [
-            'dossier' => $dossier,
-            'doc'     => $doc,
-            'c'       => (array) $doc->content,
-            'head'    => array_values((array) (($dossier->cover['paperHead'] ?? []) ?: [])),
-            'vals'    => $this->vals($p),
-            'bagli'   => $bagli,
-            'partial' => 'dossier.senedler.' . $doc->type,
+            'dossier'    => $dossier,
+            'doc'        => $doc,
+            'c'          => $c,
+            'bloklar'    => array_values((array) ($c['bloklar'] ?? [])),
+            'kagiz'      => $kagiz,
+            'kagizSinif' => self::kagizSinif($kagiz),
+            'egilme'     => isset($kagiz['egilme']) ? (float) $kagiz['egilme'] : null,
+            'mohurler'   => array_values((array) ($c['mohurler'] ?? [])),
+            'head'       => array_values((array) (($dossier->cover['paperHead'] ?? []) ?: [])),
+            'vals'       => $this->vals($p),
+            'bagli'      => $bagli,
         ])->render();
+    }
+
+    /** Kağızın CSS sinifləri — dərəcə bildirən effektlər sinif kimi verilir. */
+    public static function kagizSinif(array $kagiz): string
+    {
+        $s = [];
+
+        foreach (['kohnelme', 'kseroks'] as $k) {
+            $v = (int) ($kagiz[$k] ?? 0);
+            if ($v > 0) {
+                $s[] = 'kagiz-' . $k . '-' . min(3, $v);
+            }
+        }
+
+        if (! empty($kagiz['cirilma'])) {
+            $s[] = 'kagiz-cirilma-' . $kagiz['cirilma'];
+        }
+
+        return implode(' ', $s);
     }
 
     /** Sənəd mətnindəki `{{açar}}` əvəzləmələri. @return array<string,string> */

@@ -32,10 +32,12 @@ require __DIR__ . '/../app/Support/Sosial/PublicProvider.php';
 require __DIR__ . '/../app/Support/Sosial/Sosial.php';
 require __DIR__ . '/../app/Support/Dossier/Dossier.php';
 require __DIR__ . '/../app/Support/Dossier/Byuro.php';
+require __DIR__ . '/../app/Support/Dossier/BlokSxemi.php';
 require __DIR__ . '/../app/Support/Dossier/Metn.php';
 require __DIR__ . '/../app/Support/Dossier/Sxem.php';
 require __DIR__ . '/../app/Support/Dossier/Rey.php';
 
+use App\Support\Dossier\BlokSxemi;
 use App\Support\Dossier\Byuro;
 use App\Support\Dossier\Dossier as IsQovlugu;
 use App\Support\Dossier\Metn;
@@ -847,6 +849,106 @@ check('dəyərin içindəki qalın işarəsi açılmır',
 check('qalın içindəki əvəzləmə işləyir',
     Metn::inline('**{{ad}}**', ['ad' => 'Elçin']) === '<b>Elçin</b>');
 check('massiv boş sətir verir', Metn::inline([]) === '');
+
+/* Zədələnmiş və işarələnmiş mətn — oyun mexanikasıdır: mətnin hansı hissəsinin
+   itdiyi MƏLUMATDA dəqiq göstərilir, render qatı onu tanımır. */
+check('əl ilə əlavə açılır', Metn::inline('++söz++') === '<span class="elavesoz">söz</span>');
+check('üstündən xətt açılır', Metn::inline('~~söz~~') === '<span class="ustxett">söz</span>');
+check('oxunmaz hissə açılır', Metn::inline('((söz))') === '<span class="oxunmaz">söz</span>');
+check('dairəyə alınmış söz açılır', Metn::inline('%%söz%%') === '<span class="dairesoz">söz</span>');
+/* Tək mötərizə adi mətndir — «(on iki min)» kimi ifadələr pozulmamalıdır. */
+check('tək mötərizə toxunulmur', Metn::inline('(on iki min)') === '(on iki min)');
+
+echo "\nİş qovluğu — blok sxemi\n";
+
+/* Sənəd hazır şablon deyil, blokların ardıcıllığıdır. Yoxlayıcı bazaya
+   YÜKLƏNMƏZDƏN ƏVVƏL işləyir: səhv olanda render zamanı ağ ekran yox,
+   aydın xəta görünməlidir. */
+$duz = ['page' => '1', 'content' => ['bloklar' => [
+    ['tip' => 'blank'],
+    ['tip' => 'basliq', 'ad' => 'QƏRAR'],
+    ['tip' => 'metn', 'abzaslar' => ['Bir abzas.']],
+]]];
+check('düzgün sənəd qəbul olunur', BlokSxemi::yoxla($duz)[0] === [], BlokSxemi::yoxla($duz)[0]);
+check('boş blok siyahısı rədd olunur', BlokSxemi::yoxla(['page' => '1', 'content' => []])[0] !== []);
+
+$xeta = static fn (array $bloklar): array => BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => $bloklar]])[0];
+
+check('naməlum blok növü tutulur',
+    (bool) preg_grep('/naməlum blok növü/u', $xeta([['tip' => 'cedvell']])));
+/* Naməlum açar XƏTADIR: yazı səhvi səssizcə itməməlidir. */
+check('naməlum açar tutulur',
+    (bool) preg_grep('/naməlum açar/u', $xeta([['tip' => 'basliq', 'ad' => 'X', 'altt' => 'y']])));
+check('çatışmayan məcburi açar tutulur',
+    (bool) preg_grep('/«abzaslar» açarı yoxdur/u', $xeta([['tip' => 'metn']])));
+check('cədvəl sətir uzunluğu tutulur',
+    (bool) preg_grep('/xana var, başlıq/u',
+        $xeta([['tip' => 'cedvel', 'basliqlar' => ['a', 'b', 'c'], 'setirler' => [['1', '2']]]])));
+check('vurğu indeksi tutulur',
+    (bool) preg_grep('/vurgu/u',
+        $xeta([['tip' => 'cedvel', 'basliqlar' => ['a'], 'setirler' => [['1']], 'vurgu' => [9]]])));
+/* Boş DƏYƏR icazəlidir — real blankda doldurulmamış sahə olur. */
+check('boş sahə dəyəri icazəlidir',
+    $xeta([['tip' => 'sahe', 'setirler' => [['Hava', '']]]]) === []);
+check('sxem SVG olmayanı rədd edir',
+    (bool) preg_grep('/«<svg»/u', $xeta([['tip' => 'sxem', 'svg' => 'salam']])));
+check('nişan koordinatı rəqəm olmalıdır',
+    (bool) preg_grep('/rəqəm olmalıdır/u',
+        $xeta([['tip' => 'sxem', 'svg' => '<svg></svg>', 'nisanlar' => [['nov' => 'noqte', 'x' => 1]]]])));
+check('naməlum əlyazma xarakteri tutulur',
+    (bool) preg_grep('/xarakter/u', $xeta([['tip' => 'elyazma', 'metn' => 'x', 'xarakter' => 'qəribə']])));
+check('naməlum kənar növü tutulur',
+    (bool) preg_grep('/kənar növü/u',
+        $xeta([['tip' => 'metn', 'abzaslar' => ['a'], 'kenar' => ['metn' => 'x', 'nov' => 'yoxdur']]])));
+check('naməlum mesaj növü tutulur',
+    (bool) preg_grep('/mesaj növü/u', $xeta([['tip' => 'yazisma', 'sohbet' => 'X',
+        'gunler' => [['mesajlar' => [['nov' => 'video']]]]]])));
+check('səsli mesajda müddət tələb olunur',
+    (bool) preg_grep('/saniye/u', $xeta([['tip' => 'yazisma', 'sohbet' => 'X',
+        'gunler' => [['mesajlar' => [['nov' => 'sesli', 'yon' => 'cixan']]]]]])));
+
+/* Əlyazma bloku QISA mətn üçündür — bu XƏBƏRDARLIQDIR, xəta deyil. */
+$uzun = BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => [
+    ['tip' => 'elyazma', 'metn' => str_repeat('a', BlokSxemi::ELYAZMA_HEDD + 1)],
+]]]);
+check('uzun əlyazma xəta deyil, xəbərdarlıqdır',
+    $uzun[0] === [] && (bool) preg_grep('/simvolu aşır/u', $uzun[1]));
+
+echo "\nİş qovluğu — fiziki qat və kilid\n";
+
+$kagiz = static fn (array $k): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]], 'kagiz' => $k]])[0];
+
+check('üç ağır effekt icazəlidir',
+    $kagiz(['leke' => [['nov' => 'qehve']], 'cirilma' => 'sag', 'kseroks' => 2]) === []);
+/* Hər vərəq ləkəli və qatlanmış olanda heç biri seçilmir — dizayn qaydası. */
+check('dörd ağır effekt rədd olunur',
+    (bool) preg_grep('/ağır fiziki effekt/u',
+        $kagiz(['leke' => [['nov' => 'qehve']], 'cirilma' => 'sag', 'kseroks' => 2, 'kohnelme' => 3])));
+check('köhnəlmə aralığı yoxlanılır', (bool) preg_grep('/0–3/u', $kagiz(['kohnelme' => 7])));
+check('naməlum ləkə növü tutulur', (bool) preg_grep('/leke\.nov/u', $kagiz(['leke' => [['nov' => 'süd']]])));
+check('naməlum kağız açarı tutulur', (bool) preg_grep('/naməlum açar/u', $kagiz(['kohnelmee' => 1])));
+
+$kilid = static fn (array $k): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]]], 'kilid' => $k])[0];
+
+check('rəqəm kilidi dörd rəqəm istəyir',
+    (bool) preg_grep('/dörd rəqəm/u', $kilid(['nov' => 'reqem', 'kod' => '12', 'ipucu' => 'uzun ipucu mətni'])));
+check('tarix kilidi format istəyir',
+    (bool) preg_grep('/GG\.AA/u', $kilid(['nov' => 'tarix', 'kod' => '2011', 'ipucu' => 'uzun ipucu mətni'])));
+check('söz kilidi qəbul olunur',
+    $kilid(['nov' => 'soz', 'kod' => 'novxana', 'ipucu' => 'uzun ipucu mətni']) === []);
+/* İpucusuz tapmaca həll edilə bilməz. */
+check('ipucusuz kilid rədd olunur',
+    (bool) preg_grep('/ipucu/u', $kilid(['nov' => 'reqem', 'kod' => '0417'])));
+
+$mohur = static fn (array $m): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]], 'mohurler' => [$m]]])[0];
+
+check('möhür mətni tələb olunur', (bool) preg_grep('/«metn»/u', $mohur(['forma' => 'daire'])));
+/* Möhür mətnin üstünə düşəndə mətn oxunaqlı qalmalıdır. */
+check('tam qeyri-şəffaf möhür rədd olunur',
+    (bool) preg_grep('/oxunaqlı/u', $mohur(['metn' => ['A'], 'seffaflik' => 0.98])));
 
 echo "\nİş qovluğu — sxem süzgəci\n";
 

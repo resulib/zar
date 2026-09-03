@@ -101,26 +101,85 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sənəd növləri — hər biri üçün bir Blade partial
+    | Blok növləri — hər biri üçün bir Blade komponenti
     |--------------------------------------------------------------------------
-    | resources/views/dossier/senedler/<növ>.blade.php mövcud olmalıdır.
+    | Bir sənəd HAZIR ŞABLON DEYİL, blokların ardıcıllığıdır. Render qatı
+    | hekayəni tanımır: o yalnız blokları tanıyır, hekayəni baza verir.
+    | Yeni sənəd növü = blokların başqa sırası, kod deyil.
+    |
+    | resources/views/dossier/bloklar/<tip>.blade.php mövcud olmalıdır;
     | tools/check-dossier.js siyahı ilə faylları tutuşdurur.
     */
-    'types' => [
-        'qerar',     // qərar — mərkəzi başlıq, abzaslar, imza
-        'protokol',  // protokol — nöqtəli xətlərlə doldurulan sahələr
-        'ekspert',   // ekspert rəyi — protokolla eyni, başlıq fərqli
-        'sxem',      // sxem — serverdə saxlanan SVG
-        'subutlar',  // maddi sübutların siyahısı — nömrələnmiş kartoçkalar
-        'cedvel',    // cədvəl — üç-dörd sütun, vurğulanmış sətirlər
-        'zengler',   // zəng tarixçəsi
-        'yazisma',   // yazışma — HTML söhbət, silinmiş mesaj dəlildir
-        'kilid',     // kodla bağlı sənəd
+    'bloklar' => [
+        'blank',     // blank başlığı — qurum sətirləri, iş nömrəsi, ayırıcı xətt
+        'basliq',    // mərkəzdə sənədin adı, altında kiçik izah
+        'sahe',      // sol ad, sağ dəyər, arada nöqtəli xətt (boş dəyər icazəlidir)
+        'metn',      // abzaslar; `cerceve` ilə qeyd qutusu olur
+        'cedvel',    // sütun sayı sərbəst, vurğulanmış sətirlər, yekun sətri
+        'kart',      // nömrələnmiş kartoçkalar — maddi sübutlar, qutunun içindəkilər
+        'yazisma',   // söhbət — kağıza çap edilmiş ekran görüntüsü
+        'zeng',      // zəng tarixçəsi
+        'sxem',      // SVG + ayrıca nişan qatı
+        'elyazma',   // qısa əlyazma qeydi, xarakteri parametrdir
+        'foto',      // şəkil kartoçkası, altında rəsmi izah və nömrə
+        'elave',     // ataçla bərkidilmiş kiçik sənəd — çek, qəbz, bilet
+        'imza',      // solda vəzifə və imza, sağda tarix
     ],
 
-    'difficulties' => ['asan', 'orta', 'cetin'],
+    // Əlyazmanın xarakteri. İki ailə + əyilmə/sıxlıq/ölçü ilə qurulur:
+    // Azərbaycan hərflərini daşıyan cəmi iki əlyazma ailəsi var.
+    'elyazma_xarakterler' => ['sakit', 'telesik', 'yasli', 'esebi'],
 
-    'difficulty_labels' => ['asan' => 'asan', 'orta' => 'orta', 'cetin' => 'çətin'],
+    // Əlyazma bloku QISA mətn üçündür. Uzun izahat bununla verilməz —
+    // bu həddi aşan mətn yoxlayıcıda xəbərdarlıq alır.
+    'elyazma_hedd' => 180,
+
+    // Kənar qeydi blok deyil, hər blokun qəbul etdiyi nişandır.
+    'kenar_novleri' => ['qeyd', 'sual', 'xett', 'daire'],
+    'kenar_yerler'  => ['sag', 'sol', 'alt'],
+
+    // Yazışmadakı mesaj növləri.
+    'mesaj_novleri' => ['metn', 'silinmis', 'sistem', 'sesli', 'sekil', 'sened'],
+
+    // Sxemin üstünə əlavə olunan nişan qatı — sxemin öz kodunda deyil,
+    // ayrıca məlumatdır ki, eyni sxem fərqli mərhələlərdə fərqli nişanlarla
+    // göstərilə bilsin.
+    'nisan_novleri' => ['noqte', 'olcu', 'ox', 'shimal'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fiziki qat
+    |--------------------------------------------------------------------------
+    | Hamısı CSS və SVG ilə qurulur — hazır şəkil faylı yoxdur, çünki sənəd
+    | hər ölçüdə iti qalmalı və mətni seçilə bilən olmalıdır.
+    */
+    'kagiz_efektler' => ['kohnelme', 'qat', 'leke', 'cirilma', 'kseroks', 'egilme', 'barmaq', 'atac'],
+
+    // Bir sənəddə ÜÇDƏN ÇOX ağır effekt olmaz: hər vərəq ləkəli və qatlanmış
+    // olanda heç biri seçilmir və göz yorulur. Yoxlayıcıda xətadır.
+    'agir_efektler' => ['leke', 'cirilma', 'kseroks'],
+    'agir_hedd'     => 3,
+
+    'leke_novleri'  => ['qehve', 'yag', 'su'],
+    'cirilma_yerler' => ['sol', 'sag', 'alt'],
+    'atac_yerler'   => ['sol-ust', 'sag-ust', 'sol-alt'],
+
+    // Möhür ayrıca qatdır: bir sənəddə bir neçəsi ola bilər.
+    'mohur_formalar' => ['daire', 'duzbucaq'],
+    'mohur_rengler'  => ['mor', 'qirmizi', 'mavi', 'qara'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Kilid — sənədin növü deyil, XASSƏSİ
+    |--------------------------------------------------------------------------
+    | İstənilən sənəd kilidli ola bilər: cədvəl də, yazışma da, sxem də.
+    | Növ isə tapmacanın formasını seçir.
+    */
+    'kilid_novleri' => ['reqem', 'soz', 'tarix'],
+
+    'difficulties' => ['asan', 'orta', 'cetin', 'kabus'],
+
+    'difficulty_labels' => ['asan' => 'asan', 'orta' => 'orta', 'cetin' => 'çətin', 'kabus' => 'kabus'],
 
     /*
     |--------------------------------------------------------------------------
@@ -129,12 +188,13 @@ return [
     | `dossiers.badge` sütunundan gəlir, koda yazılmır. Sanitizer::pick bu
     | siyahıya bağlanır; siyahıda olmayan dəyər lent göstərmir.
     */
-    'badges' => ['yeni', 'en-cox', 'cetin'],
+    'badges' => ['yeni', 'en-cox', 'cetin', 'kabus'],
 
     'badge_labels' => [
         'yeni'   => 'YENİ',
         'en-cox' => 'ƏN ÇOX OXUNAN',
         'cetin'  => 'ÇƏTİN',
+        'kabus'  => 'KABUS',
     ],
 
     /*

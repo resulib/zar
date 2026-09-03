@@ -531,13 +531,26 @@ check('kilidli sənəd siyahıda var', $kilidli !== null);
 
 /* Sənədin ÖZÜ qeydi daşımalıdır: `sened.blade.php` sarğısı onu məcburi
    əlavə edir və heç bir sənəd növü ondan yayına bilmir. */
-$r = req($base . '/api/is/' . $SLUG . '/sened/2', 'GET', [], $own);
+/* Sənəd id-si seed-dən sonra dəyişir — siyahıdan götürülür, sabit yazılmır. */
+$docs = (array) ($acildi['docs'] ?? []);
+$ilk = (int) ($docs[0]['id'] ?? 0);
+$r = req($base . '/api/is/' . $SLUG . '/sened/' . $ilk, 'GET', [], $own);
 $sened = json_decode($r['body'], true);
 $html = (string) ($sened['html'] ?? '');
 check('sənəd render olundu', $html !== '', $r['status']);
 check('sənədin üzərində fiktivlik qeydi var', str_contains($html, $QEYD));
 check('qeyd markeri var', str_contains($html, 'data-fq="1"'));
 check('sənəd başlığı büro kodu daşıyır', str_contains($html, 'AFİB'));
+
+/* KİLİD NÖV DEYİL, XASSƏDİR: istənilən blok tərkibi kilidli ola bilər və
+   kilidli sənədin BLOKLARI ümumiyyətlə brauzerə göndərilmir — yalnız
+   klaviatura render olunur. */
+$kr = req($base . '/api/is/' . $SLUG . '/sened/' . $kilidli, 'GET', [], $own);
+$khtml = (string) (json_decode($kr['body'], true)['html'] ?? '');
+check('kilidli sənəddə klaviatura var', str_contains($khtml, 'lockwrap'));
+check('kilidli sənədin blokları göndərilmir',
+    ! str_contains($khtml, 'QUTUNUN İÇİNDƏKİLƏR') && ! str_contains($khtml, 'ev-t'));
+check('kilidli sənəd də fiktivlik qeydi daşıyır', str_contains($khtml, $QEYD));
 $tapilan = array_values(array_filter($QADAGAN, static fn ($q) => str_contains($html, $q)));
 check('sənəddə real qurum yoxdur', $tapilan === [], $tapilan);
 

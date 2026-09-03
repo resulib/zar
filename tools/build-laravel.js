@@ -10,12 +10,17 @@ const VIEW_DEVET  = path.join(APP, 'resources', 'views', 'devet.blade.php');
 const VIEW_DEVET_V = path.join(APP, 'resources', 'views', 'devet-view.blade.php');
 
 const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
-                 'replies.js', 'doc.js', 'export.js', 'app.js',
+                 'replies.js', 'sosial.js', 'doc.js', 'export.js', 'app.js',
                  'viewer.css', 'viewer.js',
                  /* Dəvətnamə bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
                     export.js ortaqdır (kətandan PDF), qalanı bu bölməyə məxsusdur. */
                  'devet.css', 'devet-fonts.css', 'devet-designs.js', 'invite.js', 'devet-app.js',
-                 'devet-view.css', 'devet-view.js', 'devet-panel.css', 'devet-board.js', 'zip.js'];
+                 'devet-view.css', 'devet-view.js', 'devet-panel.css', 'devet-board.js', 'zip.js',
+                 /* İş qovluğu bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
+                    export.js burada da ortaqdır (kətandan PNG/JPEG), qalanı bu
+                    bölməyə məxsusdur. Qabıq əl ilə yazılmış Blade olduğu üçün
+                    emitView() çağırışı yoxdur. */
+                 'dossier.css', 'dossier-fonts.css', 'dossier-cert.js', 'dossier.js', 'dossier-site.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
@@ -23,6 +28,15 @@ fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
 for (const f of ASSETS) fs.copyFileSync(path.join(FE, f), path.join(OUT, f));
 for (const f of fs.readdirSync(path.join(FE, 'fonts'))) {
   fs.copyFileSync(path.join(FE, 'fonts', f), path.join(OUT, 'fonts', f));
+}
+
+/* İş qovluqlarının önizləmə şəkilləri `npm run render:dossier-og` ilə build
+   vaxtı hazırlanır və git-ə düşür — deploy-da alət lazım deyil. */
+const OG_DIR = path.join(FE, 'dossier-og');
+if (fs.existsSync(OG_DIR)) {
+  const dst = path.join(OUT, 'dossier-og');
+  fs.mkdirSync(dst, { recursive: true });
+  for (const f of fs.readdirSync(OG_DIR)) fs.copyFileSync(path.join(OG_DIR, f), path.join(dst, f));
 }
 
 /* Panel şablonları üçün ayrıca favicon faylı */

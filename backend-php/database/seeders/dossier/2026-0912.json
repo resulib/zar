@@ -219,163 +219,286 @@
       "page": "1",
       "name": "İstintaq qrupunun təyin edilməsi haqqında qərar",
       "kind": "Qərar",
-      "type": "qerar",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "QƏRAR",
-        "subtitle": "istintaq qrupunun təyin edilməsi haqqında",
-        "body": [
-          "Sumqayıt şəhəri, Sülh prospekti 118 ünvanında yerləşən «Şimal» sərnişindaşıma parkının emalatxanasında Səfərov İlqar Nəriman oğlunun meyitinin aşkar edilməsi barədə 14.09.2026-cı il tarixdə saat 06:31-də məlumat daxil olmuşdur.",
-          "Baxış zamanı zərərçəkənin təmir çuxurunun dibində, üzü yuxarı vəziyyətdə olduğu, ənsə nahiyəsində açıq zədə olduğu müəyyən edilmişdir. Çuxurun kənarında qan izləri olan çuqun əyilmiş açar götürülmüşdür.",
-          "Zərərçəkənin vəzifəsi park müdiri olduğundan və ölümdən bir gün əvvəl maliyyə yoxlaması təyin etdiyi məlum olduğundan, iş üzrə maliyyə sənədlərinin götürülməsi zəruri sayılır.",
-          "Yuxarıda göstərilənləri nəzərə alaraq, iş üzrə istintaqın **{{mustentiq}}** tərəfindən aparılması qərara alınır."
-        ],
-        "sign": {
-          "who": "T.Əliyev",
-          "post": "AFİB bölmə rəisi",
-          "date": "14.09.2026"
-        },
-        "note": "[[Qeyd:]] parkda 41 işçi çalışır. Gecə növbəsində rəsmi olaraq yalnız mühafizəçi qalmalı idi."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "QƏRAR",
+            "alt": "istintaq qrupunun təyin edilməsi haqqında"
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Sumqayıt şəhəri, Sülh prospekti 118 ünvanında yerləşən «Şimal» sərnişindaşıma parkının emalatxanasında Səfərov İlqar Nəriman oğlunun meyitinin aşkar edilməsi barədə 14.09.2026-cı il tarixdə saat 06:31-də məlumat daxil olmuşdur.",
+              "Baxış zamanı zərərçəkənin təmir çuxurunun dibində, üzü yuxarı vəziyyətdə olduğu, ənsə nahiyəsində açıq zədə olduğu müəyyən edilmişdir. Çuxurun kənarında qan izləri olan çuqun əyilmiş açar götürülmüşdür.",
+              "Zərərçəkənin vəzifəsi park müdiri olduğundan və ölümdən bir gün əvvəl maliyyə yoxlaması təyin etdiyi məlum olduğundan, iş üzrə maliyyə sənədlərinin götürülməsi zəruri sayılır.",
+              "Yuxarıda göstərilənləri nəzərə alaraq, iş üzrə istintaqın **{{mustentiq}}** tərəfindən aparılması qərara alınır."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "AFİB bölmə rəisi",
+            "ad": "T.Əliyev",
+            "tarix": "14.09.2026"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "[[Qeyd:]] parkda 41 işçi çalışır. Gecə növbəsində rəsmi olaraq yalnız mühafizəçi qalmalı idi."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "2–5",
       "name": "Hadisə yerinə baxış protokolu",
       "kind": "Protokol",
-      "type": "protokol",
       "locked": false,
       "sample": true,
       "code": "",
       "hint": "",
       "content": {
-        "title": "HADİSƏ YERİNƏ BAXIŞ PROTOKOLU",
-        "fields": [
-          [
-            "Baxış başlandı",
-            "07:05"
-          ],
-          [
-            "Baxış bitdi",
-            "09:50"
-          ],
-          [
-            "Hava",
-            "buludlu, +22°C"
-          ],
-          [
-            "İştirak edib",
-            "2 hal şahidi"
-          ]
-        ],
-        "body": [
-          "Baxış «Şimal» sərnişindaşıma parkının emalatxana binasında aparılmışdır. Bina bir mərtəbəlidir, içərisində iki təmir yeri və beton təmir çuxuru vardır. Çuxurun uzunluğu 7 m, eni 90 sm, dərinliyi 1 m 60 sm-dir. Çuxurun daxili işıqlandırması ayrıca açarla idarə olunur; baxış anında işıq yanmır.",
-          "Meyit çuxurun ofisə yaxın ucunda, üzü yuxarı, ayaqları çuxurun uzunluğu boyunca uzanmış vəziyyətdə aşkar edilmişdir. Ənsə nahiyəsində açıq zədə var. Meyitin altındakı betonda qan ləkəsi mövcuddur, ləkənin ölçüsü 36×24 sm-dir.",
-          "Çuxurun ağzının kənarında, meyitdən 40 sm aralıda uzunluğu 52 sm olan boru açarı yerləşir. Açarın başlıq hissəsində qan izlərinə oxşar qonur ləkə var.",
-          "Zərərçəkənin sağ əlində açar dəstəsi tutulmuş vəziyyətdədir. Dəstədə dörd açar var. Barmaqları açarları sıxmış vəziyyətdə olduğundan, dəstə düşdükdən sonra əlinə qoyulmamışdır.",
-          "Emalatxananın ofisə açılan daxili qapısı baxış anında açıqdır. Qapının kilidi işlək vəziyyətdədir.",
-          "Ofis otağında masanın üstündə metal kassa qutusu yerləşir. Qutu dördrəqəmli kodla bağlıdır və açılmamışdır. Masanın üstündəki sənədlər səliqəli yığılmışdır, dağınıqlıq əlaməti yoxdur.",
-          "Ofisin divarında çərçivəyə salınmış avtobus bileti asılmışdır. Baxış zamanı çərçivə divardan götürülmüş və üzərindəki nömrə protokola daxil edilmişdir."
-        ],
-        "sign": {
-          "who": "S.Məmmədli",
-          "post": "Baxışı aparan, AFİB müstəntiqi",
-          "date": "14.09.2026"
-        }
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "HADİSƏ YERİNƏ BAXIŞ PROTOKOLU"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Baxış başlandı",
+                "07:05"
+              ],
+              [
+                "Baxış bitdi",
+                "09:50"
+              ],
+              [
+                "Hava",
+                "buludlu, +22°C"
+              ],
+              [
+                "İştirak edib",
+                "2 hal şahidi"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Baxış «Şimal» sərnişindaşıma parkının emalatxana binasında aparılmışdır. Bina bir mərtəbəlidir, içərisində iki təmir yeri və beton təmir çuxuru vardır. Çuxurun uzunluğu 7 m, eni 90 sm, dərinliyi 1 m 60 sm-dir. Çuxurun daxili işıqlandırması ayrıca açarla idarə olunur; baxış anında işıq yanmır.",
+              "Meyit çuxurun ofisə yaxın ucunda, üzü yuxarı, ayaqları çuxurun uzunluğu boyunca uzanmış vəziyyətdə aşkar edilmişdir. Ənsə nahiyəsində açıq zədə var. Meyitin altındakı betonda qan ləkəsi mövcuddur, ləkənin ölçüsü 36×24 sm-dir.",
+              "Çuxurun ağzının kənarında, meyitdən 40 sm aralıda uzunluğu 52 sm olan boru açarı yerləşir. Açarın başlıq hissəsində qan izlərinə oxşar qonur ləkə var.",
+              "Zərərçəkənin sağ əlində açar dəstəsi tutulmuş vəziyyətdədir. Dəstədə dörd açar var. Barmaqları açarları sıxmış vəziyyətdə olduğundan, dəstə düşdükdən sonra əlinə qoyulmamışdır.",
+              "Emalatxananın ofisə açılan daxili qapısı baxış anında açıqdır. Qapının kilidi işlək vəziyyətdədir.",
+              "Ofis otağında masanın üstündə metal kassa qutusu yerləşir. Qutu dördrəqəmli kodla bağlıdır və açılmamışdır. Masanın üstündəki sənədlər səliqəli yığılmışdır, dağınıqlıq əlaməti yoxdur.",
+              "Ofisin divarında çərçivəyə salınmış avtobus bileti asılmışdır. Baxış zamanı çərçivə divardan götürülmüş və üzərindəki nömrə protokola daxil edilmişdir."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "Baxışı aparan, AFİB müstəntiqi",
+            "ad": "S.Məmmədli",
+            "tarix": "14.09.2026"
+          }
+        ]
       }
     },
     {
       "page": "6",
       "name": "Parkın ərazi planı",
       "kind": "Sxem",
-      "type": "sxem",
       "locked": false,
       "sample": true,
       "code": "",
       "hint": "",
       "content": {
-        "title": "PARKIN ƏRAZİ PLANI",
-        "subtitle": "miqyassız, ölçülər metrlədir",
-        "svg": "<svg viewBox=\"0 0 340 430\" class=\"sxem\">\n<g stroke=\"#26221D\" fill=\"none\" stroke-width=\"1.6\">\n<rect x=\"20\" y=\"26\" width=\"96\" height=\"66\"/>\n<rect x=\"116\" y=\"26\" width=\"56\" height=\"66\"/>\n<rect x=\"20\" y=\"112\" width=\"152\" height=\"128\"/>\n<rect x=\"20\" y=\"260\" width=\"120\" height=\"86\"/>\n<rect x=\"60\" y=\"286\" width=\"46\" height=\"34\" stroke-dasharray=\"4 3\"/>\n<rect x=\"196\" y=\"112\" width=\"124\" height=\"128\"/>\n<rect x=\"196\" y=\"260\" width=\"124\" height=\"60\"/>\n</g>\n<g fill=\"#26221D\" font-size=\"10.5\">\n<text x=\"28\" y=\"46\">OFİS</text>\n<text x=\"122\" y=\"46\">DİSP.</text>\n<text x=\"28\" y=\"132\">AVTOBUS SAHƏSİ</text>\n<text x=\"28\" y=\"280\">EMALATXANA</text>\n<text x=\"204\" y=\"132\">TƏSƏRRÜFAT</text>\n<text x=\"204\" y=\"280\">YUMA SAHƏSİ</text>\n</g>\n<g fill=\"#5D564A\" font-size=\"9\">\n<text x=\"64\" y=\"308\">təmir çuxuru</text>\n</g>\n<g stroke=\"#26221D\" stroke-width=\"3.2\">\n<line x1=\"176\" y1=\"26\" x2=\"176\" y2=\"60\"/>\n<line x1=\"150\" y1=\"346\" x2=\"176\" y2=\"346\"/>\n</g>\n<g font-size=\"9.5\" fill=\"#5D564A\">\n<text x=\"182\" y=\"46\">ön darvaza</text>\n<text x=\"150\" y=\"362\">arxa darvaza</text>\n<text x=\"182\" y=\"106\">kamera № 1</text>\n<text x=\"24\" y=\"256\">kamera № 3</text>\n</g>\n<g fill=\"#A8382C\">\n<circle cx=\"83\" cy=\"303\" r=\"9\"/><text x=\"79\" y=\"307\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">1</text>\n<circle cx=\"120\" cy=\"303\" r=\"9\"/><text x=\"116\" y=\"307\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">2</text>\n<circle cx=\"60\" cy=\"60\" r=\"9\"/><text x=\"56\" y=\"64\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">3</text>\n<circle cx=\"83\" cy=\"330\" r=\"9\"/><text x=\"79\" y=\"334\" fill=\"#fff\" font-size=\"10\" font-weight=\"600\">4</text>\n</g>\n<g stroke=\"#24417E\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\" fill=\"none\">\n<path d=\"M96 92 L96 250 L83 250 L83 288\"/>\n</g>\n<text x=\"336\" y=\"404\" fill=\"#24417E\" font-size=\"9.5\" text-anchor=\"end\">ofisdən emalatxanaya keçid, daxili yol</text>\n</svg>",
-        "note": "1 — meyitin vəziyyəti · 2 — boru açarı · 3 — kassa qutusu (ofisdə) · 4 — qan ləkəsi.\n[[Əl ilə:]] kamera № 1 yalnız ön darvazanı görür. Arxa darvaza və emalatxananın girişi heç bir kameranın görmə bucağında deyil."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "PARKIN ƏRAZİ PLANI",
+            "alt": "miqyassız, ölçülər metrlədir"
+          },
+          {
+            "tip": "sxem",
+            "svg": "<svg viewBox=\"0 0 340 430\" class=\"sxem\">\n<g stroke=\"#26221D\" fill=\"none\" stroke-width=\"1.6\">\n<rect x=\"20\" y=\"26\" width=\"96\" height=\"66\"/>\n<rect x=\"116\" y=\"26\" width=\"56\" height=\"66\"/>\n<rect x=\"20\" y=\"112\" width=\"152\" height=\"128\"/>\n<rect x=\"20\" y=\"260\" width=\"120\" height=\"86\"/>\n<rect x=\"60\" y=\"286\" width=\"46\" height=\"34\" stroke-dasharray=\"4 3\"/>\n<rect x=\"196\" y=\"112\" width=\"124\" height=\"128\"/>\n<rect x=\"196\" y=\"260\" width=\"124\" height=\"60\"/>\n</g>\n<g fill=\"#26221D\" font-size=\"10.5\">\n<text x=\"28\" y=\"46\">OFİS</text>\n<text x=\"122\" y=\"46\">DİSP.</text>\n<text x=\"28\" y=\"132\">AVTOBUS SAHƏSİ</text>\n<text x=\"28\" y=\"280\">EMALATXANA</text>\n<text x=\"204\" y=\"132\">TƏSƏRRÜFAT</text>\n<text x=\"204\" y=\"280\">YUMA SAHƏSİ</text>\n</g>\n<g fill=\"#5D564A\" font-size=\"9\">\n<text x=\"64\" y=\"308\">təmir çuxuru</text>\n</g>\n<g stroke=\"#26221D\" stroke-width=\"3.2\">\n<line x1=\"176\" y1=\"26\" x2=\"176\" y2=\"60\"/>\n<line x1=\"150\" y1=\"346\" x2=\"176\" y2=\"346\"/>\n</g>\n<g font-size=\"9.5\" fill=\"#5D564A\">\n<text x=\"182\" y=\"46\">ön darvaza</text>\n<text x=\"150\" y=\"362\">arxa darvaza</text>\n<text x=\"182\" y=\"106\">kamera № 1</text>\n<text x=\"24\" y=\"256\">kamera № 3</text>\n</g>\n</svg>",
+            "nisanlar": [
+              {
+                "nov": "noqte",
+                "no": 1,
+                "x": 83,
+                "y": 303,
+                "izah": "meyitin vəziyyəti"
+              },
+              {
+                "nov": "noqte",
+                "no": 2,
+                "x": 120,
+                "y": 303,
+                "izah": "boru açarı"
+              },
+              {
+                "nov": "noqte",
+                "no": 3,
+                "x": 60,
+                "y": 60,
+                "izah": "kassa qutusu (ofisdə)"
+              },
+              {
+                "nov": "noqte",
+                "no": 4,
+                "x": 83,
+                "y": 330,
+                "izah": "qan ləkəsi"
+              },
+              {
+                "nov": "olcu",
+                "x1": 20,
+                "y1": 368,
+                "x2": 140,
+                "y2": 368,
+                "metn": "7 m"
+              },
+              {
+                "nov": "ox",
+                "x1": 108,
+                "y1": 96,
+                "x2": 92,
+                "y2": 278,
+                "metn": "ofisdən emalatxanaya"
+              },
+              {
+                "nov": "shimal",
+                "x": 300,
+                "y": 86,
+                "bucaq": 0
+              }
+            ]
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "1 — meyitin vəziyyəti · 2 — boru açarı · 3 — kassa qutusu (ofisdə) · 4 — qan ləkəsi.\n[[Əl ilə:]] kamera № 1 yalnız ön darvazanı görür. Arxa darvaza və emalatxananın girişi heç bir kameranın görmə bucağında deyil."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "7–8",
       "name": "Meyitin xarici müayinə aktı",
       "kind": "Ekspert rəyi",
-      "type": "ekspert",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "MEYİTİN XARİCİ MÜAYİNƏ AKTI",
-        "fields": [
-          [
-            "Müayinə",
-            "14.09.2026, 10:40"
-          ],
-          [
-            "Yaş",
-            "51"
-          ],
-          [
-            "Boy / çəki",
-            "181 sm / 88 kq"
-          ]
-        ],
-        "body": [
-          "Ənsə nahiyəsinin sol tərəfində ölçüsü 9×3 sm olan, kənarları qeyri-hamar zədə aşkar olunur. Zədənin forması silindr şəkilli, ağır metal cismin bir dəfə vurulmasına uyğundur.",
-          "Zərbənin istiqaməti arxadan qabağa və bir qədər yuxarıdan aşağıyadır. Zədənin xarakteri düşmə nəticəsində əmələ gələn zədəyə uyğun gəlmir: çuxurun dibindəki betonda uyğun toqquşma izi yoxdur.",
-          "Əllərin barmaqlarında və biləklərində müdafiə zədəsi yoxdur. Sağ əl açar dəstəsini tutmuş vəziyyətdədir — bu, zərbənin gözlənilmədən vurulduğunu göstərir.",
-          "Ölümün baş vermə vaxtı meyit ləkələrinin və bədən temperaturunun vəziyyətinə görə müayinədən 8–10 saat əvvələ, yəni **00:40–02:10** aralığına aid edilir.",
-          "Qanda etil spirti aşkar edilməmişdir."
-        ],
-        "sign": {
-          "who": "M.Xəlilova",
-          "post": "AFİB tibbi eksperti",
-          "date": "14.09.2026"
-        }
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "MEYİTİN XARİCİ MÜAYİNƏ AKTI"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Müayinə",
+                "14.09.2026, 10:40"
+              ],
+              [
+                "Yaş",
+                "51"
+              ],
+              [
+                "Boy / çəki",
+                "181 sm / 88 kq"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Ənsə nahiyəsinin sol tərəfində ölçüsü 9×3 sm olan, kənarları qeyri-hamar zədə aşkar olunur. Zədənin forması silindr şəkilli, ağır metal cismin bir dəfə vurulmasına uyğundur.",
+              "Zərbənin istiqaməti arxadan qabağa və bir qədər yuxarıdan aşağıyadır. Zədənin xarakteri düşmə nəticəsində əmələ gələn zədəyə uyğun gəlmir: çuxurun dibindəki betonda uyğun toqquşma izi yoxdur.",
+              "Əllərin barmaqlarında və biləklərində müdafiə zədəsi yoxdur. Sağ əl açar dəstəsini tutmuş vəziyyətdədir — bu, zərbənin gözlənilmədən vurulduğunu göstərir.",
+              "Ölümün baş vermə vaxtı meyit ləkələrinin və bədən temperaturunun vəziyyətinə görə müayinədən 8–10 saat əvvələ, yəni **00:40–02:10** aralığına aid edilir.",
+              "Qanda etil spirti aşkar edilməmişdir."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "AFİB tibbi eksperti",
+            "ad": "M.Xəlilova",
+            "tarix": "14.09.2026"
+          }
+        ]
       }
     },
     {
       "page": "9–11",
       "name": "Maddi sübutların siyahısı",
       "kind": "Siyahı",
-      "type": "subutlar",
       "locked": false,
       "sample": true,
       "code": "",
       "hint": "",
       "content": {
-        "title": "MADDİ SÜBUTLARIN SİYAHISI",
-        "items": [
+        "bloklar": [
           {
-            "t": "Boru açarı",
-            "d": "Uzunluq 52 sm, çəki 1,9 kq. Başlıq hissəsində qonur ləkə. Səthdə istifadəyə yararlı barmaq izi yoxdur — dəstəyi yağlı əskiylə tutulmuş ola bilər. Emalatxananın alət dəstindəndir; dəstdə həmin ölçüdə ikinci açar yoxdur."
+            "tip": "blank"
           },
           {
-            "t": "Açar dəstəsi",
-            "d": "Dörd açar: emalatxana, təsərrüfat anbarı, ön darvaza, ofis. Meyitin sağ əlində. Ofis açarı dəstədə mövcuddur."
+            "tip": "basliq",
+            "ad": "MADDİ SÜBUTLARIN SİYAHISI"
           },
           {
-            "t": "Metal kassa qutusu",
-            "d": "Ofisdəki masanın üstündən götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 24]]."
-          },
-          {
-            "t": "Çərçivəyə salınmış avtobus bileti",
-            "d": "Ofisin divarından götürülüb. Üzərində «Sumqayıt–Bakı, 06:00» yazısı və **№ 0417** nömrəsi var. Çərçivənin arxasında əl yazısı: «son reys, sürücü İ.Səfərov»."
-          },
-          {
-            "t": "Fiskal printerin qəbz lenti",
-            "d": "Ofisdəki cihazdan çıxarılıb. Lent kəsilməmiş və zədəsizdir, nömrələr ardıcıldır — [[bax: vərəq 12]]."
-          },
-          {
-            "t": "Zərərçəkənin pencəyi",
-            "d": "Cibləri toxunulmayıb. Sol cibdə 340 manat nağd pul, sağ cibdə telefon. Oğurluq əlaməti yoxdur."
+            "tip": "kart",
+            "kartlar": [
+              {
+                "ad": "Boru açarı",
+                "metn": "Uzunluq 52 sm, çəki 1,9 kq. Başlıq hissəsində qonur ləkə. Səthdə istifadəyə yararlı barmaq izi yoxdur — dəstəyi yağlı əskiylə tutulmuş ola bilər. Emalatxananın alət dəstindəndir; dəstdə həmin ölçüdə ikinci açar yoxdur."
+              },
+              {
+                "ad": "Açar dəstəsi",
+                "metn": "Dörd açar: emalatxana, təsərrüfat anbarı, ön darvaza, ofis. Meyitin sağ əlində. Ofis açarı dəstədə mövcuddur."
+              },
+              {
+                "ad": "Metal kassa qutusu",
+                "metn": "Ofisdəki masanın üstündən götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 24]]."
+              },
+              {
+                "ad": "Çərçivəyə salınmış avtobus bileti",
+                "metn": "Ofisin divarından götürülüb. Üzərində «Sumqayıt–Bakı, 06:00» yazısı və **№ 0417** nömrəsi var. Çərçivənin arxasında əl yazısı: «son reys, sürücü İ.Səfərov»."
+              },
+              {
+                "ad": "Fiskal printerin qəbz lenti",
+                "metn": "Ofisdəki cihazdan çıxarılıb. Lent kəsilməmiş və zədəsizdir, nömrələr ardıcıldır — [[bax: vərəq 12]]."
+              },
+              {
+                "ad": "Zərərçəkənin pencəyi",
+                "metn": "Cibləri toxunulmayıb. Sol cibdə 340 manat nağd pul, sağ cibdə telefon. Oğurluq əlaməti yoxdur."
+              }
+            ]
           }
         ]
       }
@@ -384,74 +507,107 @@
       "page": "12",
       "name": "Fiskal printerin qəbz lentindən çıxarış",
       "kind": "Arayış",
-      "type": "cedvel",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "FİSKAL PRİNTERİN QƏBZ LENTİNDƏN ÇIXARIŞ",
-        "subtitle": "cihaz ofis otağındadır · 13–14 sentyabr",
-        "table": {
-          "head": [
-            "Bilet №",
-            "Vaxt",
-            "Marşrut",
-            "Məbləğ"
-          ],
-          "rows": [
-            [
-              "4466",
-              "21:04",
-              "Sumqayıt–Bakı, 21:30",
-              "3,20"
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "FİSKAL PRİNTERİN QƏBZ LENTİNDƏN ÇIXARIŞ",
+            "alt": "cihaz ofis otağındadır · 13–14 sentyabr"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Bilet №",
+              "Vaxt",
+              "Marşrut",
+              "Məbləğ"
             ],
-            [
-              "4467",
-              "21:11",
-              "Sumqayıt–Bakı, 21:30",
-              "3,20"
+            "setirler": [
+              [
+                "4466",
+                "21:04",
+                "Sumqayıt–Bakı, 21:30",
+                "3,20"
+              ],
+              [
+                "4467",
+                "21:11",
+                "Sumqayıt–Bakı, 21:30",
+                "3,20"
+              ],
+              [
+                "4468",
+                "21:49",
+                "Sumqayıt–Xırdalan, 22:15",
+                "2,60"
+              ],
+              [
+                "4469",
+                "22:06",
+                "Sumqayıt–Bakı, 06:00",
+                "3,20"
+              ],
+              [
+                "4470",
+                "22:12",
+                "Sumqayıt–Bakı, 06:00",
+                "3,20"
+              ],
+              [
+                "**4471**",
+                "**01:07**",
+                "Sumqayıt–Bakı, 06:00",
+                "3,20"
+              ],
+              [
+                "4472",
+                "05:41",
+                "Sumqayıt–Bakı, 06:00",
+                "3,20"
+              ]
             ],
-            [
-              "4468",
-              "21:49",
-              "Sumqayıt–Xırdalan, 22:15",
-              "2,60"
-            ],
-            [
-              "4469",
-              "22:06",
-              "Sumqayıt–Bakı, 06:00",
-              "3,20"
-            ],
-            [
-              "4470",
-              "22:12",
-              "Sumqayıt–Bakı, 06:00",
-              "3,20"
-            ],
-            [
-              "**4471**",
-              "**01:07**",
-              "Sumqayıt–Bakı, 06:00",
-              "3,20"
-            ],
-            [
-              "4472",
-              "05:41",
-              "Sumqayıt–Bakı, 06:00",
-              "3,20"
+            "vurgu": [
+              5
             ]
-          ],
-          "hi": [
-            5
-          ]
-        },
-        "body": [
-          "Cihaz ofis otağında, kassa masasının üstündədir. Ofis kilidlə bağlanır və açarı yalnız növbətçi dispetçerə verilir.",
-          "Lentdə nömrələr ardıcıldır, kəsik və ya buraxılış yoxdur. Cihazın saatı yoxlanılmış, dəqiq vaxtdan 40 saniyə geri qaldığı müəyyən edilmişdir."
-        ],
-        "note": "[[Müstəntiqin qeydi:]] 22:12-dən 05:41-ə qədər kassada növbətçi olmamalıdır — kassa 22:15-də bağlanır."
+          },
+          {
+            "tip": "elave",
+            "nov": "qebz",
+            "bucaq": -2.5,
+            "yer": "sag",
+            "setirler": [
+              "«ŞİMAL» PARKI",
+              "KASSA № 1",
+              "",
+              "BİLET № 4471",
+              "14.09.2026  01:07",
+              "SUMQAYIT–BAKI  06:00",
+              "",
+              "3,20 AZN"
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Cihaz ofis otağında, kassa masasının üstündədir. Ofis kilidlə bağlanır və açarı yalnız növbətçi dispetçerə verilir.",
+              "Lentdə nömrələr ardıcıldır, kəsik və ya buraxılış yoxdur. Cihazın saatı yoxlanılmış, dəqiq vaxtdan 40 saniyə geri qaldığı müəyyən edilmişdir."
+            ]
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "[[Müstəntiqin qeydi:]] 22:12-dən 05:41-ə qədər kassada növbətçi olmamalıdır — kassa 22:15-də bağlanır."
+            ]
+          }
+        ]
       },
       "key": true
     },
@@ -459,60 +615,72 @@
       "page": "13",
       "name": "Açarların verilməsi jurnalı",
       "kind": "Sənəd",
-      "type": "cedvel",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "AÇARLARIN VERİLMƏSİ JURNALI",
-        "subtitle": "mühafizə köşkü · 13 sentyabr, gecə növbəsi",
-        "table": {
-          "head": [
-            "Otaq",
-            "Verildi",
-            "Kimə",
-            "Qaytarıldı"
-          ],
-          "rows": [
-            [
-              "Təsərrüfat anbarı",
-              "19:40",
-              "E.Səfərov",
-              "00:08"
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "AÇARLARIN VERİLMƏSİ JURNALI",
+            "alt": "mühafizə köşkü · 13 sentyabr, gecə növbəsi"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Otaq",
+              "Verildi",
+              "Kimə",
+              "Qaytarıldı"
             ],
-            [
-              "Yuma sahəsi",
-              "20:15",
-              "R.Talıbov",
-              "22:50"
+            "setirler": [
+              [
+                "Təsərrüfat anbarı",
+                "19:40",
+                "E.Səfərov",
+                "00:08"
+              ],
+              [
+                "Yuma sahəsi",
+                "20:15",
+                "R.Talıbov",
+                "22:50"
+              ],
+              [
+                "**Ofis**",
+                "**22:15**",
+                "**V.Hacıyev**",
+                "[[qaytarılmayıb]]"
+              ],
+              [
+                "Emalatxana",
+                "23:02",
+                "E.Səfərov",
+                "00:08"
+              ]
             ],
-            [
-              "**Ofis**",
-              "**22:15**",
-              "**V.Hacıyev**",
-              "[[qaytarılmayıb]]"
-            ],
-            [
-              "Emalatxana",
-              "23:02",
-              "E.Səfərov",
-              "00:08"
+            "vurgu": [
+              2
             ]
-          ],
-          "hi": [
-            2
-          ]
-        },
-        "body": [
-          "Jurnal mühafizə köşkündə saxlanılır, hər sətir açarı alan şəxs tərəfindən imzalanır.",
-          "Mühafizəçi F.Quliyevin izahatından: «Ofisin açarı səhər saat 06:40-da mənə qaytarıldı. Kim qaytardı — Vüqar müəllim özü gətirdi. Gecə mən onu görməmişəm, köşkdən çıxmamışam.»"
-        ],
-        "sign": {
-          "who": "F.Quliyev",
-          "post": "Mühafizəçi",
-          "date": "14.09.2026"
-        }
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Jurnal mühafizə köşkündə saxlanılır, hər sətir açarı alan şəxs tərəfindən imzalanır.",
+              "Mühafizəçi F.Quliyevin izahatından: «Ofisin açarı səhər saat 06:40-da mənə qaytarıldı. Kim qaytardı — Vüqar müəllim özü gətirdi. Gecə mən onu görməmişəm, köşkdən çıxmamışam.»"
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "Mühafizəçi",
+            "ad": "F.Quliyev",
+            "tarix": "14.09.2026"
+          }
+        ]
       },
       "key": true
     },
@@ -520,51 +688,62 @@
       "page": "14",
       "name": "Avtobusların gediş-gəliş cədvəli",
       "kind": "Sənəd",
-      "type": "cedvel",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "AVTOBUSLARIN GEDİŞ-GƏLİŞ CƏDVƏLİ",
-        "subtitle": "dispetçer lövhəsindən köçürülüb · 13 sentyabr",
-        "table": {
-          "head": [
-            "Avtobus",
-            "Çıxdı",
-            "Qayıtdı",
-            "Sürücü"
-          ],
-          "rows": [
-            [
-              "№ 03",
-              "18:30",
-              "21:50",
-              "R.Talıbov"
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "AVTOBUSLARIN GEDİŞ-GƏLİŞ CƏDVƏLİ",
+            "alt": "dispetçer lövhəsindən köçürülüb · 13 sentyabr"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Avtobus",
+              "Çıxdı",
+              "Qayıtdı",
+              "Sürücü"
             ],
-            [
-              "№ 07",
-              "19:00",
-              "22:20",
-              "N.Abdullayev"
-            ],
-            [
-              "№ 11",
-              "19:30",
-              "22:41",
-              "S.Vəliyev"
-            ],
-            [
-              "№ 17",
-              "20:00",
-              "23:12",
-              "F.Orucov"
+            "setirler": [
+              [
+                "№ 03",
+                "18:30",
+                "21:50",
+                "R.Talıbov"
+              ],
+              [
+                "№ 07",
+                "19:00",
+                "22:20",
+                "N.Abdullayev"
+              ],
+              [
+                "№ 11",
+                "19:30",
+                "22:41",
+                "S.Vəliyev"
+              ],
+              [
+                "№ 17",
+                "20:00",
+                "23:12",
+                "F.Orucov"
+              ]
             ]
-          ]
-        },
-        "body": [
-          "Son reys 23:12-də qayıtmışdır. Bundan sonra parkda hərəkət qeydə alınmayıb.",
-          "Səhər ilk reys 06:00-dadır; sürücülər 05:30-da toplaşır."
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Son reys 23:12-də qayıtmışdır. Bundan sonra parkda hərəkət qeydə alınmayıb.",
+              "Səhər ilk reys 06:00-dadır; sürücülər 05:30-da toplaşır."
+            ]
+          }
         ]
       }
     },
@@ -572,352 +751,506 @@
       "page": "15",
       "name": "Telefon danışıqlarının detallaşdırılması",
       "kind": "Arayış",
-      "type": "zengler",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "TELEFON DANIŞIQLARININ DETALLAŞDIRILMASI",
-        "subtitle": "abunəçi: Səfərov İ.N. · 13–14 sentyabr",
-        "calls": [
+        "bloklar": [
           {
-            "t": "20:38",
-            "line": "Gələn — «Mərkəz, Rəhimov»",
-            "sub": "6 dəq 12 san"
+            "tip": "blank"
           },
           {
-            "t": "22:20",
-            "line": "Çıxan — «Nüşabə mühasib»",
-            "sub": "cavabsız"
+            "tip": "basliq",
+            "ad": "TELEFON DANIŞIQLARININ DETALLAŞDIRILMASI",
+            "alt": "abunəçi: Səfərov İ.N. · 13–14 sentyabr"
           },
           {
-            "t": "22:47",
-            "line": "Çıxan — «Vüqar dispetçer»",
-            "sub": "1 dəq 05 san"
+            "tip": "zeng",
+            "zengler": [
+              {
+                "saat": "20:38",
+                "yon": "gelen",
+                "abunec": "«Mərkəz, Rəhimov»",
+                "muddet": "6 dəq 12 san"
+              },
+              {
+                "saat": "22:20",
+                "yon": "cixan",
+                "abunec": "«Nüşabə mühasib»",
+                "muddet": "cavabsız"
+              },
+              {
+                "saat": "22:47",
+                "yon": "cixan",
+                "abunec": "«Vüqar dispetçer»",
+                "muddet": "1 dəq 05 san"
+              },
+              {
+                "saat": "23:35",
+                "yon": "cixan",
+                "abunec": "«Kamran oğlum»",
+                "muddet": "3 dəq 41 san"
+              },
+              {
+                "saat": "00:52",
+                "yon": "cixan",
+                "abunec": "«Mərkəz, Rəhimov»",
+                "muddet": "18 saniyə · son danışıq",
+                "vurgu": true
+              },
+              {
+                "saat": "05:58",
+                "yon": "gelen",
+                "abunec": "«Vüqar dispetçer»",
+                "muddet": "cavabsız"
+              }
+            ]
           },
           {
-            "t": "23:35",
-            "line": "Çıxan — «Kamran oğlum»",
-            "sub": "3 dəq 41 san"
-          },
-          {
-            "t": "00:52",
-            "line": "Çıxan — «Mərkəz, Rəhimov»",
-            "sub": "18 saniyə · son danışıq",
-            "hi": true
-          },
-          {
-            "t": "05:58",
-            "line": "Gələn — «Vüqar dispetçer»",
-            "sub": "cavabsız"
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "Rəhimovun izahatından: «00:52-də zəng etdi, dedi sabah yanına gələcəm, sənədləri gətirirəm. Səsi normal idi, kiməsə danışırmış kimi deyildi.»"
+            ]
           }
-        ],
-        "note": "Rəhimovun izahatından: «00:52-də zəng etdi, dedi sabah yanına gələcəm, sənədləri gətirirəm. Səsi normal idi, kiməsə danışırmış kimi deyildi.»"
+        ]
       }
     },
     {
       "page": "16–17",
       "name": "Yazışma çıxarışı: V.Hacıyev — İ.Səfərov",
       "kind": "Ekran görüntüsü",
-      "type": "yazisma",
       "locked": false,
       "sample": true,
       "code": "",
       "hint": "",
       "content": {
-        "title": "YAZIŞMA ÇIXARIŞI",
-        "subtitle": "V.Hacıyevin telefonundan · «İlqar müəllim» adlı söhbət",
-        "chat": {
-          "name": "İlqar müəllim",
-          "seen": "son görülmə 00:54",
-          "days": [
-            {
-              "label": "13 sentyabr",
-              "messages": [
-                {
-                  "yon": "cixan",
-                  "text": "İlqar müəllim, o siyahını mən hazırlamamışam. Kimsə mənim adımdan yazıb.",
-                  "time": "22:31"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Vüqar, mən sənə lentə baxdığımı dedim.",
-                  "time": "22:44"
-                },
-                {
-                  "yon": "cixan",
-                  "text": "Lentdə səhv ola bilər. Cihaz köhnədir.",
-                  "time": "22:45"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Səhər danışarıq. Mərkəzə göndərməmişəm hələ.",
-                  "time": "22:46"
-                },
-                {
-                  "yon": "cixan",
-                  "text": "Bir dəqiqə vaxt ayırın, gəlirəm ofisə.",
-                  "time": "22:48"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Gəl.",
-                  "time": "22:48"
-                }
-              ]
-            }
-          ]
-        },
-        "cap": "Şəkil 1 — ekran görüntüsü, 2 vərəqdə",
-        "note": "[[Diqqət:]] söhbət 22:48-də bitir. Sonrakı mesaj yoxdur, silinmiş mesaj da yoxdur."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "YAZIŞMA ÇIXARIŞI",
+            "alt": "V.Hacıyevin telefonundan · «İlqar müəllim» adlı söhbət"
+          },
+          {
+            "tip": "yazisma",
+            "sohbet": "İlqar müəllim",
+            "gorulme": "son görülmə 00:54",
+            "gunler": [
+              {
+                "tarix": "13 sentyabr",
+                "mesajlar": [
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "İlqar müəllim, o siyahını mən hazırlamamışam. Kimsə mənim adımdan yazıb.",
+                    "saat": "22:31"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Vüqar, mən sənə lentə baxdığımı dedim.",
+                    "saat": "22:44"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "Lentdə səhv ola bilər. Cihaz köhnədir.",
+                    "saat": "22:45"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Səhər danışarıq. Mərkəzə göndərməmişəm hələ.",
+                    "saat": "22:46"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "Bir dəqiqə vaxt ayırın, gəlirəm ofisə.",
+                    "saat": "22:48"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Gəl.",
+                    "saat": "22:48"
+                  }
+                ]
+              }
+            ],
+            "izah": "Şəkil 1 — ekran görüntüsü, 2 vərəqdə"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "[[Diqqət:]] söhbət 22:48-də bitir. Sonrakı mesaj yoxdur, silinmiş mesaj da yoxdur."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "18",
       "name": "Yazışma çıxarışı: N.Kərimova — qardaşı",
       "kind": "Ekran görüntüsü",
-      "type": "yazisma",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "YAZIŞMA ÇIXARIŞI",
-        "subtitle": "N.Kərimovanın telefonundan · «Qardaşım» adlı söhbət",
-        "chat": {
-          "name": "Qardaşım",
-          "seen": "onlayn",
-          "days": [
-            {
-              "label": "13 sentyabr",
-              "messages": [
-                {
-                  "yon": "cixan",
-                  "text": "Sabah yoxlama qoyub. Səhər saat doqquza.",
-                  "time": "22:26"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Neçəyə çatmır",
-                  "time": "22:29"
-                },
-                {
-                  "yon": "cixan",
-                  "text": "Doqquz min. Bir aya qaytaracaqdım.",
-                  "time": "22:30"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Sabaha tapa bilmərəm. Cümə günə deyə bilərəm.",
-                  "time": "22:34"
-                },
-                {
-                  "yon": "cixan",
-                  "text": "",
-                  "time": "22:38",
-                  "kind": "silinmis"
-                },
-                {
-                  "yon": "gelen",
-                  "text": "Nüşabə bunu yazma. Sil.",
-                  "time": "22:39"
-                },
-                {
-                  "yon": "cixan",
-                  "text": "Sildim. Evə gedirəm, danışarıq.",
-                  "time": "23:02"
-                }
-              ]
-            }
-          ]
-        },
-        "cap": "Şəkil 1 — ekran görüntüsü",
-        "note": "Kamera № 1-in qeydinə görə N.Kərimova ön darvazadan 23:05-də çıxıb və həmin gecə qayıtmayıb."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "YAZIŞMA ÇIXARIŞI",
+            "alt": "N.Kərimovanın telefonundan · «Qardaşım» adlı söhbət"
+          },
+          {
+            "tip": "yazisma",
+            "sohbet": "Qardaşım",
+            "gorulme": "onlayn",
+            "gunler": [
+              {
+                "tarix": "13 sentyabr",
+                "mesajlar": [
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "Sabah yoxlama qoyub. Səhər saat doqquza.",
+                    "saat": "22:26"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Neçəyə çatmır",
+                    "saat": "22:29"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "Doqquz min. Bir aya qaytaracaqdım.",
+                    "saat": "22:30"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Sabaha tapa bilmərəm. Cümə günə deyə bilərəm.",
+                    "saat": "22:34"
+                  },
+                  {
+                    "nov": "silinmis",
+                    "yon": "cixan",
+                    "saat": "22:38"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "gelen",
+                    "metn": "Nüşabə bunu yazma. Sil.",
+                    "saat": "22:39"
+                  },
+                  {
+                    "nov": "metn",
+                    "yon": "cixan",
+                    "metn": "Sildim. Evə gedirəm, danışarıq.",
+                    "saat": "23:02"
+                  }
+                ]
+              }
+            ],
+            "izah": "Şəkil 1 — ekran görüntüsü"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "Kamera № 1-in qeydinə görə N.Kərimova ön darvazadan 23:05-də çıxıb və həmin gecə qayıtmayıb."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "19–20",
       "name": "İzahat: Hacıyev Vüqar Sabir oğlu",
       "kind": "İzahat",
-      "type": "protokol",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "İZAHAT",
-        "fields": [
-          [
-            "Kimdən",
-            "Hacıyev Vüqar Sabir oğlu"
-          ],
-          [
-            "Doğum ili",
-            "1982"
-          ],
-          [
-            "Vəzifə",
-            "növbətçi dispetçer"
-          ]
-        ],
-        "body": [
-          "On bir ildir bu parkda işləyirəm. İlqar müəllimlə heç vaxt sözümüz olmayıb, bu axşamkı söhbətdən başqa.",
-          "Axşam saat on birə on beş qalmış kassanı bağladım, hesabatı imzaladım. Ofisin açarını mühafizəçiyə qaytardım və evə getdim. Təxminən on birin iyirmisi olardı.",
-          "Bəli, ofisə qalxmışdım, bunu yazışmada da görürsünüz. On dəqiqə danışdıq. Dedi ki, lentə baxıb və bir neçə biletin kassaya düşmədiyini görüb. Mən dedim ki, cihaz köhnədir, səhv sala bilər. O da «səhər baxarıq» dedi. Mübahisə olmadı, səsimizi qaldırmadıq.",
-          "Ön darvazadan çıxmamışam, çünki maşınımı arxa tərəfdə saxlayıram — orada kölgə var. Arxa darvazadan çıxdım. Kamera orada yoxdur, bilirəm, amma mən bunu gizlətmirəm ki.",
-          "Səhər saat altıya iyirmi qalmış gəldim, işıqları yandırdım. Sonra Elmar qışqırdı, çuxura baxdım."
-        ],
-        "sign": {
-          "who": "V.Hacıyev",
-          "post": "İzahatı verən",
-          "date": "14.09.2026"
-        },
-        "note": "[[Müstəntiqin qeydi:]] izahat 14.09.2026, saat 12:05-də alınıb."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Hacıyev Vüqar Sabir oğlu"
+              ],
+              [
+                "Doğum ili",
+                "1982"
+              ],
+              [
+                "Vəzifə",
+                "növbətçi dispetçer"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "On bir ildir bu parkda işləyirəm. İlqar müəllimlə heç vaxt sözümüz olmayıb, bu axşamkı söhbətdən başqa.",
+              "Axşam saat on birə on beş qalmış kassanı bağladım, hesabatı imzaladım. Ofisin açarını mühafizəçiyə qaytardım və evə getdim. Təxminən on birin iyirmisi olardı.",
+              "Bəli, ofisə qalxmışdım, bunu yazışmada da görürsünüz. On dəqiqə danışdıq. Dedi ki, lentə baxıb və bir neçə biletin kassaya düşmədiyini görüb. Mən dedim ki, cihaz köhnədir, səhv sala bilər. O da «səhər baxarıq» dedi. Mübahisə olmadı, səsimizi qaldırmadıq.",
+              "Ön darvazadan çıxmamışam, çünki maşınımı arxa tərəfdə saxlayıram — orada kölgə var. Arxa darvazadan çıxdım. Kamera orada yoxdur, bilirəm, amma mən bunu gizlətmirəm ki.",
+              "Səhər saat altıya iyirmi qalmış gəldim, işıqları yandırdım. Sonra Elmar qışqırdı, çuxura baxdım."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "V.Hacıyev",
+            "tarix": "14.09.2026"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "[[Müstəntiqin qeydi:]] izahat 14.09.2026, saat 12:05-də alınıb."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "21",
       "name": "İzahat: Kərimova Nüşabə Ələkbər qızı",
       "kind": "İzahat",
-      "type": "protokol",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "İZAHAT",
-        "fields": [
-          [
-            "Kimdən",
-            "Kərimova Nüşabə Ələkbər qızı"
-          ],
-          [
-            "Vəzifə",
-            "mühasib"
-          ]
-        ],
-        "body": [
-          "Kəsir var idi, düzdür. Doqquz min manat. Anamın müalicəsinə götürmüşdüm və qaytaracaqdım, bunu İlqar müəllimə də demişdim.",
-          "O, mənə pis adam kimi baxmırdı. Sadəcə dedi ki, yoxlama rəsmi olmalıdır, yoxsa özü cavab verəcək. Mən buna bir söz demədim.",
-          "Saat on birə beş dəqiqə qalmış çıxdım, darvazadan. Taksi ilə evə getdim, uşaqlar evdə tək idi.",
-          "Səhər Elmarın zəngi ilə xəbər tutdum. Doqquz mini indi qaytarmışam, qəbzi var."
-        ],
-        "sign": {
-          "who": "N.Kərimova",
-          "post": "İzahatı verən",
-          "date": "14.09.2026"
-        }
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Kərimova Nüşabə Ələkbər qızı"
+              ],
+              [
+                "Vəzifə",
+                "mühasib"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Kəsir var idi, düzdür. Doqquz min manat. Anamın müalicəsinə götürmüşdüm və qaytaracaqdım, bunu İlqar müəllimə də demişdim.",
+              "O, mənə pis adam kimi baxmırdı. Sadəcə dedi ki, yoxlama rəsmi olmalıdır, yoxsa özü cavab verəcək. Mən buna bir söz demədim.",
+              "Saat on birə beş dəqiqə qalmış çıxdım, darvazadan. Taksi ilə evə getdim, uşaqlar evdə tək idi.",
+              "Səhər Elmarın zəngi ilə xəbər tutdum. Doqquz mini indi qaytarmışam, qəbzi var."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "N.Kərimova",
+            "tarix": "14.09.2026"
+          }
+        ]
       }
     },
     {
       "page": "22",
       "name": "İzahat: Talıbov Rəşad Fikrət oğlu",
       "kind": "İzahat",
-      "type": "protokol",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "İZAHAT",
-        "fields": [
-          [
-            "Kimdən",
-            "Talıbov Rəşad Fikrət oğlu"
-          ],
-          [
-            "Vəzifə",
-            "sürücü (işdən azad edilib)"
-          ]
-        ],
-        "body": [
-          "Bəli, məni o axşam işdən çıxardı. Səbəb marşrutdur: mənim reysimi başqasına verdi, mən də dedim ki, bu ədalətsizlikdir. Səsimi qaldırdım, düzdür.",
-          "Amma mən saat on birə on qalmış parkdan çıxmışam. Avtobusu yuma sahəsinə qoydum, açarı köşkə qaytardım, sonra qapıdan çıxdım.",
-          "Gecəni qardaşımgildə keçirdim, Corat qəsəbəsində. Səhər ora zəng edib soruşa bilərsiniz.",
-          "İlqar müəllimə pis söz demişəm, danmıram. Amma adam öldürmək başqa şeydir."
-        ],
-        "sign": {
-          "who": "R.Talıbov",
-          "post": "İzahatı verən",
-          "date": "14.09.2026"
-        },
-        "note": "Qardaşı C.Talıbovun izahatı ilə təsdiqlənir: 23:40-da gəlib, səhərə qədər evdə olub."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Talıbov Rəşad Fikrət oğlu"
+              ],
+              [
+                "Vəzifə",
+                "sürücü (işdən azad edilib)"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Bəli, məni o axşam işdən çıxardı. Səbəb marşrutdur: mənim reysimi başqasına verdi, mən də dedim ki, bu ədalətsizlikdir. Səsimi qaldırdım, düzdür.",
+              "Amma mən saat on birə on qalmış parkdan çıxmışam. Avtobusu yuma sahəsinə qoydum, açarı köşkə qaytardım, sonra qapıdan çıxdım.",
+              "Gecəni qardaşımgildə keçirdim, Corat qəsəbəsində. Səhər ora zəng edib soruşa bilərsiniz.",
+              "İlqar müəllimə pis söz demişəm, danmıram. Amma adam öldürmək başqa şeydir."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "R.Talıbov",
+            "tarix": "14.09.2026"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "Qardaşı C.Talıbovun izahatı ilə təsdiqlənir: 23:40-da gəlib, səhərə qədər evdə olub."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "23",
       "name": "İzahat: Səfərov Elmar Vaqif oğlu",
       "kind": "İzahat",
-      "type": "protokol",
       "locked": false,
       "sample": false,
       "code": "",
       "hint": "",
       "content": {
-        "title": "İZAHAT",
-        "fields": [
-          [
-            "Kimdən",
-            "Səfərov Elmar Vaqif oğlu"
-          ],
-          [
-            "Doğum ili",
-            "1998"
-          ],
-          [
-            "Qohumluq",
-            "zərərçəkənin qardaşı oğlu"
-          ]
-        ],
-        "body": [
-          "Emalatxana mənim üzərimdədir. Əmimdən xahiş etmişdim ki, emalatxananı rəsmi olaraq mənim adıma icarəyə versin — öz işimi qurmaq istəyirdim. O, «bir il işlə, sonra baxarıq» dedi. İncimişdim, amma bu qədər.",
-          "O gecə 17 nömrəli avtobusun əyləcini düzəldirdim. Saat on ikiyə on qalmış qurtardım, açarları köşkə qaytardım və çıxdım.",
-          "Çuxurun işığını mən söndürmüşəm, işi qurtaranda həmişə söndürürəm.",
-          "Səhər gəldim, çuxurda əmimi gördüm. Dərhal qışqırdım, Vüqar müəllim qaçıb gəldi."
-        ],
-        "sign": {
-          "who": "E.Səfərov",
-          "post": "İzahatı verən",
-          "date": "14.09.2026"
-        },
-        "note": "Açarların verilməsi jurnalı ilə təsdiqlənir: emalatxana açarı 00:08-də qaytarılıb."
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Səfərov Elmar Vaqif oğlu"
+              ],
+              [
+                "Doğum ili",
+                "1998"
+              ],
+              [
+                "Qohumluq",
+                "zərərçəkənin qardaşı oğlu"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Emalatxana mənim üzərimdədir. Əmimdən xahiş etmişdim ki, emalatxananı rəsmi olaraq mənim adıma icarəyə versin — öz işimi qurmaq istəyirdim. O, «bir il işlə, sonra baxarıq» dedi. İncimişdim, amma bu qədər.",
+              "O gecə 17 nömrəli avtobusun əyləcini düzəldirdim. Saat on ikiyə on qalmış qurtardım, açarları köşkə qaytardım və çıxdım.",
+              "Çuxurun işığını mən söndürmüşəm, işi qurtaranda həmişə söndürürəm.",
+              "Səhər gəldim, çuxurda əmimi gördüm. Dərhal qışqırdım, Vüqar müəllim qaçıb gəldi."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "E.Səfərov",
+            "tarix": "14.09.2026"
+          },
+          {
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "Açarların verilməsi jurnalı ilə təsdiqlənir: emalatxana açarı 00:08-də qaytarılıb."
+            ]
+          }
+        ]
       }
     },
     {
       "page": "24",
       "name": "Ofisdəki metal kassa qutusu",
       "kind": "Kodla bağlıdır",
-      "type": "kilid",
       "locked": true,
       "sample": false,
-      "code": "0417",
-      "hint": "Həyat yoldaşı G.Səfərovanın izahatından: «Otuz il əvvəl sürücü işləyəndə sonuncu satdığı bileti çərçivəyə salıb saxlamışdı. Nə telefonun kodu, nə seyfin — hamısı o biletin nömrəsi idi.»",
       "content": {
-        "lockTitle": "KASSA QUTUSU",
-        "lockSub": "Ofisdəki masanın üstündən götürülüb.\nDördrəqəmli kodla bağlanır.",
-        "title": "QUTUNUN İÇİNDƏKİLƏRİN SİYAHISI",
-        "subtitle": "açılma tarixi: 15.09.2026",
-        "items": [
+        "bloklar": [
           {
-            "t": "Mərkəzə ünvanlanmış məlumat",
-            "d": "13.09.2026 tarixli. Qeydiyyatdan keçməyən biletlərin satışı barədə. Mətndə dispetçer V.Hacıyevin adı çəkilir və qəbz lentinin surəti əlavə olunub. **İmzalanmayıb.**"
+            "tip": "blank"
           },
           {
-            "t": "Qəbz lentinin surəti",
-            "d": "İyul–sentyabr aylarını əhatə edir. Ayrı-ayrı sətirlər əl ilə işarələnib."
+            "tip": "basliq",
+            "ad": "QUTUNUN İÇİNDƏKİLƏRİN SİYAHISI",
+            "alt": "açılma tarixi: 15.09.2026"
           },
           {
-            "t": "Əl yazısı ilə qeyd",
-            "pen": true,
-            "d": "«Vüqara bir şans verim, uşaqları var. Səhər özü ilə danışacam. Pulu qaytarsa, bu kağızı yandıraram.»"
+            "tip": "kart",
+            "kartlar": [
+              {
+                "ad": "Mərkəzə ünvanlanmış məlumat",
+                "metn": "13.09.2026 tarixli. Qeydiyyatdan keçməyən biletlərin satışı barədə. Mətndə dispetçer V.Hacıyevin adı çəkilir və qəbz lentinin surəti əlavə olunub. **İmzalanmayıb.**"
+              },
+              {
+                "ad": "Qəbz lentinin surəti",
+                "metn": "İyul–sentyabr aylarını əhatə edir. Ayrı-ayrı sətirlər əl ilə işarələnib."
+              },
+              {
+                "ad": "Əl yazısı ilə qeyd",
+                "metn": "«Vüqara bir şans verim, uşaqları var. Səhər özü ilə danışacam. Pulu qaytarsa, bu kağızı yandıraram.»",
+                "elyazma": true
+              },
+              {
+                "ad": "Kassa qalığı",
+                "metn": "1 260 manat. Sayım aktı ilə uyğundur, əskik yoxdur."
+              }
+            ]
           },
           {
-            "t": "Kassa qalığı",
-            "d": "1 260 manat. Sayım aktı ilə uyğundur, əskik yoxdur."
+            "tip": "metn",
+            "cerceve": true,
+            "abzaslar": [
+              "[[Qeyd:]] məlumat mərkəzə göndərilməyib. Zərərçəkənin 00:52-dəki son zəngi həmin mərkəzin rəhbərinədir."
+            ]
           }
-        ],
-        "note": "[[Qeyd:]] məlumat mərkəzə göndərilməyib. Zərərçəkənin 00:52-dəki son zəngi həmin mərkəzin rəhbərinədir."
+        ]
+      },
+      "kilid": {
+        "nov": "reqem",
+        "kod": "0417",
+        "ipucu": "Həyat yoldaşı G.Səfərovanın izahatından: «Otuz il əvvəl sürücü işləyəndə sonuncu satdığı bileti çərçivəyə salıb saxlamışdı. Nə telefonun kodu, nə seyfin — hamısı o biletin nömrəsi idi.»",
+        "basliq": "KASSA QUTUSU",
+        "alt": "Ofisdəki masanın üstündən götürülüb.\nDördrəqəmli kodla bağlanır."
       }
     }
   ]

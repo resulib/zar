@@ -9,7 +9,9 @@ use App\Models\Dossier;
 use App\Models\DossierProgress;
 use App\Models\User;
 use App\Services\DossierService;
+use App\Support\Dossier\BlokSxemi;
 use App\Support\Dossier\Dossier as Kod;
+use App\Support\Dossier\Qalereya;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -54,7 +56,12 @@ class DossierController extends Controller
             'showcase' => $showcase,
             'numune'   => $numune,
             'hero'     => $numune[0]['html'] ?? '',
-            'yazisma'  => collect($numune)->firstWhere(fn ($n) => $n['doc']->type === 'yazisma')['html'] ?? '',
+            /* Sənədin «növü» yoxdur — telefon maketi üçün YAZIŞMA BLOKU olan
+               ilk nümunə seçilir. */
+            'yazisma'  => collect($numune)->first(
+                fn ($n) => collect((array) (($n['doc']->content['bloklar'] ?? [])))
+                    ->contains(fn ($b) => ($b['tip'] ?? '') === 'yazisma')
+            )['html'] ?? '',
             /* SONUNCU sual, birinci deyil: onun variantları sənəd adlarıdır,
                şübhəli adları yox. `reorder()` mütləqdir — `questions()`
                münasibəti onsuz da `sort ASC` tətbiq edir və `orderByDesc`
@@ -131,6 +138,30 @@ class DossierController extends Controller
             'dossier' => $dossier,
             'data'    => $data,
             'access'  => $access,
+        ]));
+    }
+
+    /**
+     * Komponent qalereyası — YALNIZ İŞLƏYİCİLƏR ÜÇÜN.
+     *
+     * Marşrut istehsalatda ümumiyyətlə qeydiyyatdan keçmir (routes/web.php),
+     * yəni ünvan orada mövcud deyil və 404 verir. Parol unudulma riski yoxdur.
+     */
+    public function gallery(): Response
+    {
+        return $this->noindex(response()->view('dossier.qalereya', [
+            'bloklar'     => Qalereya::bloklar(),
+            'elyazma'     => Qalereya::elyazma(),
+            'kenar'       => Qalereya::kenar(),
+            'kagiz'       => Qalereya::kagiz(),
+            'mohurler'    => Qalereya::mohurler(),
+            'elyazmaHedd' => BlokSxemi::ELYAZMA_HEDD,
+            'kilidler'    => array_map(
+                fn (string $n) => ['nov' => $n, 'kod' => match ($n) {
+                    'reqem' => '0417', 'tarix' => '09.03.2011', default => 'novxana',
+                }, 'ipucu' => 'Həyat yoldaşının izahatına bax.'],
+                BlokSxemi::KILID_NOV
+            ),
         ]));
     }
 

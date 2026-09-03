@@ -42,6 +42,13 @@ npm run test:copy        # copy quality: style rules (§9) + option-list schema 
 npm run test:title       # longest catalog titles across 12 layouts + story card, in a real browser
 npm run test:templates   # 216 templates: unique ids, tone/category match, fields schema, text budgets
 npm run test:replies     # 71 reply templates: intent coverage, replyCats, prefixes, orgs, render
+npm run test:sosial      # 6 sosial kimlik kartı: ağ siyahılar ↔ config/sosial.php, hüquqi qalxan, render
+npm run test:sosial-flow # sosial kart redaktoru uçdan-uca (php artisan serve --port=8099 lazımdır)
+npm run test:dossier     # iş qovluğu: seed sxemi, 9 sənəd növü ↔ Blade, sirr və brend sızması
+npm run test:dossier-flow # iş qovluğu uçdan-uca, real brauzerdə — TELEFON (php artisan serve --port=8099)
+npm run test:dossier-sizes # 412 / 820 / 1440: sətir uzunluğu, iki panel, kataloq şəbəkəsi
+node tools/convert-dossier-blocks.js  # BİRDƏFƏLİK: köhnə «növ» şablonlarından bloklara (icra olunub)
+npm run render:dossier-og # iş qovluqlarının OG şəkilləri → frontend/dossier-og/
 npm run test:reply-flow  # the SPA reply editor (/?cavab=…) in a real browser (no backend needed)
 node tools/decode-test.js  # real jsQR scan of generated QR
 npm run test:fields      # dynamic questionnaire layer in a real browser (no backend needed)
@@ -487,6 +494,81 @@ via `reply_root_id`.
 endpoint accepts only that **whitelist** — otherwise it would be an open write path. `/admin/statistika`
 reads it: conversion rate, funnel, chain depth, popular intents, per-category rate.
 
+### Social identity cards (Sosial kimlik kartı) — TikTok · Instagram
+
+A visitor pastes a TikTok/Instagram profile link and gets a parody **ID card** — not an A4 sheet.
+It rides the normal pipeline (own registry number, QR, 1 AZN publish, PNG/PDF/story) but is a
+**third output format** beside `a4()` and `story()`.
+
+**`DOCGEN.kart(doc, opts)` is NOT in `LAYOUTS`.** 1080×1350 canvas, two credit-card-proportioned
+faces (ID-1, 85.6×54 mm) stacked — front (photo, handle, platform, three stat tiles) and back
+(magnetic stripe, signature panel, seal, QR, barcode, MRZ). Registering it as a 13th layout would
+trip the bijection trap (18 new templates); keeping it outside the registry costs nothing.
+`kartStory()` is the 1080×1920 variant. **`DOCGEN.sheet(doc)` / `share(doc)` are the only entry
+points callers use** — they return `{svg, w, h, kart}` and pick the format from `doc.social`.
+`app.js` and `viewer.js` never branch on it themselves.
+
+- **The `inner()` gate does not apply**, so the card draws every parody mark explicitly:
+  `kartWatermark()` (`data-wm="1"`), `kartDisclaimer()` (`data-dc="1"`), `seal()`, `microtext()`
+  and the MRZ whose optional-data field still reads `PARODIYA`. `tools/check-sosial.js` §7 asserts
+  each one across 3 styles × 6 palettes. Removing any of them silently guts the legal shield.
+- **Three styles** — `resmi` · `tund` · `sade` (`KART_STILLER`), chosen per template via
+  `templates.card_style` and overridable at runtime; in social mode the layout picker becomes a
+  style picker. The dark style inverts the disclaimer band and puts a white plate behind the
+  barcode — both were illegible otherwise.
+- `L_vesiqe` still carries four `doc.social`/`doc.avatar` gates as a **fallback**: a card rendered
+  through `a4()` (stale client, `documents.layout` round-trip) still reads as an ID card. Those
+  gates and `kart()` are the only things in `doc.js` that read `doc.social`.
+
+**Avatars are `data:` URIs, never external links.** `doc.js` `AVATAR_RE` rejects anything else —
+an external `<image href>` would break PNG export (canvas rasterisation drops it) and leak every
+viewer's IP to the platform CDN. Verified: a base64 JPEG inside SVG-as-image rasterises and does
+**not** taint the canvas, so `toBlob()` still works. Do not add `xmlns:xlink` to the `a4()` wrapper
+to support `xlink:href` — that changes every layout's bytes; plain `href` (SVG2) is what is used.
+
+**The data layer is hybrid on purpose, and that is a product decision, not a shortcut.** Verified
+2026-08-31 by direct request: TikTok's keyless oEmbed returns **only the display name** (its profile
+page is behind a WAF; `node/share/user` 403s), and Instagram has no official path at all since the
+Basic Display API shut down on 2024-12-04 — `i.instagram.com/api/v1/users/web_profile_info/`
+returns the full set (name, bio, verified, follower/following/post counts, avatar URL) but is
+**unofficial and blocked from many hosting IPs**. So `PublicProvider::fetch()` **never throws**:
+failure returns `[]`, the fields stay blank and editable, and the card is still built.
+`SOSIAL_FETCH=false` disables fetching entirely without changing the UI. Failed lookups are
+negative-cached for 5 minutes so a blocked platform is not hammered — expect a fresh handle to look
+"empty" for that window.
+
+- Three layers, same split as `AiService`: `Support\Sosial\ProfilUrl` (link parsing, host allowlist)
+  · `Support\Sosial\PublicProvider` (HTTP, injectable `callable`, `curl` with `FOLLOWLOCATION` off)
+  · `Services\SosialService` (config, cache, moderation, avatar download). The first two are
+  framework-free and covered by `tests/logic.php`.
+- **`Sosial::sayi()` ↔ `doc.js sosialSayi()` must stay byte-identical** — `12437` → `12,4 K`,
+  and `null` is `—`, **not** `0`. If they drift, the PNG the user downloaded and the registry copy
+  disagree, which is the one thing the security posture forbids.
+- The server owns the block: `social` goes through `Sosial::clean()`, `signOrg`/title/clauses still
+  come from the catalog, and `{{username}}`/`{{followers}}` are filled from `Sosial::vals()` on the
+  server exactly as questionnaire answers are.
+- **Avatar fetch is an SSRF surface**: `SosialService::avatarDataUri()` accepts `https` only, matches
+  the host against `sosial.avatar.hosts` by suffix, caps the download, and re-encodes through GD.
+- Publish uploads the 256×256 JPEG to `POST /api/documents/{regNo}/avatar`, stored **outside the
+  public root** and streamed by `GET /r/{regNo}/avatar.jpg` with a fixed `image/jpeg` + `nosniff` —
+  the `devet` OG model. `viewer.js` fetches that **relative** path (not `avatarUrl`, which is built
+  from `APP_URL` and can point at a different host) and re-renders the card with the image inlined.
+
+**The card catalog is separate**, exactly like replies: `frontend/sosial.js` defines
+`SOSIAL_KINDS` / `SOSIAL_CATEGORIES` / `SOSIAL_CARDS` / `SOSIAL_PARSE` / `SOSIAL_VALS` and
+**never pushes onto `CATEGORIES` / `TEMPLATES`**. In the database they are ordinary rows marked by
+`categories.is_social`; `CatalogService::payload()` now splits into **six** keys. Note the split is
+by **category**, not by `templates.social_kind` — that column may be empty when a card serves both
+platforms. Registering `sosial.js` takes the same four edits as `replies.js` and it is deliberately
+not loaded by `viewer.html`.
+
+> **Real platform logos are used** (`platformLogo()` in `doc.js`) at the user's explicit direction.
+> They are registered trademarks and this is the one place the repo's "no real symbols" rule bends,
+> so the compensating limits are enforced by `tools/check-sosial.js` §5: `signOrg` may never contain
+> a platform name (`BRAND_BAN`) or a real institution (`ORG_BAN`), and nothing on the card claims the
+> platform issued it. The logos live in one table in `doc.js` so switching to invented marks is a
+> single-function edit.
+
 ### The invitations section (Dəvətnamələr) — a separate product
 
 `/devetname` is **not** part of the SPA. Real people send these to real weddings, so a single
@@ -562,6 +644,409 @@ transliterated to ASCII by `DAVET.asciiAd()` because several unzip implementatio
 (`throttle:rsvp`, 8/min per visitor and 20/min per IP) and it can only ever write the guest's own
 row. A guest reached through a named link is already identified; one arriving through the shared
 link must type a name, or the board would fill with anonymous rows.
+
+### The detective case files section (İş qovluğu) — a separate product
+
+`/is` is the second product that shares the backend and nothing else. A visitor pays credits for a
+case file, reads its documents on a phone, opens a code-locked box, then names the killer, the motive
+and the proving contradiction; the server checks the answer and issues a **spoiler-free** certificate.
+
+The separation is physical, exactly like `devetname`: own routes (`/is/...`, names `dossier.*`), own
+layout (`layouts/dossier.blade.php`), own CSS (`dossier.css`), own font set (`dossier-fonts.css`),
+own OG image. **`site.css`, `panel.css` and `app.js` are never loaded here**, and unlike the
+invitations there is **no link in either direction** — the two products do not know about each other.
+`export.js` is the one shared asset (canvas → PNG/JPEG); it carries no brand words.
+`tools/check-dossier.js` §5 greps every `dossier*` file **including comments** for
+`zarafat · notariat · reyestr · parodiya · znp · quvvesi · palatasi · devetname`.
+Note `mohur` is deliberately **not** on that list — the stamp on the case cover is an investigation
+stamp, not the other product's parody seal.
+
+**The whole section exists to keep two values on the server.** `dossier_documents.lock_code` and
+`dossier_questions.correct_index` are the game; if either reaches the browser the product is over.
+Four things enforce that, and none of them is sufficient alone:
+
+- `DossierDocument::$hidden = ['lock_code','content']` and
+  `DossierQuestion::$hidden = ['correct_index','explanation']` — a model accidentally passed to
+  `toArray()` still leaks nothing.
+- The shell page ships **only progress** via `@json` (read/pinned/unlocked ids, attempts, solved).
+  Document bodies, suspects, chronology and questions are absent from the HTML until access is paid
+  for — they are not hidden, they are not sent.
+- `DossierService::renderDocument()` is the only path that turns content into HTML, and it renders
+  the **locked** partial (a keypad) when the document has not been opened.
+- `tests/security.php` §14 asserts the code and the answers are absent from the served HTML, and
+  `tools/check-dossier.js` §4 asserts they are absent from every frontend asset and Blade file.
+
+**The document render layer is AJAX + Blade partials.** `GET /api/is/{slug}/sened/{id}` returns a
+ready HTML fragment. A document is **a list of blocks**, not a fixed type: thirteen block partials
+live in `resources/views/dossier/bloklar/`, listed in `config/dossier.php` `'bloklar'` —
+`tools/check-dossier.js` §2 asserts the config list, the Blade files, `BlokSxemi::BLOKLAR` and
+`Qalereya::bloklar()` all agree. The closed keypad lives in `partials/kilid.blade.php` and is
+rendered *instead of* the blocks while the document is locked.
+
+> `@include('dossier.bloklar.' . $b['tip'])` would **break `tests/audit.php` §5**, whose regex
+> reads the literal after `@include('`. The view name is computed into `$blokView` first, so the
+> dynamic include is invisible to that check.
+
+**Document text is never HTML.** `App\Support\Dossier\Metn::inline()` escapes first, then opens
+exactly three things: `**qalın**`, `[[qırmızı]]` (the investigator's red pen) and `\n` → `<br>`.
+`{{açar}}` substitution runs **last** and escapes its value, so a name containing `**` cannot smuggle
+markup. The one raw-HTML exception is the `sxem` SVG, and it goes through `Sxem::temizle()`
+(drops `<script>`, `on*=`, external `href`, `foreignObject`, `<image>`, `<use>`) — the content is
+trusted today because it comes from the seeder, but the filter is in place for the day an admin CRUD
+arrives, because that is the day it would be forgotten.
+
+**Three attempts, and the wrong item is never named.** `Rey::yoxla()` returns `{ok, tam}` and nothing
+else; telling the visitor *which* answer was wrong would turn three attempts into a search of the
+4 × 4 × 4 space. `tam: false` means the form was incomplete — that does **not** burn an attempt. On
+the third wrong verdict `revealed` is set: the explanation opens, the certificate does not.
+`throttle:dossier-rey` (6/min) is the network-side half of the same rule, and
+`throttle:dossier-kilid` (10/min per visitor, 30/min per IP) is what actually protects a 4-digit
+code — the length never could.
+
+**Progress is in the database, never in `localStorage`** — the point is that someone can close the
+phone and continue in the morning. The same row holds the clock: `started_at` is written server-side
+and `duration_seconds` is computed server-side; the counter in the browser is display only and cannot
+change the result. `AccountService::mergeGuestInto()` re-points `dossier_progress` on login — without
+that line the `cascadeOnDelete` FK plus the guest-row deletion would silently destroy the progress
+(the same latent bug still affects `invites`).
+
+**Payment is `DocumentService::publish()`'s shape.** `DossierService::open()` returns early when
+`access_at` is set, so a second call never spends a second credit and the visitor can return to a
+case forever. The spend is recorded through `CreditService::spend($user, $price, null, 'İş qovluğu: …')`
+— `transactions.document_id` is a hard FK to `documents`, so the case is named in `note`. The intro
+case is seeded `price_credits = 0`; everything else costs `config('dossier.price_credits')` (5).
+
+**Both share images are drawn by the browser** — there is no server-side SVG→PNG anywhere in this
+repo (`imagick` is absent, GD cannot read SVG), and that is the same decision `devet` and `sosial`
+already made. `frontend/dossier-cert.js` builds the certificate SVG and rasterises it through
+`ZEXPORT`: a **1080×1920** PNG for `navigator.share`, and a **1200×630** JPEG that is uploaded to
+`POST /api/is/{slug}/sertifikat`, stored outside the public root and streamed with a fixed
+`image/jpeg` + `nosniff`. The case's own OG image is different — `npm run render:dossier-og` renders
+it once at build time into `frontend/dossier-og/{slug}.jpg`, which is committed, so no tool is needed
+on deploy.
+
+> **The certificate carries no killer, no motive and no document text.** It is made to be posted to
+> a Story, and the person who sees it has not played yet. `tools/check-dossier-flow.js` §8 asserts
+> the rendered certificate contains neither the suspect's name nor the motive.
+>
+> **Font names inside the certificate SVG must stay generic and single-quoted.** The SVG is
+> rasterised through `<img>` onto a canvas, which drops `@font-face` faces; and a double-quoted
+> family name inside a double-quoted XML attribute makes the whole image fail to load — silently,
+> as an `Event` rather than an error.
+
+**Content is database-owned and seeder-fed.** `database/seeders/dossier/*.json` is the source; a
+new case is a new JSON file and nothing else — `DossierSeeder` discovers them with `glob()`.
+`DossierSeeder` rewrites documents and questions on every run but sets `status`/`sort` only on
+insert — the `CatalogSeeder` discipline, so an admin's toggle is never undone. Admin CRUD is
+deliberately not built yet; the tables are shaped for it.
+
+There are three cases: `2026-0847` («Sədəf» şadlıq sarayı, 16 sənəd, free, **the one `showcase`**),
+`2026-0912` (16 sənəd) and `2026-0412` («Xırdalanda sükut», **28 sənəd, two lock-coded files**,
+difficulty `kabus`). Exactly one case may carry `showcase: true` — the home page's hero and sample
+strip come from it, so moving that flag also moves what `tools/check-dossier-flow.js` counts.
+
+> **The 0412 case is where the block system is actually exercised.** It is the only case that uses
+> the `kagiz` (paper) and `mohurler` (stamp) layers, and it uses all 13 block types. Its two locks
+> are the proof that **the lock is a property, not a type**: one is a `sahe`+`metn` note file, the
+> other is three `yazisma` blocks. Its first code opens a **deliberately misleading** document —
+> the game has two readings, and that is content, not an engine state; `dossier_progress` still
+> knows only `solved` / `revealed`.
+
+**Adding a block type** touches four places: `config/dossier.php` `'bloklar'` →
+`resources/views/dossier/bloklar/<tip>.blade.php` → `App\Support\Dossier\BlokSxemi::ACARLAR`
+(required/allowed keys) → `App\Support\Dossier\Qalereya::bloklar()` so `/is/qalereya`
+demonstrates it. `tools/check-dossier.js` §2 asserts all four agree — and it pins the count at
+**13**, so adding one is a deliberate edit, never an accident. A new *document* needs none of
+this: it is a new order of existing blocks in the seed JSON.
+
+> Two CSS bugs were inherited from the prototype and fixed on the way in, both worth knowing about:
+> `#s-cover{display:flex}` is an **ID** selector and outranks `.screen{display:none}`, so the cover
+> never hid — `display` now lives on `#s-cover.on`. And `.dr-name`/`.dr-kind` are `<span>`s inside a
+> flex item, so the document kind ran into the name until they were made `display:block`.
+
+### The case-file document is a list of blocks, not a template
+
+A document used to be one of nine fixed `type`s, each with its own Blade file. Those templates
+were shaped by the *first* case, and the strain showed immediately: by the second case the
+ticket roll and the key logbook were forced into `cedvel` because there was nowhere else to
+put them, and `senedler/ekspert.blade.php` had degenerated into a single line —
+`@include('protokol')`. A ninth "type" that is a copy of another type is not a type.
+
+**The render layer must not know the story.** It knows blocks; the database supplies the story.
+A document is an ordered list of blocks, and a new kind of document is a new *order*, not new
+code. Thirteen block types cover everything the two existing cases contained (15 distinct
+content keys) plus capabilities nothing had used yet.
+
+```jsonc
+{ "page": "2–5", "name": "…", "kind": "Protokol", "sample": true,
+  "kilid":    { "nov": "reqem", "kod": "0903", "ipucu": "…" },   // NÖV DEYİL, XASSƏ
+  "content": {
+    "kagiz":    { "kohnelme": 2, "qat": [0.34], "leke": [ … ] }, // fiziki qat
+    "mohurler": [ { "metn": ["AFİB"], "forma": "daire", … } ],   // möhür qatı
+    "bloklar":  [ { "tip": "blank" }, { "tip": "basliq", … } ]
+  } }
+```
+
+**`content` keeps its column name on purpose.** Two existing checks key on the literal string:
+`check-dossier.js` asserts `$hidden = ['lock_code','content']` with a regex, and the
+"lock code never appears inside content" check reads the same key. Renaming the column to
+`bloklar` would have silently disabled both.
+
+**The mechanical gate survived the rewrite.** `sened.blade.php` is still the single wrapper
+every document passes through, so the AFİB notice, the paper layer and the stamp layer live
+there and no block type can escape them — the same argument as `inner()` in `doc.js`, now with
+thirteen ways to forget instead of nine.
+
+> **The dynamic include must stay a variable.** `@include('dossier.bloklar.' . $b['tip'])`
+> would break `tests/audit.php` §5, whose regex reads the literal after `@include('`. The view
+> name is computed into `$blokView` first, so the audit skips it.
+
+**The lock is a property, not a type.** Any block composition can be locked — a table, a chat,
+a scheme. `dossier_documents.lock_kind` (`reqem` · `soz` · `tarix`) picks the puzzle's shape,
+and the locked document's blocks are still never sent to the browser.
+
+**Scheme markers are data, not SVG.** `Sxem::nisanla()` injects numbered points, dimension
+lines, direction arrows and a north mark into the SVG at render time, using the SVG's own
+`viewBox` coordinates. They were baked into the drawing before; moving them out means one
+scheme can carry different marks at different stages of a case. Both existing schemes were
+converted.
+
+**Damaged text is markup, not geometry.** `Metn::inline()` gained `++əl ilə++`, `~~üstündən~~`,
+`((oxunmaz))` and `%%söz%%` on top of the existing three. The prompt asked that the data say
+*which block and which word* a margin note attaches to: the block is named by the block's own
+`kenar` key, and the **word** is marked inline — a word index would drift the moment someone
+edits a sentence, whereas a marker travels with the word. Note `((…))` needs double parens
+precisely so ordinary text like `(on iki min)` is untouched.
+
+**Three heavy physical effects, maximum.** `leke · cirilma · kseroks · kohnelme ≥ 2` are the
+heavy ones; a fourth makes a sheet where nothing reads as deliberate. This is a **validator
+error**, not a warning — a design rule that only lives in a comment is a rule that erodes.
+
+**Everything physical is CSS and SVG** — no image files, because the sheet has to stay sharp at
+every size and its text has to stay selectable. The grain pattern is the four-line SVG lifted
+from `doc.js` `defs()`; the fold, stain, tear, xerox, fingerprint and paperclip effects are
+gradients, `clip-path`, filters and one shared `feTurbulence` in the layout.
+
+**The validator runs before the database, not after.** `App\Support\Dossier\BlokSxemi` is the
+framework-free twin of the JS rules in `check-dossier.js`, mirroring `TemplateSchema`: it
+**collects** errors instead of throwing, numbers them by position (`«2–5» · blok 4 (cedvel): …`),
+`continue`s past an unknown type so one mistake does not cascade, and `break`s inside list loops
+so a bad table produces one message rather than forty. `DossierSeeder` refuses to load a file
+with any error — a half-loaded case is worse than an unloaded one. Unknown keys are errors too,
+so a typo surfaces instead of vanishing. The one warning is handwriting length: the `elyazma`
+block is for short text and says so, but it does not stop a seed.
+
+**The gallery is where block types are proven.** `/is/qalereya` shows every block, every
+handwriting character, every paper effect, every stamp variant and every lock kind, each beside
+its JSON snippet. The route is **registered only in `local`/`testing`** — in production the
+address does not exist and returns 404, which is stronger than a password nobody will rotate.
+`check-dossier.js` asserts every configured block type appears there, so a new component that
+is not demonstrated fails the suite.
+
+**Handwriting: two families, four characters.** Only two `@fontsource` handwriting families
+carry the full Azerbaijani alphabet — Caveat and Bad Script (`marck-script` and `yeseva-one`
+fail on `Ə`, `pacifico` is a retro brush unfit for a case file). The four characters
+(`sakit · telesik · yasli · esebi`) are therefore two families plus slant, tracking and size.
+Caveat is subset with `--layout-features=kern,liga`: `calt` alone costs 21 KB and its benefit —
+automatic variation between repeated letters — is invisible in a one-line margin note.
+
+### The case-file section's fictional bureau (AFİB)
+
+The governing document is `.claude/promts/fiktiv-qurum-qaydalari.md`, kept verbatim for
+provenance. It applies to **`/is` only** — see the last point below.
+
+**Why a fictional bureau exists at all.** This product's entire value is that it imitates the
+visual language of official paperwork convincingly. The better the imitation, the greater the
+chance a screenshot circulates *without* the site around it and reads as a real police
+document. Therefore the fiction has to be legible **on the artefact itself**, not merely on
+the page that frames it. An audit found the section had exactly that hole: the game cover, the
+site footer, the presentation page and the terms page each carried a fiction notice, but a
+**rendered document carried none**, and it escaped the shell in three places — the public
+`index, follow` landing page (hero + sample sheets), the AJAX document panel (cover already
+hidden), and the shared certificate page, which did not even include the footer partial.
+
+**The institution.** `App\Support\Dossier\Byuro` — `AZƏRBAYCAN FİKTİV İSTİNTAQ BÜROSU`
+(`AFİB`). Every masthead, seal, rank and case number belongs to it. Displayed case numbers
+carry the code (`AFİB-2026/0847`); the URL slug and the OG filename stay numeric, so routes,
+tests and image paths are untouched.
+
+> **AFİB is not the product's brand.** It is the in-world issuing body. The product's own name
+> is still undecided and lives in `config('dossier.brand')`. Keeping them separate is what lets
+> either be renamed without touching the other.
+
+**Why the notice text is a class constant, not config.** `config()` can read `.env` and a
+future admin panel could blank it. A legally required sentence must not sit anywhere a person
+who is not editing code can change it. `config/dossier.php` *references* the constant, so
+there is still one source. `tests/logic.php` asserts the wording literally — `App\Support` is
+framework-free, so the file is simply `require`d.
+
+**The mechanical gate.** `resources/views/dossier/sened.blade.php` is the single wrapper every
+document passes through (`DossierService::renderDocument()` renders nothing else), so the
+notice band lives there and carries `data-fq="1"`:
+
+```blade
+<div class="p-fiktiv" data-fq="1">{{ \App\Support\Dossier\Byuro::QEYD }}</div>
+```
+
+This is the same reasoning as `inner()` in `doc.js` ("no layout can render without the
+watermark and the disclaimer — even if whoever wrote it forgot"). There are nine document
+types today and there will be a tenth; a rule written per type is a rule someone forgets, and
+a rule written in the wrapper is a rule nobody *can* forget. The locked keypad screen gets the
+band too — it is a fictional artefact as well.
+
+**The share artefacts are listed separately on purpose.** The certificate page, the 1080×1920
+story PNG, the 1200×630 OG JPEG and the per-case OG image all live *outside* the site, so the
+notice has to be **inside** each of them. `check-dossier.js` §3c asserts that for all four.
+
+**Two guards, because they fail in opposite directions.**
+
+- *Issuing body — positive assertion.* `cover.org[0]` must **equal** `Byuro::AD`, `paperHead`
+  must carry `AFİB`, `no` must start with `AFİB-`, the seal must contain `FİKTİV`. A blacklist
+  fails **open** on the phrasing nobody predicted; an equality check fails **closed**.
+- *All other text — a narrow blacklist.* `config('dossier.org_ban')` holds only multi-word,
+  unambiguous phrases (`polis bölməsi`, `daxili işlər`, `ədliyyə mayoru`, …). Banning the bare
+  word `polis` would make ordinary prose impossible ("polis çağırıldı") and the check would be
+  routed around within a week.
+
+> **The uppercase trap.** The zarafat side's `ORG_BAN` compares with case-sensitive `indexOf`
+> against fragments like `Polis` — that list would **not** have matched this section's
+> `POLİS BÖLMƏSİ`. The dossier list is therefore stored ASCII-folded and compared through
+> `check-dossier.js`'s existing `fold()` (`'İ'.toLowerCase()` is two code points and JS's `i`
+> flag does not match `İ`).
+
+**`qaydalar.blade.php` is exempt from the blacklist, and that is not a hole.** Its whole job is
+to name the institutions it disclaims ("…heç bir real polis bölməsi, nazirlik, prokurorluq …
+ilə əlaqəli deyil"), so the forbidden words must appear there. The file is instead checked
+**positively**: it must contain the denial and reference `Byuro::AD`.
+
+**Real city names stay** (Xırdalan, Sumqayıt). The rule protects institutions, not geography;
+fiction set in a real city is ordinary, and the streets, venues and addresses are invented
+anyway. Ranks were the real problem and were replaced: `ədliyyə leytenantı`/`mayoru` and
+`Məhkəmə-tibb eksperti` are actual state titles, so they became `AFİB müstəntiqi`,
+`AFİB bölmə rəisi`, `AFİB tibbi eksperti`. Civilian roles ("Obyektin sahibi", "Mühafizəçi",
+"İzahatı verən") were left alone — they are not institutions.
+
+**Why this does not extend to the other two sections.** The zarafat side already has an
+equivalent shield built for a *different* fiction — the invented ZNP crest, the
+`ƏYLƏNCƏ MƏQSƏDLİDİR / PARODİYA` seal, the `HÜQUQİ QÜVVƏSİ YOXDUR` band and its own `ORG_BAN`
+(see "Non-negotiable design invariants"). Stamping `FİKTİV OYUN SƏNƏDİ` onto a parody notarial
+deed would say the wrong thing and weaken both shields. The invitations section is for real
+weddings and no investigative disclaimer belongs there at all.
+
+**The bureau's mark must not resemble a state emblem.** The AFİB monogram is a cut-corner sheet
+outline inside a thin circle with the letters `AFİB` — no star, crescent, flame, wreath or
+crest shield. Same discipline as the invented `ZNP` monogram on the other side.
+
+### The case-file section's sales face
+
+The section has three faces and each earns its keep:
+
+| route | name | indexed? |
+|---|---|---|
+| `/is` | landing — hero, how-it-works, catalog, sample sheets, price, FAQ | **yes** |
+| `/is/{slug}` | one case's presentation — no spoilers, stats, material names | **yes** |
+| `/is/{slug}/qovluq` | the game itself | no |
+| `/is/{slug}/hesabat/{token}` | shared certificate | no |
+| `/is/qaydalar` | terms + privacy | yes |
+
+**Indexing was deliberately reversed here.** The section used to be wholly closed —
+unconditional `noindex` plus `Disallow: /is/` — because that rule was copied from
+`devetname`, where the reason is privacy (a guest's address and phone). A case-file catalog
+is not private, it is the thing being sold, and a sales page nobody can find is not a sales
+page. The layout now reads `@yield('robots', 'noindex, nofollow')`, the two sales pages
+override it, and `robots.txt` disallows only `/is/*/qovluq` and `/is/*/hesabat/`.
+`tests/security.php` §14 asserts **both directions**: the game is closed and the landing is
+open — a future `Disallow: /is/` would silently un-list the product.
+
+**The landing shows real documents, rendered by the site's own render layer.** The hero sheet
+and the sample strip are not images: `DossierService::renderPublic()` renders them through
+the same Blade partials the game uses, with a **transient** `DossierProgress` that is never
+saved. That method is the only path that skips the access check, and it refuses anything not
+flagged `is_sample` — so a mistyped document id cannot make a whole case free.
+
+> **Which documents may be samples is a content invariant, not a taste call.** Each seed file
+> flags its two decisive documents with `"key": true` — the pair whose contradiction solves
+> the case — and `tools/check-dossier.js` §3b asserts no `key` document is also a `sample`.
+> Without that flag the rule would live only in the author's head, and the first case added
+> by someone else would give the answer away for free.
+
+**The landing renders the LAST question, never the first.** The third question's options are
+*document names*; the first question's options are the four suspects' names. Rendering the
+first would put the free case's entire suspect list on the home page. The controller uses
+`questions()->reorder('sort','desc')` — plain `orderByDesc()` would be appended as a
+*secondary* key behind the relation's own `orderBy('sort')` and silently return the first
+question. `check-dossier.js` §3b asserts the last question's options contain no suspect name.
+
+**Statistics are derived, never stored.** `Dossier::stats()` counts `dossier_progress`
+(`plays` = rows with `access_at`, `firstTry` = solved-on-attempt-1 over all solved) behind a
+10-minute cache. `firstTry` divides by *finished* players only — including those still
+playing would make the number sag over time for no reason. `config('dossier.stats.min_plays')`
+hides the block below a threshold; it is `0` today by the owner's choice, and it is a config
+value precisely so that changing that decision is one number.
+
+**Badges come from `dossiers.badge`**, whitelisted by `config('dossier.badges')` and labelled
+by `badge_labels` — never hard-coded in Blade. `badges` and `difficulties` are separate whitelists
+that happen to share the `cetin` / `kabus` slugs; a new tier must be added to **both** or the
+ribbon silently disappears while the difficulty still shows. Catalog filters render only when there
+are more than three cases (there are three today, so they stay hidden), and they filter client-side
+over `data-` attributes.
+
+**The section's name and logo are temporary.** `config('dossier.brand')` is the single place
+it appears; `check-dossier.js` §6 asserts no Blade file contains the string, so renaming is a
+one-line change.
+
+### The case-file section at three sizes
+
+`dossier.css` is phone-first (`min-width` queries) — the opposite of `site.css`, which is
+worth knowing before editing it. Two breakpoints, and both numbers are the sum of their parts
+rather than a fashion:
+
+- **720px** = paper 620 + 2×50 gutter. Portrait tablet (768) and landscape phone both land
+  here, which is right: both want one column with wider margins.
+- **1080px** = `--rail 300` + 24 + `--paper-w 700` + 2×28. iPad landscape (1024) deliberately
+  stays on the tablet layout — at 1024 the two-pane split would squeeze the paper to a zero
+  gutter, and "paper stays paper" is the rule that would break first.
+
+There is no third breakpoint. Above 1080 the columns are fixed and the surplus is desk.
+
+**The two-pane desktop view needed no JavaScript.** `go(id)` still marks exactly one screen
+`.on`; the other half of the pair is opened by CSS:
+
+```css
+#main:has(#s-index.on) #s-doc,
+#main:has(#s-doc.on)   #s-index{display:block}
+```
+
+Specificity (3,1,0) clears `.screen{display:none}` and `.screen.on`, and never touches
+`#s-cover.on`. Where `:has()` is unsupported the desktop degrades to the phone's
+one-screen-at-a-time navigation — old behaviour, not breakage. The tab bar moves to the top
+by flex `order` on the same single `<nav>`; duplicating the markup would have split the click
+handler and the tab order.
+
+> **The `ch` trap.** IBM Plex Mono's advance is 600/1000 em, so `1ch = 0.6em` exactly and
+> `ch` is a literal character count. But `ch` resolves against the element's **own**
+> `font-size`, and `.paper` declares none — it inherits 16px from `body`. A `max-width` in
+> `ch` written on `.paper` computes at `1ch = 9.6px` and overshoots by 18%. The measure
+> therefore lives on `.p-body`, `.p-note`, `.ev-d`, `.calls` and `.lock-s`, each of which
+> declares its own size. Measured: 45.9 characters on phone, 68.1 on tablet, 72.0 on desktop —
+> `npm run test:dossier-sizes` asserts under 80 at all three.
+
+**Alibi bars share one time axis on desktop.** `subheliler()` emits `.sus-bio` / `.bar` /
+`.bar-l` / `.sus-cam` as siblings instead of wrapping them in `.sus-b`, because the bar must
+be placeable independently of the biography text. Each `.sus` is then a two-column grid with
+the same column definition, so column 2 starts at the same x in every card — a shared axis
+without `subgrid`. The time labels render once, under the last bar, where they read as the
+axis legend.
+
+> **The axis labels come from `dossiers.axis`, not from the code.** They used to be the
+> literals `23:30 / 00:30 / 01:30` inside `dossier.js`. On a per-suspect bar that is a
+> repeated caption; on a shared axis it *is* the axis definition — and the second case's night
+> runs 22:30–02:30. Hard-coded, it would have been silently wrong.
+
+**Two prototype CSS bugs were fixed on the way in**, both worth knowing because they look
+correct until a wide screen: `.stamp` was positioned against `.frame` and flew to the right
+edge once the frame went full-width (it is now anchored to a centred `.cov`), and the
+520px phone-mockup rule — 26px radius plus a `0 30px 80px` shadow — was deleted outright.
 
 ### Export and the bare document viewer
 
@@ -697,6 +1182,12 @@ occasional runtime wrinkle on first run.
 - **Chain topic**: `DocumentService::topicOf()` ↔ `app.js` `catOfDoc()` — both must read
   `reply_topic` first and fall back to the template's own category.
 - **Reply counts (71 / 6 / 6)**: `tools/check-replies.js` and `tools/dist-check.js`.
+- **Social platforms**: `frontend/sosial.js` `SOSIAL_KINDS` ↔ `backend-php/config/sosial.php`
+  (`platforms` · `names` · `hosts`) — `tools/check-sosial.js` §2 compares them element by element.
+- **Follower formatting**: `doc.js` `sosialSayi()` ↔ `app.js` `sosialSayi()` ↔
+  `App\Support\Sosial\Sosial::sayi()` — three copies, asserted equal by `tests/logic.php`.
+- **Profile link parsing**: `frontend/sosial.js` `SOSIAL_PARSE` ↔ `App\Support\Sosial\ProfilUrl`.
+- **Card styles**: `doc.js` `KART_STILLER` ↔ `templates.card_style` values in `frontend/sosial.js`.
 - **Invitation whitelists**: `frontend/devet-designs.js` ↔ `backend-php/config/devet.php`
   (`designs` · `events` · `palettes` · `motifs` · `styles`) — `tools/check-devet-designs.js` §6
   compares them element by element.
@@ -704,6 +1195,34 @@ occasional runtime wrinkle on first run.
   `tools/check-devet-designs.js`.
 - **RSVP values**: `App\Support\Devet::RSVP` ↔ `config/devet.php` `rsvp` ↔ the `CAVAB` list in
   `frontend/devet-view.js`.
+- **Case-file block types**: `config/dossier.php` `bloklar` ↔ the Blade files in
+  `resources/views/dossier/bloklar/` ↔ `BlokSxemi::BLOKLAR` ↔ `Qalereya::bloklar()` —
+  `tools/check-dossier.js` §2 compares all four and pins the count at 13.
+- **Case-file difficulty labels**: `config/dossier.php` `difficulties` ↔ `difficulty_labels`.
+  Both `dossier/ana.blade.php` (the filter chips) and `dossier/teqdimat.blade.php` read the label
+  map **from config**, so adding a tier (`asan · orta · cetin · kabus`) is a config-only change.
+- **Attempt count**: `config('dossier.attempts')` is read by `DossierProgress::attemptsLeft()` and
+  by nothing on the client — the browser only displays what the server reports.
+- **Case-file badges**: `dossiers.badge` ↔ `config('dossier.badges')` whitelist ↔
+  `badge_labels` — `tools/check-dossier.js` §3b asserts every seeded badge is on the list.
+- **Case-file breakpoints**: `frontend/dossier.css` `720px` / `1080px` ↔ the viewport list in
+  `tools/check-dossier-sizes.js` — the test checks both sides of each boundary.
+- **Alibi axis labels**: `dossiers.axis` (seed) ↔ `dossier.js` `subheliler()` ↔ the
+  `bars` percentages in `dossiers.suspects`, which are percentages *of that window*.
+- **The fiction notice**: `App\Support\Dossier\Byuro::QEYD` ↔ `config('dossier.bureau.notice')`
+  (a reference, not a copy) ↔ the literal string in `frontend/dossier-cert.js`, `dossier.js` and
+  `tools/render-dossier-og.js` — the JS copies cannot import the constant, so
+  `tools/check-dossier.js` §3c asserts each file carries it.
+- **Banned institution phrases**: `config('dossier.org_ban')` (ASCII-folded) ↔ the `fold()`
+  comparison in `tools/check-dossier.js` ↔ the uppercase list in `tests/security.php` §14.
+- **Block types**: `config('dossier.bloklar')` ↔ `App\Support\Dossier\BlokSxemi::BLOKLAR` ↔
+  the Blade files in `resources/views/dossier/bloklar/` ↔ `Qalereya::bloklar()` —
+  `tools/check-dossier.js` §2 compares all four.
+- **Block validation rules**: `App\Support\Dossier\BlokSxemi` ↔ the JS twin in
+  `tools/check-dossier.js`, the same deliberate duplication as
+  `TemplateSchema` ↔ `check-templates.js` §5.
+- **Inline text markers**: `App\Support\Dossier\Metn::inline()` ↔ the `.elavesoz` /
+  `.ustxett` / `.oxunmaz` / `.dairesoz` rules in `frontend/dossier.css`.
 - **OG image size (1200×630)**: `invite.js` `OG` ↔ `config/devet.php` `og` ↔ the
   `og:image:width/height` tags in `tools/build-laravel.js`.
 

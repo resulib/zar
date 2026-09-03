@@ -24,6 +24,12 @@
 <div class="@yield('wrap', 'frame')">
 @yield('content')
 </div>
+{{-- Ləkənin kənarı üçün turbulentlik süzgəci. Sənəddə hazır şəkil faylı
+     yoxdur — bu, effekt qatının yeganə qlobal parçasıdır. --}}
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <filter id="kagizLeke"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7"/>
+  <feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+</svg>
 <div id="bildiris" class="bildiris"><span class="mesaj"></span></div>
 @stack('scripts')
 </body>

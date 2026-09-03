@@ -13,8 +13,15 @@ namespace App\Support\Dossier;
  *
  *   **qalın**      → <b>qalın</b>
  *   [[qırmızı]]    → <span class="redpen">qırmızı</span>   (müstəntiqin qələmi)
+ *   ++əl ilə++     → sonradan əl ilə əlavə edilmiş söz
+ *   ~~üstündən~~   → üstündən xətt çəkilib
+ *   ((oxunmaz))    → kseroksda itib, oxunmur
+ *   %%söz%%        → dairəyə alınmış söz
  *   sətir sonu     → <br>
  *   {{açar}}       → dəyər (özü də escape olunur)
+ *
+ * Sonuncu dördü oyun mexanikasıdır: mətnin hansı hissəsinin itdiyi və ya
+ * işarələndiyi MƏLUMATDA dəqiq göstərilir, render qatı isə onu tanımır.
  *
  * `App\Support` altındakı hər şey kimi framework-siz: `e()` yerinə
  * `htmlspecialchars`, ona görə tests/logic.php faylı `require` ilə yoxlaya bilir.
@@ -33,6 +40,12 @@ final class Metn
 
         $out = preg_replace('/\*\*(.+?)\*\*/us', '<b>$1</b>', $out) ?? $out;
         $out = preg_replace('/\[\[(.+?)\]\]/us', '<span class="redpen">$1</span>', $out) ?? $out;
+        $out = preg_replace('/\+\+(.+?)\+\+/us', '<span class="elavesoz">$1</span>', $out) ?? $out;
+        $out = preg_replace('/~~(.+?)~~/us', '<span class="ustxett">$1</span>', $out) ?? $out;
+        /* Oxunmaz hissə: mətn qalır (seçilə bilir), amma görünmür — kseroksda
+           itmiş sətir kimi. Uzunluğu saxlanılır ki, sətir sürüşməsin. */
+        $out = preg_replace('/\(\((.+?)\)\)/us', '<span class="oxunmaz">$1</span>', $out) ?? $out;
+        $out = preg_replace('/%%(.+?)%%/us', '<span class="dairesoz">$1</span>', $out) ?? $out;
         $out = str_replace(["\r\n", "\r", "\n"], '<br>', $out);
 
         /* Əvəzləmə ƏN AXIRDA gedir: dəyərin içindəki `**` və ya `[[` işarəsi
