@@ -21,6 +21,8 @@
 {{-- QORUYUCU ÇAP — çərçivə və kölgə gerbi. Mətnin ALTINDADIR (`z-index:0`),
      ona görə oxunuşa mane olmur, amma vərəqi «boş kağız» olmaqdan çıxarır. --}}
 <div class="p-cerceve p-qat" aria-hidden="true"></div>
+{{-- Gilyoş — ortaq komponent. Vərəqi «ağ kağız» olmaqdan çıxaran qatdır. --}}
+<div class="p-naxis p-qat" aria-hidden="true"><x-naxis :opaklik="0.13"/></div>
 <div class="p-hayalet p-qat" aria-hidden="true">
   <x-gerb ad="{{ \App\Support\Dossier\Byuro::QISA }}" :olcu="290" :rozet="false"/>
 </div>
@@ -43,6 +45,11 @@
 
 {{-- Vərəqin altlığı: forma nömrəsi və vərəq nişanı. Real blankın ən son
      sətri həmişə budur və məhz o, vərəqi «çap məhsulu» kimi göstərir. --}}
+{{-- Holoqram yaması — optik qoruma nişanı, forma sətrinin yanında. --}}
+<div class="p-holo">
+  <x-holoqram :id="'ho-' . $doc->id" :olcu="52" etiket="HOLOQRAM"/>
+</div>
+
 <div class="p-forma">
   <span>Forma № {{ \App\Support\Dossier\Byuro::QISA }}-{{ str_pad((string) $doc->sort, 2, '0', STR_PAD_LEFT) }}
     · İş № {{ $dossier->no }} · Nüsxə 1

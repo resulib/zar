@@ -12,9 +12,13 @@
 :root{
   --desk:#191C1A; --desk2:#22261F; --line:#343A33;
   --buff:#C2A468; --buff2:#A8894F; --buff3:#8A6F3C;
-  --paper:#E9E4D6; --paper2:#DED7C4; --paper3:#CFC6AE;
-  --ink:#26221D; --ink2:#5D564A; --ink3:#8B8271;
-  --stamp:#5A3E8C; --red:#A8382C; --pen:#24417E;
+  /* VƏRƏQİN PALİTRASI — saytın digər bölməsindəki «qrafit» dəstinin eynisi:
+     soyuq, demək olar ağ kağız və qara-göy mürəkkəb. Qovluğun özü (masa,
+     lentlər, kart rəngləri) isti qalır — dəyişən yalnız SƏNƏDdir, çünki
+     rəsmi blank sarı perqament yox, ağ kağız olur. */
+  --paper:#F7F8FB; --paper2:#EDF0F6; --paper3:#D6DCE8;
+  --ink:#151B26; --ink2:#4A5568; --ink3:#8792A6;
+  --stamp:#46407E; --red:#8A2A2A; --pen:#17356B;
   --mono:"Dossier Mono",ui-monospace,Menlo,monospace;
   --sans:"Dossier Sans",system-ui,-apple-system,sans-serif;
   /* Əlyazma: Azərbaycan hərflərini daşıyan cəmi iki ailə var, ona görə dörd
@@ -149,6 +153,12 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-qat{position:absolute;pointer-events:none;z-index:0}
 .p-cerceve{inset:9px;border:1.3px solid var(--ink3);opacity:.5}
 .p-cerceve::after{content:"";position:absolute;inset:4px;border:.5px solid var(--ink3);opacity:.75}
+/* Gilyoş vərəqin ORTASINDA, dairəvi rozet kimi durur — blankın altına
+   basılmış naxış belə olur. Başlığın üstünə düşməsin deyə mərkəzi bir az
+   aşağıdadır. */
+.p-naxis{left:50%;top:54%;width:min(96%,560px);transform:translate(-50%,-50%);
+  color:var(--pen)}
+.p-naxis .nisan-naxis{width:100%}
 .p-hayalet{left:50%;top:44%;width:min(56%,290px);transform:translate(-50%,-50%);
   opacity:.06;color:var(--ink)}
 .p-hayalet .nisan-gerb{width:100%!important}
@@ -161,6 +171,12 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   opacity:.75;overflow:hidden;white-space:nowrap;text-overflow:clip;
   user-select:none}
 .p-mikro-alt{margin:8px calc(var(--paper-x) * -1) 0}
+
+/* Holoqram — vərəqin sağ altında, forma sətrinin üstündə. Mətnin yanında
+   deyil, kənarda durur: real blankda folqa yaması məhz boş sahəyə vurulur. */
+.p-holo{display:flex;justify-content:flex-end;margin:20px 0 -6px;color:var(--ink3)}
+.nisan-holo-e{display:block;margin-top:3px;font:400 6.5px var(--mono);
+  letter-spacing:.14em;color:var(--ink3)}
 
 /* Vərəqin altlığı — forma nömrəsi və vərəq nişanı. */
 .p-forma{display:flex;justify-content:space-between;gap:12px;margin-top:22px;
@@ -254,10 +270,10 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-tbl{width:100%;border-collapse:collapse;font:400 11.5px/1.5 var(--mono);margin:6px 0 12px}
 .p-tbl th{text-align:left;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--ink3);padding:7px 6px}
 .p-tbl td{border-bottom:1px solid var(--paper3);padding:8px 6px;vertical-align:top}
-.p-tbl tr.hi td{background:#E3DCC6}
+.p-tbl tr.hi td{background:#E2E8F3}
 
 /* maddi sübutlar */
-.ev{border:1px solid var(--paper3);padding:12px;margin:0 0 10px;background:#EFEADD}
+.ev{border:1px solid var(--paper3);padding:12px;margin:0 0 10px;background:#F1F4FA}
 .ev-h{display:flex;gap:9px;align-items:baseline;margin-bottom:7px}
 .ev-n{font:600 12px var(--mono);color:#fff;background:var(--ink);padding:2px 7px}
 .ev-t{font:600 13.5px var(--mono)}
@@ -267,7 +283,7 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 /* kağızın üstünə çap edilmiş yazışma */
 /* Yazışma HƏR ÖLÇÜDƏ telefon eni saxlayır: o, ekran görüntüsüdür və
    700px enində açılanda həqiqiliyini itirir. */
-.shot{border:1px solid var(--ink3);background:#ECE5DC;padding:9px;
+.shot{border:1px solid var(--ink3);background:#EDF0F6;padding:9px;
   margin:4px auto 8px;max-width:380px}
 .shot-bar{display:flex;align-items:center;gap:8px;background:#0B3D36;color:#DDEDE8;
   padding:8px 10px;margin:-9px -9px 9px}
@@ -448,7 +464,7 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-elave{position:relative;margin:18px 0;display:flex}
 .p-elave-sag{justify-content:flex-end}
 .p-elave-sol{justify-content:flex-start}
-.p-elave-kagiz{position:relative;background:#F3EFE2;border:1px solid var(--paper3);
+.p-elave-kagiz{position:relative;background:#F5F7FC;border:1px solid var(--paper3);
   padding:14px 16px 12px;min-width:180px;max-width:260px;
   font:400 11px/1.75 var(--mono);color:var(--ink2);
   transform:rotate(var(--bucaq,-2deg));
@@ -508,10 +524,10 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 
 /* Köhnəlmə — dənəvərlik + kağızın çalarları. Naxış `data:` SVG-dir. */
 .kagiz-kohnelme-1,.kagiz-kohnelme-2,.kagiz-kohnelme-3{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='1.5' cy='1.5' r='.45' fill='%2326221D' opacity='.09'/%3E%3Ccircle cx='4.5' cy='4' r='.35' fill='%2326221D' opacity='.07'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='1.5' cy='1.5' r='.45' fill='%23232F47' opacity='.09'/%3E%3Ccircle cx='4.5' cy='4' r='.35' fill='%23232F47' opacity='.07'/%3E%3C/svg%3E");
   background-repeat:repeat}
-.kagiz-kohnelme-2{background-color:#E5DFCF}
-.kagiz-kohnelme-3{background-color:#DFD8C5;filter:saturate(.9)}
+.kagiz-kohnelme-2{background-color:#EDEFF5}
+.kagiz-kohnelme-3{background-color:#E3E6EE;filter:saturate(.9)}
 
 /* Kseroks — kontrast artır, incə detal itir. */
 /* Kseroks kağızı AĞARTMIR — real surətdə kağız tonu qalır, sadəcə kontrast

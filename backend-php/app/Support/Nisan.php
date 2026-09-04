@@ -174,6 +174,51 @@ final class Nisan
     }
 
     /**
+     * GİLYOŞ NAXIŞI — qiymətli kağızın optik qoruması.
+     * `doc.js guilloche()`: üç rozet əyrisi, fərqli ləçək sayı və dərinliyi
+     * ilə. Üst-üstə düşəndə gözün «toxunmuş» kimi oxuduğu şəbəkə yaranır və
+     * məhz bu, adi ağ kağızı BLANKA çevirir.
+     *
+     * Kətan 100×100-dür, yəni naxış vərəqin ölçüsündən asılı deyil.
+     */
+    public static function naxis(array $o = []): string
+    {
+        $C  = (string) ($o['reng'] ?? 'currentColor');
+        $op = (float) ($o['opaklik'] ?? 0.16);
+        $cx = 50.0; $cy = 50.0;
+
+        return sprintf('<g opacity="%.3f" stroke="%s" fill="none" stroke-width="0.16">', $op, $C)
+            . '<path d="' . self::rozet($cx, $cy, 47, 11, 0.16) . '"/>'
+            . '<path d="' . self::rozet($cx, $cy, 44, 17, 0.12) . '"/>'
+            . '<path d="' . self::rozet($cx, $cy, 36, 7, 0.22) . '"/>'
+            . '</g>';
+    }
+
+    /**
+     * HOLOQRAM yaması — optik qoruma nişanı.
+     * Rəngli qradiyent `doc.js`-dəki `-holo` gradientinin eynisidir; üstündən
+     * rozet keçir ki, yamanın içində naxış oxunsun. `$id` unikal olmalıdır.
+     */
+    public static function holoqram(string $id, array $o = []): string
+    {
+        $C  = (string) ($o['reng'] ?? 'currentColor');
+        $cx = 50.0; $cy = 50.0; $r = 44.0;
+
+        $s  = '<defs><linearGradient id="' . $id . '-h" x1="0" y1="0" x2="1" y2="1">'
+            . '<stop offset="0%" stop-color="#8fd6ff"/><stop offset="30%" stop-color="#c9a7ff"/>'
+            . '<stop offset="60%" stop-color="#ffd6a5"/><stop offset="100%" stop-color="#9bf6c8"/>'
+            . '</linearGradient></defs>';
+        $s .= sprintf('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="url(#%s-h)" opacity="%.2f"/>',
+            $cx, $cy, $r, $id, (float) ($o['opaklik'] ?? 0.55));
+        $s .= '<path d="' . self::rozet($cx, $cy, $r * 0.9, 13, 0.18)
+            . '" fill="none" stroke="' . $C . '" stroke-width="0.5" opacity="0.7"/>';
+        $s .= sprintf('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s"'
+            . ' stroke-width="0.8" opacity="0.55"/>', $cx, $cy, $r, $C);
+
+        return $s;
+    }
+
+    /**
      * Dairəvi möhür. Qövs boyu yazı üçün `$id` unikal olmalıdır — eyni
      * səhifədə iki möhür olanda id toqquşarsa, ikisi də üst-üstə düşür.
      *

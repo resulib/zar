@@ -812,6 +812,22 @@ content keys) plus capabilities nothing had used yet.
 "lock code never appears inside content" check reads the same key. Renaming the column to
 `bloklar` would have silently disabled both.
 
+**The sheet is the graphite palette, and that is a deliberate split.** `--paper`/`--ink` and the
+accents now match `doc.js`'s `ink` palette (`#F7F8FB` paper, `#151B26` ink, `#17356B` pen) — a
+real blank is cool white, not warm parchment. **The folder around it stays warm** (`--desk`,
+`--buff`, the catalog cards): the desk and the tabs are furniture, the sheet is the document.
+
+**Security print is three shared components, layered under the text.** `<x-naxis>` is the guilloche
+(three rosettes, ported from `doc.js guilloche()`), `<x-gerb>` doubles as the ghost watermark, and
+`<x-holoqram>` is the foil patch (the `doc.js` `-holo` gradient plus a rosette). All sit at
+`z-index:0` behind the content — they must never cost legibility, which is why the guilloche runs
+at 0.13 opacity and 0.16 stroke width.
+
+- **The guilloche keeps its aspect ratio.** Stretched to the sheet (`preserveAspectRatio="none"`)
+  the rosette degrades into wavy scribble; it is a centred square instead, sized `min(96%, 560px)`.
+- **Every `<x-holoqram>` and `<x-mohur>` needs a unique `id`** — both bind through `url(#id-…)`,
+  and duplicates make two patches share one gradient.
+
 **The crest and the round seal are shared components, not dossier code.**
 `App\Support\Nisan` ports `doc.js`'s `crest()` and `seal()` geometry — concentric rings, the
 rosette guilloche, the ribbon banner, curved ring text — and `<x-gerb>` / `<x-mohur>`
