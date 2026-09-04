@@ -2,14 +2,14 @@
   "slug": "2026-0847",
   "no": "AFİB-2026/0847",
   "title": "«Sədəf» şadlıq sarayı",
-  "blurb": "Toy gecəsi işıq kəsilir, generator dəhlizində meyit tapılır. 34 vərəq material, dörd dindirilən, bir kodla bağlı metal qutu.",
+  "blurb": "Toy gecəsi işıq kəsilir, generator dəhlizində meyit tapılır. 37 vərəq material, dörd dindirilən, bir kodla bağlı metal qutu.",
   "place": "«Sədəf» şadlıq sarayı, Xırdalan",
   "period": "Avqust 2026",
   "intro": "Toy gecəsi saat yarımda rayonda işıq kəsilir. Kamera qeydi bir saat susur, generator işə düşür, səhər saat 07:40-da texniki dəhlizdə şadlıq sarayının qonağı — 58 yaşlı kişi — meyit halında tapılır. Masada sayılan qırx bir min manat yerindədir, cibindəki borc qəbzi toxunulmayıb. Dörd nəfər dindirilir və hər dördünün gecəyə dair öz izahı var. Materialların içində bir ziddiyyət var: iki sənəd eyni saat haqqında fərqli şey deyir. Onu tapmaq sənin işindir.",
   "badge": "en-cox",
   "showcase": true,
   "difficulty": "orta",
-  "readMinutes": 35,
+  "readMinutes": 55,
   "priceCredits": 0,
   "sort": 1,
   "status": "published",
@@ -60,7 +60,7 @@
     ],
     [
       "Vərəq sayı",
-      "34"
+      "37"
     ]
   ],
   "suspects": [
@@ -262,11 +262,13 @@
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
               "TƏSDİQ EDİRƏM",
-              "FİKTİV"
+              "2026/0847",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
             "x": 72,
             "y": 17,
-            "olcu": 150,
+            "olcu": 152,
             "bucaq": -11
           }
         ]
@@ -336,11 +338,13 @@
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
               "QEYDƏ ALINIB",
-              "FİKTİV"
+              "2026/0847",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
             "x": 76,
             "y": 15,
-            "olcu": 146,
+            "olcu": 152,
             "bucaq": -13
           }
         ]
@@ -482,6 +486,50 @@
     },
     {
       "page": "6–7",
+      "name": "Hadisə yerinin fotocədvəli",
+      "kind": "Siyahı",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "FOTOCƏDVƏL",
+            "alt": "hadisə yeri · 16.08.2026, 08:20–10:05"
+          },
+          {
+            "tip": "foto",
+            "no": 1,
+            "nisbet": "4:3",
+            "izah": "texniki dəhliz, mətbəx qapısından generator otağına baxış"
+          },
+          {
+            "tip": "foto",
+            "no": 2,
+            "nisbet": "4:3",
+            "izah": "meyitin vəziyyəti və qan ləkəsinin sərhədləri, miqyas xətkeşi ilə"
+          },
+          {
+            "tip": "foto",
+            "no": 3,
+            "nisbet": "3:4",
+            "izah": "arxa qapının kilid dilçəyi — lentlə bərkidilmiş vəziyyətdə"
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Şəkillər rəqəmsal fotoaparatla, əlavə işıqlandırma olmadan çəkilmişdir. Kadrların ardıcıllığı və vaxt nişanları cihazın yaddaşında saxlanılır.",
+              "[[Qeyd:]] üçüncü şəkildə lentin kənarı tozlanmışdır — lent uzun müddət həmin vəziyyətdə qalıb, təzəcə yapışdırılmayıb."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "page": "8–9",
       "name": "Meyitin xarici müayinə aktı",
       "kind": "Ekspert rəyi",
       "locked": false,
@@ -538,11 +586,13 @@
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
               "EKSPERTİZA",
-              "FİKTİV"
+              "2026/0847",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
             "x": 74,
             "y": 16,
-            "olcu": 144,
+            "olcu": 152,
             "bucaq": 9
           }
         ]
@@ -550,7 +600,64 @@
       "sample": false
     },
     {
-      "page": "8–10",
+      "page": "10–11",
+      "name": "Meyitin daxili müayinəsi — yekun rəy",
+      "kind": "Ekspert rəyi",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "YEKUN EKSPERT RƏYİ",
+            "alt": "rəy № 121/2026 · daxili müayinə"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Müayinə",
+                "17.08.2026, 09:00"
+              ],
+              [
+                "Laboratoriya",
+                "toxuma və qan nümunələri"
+              ],
+              [
+                "Ekspert",
+                "AFİB tibbi eksperti F.Rzayeva"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Ölüm baş nahiyəsinə küt cismin bir dəfə vurulması nəticəsində kəllə sümüyünün sınığı və beyin qansızmasından baş vermişdir. Zərbə həyatla bir araya sığmayan xarakter daşıyır, ölüm dərhal olmasa da, bir neçə dəqiqə ərzində baş vermişdir.",
+              "Mədə möhtəviyyatının həzm dərəcəsi və qan biokimyası nəticələrinə görə ölümün vaxtı **00:40 – 01:20** aralığına dəqiqləşdirilir. Xarici müayinədəki 23:10–01:10 aralığı bununla daralır.",
+              "Bədəndə sürüşdürülmə və ya daşınma izi yoxdur: meyit harada zərbə alıbsa, orada qalmışdır. Geyimdə cırılma müəyyən edilməmişdir; pencəyin sol iç cibinin yırtığı isə parçanın toxumasına görə **cibin ağzından dartılma** nəticəsidir."
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "[[Müstəntiqin qeydi:]] dəqiqləşdirilmiş aralıq telefon detallaşdırması ilə birlikdə oxunmalıdır — zərərçəkən 00:44-də danışıq aparıb."
+            ],
+            "cerceve": true
+          },
+          {
+            "tip": "imza",
+            "vezife": "AFİB tibbi eksperti",
+            "ad": "F.Rzayeva",
+            "tarix": "17.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "12–14",
       "name": "Maddi sübutların siyahısı",
       "kind": "Siyahı",
       "locked": false,
@@ -590,7 +697,7 @@
               },
               {
                 "ad": "Kod kilidli metal qutu",
-                "metn": "Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 23]]."
+                "metn": "Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 37]]."
               }
             ]
           },
@@ -606,7 +713,213 @@
       "sample": true
     },
     {
-      "page": "11",
+      "page": "15",
+      "name": "Barmaq izləri üzrə ekspertiza rəyi",
+      "kind": "Ekspert rəyi",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "BARMAQ İZLƏRİ ÜZRƏ EKSPERTİZA RƏYİ",
+            "alt": "rəy № 118/2026"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Obyektlərin sayı",
+                "6"
+              ],
+              [
+                "Metod",
+                "toz və sianoakrilat"
+              ],
+              [
+                "Ekspert",
+                "AFİB eksperti M.Bağırov"
+              ]
+            ]
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Obyekt",
+              "İz",
+              "Kimə aiddir"
+            ],
+            "setirler": [
+              [
+                "Mərmər xatirə lövhəsi",
+                "yararlı iz yoxdur",
+                "**səth silinib**"
+              ],
+              [
+                "Qara çanta, qulp",
+                "iki iz",
+                "zərərçəkən"
+              ],
+              [
+                "Pul nişanları (seçmə)",
+                "çoxsaylı",
+                "identifikasiya mümkün deyil"
+              ],
+              [
+                "Arxa qapının dəstəyi",
+                "üç iz",
+                "Ə.Musayeva, bir naməlum qismən iz"
+              ],
+              [
+                "Metal ucluq",
+                "iz yoxdur",
+                "—"
+              ],
+              [
+                "Metal qutu, qapaq",
+                "bir iz",
+                "zərərçəkən"
+              ]
+            ],
+            "vurgu": [
+              0
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Mərmər lövhənin səthində yararlı iz aşkar edilməməsi təsadüfi deyil: lövhənin bütün üzü, o cümlədən qan izinin ətrafı [[quru parça ilə silinmişdir]]. Silinmə izləri bir istiqamətlidir.",
+              "Arxa qapının dəstəyindəki naməlum qismən iz kişi və ya qadın barmağına aid ola bilər; papilyar xətlərin sayı identifikasiya üçün kifayət etmir."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "Ekspertizanı aparan, AFİB eksperti",
+            "ad": "M.Bağırov",
+            "tarix": "17.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "16",
+      "name": "Mərmər lövhə üzrə trasoloji rəy",
+      "kind": "Ekspert rəyi",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "TRASOLOJİ EKSPERTİZA RƏYİ",
+            "alt": "rəy № 124/2026"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Obyekt A",
+                "mərmər xatirə lövhəsi, 24×16×3 sm, 2,1 kq"
+              ],
+              [
+                "Obyekt B",
+                "baş nahiyəsindəki yara, 7×4 sm"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Lövhənin künc hissəsinin həndəsəsi yaranın formasına və ölçüsünə **uyğun gəlir**. Yaranın kənarındakı mikroçatlar mərmər tozu daşıyır.",
+              "Lövhənin qan izi olan küncündə həmçinin tünd rəngli sintetik lif qalığı aşkar edilmişdir — parça ilə tutulma və ya silinmə nəticəsində düşə bilər.",
+              "Lövhənin çəkisi və ölçüsü onu bir əllə tutub zərbə vurmağa imkan verir. Zərbə üçün xüsusi fiziki güc tələb olunmur."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "Ekspertizanı aparan, AFİB eksperti",
+            "ad": "M.Bağırov",
+            "tarix": "18.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "17",
+      "name": "Ayaqqabı ucluğu üzrə ekspertiza rəyi",
+      "kind": "Ekspert rəyi",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "EKSPERTİZA RƏYİ",
+            "alt": "rəy № 126/2026 · metal ucluq"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Göstərici",
+              "Nəticə"
+            ],
+            "setirler": [
+              [
+                "Diametr",
+                "9 mm"
+              ],
+              [
+                "Material",
+                "nikel örtüklü ərinti"
+              ],
+              [
+                "Qırılma səthi",
+                "**oksidləşməyib** — qırılma bir sutkadan azdır"
+              ],
+              [
+                "Uyğun daban növü",
+                "nazik, 7–9 sm hündürlüyündə qadın dabanı"
+              ],
+              [
+                "Təxmini ayaqqabı ölçüsü",
+                "36–38"
+              ],
+              [
+                "Üzərində toz təbəqəsi",
+                "yoxdur"
+              ]
+            ],
+            "vurgu": [
+              2
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Ucluq arxa çıxışın qarşısındakı betonun üzərində, qapıdan 1 m 20 sm məsafədə tapılmışdır. Oksidləşmənin olmaması onun hadisə gecəsindən əvvəl orada qala bilmədiyini göstərir.",
+              "[[Qeyd:]] müqayisə üçün ayaqqabı təqdim edilmədiyindən identifikasiya aparılmamışdır. Ucluq saxlanılır."
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "Ekspertizanı aparan, AFİB eksperti",
+            "ad": "M.Bağırov",
+            "tarix": "18.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "18",
       "name": "Videomüşahidə qeydlərindən çıxarış",
       "kind": "Arayış",
       "locked": false,
@@ -679,7 +992,7 @@
             "tip": "metn",
             "cerceve": true,
             "abzaslar": [
-              "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 21.]]"
+              "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 19.]]"
             ]
           }
         ],
@@ -709,7 +1022,70 @@
       "sample": false
     },
     {
-      "page": "12",
+      "page": "19",
+      "name": "Qonşu obyektin videomüşahidə arayışı",
+      "kind": "Arayış",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "VİDEOMÜŞAHİDƏ ARAYIŞI",
+            "alt": "«Gülüstan» şadlıq evi · Sülh küçəsi 12 · küçəyə baxan kamera"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Vaxt",
+              "Görüntü"
+            ],
+            "setirler": [
+              [
+                "00:37",
+                "Əlində çanta olan kişi «Sədəf»in küçə tərəfindən çıxır, sağdakı avtomobilə minir və gedir (R.Nəbiyev kimi tanınıb)"
+              ],
+              [
+                "00:52",
+                "Küçədə hərəkət yoxdur"
+              ],
+              [
+                "**01:10**",
+                "**Qadın «Sədəf»in arxa tərəfindən çıxıb piyada aşağı, Sülh küçəsi 16 istiqamətinə gedir. Üzü seçilmir, addımı qeyri-bərabərdir.**"
+              ],
+              [
+                "01:14",
+                "Həmin qadın kadrdan çıxır"
+              ],
+              [
+                "01:31",
+                "Taksi Sülh küçəsi 16-nın qarşısından hərəkət edir"
+              ]
+            ],
+            "vurgu": [
+              2
+            ],
+            "kenar": {
+              "metn": "01:10 — kim və niyə arxadan?",
+              "nov": "sual",
+              "yer": "sag"
+            }
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Kamera «Sədəf»in ön girişini deyil, küçəni çəkir. Obyektin arxa hissəsi kadra yalnız küçəyə çıxdıqdan sonra düşür.",
+              "Qeydin keyfiyyəti gecə rejimində aşağıdır: geyimin rəngi və boy təxmin edilə bilər, üz cizgiləri seçilmir. Addımın qeyri-bərabərliyi ayaqqabı qüsuru ilə izah oluna bilər."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "page": "20",
       "name": "Generator qurğusunun istismar jurnalı",
       "kind": "Sənəd",
       "locked": false,
@@ -793,7 +1169,163 @@
       "key": true
     },
     {
-      "page": "13",
+      "page": "21",
+      "name": "Obyektin işçi növbə cədvəli",
+      "kind": "Sənəd",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İŞÇİ NÖVBƏ CƏDVƏLİ",
+            "alt": "15–16 avqust 2026 · gecə növbəsi"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "İşçi",
+              "Vəzifə",
+              "Növbə",
+              "Yeri"
+            ],
+            "setirler": [
+              [
+                "Ə.Musayeva",
+                "mətbəx işçisi",
+                "18:00–02:00",
+                "mətbəx bloku"
+              ],
+              [
+                "S.Orucov",
+                "ofisiant",
+                "18:00–02:00",
+                "salon"
+              ],
+              [
+                "H.Kərimli",
+                "ofisiant",
+                "18:00–02:00",
+                "salon"
+              ],
+              [
+                "N.Ağayev",
+                "köməkçi",
+                "20:00–02:00",
+                "mətbəx / anbar"
+              ],
+              [
+                "**vakant**",
+                "**mühafizəçi**",
+                "**—**",
+                "**gecə növbəsi bağlanmayıb**"
+              ]
+            ],
+            "vurgu": [
+              4
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Cədvəl obyektin sahibi tərəfindən təsdiqlənir. Toy tədbirləri günlərində gecə növbəsinə əlavə işçi cəlb olunur.",
+              "[[Diqqət:]] hadisə gecəsi obyektdə **mühafizəçi olmayıb**. Sahibin izahatına görə vəzifə iki aydır boşdur və gecələr qapını ofisiantlar bağlayır."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "page": "22",
+      "name": "Mətbəx inventarizasiyası aktı",
+      "kind": "Akt",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İNVENTARİZASİYA AKTI",
+            "alt": "mətbəx bloku · 16.08.2026, gecə"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Başlandı",
+                "00:35"
+              ],
+              [
+                "Bitdi",
+                "01:30"
+              ],
+              [
+                "Səbəb",
+                "cərəyanın kəsilməsi"
+              ]
+            ]
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Məhsul",
+              "Qalıq",
+              "Vəziyyət"
+            ],
+            "setirler": [
+              [
+                "Mal əti",
+                "34 kq",
+                "soyuducu 1 — normal"
+              ],
+              [
+                "Toyuq",
+                "22 kq",
+                "soyuducu 2 — normal"
+              ],
+              [
+                "Süd məhsulları",
+                "18 kq",
+                "soyuducu 2 — normal"
+              ],
+              [
+                "Dondurulmuş yarımfabrikat",
+                "40 kq",
+                "kamera — temperatur qalxıb, yararlıdır"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Akt cərəyanın kəsilməsindən sonra soyuducu avadanlığın vəziyyətini müəyyən etmək üçün tərtib edilmişdir. İştirak edənlər aktı imzalamışlar.",
+              "İştirak edib: E.Qasımov (sahib), Ə.Musayeva, N.Ağayev, S.Orucov."
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "[[Müstəntiqin qeydi:]] akt E.Qasımovun 00:35 – 01:30 aralığındakı izahatını təsdiqləyir. İmzalar üç işçi tərəfindən ayrıca təsdiqlənmişdir."
+            ],
+            "cerceve": true
+          },
+          {
+            "tip": "imza",
+            "vezife": "Aktı tərtib edən, obyektin sahibi",
+            "ad": "E.Qasımov",
+            "tarix": "16.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "23",
       "name": "Telefon danışıqlarının detallaşdırılması",
       "kind": "Arayış",
       "locked": false,
@@ -874,7 +1406,7 @@
       "sample": false
     },
     {
-      "page": "14–15",
+      "page": "24–25",
       "name": "Yazışma çıxarışı: R.Nəbiyev — T.Mehdiyev",
       "kind": "Ekran görüntüsü",
       "locked": false,
@@ -951,7 +1483,7 @@
       "sample": true
     },
     {
-      "page": "16",
+      "page": "26",
       "name": "Yazışma çıxarışı: S.Hüseynova — həyat yoldaşı",
       "kind": "Ekran görüntüsü",
       "locked": false,
@@ -1051,7 +1583,86 @@
       "sample": false
     },
     {
-      "page": "17–18",
+      "page": "27",
+      "name": "Taksi sifarişi üzrə arayış",
+      "kind": "Sənəd",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "SİFARİŞ ÇIXARIŞI",
+            "alt": "«Aran» taksi xidməti · arayış № T-2210"
+          },
+          {
+            "tip": "elave",
+            "nov": "qebz",
+            "bucaq": -2.4,
+            "yer": "sag",
+            "setirler": [
+              "«ARAN» TAKSİ",
+              "SİFARİŞ № 88214",
+              "",
+              "16.08.2026    01:12",
+              "Götürülmə: Sülh küç. 16",
+              "Təyinat: Xırdalan, 3-cü massiv",
+              "",
+              "Məbləğ  6,40 AZN",
+              "Ödəniş: nağd"
+            ]
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Sahə",
+              "Dəyər"
+            ],
+            "setirler": [
+              [
+                "Sifarişin qeydə alınma vaxtı",
+                "01:12"
+              ],
+              [
+                "Sifarişçinin nömrəsi",
+                "S.Hüseynova adına qeydiyyatda"
+              ],
+              [
+                "Götürülmə ünvanı",
+                "**Sülh küçəsi 16** — obyektdən bir bina aşağı"
+              ],
+              [
+                "Avtomobilin gəlişi",
+                "01:29"
+              ],
+              [
+                "Səfərin başlanması",
+                "01:31"
+              ],
+              [
+                "Səfərin bitməsi",
+                "01:52"
+              ]
+            ],
+            "vurgu": [
+              2
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Sifariş obyektin öz ünvanından (Sülh küçəsi 14) deyil, bir bina aşağıdan verilmişdir. Xidmətin qaydalarına görə götürülmə ünvanı sifarişçi tərəfindən əl ilə göstərilir.",
+              "[[Müstəntiqin qeydi:]] sifariş verilən vaxt ilə avtomobilin gəlişi arasında 17 dəqiqə var. Bu müddətdə sifarişçinin harada olduğu qeydə alınmır."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "page": "28–29",
       "name": "İzahat: Hüseynova Səbinə Zahid qızı",
       "kind": "İzahat",
       "locked": false,
@@ -1117,7 +1728,7 @@
       "key": true
     },
     {
-      "page": "19",
+      "page": "30",
       "name": "İzahat: Qasımov Elxan Rəşid oğlu",
       "kind": "İzahat",
       "locked": false,
@@ -1165,7 +1776,7 @@
       "sample": false
     },
     {
-      "page": "20",
+      "page": "31",
       "name": "İzahat: Nəsirov Kamran Vaqif oğlu",
       "kind": "İzahat",
       "locked": false,
@@ -1219,7 +1830,7 @@
       "sample": false
     },
     {
-      "page": "21",
+      "page": "32",
       "name": "İzahat: Nəbiyev Ramil Əli oğlu",
       "kind": "İzahat",
       "locked": false,
@@ -1267,7 +1878,115 @@
       "sample": false
     },
     {
-      "page": "22",
+      "page": "33",
+      "name": "İzahat: Musayeva Əsmər Qulu qızı",
+      "kind": "İzahat",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Musayeva Əsmər Qulu qızı"
+              ],
+              [
+                "Vəzifə",
+                "mətbəx işçisi"
+              ],
+              [
+                "Alınma vaxtı",
+                "16.08.2026, 12:40"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "«Arxa qapını yayda həmişə lentlə saxlayırıq, çünki mətbəxdə isti olur. Bunu hamı bilir, sahib də bilir, iki ildir belədir.",
+              "İşıq gedəndə mətbəxdə idim. Generator qoşulandan sonra Elxan müəllim düşdü, soyuducuları yoxladıq, siyahı tutduq. Bir yarıma qədər ordaydıq.",
+              "Ondan əvvəl, saat on ikinin yarısına yaxın dəhlizdə bir kişi gördüm, video çəkən oğlan idi. Tofiq müəllimlə danışırdılar, sözlərini eşitmədim.",
+              "Səhər Nurlan gəlib qapını açanda mən artıq evdə idim.»"
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "**Sual:** Dəhlizdən başqa kimisə görmüsünüzmü?",
+              "**Cavab:** «Yox. Amma dəhliz qapısı mətbəxdən görünmür, ora ancaq keçəndə baxırsan.»"
+            ],
+            "duz": false
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "Ə.Musayeva",
+            "tarix": "16.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "34",
+      "name": "İzahat: Mehdiyev Nicat Tofiq oğlu",
+      "kind": "İzahat",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "İZAHAT"
+          },
+          {
+            "tip": "sahe",
+            "setirler": [
+              [
+                "Kimdən",
+                "Mehdiyev Nicat Tofiq oğlu"
+              ],
+              [
+                "Qohumluq",
+                "zərərçəkənin oğlu, bəy"
+              ],
+              [
+                "Alınma vaxtı",
+                "16.08.2026, 14:10"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "«Atam masada dedi ki, Novxananı mənim adıma keçirib. Mən bilmirdim, xəbərim yox idi. Səbinə bacım o vaxt masada idi, üzü dəyişdi, amma heç nə demədi.",
+              "Sayımdan sonra atam cibindən qovluq çıxarıb mənə göstərdi. Dedi «sabah rəsmi verəcəyəm». Qovluğu yenidən cibinə qoydu.",
+              "Saat 00:44-də mənə zəng elədi. Dedi sənədləri maşına qoyub, sabah gətirəcək. Səsi normal idi. Sonra 01:20-də mən zəng etdim, cavab vermədi, elə bildim yatıb.",
+              "Mərmər lövhəni bizə hədiyyə vermişdilər, masanın üstündə idi. Səhər yox idi, amma o gecə heç kim ona fikir verməzdi.»"
+            ]
+          },
+          {
+            "tip": "imza",
+            "vezife": "İzahatı verən",
+            "ad": "N.Mehdiyev",
+            "tarix": "16.08.2026"
+          }
+        ]
+      }
+    },
+    {
+      "page": "35",
       "name": "Nəmərin sayılması üzrə vərəqə",
       "kind": "Sənəd",
       "locked": false,
@@ -1363,7 +2082,75 @@
       "sample": false
     },
     {
-      "page": "23",
+      "page": "36",
+      "name": "Zərərçəkənin bank hesabı üzrə çıxarış",
+      "kind": "Sənəd",
+      "locked": false,
+      "sample": false,
+      "content": {
+        "bloklar": [
+          {
+            "tip": "blank"
+          },
+          {
+            "tip": "basliq",
+            "ad": "HESAB ÜZRƏ ÇIXARIŞ",
+            "alt": "abunəçi: Mehdiyev T.Z. · 10–16 avqust"
+          },
+          {
+            "tip": "cedvel",
+            "basliqlar": [
+              "Tarix",
+              "Əməliyyat",
+              "Məbləğ",
+              "Qalıq"
+            ],
+            "setirler": [
+              [
+                "10.08",
+                "nağdlaşdırma",
+                "−2 000",
+                "14 380"
+              ],
+              [
+                "12.08",
+                "köçürmə (rüsum)",
+                "−120",
+                "14 260"
+              ],
+              [
+                "14.08",
+                "nağdlaşdırma",
+                "−5 000",
+                "9 260"
+              ],
+              [
+                "15.08",
+                "nağdlaşdırma",
+                "−1 000",
+                "8 260"
+              ],
+              [
+                "16.08",
+                "əməliyyat yoxdur",
+                "—",
+                "8 260"
+              ]
+            ]
+          },
+          {
+            "tip": "metn",
+            "abzaslar": [
+              "Hesab üzrə hadisə gecəsi və ondan sonra heç bir əməliyyat aparılmamışdır. Kartlar zərərçəkənin pul kisəsində, toxunulmamış vəziyyətdə tapılmışdır.",
+              "12.08 tarixli 120 manatlıq köçürmə rəsmiləşdirmə rüsumuna uyğun gəlir.",
+              "[[Nəticə:]] maliyyə motivi hesab hərəkəti ilə təsdiqlənmir — nə borc ödənişi, nə də iri məbləğin çıxarılması qeydə alınıb."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "page": "37",
       "name": "Avtomobildən götürülmüş metal qutu",
       "kind": "Kodla bağlıdır",
       "locked": true,

@@ -760,9 +760,9 @@ new case is a new JSON file and nothing else — `DossierSeeder` discovers them 
 insert — the `CatalogSeeder` discipline, so an admin's toggle is never undone. Admin CRUD is
 deliberately not built yet; the tables are shaped for it.
 
-There are three cases: `2026-0847` («Sədəf» şadlıq sarayı, 16 sənəd, free, **the one `showcase`**),
-`2026-0912` (16 sənəd) and `2026-0412` («Xırdalanda sükut», **28 sənəd, two lock-coded files**,
-difficulty `kabus`). Exactly one case may carry `showcase: true` — the home page's hero and sample
+There are three cases, **28 documents each**: `2026-0847` («Sədəf» şadlıq sarayı, free, **the one
+`showcase`**), `2026-0912` («Şimal» parkı) and `2026-0412` («Xırdalanda sükut», **two lock-coded
+files**, difficulty `kabus`). Exactly one case may carry `showcase: true` — the home page's hero and sample
 strip come from it, so moving that flag also moves what `tools/check-dossier-flow.js` counts.
 
 > **The 0412 case is where the block system is actually exercised.** It is the only case that uses
@@ -811,6 +811,31 @@ content keys) plus capabilities nothing had used yet.
 `check-dossier.js` asserts `$hidden = ['lock_code','content']` with a regex, and the
 "lock code never appears inside content" check reads the same key. Renaming the column to
 `bloklar` would have silently disabled both.
+
+**The crest and the round seal are shared components, not dossier code.**
+`App\Support\Nisan` ports `doc.js`'s `crest()` and `seal()` geometry — concentric rings, the
+rosette guilloche, the ribbon banner, curved ring text — and `<x-gerb>` / `<x-mohur>`
+(`resources/views/components/`) wrap it. The text is a parameter, so the same component serves a
+different institution; it is used in the letterhead, the ghost watermark and the stamp layer.
+
+- **Two elements were deliberately dropped in the port: the five-pointed star and the laurel
+  wreath.** `.claude/promts/fiktiv-qurum-qaydalari.md` forbids the bureau's mark from repeating
+  the language of real state symbols, and those two *are* that language. A cut-corner sheet glyph
+  takes the star's place; every other part of the design is the original.
+- **CSS must not set geometry on these components.** They carry their own `stroke-width` per ring;
+  a blanket `.p-mohur svg circle{stroke-width:…}` flattens every ring to one weight and the seal
+  stops reading as a seal. The stylesheet supplies colour, position and font family only.
+- `<x-mohur>`'s `id` must be unique per page — the arc text binds through `href="#id-u"`, so two
+  stamps sharing an id collapse onto the same arc.
+- `views/components/` sits outside `views/dossier/`, so `check-dossier.js` scans it explicitly.
+  Anything drawn on a sheet is inside the legal shield regardless of which folder it lives in.
+
+**Signatures are drawn, not typeset.** `App\Support\Dossier\Imza::yol()` is a faithful port of
+`doc.js signature()` — FNV-1a hash → LCG → five cubic segments → the tail that hooks back left —
+and it produces a **byte-identical** path string for the same name, so both sections' signatures
+come from one hand. The name only seeds it: the scrawl is illegible, and the printed
+`(A.Soyadov)` under the rule is what says who signed. Never use `rand()` here — a signature that
+changes when the sheet is reopened announces the document as fake.
 
 **The sheet's furniture is not a block.** A document has to *read* as an official form, so the
 wrapper draws the apparatus every sheet shares: a **microtext border** (the fiction notice repeated
@@ -1238,6 +1263,9 @@ occasional runtime wrinkle on first run.
   `tools/check-devet-designs.js`.
 - **RSVP values**: `App\Support\Devet::RSVP` ↔ `config/devet.php` `rsvp` ↔ the `CAVAB` list in
   `frontend/devet-view.js`.
+- **Crest / seal geometry**: `frontend/doc.js` `crest()` + `seal()` ↔ `App\Support\Nisan`
+  (`gerb()` / `mohur()`), and **signature**: `doc.js` `signature()` ↔ `App\Support\Dossier\Imza`
+  — the last pair is asserted identical by producing the same path string for the same seed.
 - **Case-file block types**: `config/dossier.php` `bloklar` ↔ the Blade files in
   `resources/views/dossier/bloklar/` ↔ `BlokSxemi::BLOKLAR` ↔ `Qalereya::bloklar()` —
   `tools/check-dossier.js` §2 compares all four and pins the count at 13.

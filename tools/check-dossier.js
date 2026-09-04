@@ -234,10 +234,18 @@ const ORG_BAN = (cfg.match(/'org_ban'\s*=>\s*\[([\s\S]*?)\n    \]/) || [, ''])[1
   .split('\n').map(l => (l.match(/'([^']+)'/) || [])[1]).filter(Boolean);
 check('qadağan siyahısı doludur', ORG_BAN.length >= 10, ORG_BAN.length);
 
+const KOMPONENT = path.join(APP, 'resources', 'views', 'components');
+
 const QURUM_SCAN = files.map(f => path.join(SEED, f))
   .concat(fs.readdirSync(VIEWS).filter(f => f.endsWith('.blade.php')).map(f => path.join(VIEWS, f)))
   .concat(fs.readdirSync(path.join(VIEWS, 'bloklar')).map(f => path.join(VIEWS, 'bloklar', f)))
   .concat(fs.readdirSync(path.join(VIEWS, 'partials')).map(f => path.join(VIEWS, 'partials', f)))
+  /* ORTAQ NİŞAN KOMPONENTLƏRİ (`<x-gerb>`, `<x-mohur>`) sənədin üzərində
+     görünür, yəni hüquqi qalxan onlara da aiddir. `views/components/`
+     `views/dossier/`-dən kənardadır — siyahıya əl ilə əlavə olunur. */
+  .concat(fs.existsSync(KOMPONENT)
+    ? fs.readdirSync(KOMPONENT).map(f => path.join(KOMPONENT, f)) : [])
+  .concat([path.join(APP, 'app', 'Support', 'Nisan.php')])
   .concat(['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css'].map(f => path.join(FE, f)))
   .concat([path.join(ROOT, 'tools', 'render-dossier-og.js')]);
 

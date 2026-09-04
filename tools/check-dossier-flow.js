@@ -76,7 +76,7 @@ const ac = async (ctx, ad) => {
   bas('2. Təqdimat və üz qabığı');
   const rt = await p0.goto(BASE + '/is/' + SLUG, { waitUntil: 'networkidle' });
   check('təqdimat səhifəsi açılır', rt.status() === 200, rt.status());
-  check('materialların adları görünür', (await p0.locator('.teq-siyahi li').count()) === 16);
+  check('materialların adları görünür', (await p0.locator('.teq-siyahi li').count()) === 28);
   const teqXam = await p0.content();
   check('təqdimatda sənəd məzmunu yoxdur', teqXam.indexOf('mərmər lövhə') < 0);
   check('təqdimatda şübhəlilər yoxdur', teqXam.indexOf('Səbinə Hüseynova') < 0);
@@ -104,7 +104,7 @@ const ac = async (ctx, ad) => {
   const c1 = await browser.newContext({ viewport: { width: 412, height: 880 } });
   const p1 = await ac(c1, 'Rəsulov Elçin');
   const say = await p1.locator('#list .docrow').count();
-  check('16 sənəd sıralanır', say === 16, say);
+  check('28 sənəd sıralanır', say === 28, say);
   check('alt lent göründü', await p1.locator('#tabbar.on').isVisible());
   check('sayğac işləyir', /^\d\d:\d\d$/.test(await p1.locator('#clock').textContent()));
 

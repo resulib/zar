@@ -22,7 +22,7 @@
      ona görə oxunuşa mane olmur, amma vərəqi «boş kağız» olmaqdan çıxarır. --}}
 <div class="p-cerceve p-qat" aria-hidden="true"></div>
 <div class="p-hayalet p-qat" aria-hidden="true">
-  <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/><path d="M22 15h14l10 10v24H22z"/><path d="M36 15v10h10"/></svg>
+  <x-gerb ad="{{ \App\Support\Dossier\Byuro::QISA }}" :olcu="290" :rozet="false"/>
 </div>
 
 <div class="p-mikro" aria-hidden="true">{{ $mikro }}</div>

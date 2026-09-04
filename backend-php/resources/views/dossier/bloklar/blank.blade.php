@@ -14,15 +14,11 @@
 @php($ad = $setirler[0] ?? '')
 @php($alt = array_slice($setirler, 1))
 <div class="p-blank">
-  <div class="p-gerb" aria-hidden="true">
-    <svg viewBox="0 0 72 72">
-      <circle cx="36" cy="36" r="34"/>
-      <circle class="ic" cx="36" cy="36" r="29"/>
-      <path d="M25 18h15l11 11v25H25z"/>
-      <path d="M40 18v11h11"/>
-      <text x="36" y="48" text-anchor="middle">AFİB</text>
-    </svg>
-  </div>
+  {{-- Gerb ORTAQ komponentdir: həndəsə `App\Support\Nisan`-dadır, burada
+       yalnız mətn verilir. Eyni komponent üz qabığında və başqa yerlərdə də
+       işlənir — dizayn bir yerdə dəyişir, hər yerdə dəyişir. --}}
+  <x-gerb class="p-gerb" ad="{{ \App\Support\Dossier\Byuro::QISA }}"
+          alt="EST. 2026" lent="İSTİNTAQ BÖLMƏSİ" :olcu="76"/>
   {{-- `.p-head` SARĞI OLARAQ QALIR: vərəq başlığının müqaviləsi budur və
        həm brauzer testi, həm də `tests/security.php` bu sinfi axtarır.
        Görkəm içəridəki elementlərdədir, ona görə sarğının adı dəyişmir. --}}

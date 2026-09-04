@@ -307,15 +307,18 @@
         "mohurler": [
           {
             "metn": [
-              "AFİB",
-              "QEYDƏ ALINIB"
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "QEYDƏ ALINIB",
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
             "forma": "daire",
             "reng": "mavi",
             "seffaflik": 0.46,
             "x": 78,
             "y": 16,
-            "olcu": 138,
+            "olcu": 152,
             "bucaq": -13
           }
         ],
@@ -503,11 +506,13 @@
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
               "EKSPERTİZA",
-              "FİKTİV"
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
             "x": 74,
             "y": 16,
-            "olcu": 144,
+            "olcu": 152,
             "bucaq": 9
           }
         ]

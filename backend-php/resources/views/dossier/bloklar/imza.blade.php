@@ -1,20 +1,30 @@
-{{-- İmza bloku — solda vəzifə, imzanın özü və çap adı; sağda tarix.
+{{-- İmza bloku — solda vəzifə, imza və çap adı; sağda tarix.
 
-     İMZA XƏTTİ VACİBDİR. Rəsmi sənəddə imza boşluqda durmur: xəttin üstündə
-     durur, altında isə həmin adam ÇAP HƏRFLƏRİ ilə yazılır. Əlyazma adı
-     xətti bir az kəsir — real imza da kəsir və məhz bu, «yazılmış» hissini
-     verir. Ad boş olanda yalnız vəzifə qalır: bəzi sənədlərdə imza yeri
-     doldurulmamış olur və bu da real haldır. --}}
+     İMZA ŞRİFT DEYİL, CIZMADIR. Əvvəllər burada əlyazma şrifti ilə yazılmış
+     soyad dururdu və məhz ona görə saxta görünürdü: real imzada soyad
+     oxunmur. `Imza::yol()` saytın digər bölməsindəki `doc.js signature()`
+     funksiyasının eynisidir — hətta yol sətri də bayt-bayt üst-üstə düşür,
+     yəni iki bölmənin imzası bir əldən çıxmış kimi görünür.
+
+     ÇAP ADI QALIR: rəsmi sənəddə imzanın altında həmişə mötərizədə ad-soyad
+     yazılır — imzanın kimə aid olduğunu oxunmaz cızma yox, məhz o sətir
+     bildirir. İmza xətti də vacibdir: imza boşluqda durmur, xəttin üstündə
+     durur və onu bir az kəsir. Ad boş olanda cızma yoxdur, yalnız boş xətt
+     qalır — bəzi sənədlərdə imza yeri doldurulmamış olur. --}}
+@php($ad = trim((string) ($b['ad'] ?? '')))
 <div class="p-sign">
   <div class="p-sign-l">
     <div class="p-sign-v">{{ $b['vezife'] ?? '' }}</div>
-    @if(($b['ad'] ?? '') !== '')
-      <div class="p-sign-x"><span class="sig">{{ $b['ad'] }}</span></div>
-      <div class="p-sign-c">({{ $b['ad'] }})</div>
-    @else
-      <div class="p-sign-x"></div>
-      <div class="p-sign-c">(imza)</div>
-    @endif
+    <div class="p-sign-x">
+      @if($ad !== '')
+        <span class="sig" role="img" aria-label="imza">
+          <svg viewBox="0 0 {{ \App\Support\Dossier\Imza::EN }} {{ \App\Support\Dossier\Imza::HUND }}">
+            <path d="{{ \App\Support\Dossier\Imza::yol($ad) }}"/>
+          </svg>
+        </span>
+      @endif
+    </div>
+    <div class="p-sign-c">{{ $ad !== '' ? '(' . $ad . ')' : '(imza)' }}</div>
   </div>
   <div class="p-sign-d">{{ $b['tarix'] ?? '' }}</div>
 </div>
