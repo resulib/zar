@@ -11,4 +11,6 @@ Disallow: /r/
 Disallow: /devetnamelerim
 Disallow: /is/*/qovluq
 Disallow: /is/*/hesabat/
+Disallow: /is/mustentiq
+Disallow: /is/hesab
 Allow: /

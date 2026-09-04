@@ -47,6 +47,14 @@ npm run test:sosial-flow # sosial kart redaktoru uçdan-uca (php artisan serve -
 npm run test:dossier     # iş qovluğu: seed sxemi, 9 sənəd növü ↔ Blade, sirr və brend sızması
 npm run test:dossier-flow # iş qovluğu uçdan-uca, real brauzerdə — TELEFON (php artisan serve --port=8099)
 npm run test:dossier-sizes # 412 / 820 / 1440: sətir uzunluğu, iki panel, kataloq şəbəkəsi
+npm run test:mustentiq   # müstəntiq profili: rütbə əyrisi, şöbələr ↔ org_ban, XP düsturunun
+                         #   JS əkizi, vəsiqə nömrəsi, qurulma zənciri, hüquqi qalxan
+npm run test:mustentiq-flow # profil uçdan-uca: qeydiyyat → şöbə → nişan → kart → PNG →
+                         #   reytinq → gizlilik → 412/820/1440 (serve :8099)
+npm run test:dossier-admin # iş qovluğu redaktoru uçdan-uca: yeni iş → sənəd → şəkil → nişan →
+npm run test:dossier-ai  # «AI ilə iş qur» — öz saxta OpenAI serverini qaldırır (:8097);
+                         #   backend OPENAI_ENDPOINT onu göstərməlidir (fayl başlığına bax)
+                         #   önizləmə → kod → şübhəli → sonluq → dərc → oyunçu (serve :8099)
 node tools/convert-dossier-blocks.js  # BİRDƏFƏLİK: köhnə «növ» şablonlarından bloklara (icra olunub)
 npm run render:dossier-og # iş qovluqlarının OG şəkilləri → frontend/dossier-og/
 npm run test:reply-flow  # the SPA reply editor (/?cavab=…) in a real browser (no backend needed)
@@ -757,8 +765,10 @@ on deploy.
 **Content is database-owned and seeder-fed.** `database/seeders/dossier/*.json` is the source; a
 new case is a new JSON file and nothing else — `DossierSeeder` discovers them with `glob()`.
 `DossierSeeder` rewrites documents and questions on every run but sets `status`/`sort` only on
-insert — the `CatalogSeeder` discipline, so an admin's toggle is never undone. Admin CRUD is
-deliberately not built yet; the tables are shaped for it.
+insert — the `CatalogSeeder` discipline, so an admin's toggle is never undone.
+**Admin CRUD now exists too** — see "The case-file admin" below. The seeder is still the way the
+three shipped cases are defined, and the two paths coexist: the seeder never writes a column the
+admin owns (`status`, `sort`, a code's `label`/`hint_note`).
 
 There are three cases, **28 documents each**: `2026-0847` («Sədəf» şadlıq sarayı, free, **the one
 `showcase`**), `2026-0912` («Şimal» parkı) and `2026-0412` («Xırdalanda sükut», **two lock-coded
@@ -784,6 +794,352 @@ this: it is a new order of existing blocks in the seed JSON.
 > never hid — `display` now lives on `#s-cover.on`. And `.dr-name`/`.dr-kind` are `<span>`s inside a
 > flex item, so the document kind ran into the name until they were made `display:block`.
 
+### The case-file admin (`/admin/qovluqlar`)
+
+A case used to be a JSON file and nothing else. It still can be — but there is now a full editor,
+and the two paths were made to coexist rather than compete.
+
+**Three screens.** `admin/dossier/index` (list: name · difficulty · status · document count · image
+count · last change, with edit / preview / duplicate / archive / delete), `admin/dossier/form` (the
+case, **five tabs**), `admin/dossier/sened` (one document, two columns).
+
+**The five tabs map to the game's screens, not to the tables**: *Ümumi* (catalog card and sales
+page) · *Sənədler* (the reading order, plus the code registry) · *Şübhəlilər* · *Hekayə*
+(meta lines, chronology, alibi axis, solution) · *Cavab* (the two ending mechanics). Each tab
+opens with one sentence saying where in the game its content appears, and the tab labels carry
+counts — the panel's first version was a stack of seven forms with no indication of which one
+reached the player.
+
+> **The `Cavab` tab states which mechanic is live.** Both are present and the choice is derived
+> (endings exist → suspect selection), so without that line an admin cannot tell whether the
+> questions below are still doing anything.
+
+**Everything the seed files contain is now editable.** The first version shipped an admin that
+could not show a finished case: suspects lived in the `dossiers.suspects` JSON column, and
+chronology, meta, axis, solution and the questions had no editor at all — so the culprit of an
+existing case was invisible in the panel that is supposed to author it.
+
+- `DossierSeeder` now also writes `dossier_suspects` rows from the JSON. `suspectList()` prefers
+  rows, and the imported rows reproduce the JSON **byte for byte**, so `dossier.js` and the
+  shared alibi axis are untouched (`check-dossier-admin.js` §4b asserts this).
+- **The culprit is derived from question 1.** The seed has no culprit flag, but in all three
+  cases the first question's options are the suspects' names in the same order and `correct`
+  points at the killer. If that correspondence ever fails, nobody is flagged — guessing wrong
+  would be worse, and `QovluqYoxlayici` reports the missing flag anyway. Written **only on
+  insert**, so an admin's later correction survives re-seeding (`CatalogSeeder` discipline).
+- Chronology and meta are edited as `ad | dəyər` lines, solution as blank-line-separated
+  paragraphs — the `decodeList()` decision from `CatalogController`: an admin should not be
+  counting brackets.
+
+> **A code with no `source_document_ids` is a note, not an error.** It began as an error and
+> that made all three shipped cases unpublishable — the seed simply does not record which
+> sheets a code is assembled from. Filling it in is what arms the digit check, so the note says
+> exactly that.
+
+**A document now has a `body`, and the render layer has three branches.** `dossier_documents.body`
+is longText; when it is empty the old block loop runs, byte-for-byte as before — which is why the
+84 shipped documents and every existing test are untouched. When it is filled, `SenedRender` walks
+the text and `sened.blade.php` prints the returned HTML. The wrapper — microtext border, guilloche,
+ghost crest, paper layer, stamp layer, `.p-fiktiv` band — is **outside** that branch, so the
+mechanical gate covers all three paths (locked keypad · text · blocks).
+
+**Tags carry a prefix, and that is not cosmetic.** `{{ sekil:kamera-01 }}` and
+`{{ blok:zeng-cedveli }}`. `Metn::fill()` already owns `{{açar}}` for value substitution
+(`{{mustentiq}}` → the player's name) and matches with `str_replace('{{' . $k . '}}')` — **exact,
+no spaces**. The prefixed, spaced form therefore cannot collide with it, and both systems share the
+same braces without eating each other.
+
+- `App\Support\Dossier\Isare` is the parser and is framework-free (`tests/logic.php` loads it
+  directly). It splits with `preg_split(..., PREG_SPLIT_DELIM_CAPTURE)` — **never** `preg_replace`
+  with a string right-hand side, because `$$`, `$&` and `$'` in the document text would be eaten.
+  (The same trap bit this section's own JS during development: a `String.replace` in a build script
+  turned `$$('.end-s')` into `$('.end-s')`.)
+- `App\Services\SenedRender` is the Blade-calling half; it lives under `app/Services/` because
+  `app/Support/` must stay framework-free.
+- A block is addressed by an **`acar`** key, not `ad` — `ad` is already the heading text of
+  `basliq` and the signer's name in `imza`. `BlokSxemi` allows `acar` on every block alongside
+  `tip` and `kenar`.
+- A missing tag renders as **nothing** for the player and as a red `.p-xeta` block in the admin
+  preview. Hiding it from the admin would mean finding the typo late; showing it to the player
+  would make an unfinished edit look like a crash.
+
+**Six image styles, and images are not blocks.** `camera_still · scan · plan · micro · photo ·
+generic` live in `views/dossier/sekiller/` and are whitelisted in `config('dossier.sekil_novleri')`
+↔ `BlokSxemi::SEKIL_NOV`, checked by `tools/check-dossier.js` §7. They are deliberately outside
+`config('dossier.bloklar')` — §2 pins that count at **13** and a seventh image style must not move it.
+
+**Image files are the `devet` OG model, one level stricter.** `storage/app/dossier/sekil/{id}/`,
+names are 32 random hex characters (a filename must never hint at content — a directory listing
+would be a spoiler), three JPEG derivatives (original · 1200 · 300) re-encoded through GD so
+anything embedded in the upload is dropped, transparency flattened onto **white** so a PNG floor
+plan does not come back black. Served by `GET /is/{slug}/sekil/{id}/{olcu}` with a fixed
+`image/jpeg` + `nosniff`.
+
+> **`DossierService::imagePath()` is three gates and answers 404, never 403.** The image belongs to
+> this case · either it is a sample document's image (free) or the case is paid for · if its owner
+> document is locked, the code has been entered. An "access denied" message is itself the spoiler:
+> it confirms a sheet the player has not reached yet exists. An image with **no** owner requires
+> payment, otherwise walking the id sequence would expose the whole library for free — which is why
+> the editor sets `owner_document_id` to the document being edited on upload.
+
+**Codes moved to a registry, but `lock_code` is still the authority.** `dossier_codes` holds what
+the admin needs (a name, a private note, and `source_document_ids` for validation) and
+`dossier_documents.unlock_code_id` points at it — but saving **denormalises `code` onto
+`lock_code`** (the `reply_topic` pattern). That is what keeps `unlock()`'s `hash_equals`, the
+`$hidden` shield and every existing test untouched. `unlock_code_id` has **no database FK**: adding
+one to an existing SQLite table rebuilds it, so the link is broken in the controller instead.
+
+**Suspects: the JSON column is the wire format, the table is the editing surface.**
+`dossiers.suspects` still feeds `/api/is/{slug}/ac` and `dossier.js subheliler()`, whose alibi bars
+share one time axis. `Dossier::suspectList()` builds the *same shape* from `dossier_suspects` when
+rows exist and falls back to the JSON when they do not — so `dossier.js` never learned about the
+change and the three shipped cases were not migrated.
+
+**Draft logic.** Editing a **published** case writes to `draft_body`; the player keeps seeing
+`body` until "dərc et" copies it over. In a draft case saving writes `body` directly — nobody is
+reading it and two fields would be ceremony. The document list shows a yellow dot per pending
+draft and `QovluqYoxlayici` reports it as a note.
+
+**`QovluqYoxlayici` is `BlokSxemi`'s sibling**: framework-free, **collects** errors instead of
+throwing, Azerbaijani messages, two levels. *Error* blocks publishing (a lock with no code, a case
+with no culprit, a true ending that is not the culprit's, an unresolvable tag, a duplicate sheet
+number); *note* is information only (an unused image, a blank sheet number, an unpublished draft).
+
+> **The code check looks for individual digits, not the whole code.** Demanding the literal code
+> appear in its source sheets would be exactly backwards — `check-dossier.js` §3 requires the code
+> **not** to appear in `content`, because assembling it is the puzzle. Per-digit is a weak check
+> that still catches the mistake people actually make: pointing at the wrong source sheet.
+
+> **Sheet numbers are always strings.** «14» looks numeric and PHP silently casts it to `int` as an
+> array key, so `'14'` and `14` collide. The validator keeps numbers in lists, never as keys.
+
+**Two Blade traps this screen walked into**, both worth knowing:
+- `data-nisan="{{ '{{ sekil:' . $s->slug . ' }}' }}"` **does not parse** — Blade stops the
+  expression at the first inner `}}`. The tag is built in PHP (`Isare::yaz()`) and echoed as a
+  variable. Help text that shows the syntax lives inside `@verbatim`.
+- A `<form>` cannot be split across `<td>`s or nested in another `<form>`; the browser drops it
+  silently and the button does nothing. Every form on these screens is declared standalone and
+  bound to its fields with the `form=""` attribute.
+
+**Deleting a draft is a hard delete (`forceDelete`), and that is forced by the schema.**
+`dossiers.slug` carries a database-level UNIQUE index that sees soft-deleted rows too, so a
+mistyped-and-deleted case would occupy «2026-0501» forever. The `Rule::unique` in the controller
+therefore does **not** add `whereNull('deleted_at')` — validation must not be looser than the index,
+or the check passes and the INSERT 500s. A **published** case is never deletable: `dossier_progress`
+would cascade and take real players' progress and certificates with it.
+
+**The preview is an `<iframe>`, and that is not a nicety.** `dossier.css` is the *game's*
+global stylesheet: it writes `*`, `body` and `:root`. Loading it into the admin page (which is
+what the first version did, through `@stack('head')`) turns the whole panel black, restyles
+every form control and outranks `panel.css` — and the file cannot be scoped, because it belongs
+to the game. A separate document is the only isolation that keeps the preview **identical** to
+what the player sees; a second, simplified renderer would drift from the real one within a week.
+
+> **The injected style must cancel `body{display:flex}`.** In the game the sheet lives inside
+> `.frame`, a fixed-width phone column, and body-flex centres it. With no frame the wrapper
+> becomes a flex item, shrink-to-fits to `max-content`, and the microtext border — one line,
+> `white-space:nowrap`, the fiction notice repeated 14 times — drags the sheet to ~1660px inside
+> a 520px iframe, clipping the text on **both** edges. `check-dossier-admin.js` §5 measures
+> `scrollWidth` against `clientWidth` so this cannot come back.
+
+> The iframe document also carries the `#kagizLeke` turbulence filter, which is global in
+> `layouts/dossier.blade.php` and is the only shared piece of the physical-effect layer.
+> Height is measured from the content a few times after writing, because the subset fonts
+> arrive late and change the line count.
+
+> **The stylesheet hrefs are root-relative, not `asset()`.** `asset()` builds from `APP_URL`,
+> which is `http://localhost:8000` in the shipped `.env` — an admin working on `127.0.0.1:8000`
+> then makes the iframe request its stylesheet from a *different* origin, the load fails
+> silently, and the sheet renders as a black rectangle. This is the same rule `viewer.js`
+> already follows for the avatar (relative path, never `avatarUrl`).
+> `check-dossier-admin.js` §5 reads the computed `.paper` background rather than trusting the
+> markup — a missing stylesheet is invisible in the DOM.
+
+**This screen breaks out of the panel's width.** `site.css` `--max` is 1180px, which is right
+for reading but leaves ~890px of content — not enough for a form and a sheet side by side.
+`layouts/panel.blade.php` gained `@yield('shell')` on the wrap (empty by default, so every
+other admin page is untouched) and this view sets `wrap-genis` (1560px). The two-column
+breakpoint is **1200px**, not 980: below it the left column drops under ~430px and long labels
+wrap onto two lines, which is what made the form look tangled.
+
+**A seeded document opens with an empty text box, and the editor says so.** Those 84 sheets are
+block-mode (`body` empty), so the first character typed into `Mətn` switches the sheet to text
+mode and the blocks stop rendering — they are not deleted, but they vanish from the page. The
+editor prints a warning naming the block count and pointing at `{{ blok:acar }}`.
+
+**Admin assets are named `panel-`, not `dossier-`.** `frontend/panel-qovluq.js` and the
+`/* İŞ QOVLUĞU REDAKTORU */` block in `panel.css`. The `dossier-*` names belong to the **player**
+side and are swept by `check-dossier.js` §5 for brand words; inside the admin panel the product's
+own name is legitimate. `layouts/panel.blade.php` gained one line — `@stack('head')` — because the
+preview loads the game's own `dossier.css` rather than a second, simplified renderer that would
+drift from the real one.
+
+### Material evidence carries photographs
+
+The `kart` block — the material-evidence list, and the one block type that is genuinely
+**content the admin writes** rather than story structure — now gives every item a photo.
+
+**The frame is always there, filled or not.** A real evidence protocol reserves a space for each
+item's photograph, and an empty frame reads as "photo to follow". If the frame only appeared once
+an image existed, the sheet's layout would change the moment one was added.
+
+**The photograph is PASTED ON the sheet, not placed in it.** A white print border, a slight
+rotation derived from the item index (two photographs at the same angle read as a template, not as
+something a hand stuck down), a drop shadow, and two strips of tape across the **top** corners —
+each half on the photograph and half on the paper.
+
+> **The tape must not use `mix-blend-mode:multiply`; the seal must.** Multiply is how this section
+> soaks ink into paper (see `partials/mohur.blade.php`), and it made the tape invisible — white
+> tape over a white print border. Tape is a physical object lying *above* both layers; ink is *in*
+> the paper. Same file, opposite answer.
+
+> **The evidence seal is red (`--red`), while the sheet's own seals are purple (`--stamp`).**
+> They are different acts: the masthead impression registers the *document*, this one certifies
+> an *object*. It is the same token the stamp layer calls `qirmizi`, so the palette stays one
+> palette.
+>
+> **The round seal straddles the photograph's bottom edge — half on the print, half on the sheet.**
+> That is where a real one goes: it certifies that this photograph belongs to this file, so the
+> print cannot be swapped without breaking the impression. It reuses `<x-mohur>`, so its `id` must
+> be unique on the page; it is derived from a hash of the block's own cards, never from `rand()` —
+> a seal that moves when the sheet is reopened announces the document as fake (the `Imza::yol()`
+> rule).
+
+> An **empty** frame gets neither tape nor seal, and no rotation: nothing has been stuck down there
+> yet, only space reserved. The photo is capped at 330px rather than filling the measure — a real
+> print is 9×13 and the paper around it is what the tape and seal sit on.
+
+**A card references a library slug, never a filename.** Re-uploading an image changes the file name
+(they are 32 random hex characters); the slug survives. An unresolvable slug renders the empty
+frame — it is not an error, because a case can legitimately have evidence with no picture.
+
+**The image map now reaches both render paths.** `renderDocument()` loads it once and passes it to
+the view as `sekiller` + `slug`, so the block loop sees it; `SenedRender::blok()` passes the same
+pair into `View::make`, so a `{{ blok:… }}` tag inside body text renders identically.
+
+**This is the one block type with an editor**, and the exception is deliberate: photographs can
+only be uploaded from the admin, so evidence cannot live in the seed file alone.
+
+- Each row has its own **Yüklə** button. The upload goes to the library *and* binds to that row in
+  one step, with `owner_document_id` set to the document being edited — so an item on a locked
+  sheet inherits the spoiler gate without the admin having to think about it.
+- The new slug is appended to **every** row's dropdown, since one photograph can serve several items.
+- There is no "add" button and no "delete" button: each block ends with a blank row (typing a name
+  creates the item) and clearing a name removes it. One rule, two directions.
+- A document with no evidence block gets a checkbox to create one. The new block is given an
+  `acar` (`subutlar`, uniquified) so it can also be placed by tag.
+
+**Nothing in this panel asks the admin to type syntax or read a slug.**
+
+- **A formatting toolbar sits on the textarea.** Each button wraps the selection; with no
+  selection it inserts a placeholder word and leaves it *selected*, so the next keystroke replaces
+  it. Buttons carry the look of what they do — the red-pen button is red, the strike button is
+  struck through — so the choice is recognised by eye, not by remembering `~~`.
+- This is **not** a WYSIWYG editor and must not become one: the sheet is always built from text,
+  `Metn::inline()` reads exactly these markers, and the live preview already shows the result. The
+  toolbar replaces *typing*, not the format.
+- **`{{ sekil:… }}` is inserted from a thumbnail grid**, not typed. The `Şəkil…` button opens the
+  library inline; clicking a picture puts its tag at the cursor.
+- **Uploading no longer uses `window.prompt()`.** Three prompts in a row asked for a slug, a
+  caption and a type — they block the page, never show the picture, and made the admin type an
+  English key into an empty box. The in-page form shows the image immediately, suggests the slug
+  from the filename (the server re-cleans it and de-duplicates anyway, so the browser's weaker
+  `İ`-folding cannot cause harm), and offers the types by name. `check-dossier-admin.js` counts
+  browser dialogs and asserts **zero**.
+- **English slugs never reach the screen.** `sekil_labels`, `sened_labels`, `blank_labels` and
+  `kilid_labels` in `config/dossier.php` name every whitelist value in Azerbaijani, the same
+  pattern as `difficulty_labels`. The keys stay English because they become view filenames.
+
+> **In text mode the block does not appear on its own.** When `body` is filled the sheet is read as
+> text and blocks render only where a `{{ blok:… }}` tag puts them — evidence added without one
+> would vanish silently. The editor detects this and offers a button that pastes the tag at the
+> cursor.
+
+> **The tag literal must not be written in Blade — not even inside `@php()`.** Blade scans the
+> whole template for `{{ … }}`, so `@php($x = '{{ blok:' . $k . ' }}')` compiles to
+> `'<?php echo e(blok:' . $k . '); ?>'`. This failure is **silent and self-consistent**: the
+> comparison that decides whether to show the warning uses the same corrupted value, so the warning
+> behaves plausibly while the pasted tag is garbage. Build it with `Isare::yaz('blok', $acar)`.
+
+### Building a case with AI
+
+`/admin/qovluqlar` carries an **«AI ilə yeni iş qur»** panel: a brief, a **document count** and a
+difficulty produce a complete draft case — story, four suspects with a culprit, chronology, alibi
+axis, solution, the three questions, N documents with text, and a lock code.
+
+**This one writes to the database, and that is the deliberate difference from `AiController`.** The
+template assistant never touches the catalog because its output fits in a form. Twenty-five sheets
+do not. So the result is a **draft** (`status = draft`) — invisible to players — and publishing it
+still goes through `QovluqYoxlayici`. The review gate does not disappear; it moves from *save* to
+*publish*.
+
+**Two stages, driven by the browser.** Thirty documents do not fit in one completion, and six
+OpenAI calls do not fit in one HTTP request. `POST /admin/qovluqlar-ai` returns the skeleton and
+the document rows (empty bodies, each carrying its one-line brief in `content.ai_brief` — a key the
+render layer does not know and ignores). Then `POST /admin/qovluqlar-ai/{dossier}/senedler` fills
+the next `QovluqBrief::PARTIYA` (4) sheets, repeatedly, with a progress bar. Both routes are
+`throttle:ai`. If a batch fails the draft survives — the admin opens it in the editor and continues.
+
+**`QovluqBrief` does not trust the model**, the same posture as `TemplateBrief`:
+
+- **The cover is never asked for.** Institution lines, seal and assignment come from `Byuro`
+  constants, so a model that writes a real ministry cannot put it in the masthead.
+- **The three questions are constructed, not requested.** Question 1's options are the suspects'
+  names *in order* and `correct` is the culprit index — the convention the admin panel reads the
+  culprit from. Asked for, the model would eventually shuffle them and the culprit would be
+  silently wrong.
+- **Sheet numbers come from the sequence**, not from the model (it repeats and skips them).
+- `doc_type` and `blank_nov` fall back to whitelist values; an out-of-range `culprit` collapses to
+  0 (flagging nobody would hide the reason); the lock code is reduced to four digits; a source
+  sheet that is the locked sheet itself, or does not exist, is dropped.
+- Emoji, markdown headings and list bullets are stripped from document text — `Metn::inline()` does
+  not know them and would print them literally. The **markers stay**: `**`, `[[…]]`, `((…))` are
+  the sheet's language.
+- A real institution name is **reported, not deleted** — silently editing prose is worse than
+  telling the admin to fix it. The model's output also passes the same `Moderation` list as
+  visitor text.
+
+> **The lock's source sheets are recomputed from the finished text, not from the model's claim.**
+> The skeleton says "the digits are on sheets 2 and 3", then the model writes those sheets one call
+> later and does not keep its word. `QovluqYoxlayici` checks sources literally, so a false claim
+> would make every AI case unpublishable. After the last batch `kodMenbeleri()` scans the actual
+> bodies; if the digits are not all there it leaves the list **empty**, which is a note rather than
+> an error, and the admin either hides the digits or changes the code.
+
+> **A skipped sheet is written, not left blank.** If the model omits one, the next batch would ask
+> for it again and the loop would never end — so it gets a single `[[Mətn qurulmadı…]]` line that
+> the admin sees in the editor.
+
+**Documents are generated in text mode**, never as blocks. `body` exists precisely for this: asking
+a model to emit valid 13-type block JSON is asking for a schema it will get wrong, while prose with
+inline markers is what it is good at. Hand-authored cases keep the block system.
+
+### The ending layer (şübhəli seçimi)
+
+Alongside the three-question verdict there is now a second ending mechanic: the player picks one
+suspect and gets that suspect's ending — `verdict_text`, a `sting_line` three seconds later, and
+`reveal_text` only on the true ending.
+
+**The mode is derived, never stored.** A case with `dossier_endings` rows uses suspect selection;
+one without keeps the three-question form. No column, no admin toggle — a flag would be a second
+truth to keep in sync, and the three shipped cases would be one bad default away from silently
+changing mechanic. `check-dossier-flow.js` §7/§8 and `tests/security.php` §14 therefore still pass
+untouched.
+
+- `POST /api/is/{slug}/sonluq` (`throttle:dossier-rey`) and `POST /api/is/{slug}/yeniden`
+  (`throttle:dossier`). The first passes the same gate as `verdict()`: every sheet read, or 403.
+- **The endings' text is never sent up front.** `/ac` and the shell payload carry only the *ids* of
+  suspects that have an ending; the text arrives in the response to the choice. Shipping all of it
+  would hand the ending to anyone with DevTools.
+- `reveal_text` and `is_true_ending` are in `DossierEnding::$hidden`; the controller adds `reveal`
+  explicitly and only when the ending is the true one.
+- **"Yenidən oyna" clears only `chosen_suspect_id`.** Unlocked codes, read sheets, the investigator
+  name and a solved case's certificate all survive — the player must not hunt for a found code twice.
+- There is **no attempt limit** here: reading each ending is part of the game. The three-attempt
+  rule belongs to the question mechanic, where naming the wrong item would turn three tries into a
+  search of the 4 × 4 × 4 space.
+- The answer screen carries **both** forms and CSS picks one (`#s-answer.sonluq`). Two separate
+  screens would have split the navigation and tab logic in half.
 ### The case-file document is a list of blocks, not a template
 
 A document used to be one of nine fixed `type`s, each with its own Blade file. Those templates
@@ -1064,6 +1420,175 @@ that one is an eight-pointed star with a flame, and neither appears here.
 > bottom). A wreath climbing from the base is the single most recognisable line of real state
 > emblems; moving it to the sides keeps the mark official-looking without pointing at one.
 
+### The investigator profile, rank system and ID badge (`/is/mustentiq`)
+
+The section used to give a one-shot experience: buy a case, read it, name the killer,
+share a certificate, done. There was no reason to come back, because the player had no
+**continuing identity** — someone who had closed three cases looked identical to someone
+who had played nothing. This layer is that identity: a profile, an earned **rank**, and a
+shareable **ID badge**.
+
+**The card is earned, and that is the mechanism.** A guest can solve cases and accumulate
+XP, but gets no badge number and never appears in the leaderboard. That is the single
+strongest argument for registering, and it costs nothing to maintain: **a guest is already
+a `users` row and `AccountService::register()` fills that same row in place**, so XP
+survives registration with zero migration work. `register()` needed no change at all —
+there is a comment saying so, because it looks like an omission.
+
+**The whole layer lives inside `/is`.** Own routes, `layouts/dossier.blade.php`, own assets
+(`dossier-profil.js` / `dossier-profil.css`), no `site.css` / `panel.css` / `app.js`, and no
+link in either direction to the notary product. Registration therefore could not reuse
+`/kabinet` — `Web\DossierAccountController` + `/is/hesab` is the section's own auth screen,
+following the `DevetAccountController` precedent. It calls the **same** `AccountService`,
+so there is one auth truth and no new security surface.
+
+**XP is derived, not a ledger.** `investigator_profiles.xp` is a denormalised cache of
+`Σ case_completions.xp_awarded + Σ xp_adjustments.delta`, floored at 0. That makes the
+admin's "recalculate" button, the guest merge and the audit trail all fall out for free,
+and a half-applied write can never leave a permanently wrong balance — the next recompute
+repairs it. Writes go through `CreditService::apply()`'s shape: `DB::transaction` →
+`lockForUpdate()->firstOrFail()` → ledger row with `balance_after` → `syncOriginalAttribute()`.
+`cases_solved` · `true_endings` · `first_try_solves` · `total_wrong_accusations` are caches
+of the same table; **nothing else writes them**.
+
+**The formula lives in exactly one place** — `App\Support\Dossier\Xp` (framework-free, so
+`tests/logic.php` requires it directly). Bonuses **add**, they do not multiply:
+
+```
+carpan = 1 + (true ending ? 0.5 : 0) + (first try && 0 wrong ? 0.3 : 0)
+xp     = max(0, round(base[difficulty] × carpan) + (all codes ? 20 : 0) − 10 × wrong)
+base   = asan 20 · orta 40 · cetin 70 · kabus 120
+```
+
+Percentages apply first, flat values after: the code bonus is the same work on every case,
+and a flat penalty stops a mistake on an `asan` case being cheap. Per-case ceilings are
+`56 · 92 · 146 · 236`.
+
+**Nine ranks, seeded, with a curve that is asserted rather than trusted.**
+`0 · 40 · 150 · 380 · 800 · 1450 · 2400 · 3800 · 6000`; every step is larger than the one
+before it (`40 · 110 · 230 · 420 · 650 · 950 · 1400 · 2200`) and `check-mustentiq.js` §1
+fails if that stops being true.
+
+> **The second rank is guaranteed, not likely.** The *worst possible* outcome on the free
+> `orta` case — two failed attempts, no codes found — is exactly **40 XP**, which is rank 2's
+> threshold. "The first step should be easy" is therefore an arithmetic property, not an
+> average.
+
+> **With only three cases the ceiling is 474 XP → rank 4**, and ranks 5–9 are unreachable.
+> That is deliberate and **visible**: the profile shows all nine rungs with the locked ones
+> dimmed. Compressing the curve to fit three cases would have to be undone the day a fourth
+> ships. `RankSeeder` therefore rewrites `xp_required` on **every** run (unlike the
+> `status`/`sort` discipline) — thresholds are code-owned, and re-seeding is half of how the
+> admin's recalculate button works.
+
+**`is_true_ending` means "reached the winning outcome"** — the true suspect in ending mode,
+`solved` (as opposed to `revealed`) in question mode. Since **no shipped case has endings**
+(`endings: 0` in all three seeds), it is true for every closed case today and `×1.5` is
+effectively part of the base; the levers that actually vary a score are the first-try bonus,
+the code bonus and the penalty. This is **not** redundancy — it is written in `RankService`'s
+docblock so nobody later "fixes" it.
+
+**Two hook points, both a transition gate.** `DossierService::submit()` and
+`chooseSuspect()` capture `$evvel = $p->solved` *before* mutating and award only on
+`! $evvel && $p->solved`. Checking the row itself is not enough — on a second call `solved`
+is already true. The early return is the first guard, this is the second, and
+`case_completions`' unique `(profile_id, case_id)` is the third. `revealed` awards nothing
+but calls `recordAttempt()` so the case still counts as attempted.
+
+- `wrong_attempts` is `attempts − 1` in question mode (`attempts` only increments on a
+  complete form, so a partial submit costs nothing) and `count(wrong_suspect_ids)` in
+  ending mode.
+- **`dossier_progress.wrong_suspect_ids` is a distinct-id list, not a counter** — endings
+  have no attempt limit and reading each one is part of the game, so picking the same
+  suspect twice is one mistake. **`replay()` must never clear it**: it exists so the player
+  can read another ending, not so the score resets; clearing it would hand out both the
+  −10 waiver and the first-try bonus for free.
+- `all_codes_unlocked` is computed in `RankService`, and **a case with no locked sheets
+  counts as `true`** — otherwise the +20 would land only on `2026-0412` and read as a
+  penalty on the other two.
+
+**The badge number is issued when the department is chosen, and then frozen.**
+`ŞK-YY-NNNN` (`CA-26-0147`), sequential under a row lock, **never random** — a gap in a
+service number reads as forgery. Zero-padding to a fixed width is what makes
+`ORDER BY badge_number DESC` return the numeric maximum, and `tests/logic.php` asserts
+lexicographic order equals numeric order over 200 shuffled numbers. The one allowed
+department change does **not** alter the number: it is issued to the person, not the post,
+and a shared older card must keep matching.
+
+> **«Məhkəmə-Tibb Ekspertizası» is deliberately not a department name.** It is on
+> `config('dossier.org_ban')` and in `tests/security.php` §14 — a real state institution.
+> The department is **«Tibbi Ekspertiza»** (`TE`), the same substitution CLAUDE.md already
+> records for the ranks. `check-mustentiq.js` §2 folds every department label against
+> `org_ban` so it cannot come back.
+
+**`CardRenderer` renders the badge server-side; the browser makes the PNG.** There is no
+server-side SVG→PNG anywhere in this repo, and three rules follow from the canvas raster
+path, all of them already learned by `dossier-cert.js`:
+
+1. **`@font-face` is dropped** → the card uses generic families, **single-quoted** (a
+   double quote inside a double-quoted XML attribute makes the image fail *silently*).
+2. **CSS custom properties do not resolve** → `ranks.color_token` stores a *token name* and
+   `Rank::reng()` maps it to a literal hex from `config('dossier.reyting.rank_colors')`,
+   which `check-mustentiq.js` compares against `dossier.css` `:root` value by value.
+3. **External images are dropped** → the avatar is embedded as a `data:` URI, never a link.
+
+**Text fitting without `measureText`.** PHP has no metrics and `check-title-fit.js` already
+records that a length-based estimate is useless for *measuring*. So the estimate only
+**picks a size bucket** (a per-character advance table, ±8 %), and the hard guarantee is
+`textLength` + `lengthAdjust="spacingAndGlyphs"`, which cannot overflow in any font, in the
+browser or on the canvas. The name texts carry `data-ad="1"` so the flow test can measure
+exactly those with `getComputedTextLength()` — the microtext strip is deliberately the full
+card width and must not be caught by that check.
+
+**Guilloche: `Nisan::naxis()` is not tiled.** It is a fixed 100×100 rosette *group*, not a
+tile unit — on a grid its circular envelope produces visible seams and a polka-dot field.
+The card uses a real six-line inline `<pattern>` for the field **plus** one large centred
+`naxis()` mark at 0.06 opacity, which is where the guilloche reading actually comes from
+and keeps the card in the same family as the seals. The pattern is emitted per-card under
+the caller's `$id` prefix, never into a shared `defs()` (the `doc.js` lesson).
+
+**The badge is the fifth share artefact**, so `Byuro::QEYD_QISA` is on the card itself and
+`check-dossier.js` §3c asserts it — the same argument as the certificate, the story PNG and
+the two OG images. `CardRenderer.php` is also in `QURUM_SCAN`: it prints institution text
+onto a shareable artefact, so the legal shield covers it regardless of which folder it is in.
+
+**Leaderboard caching is TTL-only, and that is forced by the store.** `CACHE_STORE=database`
+does not support tags, so `Cache::tags()->flush()` does not exist; maintaining a manifest of
+12 orderings × N pages would be more code, more failure modes and no user-visible benefit. A
+leaderboard is a *reading* of the world, not a fact about it — five minutes stale is
+invisible. All three windows aggregate over `case_completions.completed_at` (including
+"all time"): the profile counters are the **profile page's** cache and reading them here
+would create a second source of truth. The secondary sort is always `p.id ASC`, because an
+unstable tie-break both duplicates and drops rows across a page boundary.
+
+**`cached_rank_position` tracks only the primary ordering** (total XP, all time). It is the
+number printed on the profile and the only one a hidden profile can get, since it appears in
+no list. The other eleven orderings compute the viewer's own position on demand with one
+indexed `COUNT(*)`. `syncPositions()` **includes hidden profiles in the ordering** — hiding
+is a display choice, not a demotion — and runs behind a five-minute `Cache::add` lock, plus
+the admin button. There is no scheduler in this repo and none was added for a cosmetic number.
+
+**Avatars are the `devet` OG model, one step stricter.** Multipart MIME is only a hint; the
+verdict is `Sekil::olcu()` (`getimagesizefromstring`). GD centre-crops to a square first
+(`Sekil::olcule()` does not crop) and flattens transparency onto **white**, or a PNG comes
+back black. Two derivatives, 32 hex characters each, stored outside the public root. Status
+starts `pending`: **the owner and admins see it, everyone else gets 404** — not 403, because
+"access denied" is itself information (`imagePath()`'s rule). A rejection keeps the file, so
+it can be reviewed again, and shows the reason with the form re-enabled.
+
+**`AccountService::mergeGuestInto()` gained `moveInvestigatorProfile()`**, and it is
+mandatory: `investigator_profiles.user_id` cascades and the method deletes the guest row, so
+without it a cross-device login would destroy the guest's XP and closed cases (the same
+latent bug `invites` still has). **The profile row is not moved** — the account's own profile
+is `ensure()`d and only `case_completions` are re-pointed, so no one can inherit someone
+else's badge number. On a collision the **higher-XP** row survives, mirroring
+`progressRank()`: a merge must never set anybody back.
+
+**Delivery note.** Ranks are seeded before `DossierSeeder` (a profile references a rank).
+`ProfileService::ensure()` is called from exactly three places — `RankService`, the profile
+controllers, and the merge — and deliberately **not** from `DossierService::open()`: a
+visitor who pays for a case and never finishes should not create a profile row.
+
 ### The case-file section's sales face
 
 The section has three faces and each earns its keep:
@@ -1298,6 +1823,10 @@ occasional runtime wrinkle on first run.
   only — Azerbaijani name, the type word the layout prints, and the title tail words mirrored from
   `tools/copy-rules.js` `DOC_TYPE`). Neither meta map is a whitelist: `Sanitizer::pick` still reads
   `layouts` / `palettes`, and a slug missing from the meta simply falls back to itself.
+- **Case-file AI guard lists**: `config('dossier.org_ban')` ↔
+  `App\Support\Ai\QovluqBrief::ORG_BAN` (the model's output), and `QovluqBrief::BLANK` /
+  `::NOV` ↔ `config('dossier.blank_novleri')` / `sened_novleri`. Duplicated on purpose,
+  exactly like the template side: one list guards stored content, the other guards generation.
 - **AI guard lists**: `tools/check-templates.js` `ORG_BAN` ↔ `App\Support\Ai\TemplateBrief::ORG_BAN`;
   `tools/copy-rules.js` `BAND` ↔ that class's `TITLE_MIN`…`POWER_LINE` constants and `DOC_TYPE`
   ↔ `config/zarafat.php` `layout_meta.tail` (which is what the prompt actually sends).
@@ -1331,6 +1860,10 @@ occasional runtime wrinkle on first run.
 - **Case-file block types**: `config/dossier.php` `bloklar` ↔ the Blade files in
   `resources/views/dossier/bloklar/` ↔ `BlokSxemi::BLOKLAR` ↔ `Qalereya::bloklar()` —
   `tools/check-dossier.js` §2 compares all four and pins the count at 13.
+- **Case-file admin labels**: `config/dossier.php` `sekil_novleri` ↔ `sekil_labels`,
+  `sened_novleri` ↔ `sened_labels`, `blank_novleri` ↔ `blank_labels`, `kilid_novleri` ↔
+  `kilid_labels`. The whitelist is the contract; the label map is what the admin reads.
+  A slug missing from its label map falls back to itself — visible, but ugly.
 - **Case-file difficulty labels**: `config/dossier.php` `difficulties` ↔ `difficulty_labels`.
   Both `dossier/ana.blade.php` (the filter chips) and `dossier/teqdimat.blade.php` read the label
   map **from config**, so adding a tier (`asan · orta · cetin · kabus`) is a config-only change.
@@ -1356,6 +1889,46 @@ occasional runtime wrinkle on first run.
   `TemplateSchema` ↔ `check-templates.js` §5.
 - **Inline text markers**: `App\Support\Dossier\Metn::inline()` ↔ the `.elavesoz` /
   `.ustxett` / `.oxunmaz` / `.dairesoz` rules in `frontend/dossier.css`.
+- **Case-file image styles**: `config/dossier.php` `sekil_novleri` ↔
+  `App\Support\Dossier\BlokSxemi::SEKIL_NOV` ↔ the Blade files in
+  `resources/views/dossier/sekiller/` — `tools/check-dossier.js` §7 compares all three.
+  Deliberately **not** part of `bloklar`: §2 pins that count at 13.
+- **Tag syntax**: `App\Support\Dossier\Isare::NISAN` ↔ the `@verbatim` help text in
+  `admin/dossier/sened.blade.php` ↔ the `.qv-sekil[data-nisan]` attribute, which is built by
+  `Isare::yaz()` rather than written literally (Blade cannot parse a nested `}}`).
+- **The code's two homes**: `dossier_codes.code` (admin registry) ↔
+  `dossier_documents.lock_code` (authority, read by `unlock()` and shielded by `$hidden`) —
+  `Admin\DossierController::codeSave()` is the only writer that keeps them equal.
+- **Suspect wire shape**: `dossiers.suspects` JSON ↔ `dossier_suspects` rows ↔
+  `Dossier::suspectList()`, which must keep emitting the same keys `dossier.js subheliler()`
+  reads (`init · name · role · bio · bars · camera`).
+- **Ending mode**: derived from the existence of `dossier_endings` rows in three places that
+  must agree — `Dossier::hasEndings()` (API gate), `DossierService::endingSuspectIds()`
+  (the payload) and `dossier.js sonluqlar()` (`#s-answer.sonluq`).
+- **Case-file admin assets**: `frontend/panel-qovluq.js` and the `qv-` block in
+  `frontend/panel.css` ↔ `tools/build-laravel.js` `ASSETS` ↔ the `@push('scripts')` tags in
+  `admin/dossier/form.blade.php` and `admin/dossier/sened.blade.php`.
+- **XP formula**: `config('dossier.xp')` ↔ `App\Support\Dossier\Xp::hesabla()` ↔ the JS
+  twin in `tools/check-mustentiq.js` §3 (the same deliberate duplication as
+  `BlokSxemi` ↔ `check-dossier.js`). The twin is checked against a hand-computed table,
+  so a drift in either direction fails.
+- **Rank colours**: `frontend/dossier.css` `:root` ↔ `config('dossier.reyting.rank_colors')`
+  ↔ `ranks.color_token` — the token is only a *name*; the card needs a literal hex because
+  `var(--…)` does not resolve on the canvas.
+- **Rank thresholds**: `database/seeders/RankSeeder.php` `RUTBELER` ↔ `ranks.xp_required`
+  (rewritten on every seed run — thresholds are code-owned) ↔ `check-mustentiq.js` §1,
+  which asserts every step is larger than the previous one.
+- **Departments**: `config('dossier.sobeler')` (key = the two-letter badge prefix) ↔
+  `App\Models\InvestigatorProfile::departmentLabel()` ↔ `check-mustentiq.js` §2 — which
+  also folds every label against `config('dossier.org_ban')`, the rule that keeps
+  «Məhkəmə-Tibb Ekspertizası» out.
+- **Code-39 table**: `frontend/doc.js` `C39` ↔ `App\Services\CardRenderer::C39` — the third
+  geometry pair after crest/seal (`Nisan`) and signature (`Imza`).
+- **Microtext**: `frontend/doc.js` `microtext()` ↔ `CardRenderer::mikro()` (single-line
+  variant only — the card draws one bottom strip, not four edges).
+- **Badge number format**: `App\Support\Dossier\VesiqeNo::NIZAM` ↔ the sequential read in
+  `ProfileService::issueBadge()`, which silently depends on zero-padding making
+  lexicographic order equal numeric order (asserted in `tests/logic.php`).
 - **OG image size (1200×630)**: `invite.js` `OG` ↔ `config/devet.php` `og` ↔ the
   `og:image:width/height` tags in `tools/build-laravel.js`.
 

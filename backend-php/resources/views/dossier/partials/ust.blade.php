@@ -8,6 +8,12 @@
     </a>
     <nav class="sayt-nav">
       <a href="{{ route('dossier.index') }}#isler">İşlər</a>
+      <a href="{{ route('dossier.reyting') }}">Reytinq</a>
+      @if(auth()->check())
+        <a href="{{ route('dossier.profil') }}">Vəsiqəm</a>
+      @else
+        <a href="{{ route('dossier.hesab') }}">Giriş</a>
+      @endif
       <a href="{{ route('dossier.index') }}#suallar">Suallar</a>
     </nav>
   </div>

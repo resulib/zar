@@ -78,6 +78,50 @@ if (app()->environment(['local', 'testing']) || env('DOSSIER_GALLERY')) {
     Route::get('/is/qalereya', [Web\DossierController::class, 'gallery'])->name('dossier.gallery');
 }
 
+/* MÜSTƏNTİQ PROFİLİ və REYTİNQ.
+
+   Sabit yollardır və `/is/{slug}`-dan ƏVVƏL gəlirlər. Slug şərti
+   `[0-9]{4}-[0-9]{4}` olduğu üçün onlar onsuz da udulmazdı, amma faylın
+   qaydası budur: geniş yol axırda.
+
+   İNDEKSLƏMƏ İKİ CÜRDÜR: profil və hesab səhifələrində real adamın adı və
+   şəkli var — onlar bağlıdır (layout defoltu `noindex`, üstəlik robots.txt).
+   Reytinq isə açıqdır: o, `/is` və `/is/{slug}` kimi satış üzüdür. */
+Route::get('/is/mustentiq', [Web\DossierProfileController::class, 'show'])
+    ->middleware('throttle:dossier-read')->name('dossier.profil');
+Route::get('/is/mustentiq/ayarlar', [Web\DossierProfileController::class, 'settings'])
+    ->middleware('throttle:dossier-read')->name('dossier.profil.ayarlar');
+
+Route::post('/is/mustentiq/ad', [Web\DossierProfileController::class, 'saveName'])
+    ->middleware('throttle:dossier')->name('dossier.profil.ad');
+Route::post('/is/mustentiq/sobe', [Web\DossierProfileController::class, 'saveDepartment'])
+    ->middleware('throttle:dossier')->name('dossier.profil.sobe');
+Route::post('/is/mustentiq/gizlilik', [Web\DossierProfileController::class, 'savePrivacy'])
+    ->middleware('throttle:dossier')->name('dossier.profil.gizlilik');
+Route::post('/is/mustentiq/emr/{history}', [Web\DossierProfileController::class, 'dismissOrder'])
+    ->where('history', '[0-9]+')->middleware('throttle:dossier')->name('dossier.profil.emr');
+
+Route::post('/is/mustentiq/foto', [Web\DossierProfileController::class, 'storeAvatar'])
+    ->middleware('throttle:dossier-foto')->name('dossier.profil.foto.store');
+
+/* Şəkil verilməsi: təsdiqlənməmiş avatar üçüncü şəxsə 404 qaytarır —
+   «icazə yoxdur» mesajının özü məlumatdır. */
+Route::get('/is/mustentiq/{profil}/foto.jpg', [Web\DossierProfileController::class, 'avatar'])
+    ->where('profil', '[0-9]+')->middleware('throttle:dossier-read')->name('dossier.profil.foto');
+
+Route::get('/is/reyting', [Web\DossierRankingController::class, 'index'])
+    ->middleware('throttle:dossier-read')->name('dossier.reyting');
+
+/* Bölmənin ÖZ qeydiyyat ekranı — `/kabinet`-ə link vermək iki məhsul
+   arasındakı ayrılığı pozardı. Eyni `AccountService`-i çağırır. */
+Route::get('/is/hesab', [Web\DossierAccountController::class, 'show'])
+    ->middleware('throttle:dossier-read')->name('dossier.hesab');
+Route::post('/is/qeydiyyat', [Web\DossierAccountController::class, 'register'])
+    ->middleware('throttle:register')->name('dossier.register');
+Route::post('/is/giris', [Web\DossierAccountController::class, 'login'])
+    ->middleware('throttle:login')->name('dossier.login');
+Route::post('/is/cixis', [Web\DossierAccountController::class, 'logout'])->name('dossier.logout');
+
 /* Şəkil marşrutu sertifikat səhifəsindən ƏVVƏL elan olunur, yoxsa
    `.../on.jpg` ayrıca seqment kimi tutulmazdı. */
 Route::get('/is/{slug}/hesabat/{token}/on.jpg', [Web\DossierController::class, 'certificateImage'])
@@ -89,6 +133,14 @@ Route::get('/is/{slug}/hesabat/{token}', [Web\DossierController::class, 'certifi
     ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'token' => '[A-Za-z0-9]{22}'])
     ->middleware('throttle:dossier-read')
     ->name('dossier.cert');
+
+/* Mətndaxili şəkil. `/is/{slug}` marşrutundan ƏVVƏL, çünki üç seqmentdir
+   və geniş yol axırda gəlməlidir. Ölçü ağ siyahıdır: `where` şərtindən
+   keçməyən dəyər fayl adı quraşdırmağa ümumiyyətlə çatmır. */
+Route::get('/is/{slug}/sekil/{id}/{olcu}', [Web\DossierController::class, 'image'])
+    ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'id' => '[0-9]+', 'olcu' => 'tam|orta|kicik'])
+    ->middleware('throttle:dossier-read')
+    ->name('dossier.image');
 
 /* Oyun təqdimat səhifəsindən ƏVVƏL elan olunur: `/is/{slug}/qovluq`
    iki seqmentdir və slug marşrutu onu onsuz da tutmazdı, amma sıra
@@ -147,6 +199,10 @@ Route::prefix('api')->group(function (): void {
     Route::post('/is/{slug}/qeyd/{id}',    [Api\DossierController::class, 'pin'])->middleware('throttle:dossier');
     Route::post('/is/{slug}/kilid/{id}',   [Api\DossierController::class, 'unlock'])->middleware('throttle:dossier-kilid');
     Route::post('/is/{slug}/rey',          [Api\DossierController::class, 'verdict'])->middleware('throttle:dossier-rey');
+    /* Sonluq rejimi — şübhəli seçimi. `rey` ilə eyni limitdə: hər ikisi
+       oyunun yekunudur və hər ikisi bütün vərəqlərin keçilməsini tələb edir. */
+    Route::post('/is/{slug}/sonluq',       [Api\DossierController::class, 'ending'])->middleware('throttle:dossier-rey');
+    Route::post('/is/{slug}/yeniden',      [Api\DossierController::class, 'replay'])->middleware('throttle:dossier');
     Route::post('/is/{slug}/sertifikat',   [Api\DossierController::class, 'certificate'])->middleware('throttle:dossier');
 
     /* Dəvətnamələr. Yazma yolları `devet`, açıq oxuma `devet-read`,
@@ -213,6 +269,16 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('/istifadeciler/{uuid}/kredit',  [Admin\UserController::class, 'grant'])->name('users.grant');
         Route::post('/istifadeciler/{uuid}/blok',    [Admin\UserController::class, 'toggleBlock'])->name('users.block');
 
+        /* MÜSTƏNTİQ PROFİLLƏRİ.
+           İstifadəçi siyahısı `admin.users`-də genişləndirilib — burada yalnız
+           onun ifadə edə bilmədikləri var. */
+        Route::get('/avatarlar',                        [Admin\ProfileController::class, 'avatars'])->name('avatars');
+        Route::get('/avatarlar/{profile}/foto.jpg',     [Admin\ProfileController::class, 'image'])->name('avatars.image');
+        Route::post('/avatarlar/{profile}/tesdiq',      [Admin\ProfileController::class, 'approve'])->name('avatars.approve');
+        Route::post('/avatarlar/{profile}/imtina',      [Admin\ProfileController::class, 'reject'])->name('avatars.reject');
+        Route::post('/mustentiqler/{profile}/xal',      [Admin\ProfileController::class, 'xp'])->name('profiles.xp');
+        Route::post('/mustentiqler/yeniden-hesabla',    [Admin\ProfileController::class, 'recalculate'])->name('profiles.recalc');
+
         Route::get('/sikayetler',                 [Admin\ReportController::class, 'index'])->name('reports');
         Route::post('/sikayetler/{report}/qebul', [Admin\ReportController::class, 'accept'])->name('reports.accept');
         Route::post('/sikayetler/{report}/redd',  [Admin\ReportController::class, 'reject'])->name('reports.reject');
@@ -239,6 +305,62 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         /* Şablon formasının AI köməkçisi — kataloqa yazmır, yalnız formanı doldurur. */
         Route::post('/sablonlar-ai', [Admin\AiController::class, 'draft'])
             ->middleware('throttle:ai')->name('catalog.ai');
+
+        /* İş qovluqları.
+
+           Sıra vacibdir: `/qovluqlar/yeni` və `/qovluqlar/sekil/…` marşrutları
+           `/qovluqlar/{dossier}` -dan ƏVVƏL gəlməlidir, yoxsa geniş yol onları
+           udar və «yeni» sözü qovluq açarı kimi oxunar. */
+        Route::get('/qovluqlar',      [Admin\DossierController::class, 'index'])->name('dossier');
+
+        /* AI ilə iş qurma — iki mərhələ, hər biri BİR OpenAI çağırışı.
+           `throttle:ai` şablon köməkçisi ilə eyni limitdədir: hər çağırış
+           real pul xərcləyir. */
+        Route::post('/qovluqlar-ai',                     [Admin\DossierAiController::class, 'skelet'])
+            ->middleware('throttle:ai')->name('dossier.ai');
+        Route::post('/qovluqlar-ai/{dossier}/senedler',   [Admin\DossierAiController::class, 'senedler'])
+            ->middleware('throttle:ai')->name('dossier.ai.docs');
+        Route::get('/qovluqlar/yeni', [Admin\DossierController::class, 'form'])->name('dossier.new');
+        Route::post('/qovluqlar',     [Admin\DossierController::class, 'save'])->name('dossier.create');
+
+        Route::get('/qovluqlar/sekil/{image}/{olcu}', [Admin\DossierImageController::class, 'show'])
+            ->where('olcu', 'tam|orta|kicik')->name('dossier.image');
+
+        Route::get('/qovluqlar/{dossier}',            [Admin\DossierController::class, 'form'])->name('dossier.form');
+        Route::post('/qovluqlar/{dossier}',           [Admin\DossierController::class, 'save'])->name('dossier.save');
+        Route::post('/qovluqlar/{dossier}/arxiv',     [Admin\DossierController::class, 'archive'])->name('dossier.archive');
+        Route::post('/qovluqlar/{dossier}/nusxe',     [Admin\DossierController::class, 'duplicate'])->name('dossier.duplicate');
+        Route::post('/qovluqlar/{dossier}/sil',       [Admin\DossierController::class, 'destroy'])->name('dossier.delete');
+        Route::post('/qovluqlar/{dossier}/sira',      [Admin\DossierController::class, 'reorder'])->name('dossier.reorder');
+        Route::post('/qovluqlar/{dossier}/derc',      [Admin\DossierController::class, 'publishAll'])->name('dossier.publishAll');
+
+        Route::get('/qovluqlar/{dossier}/sened',                  [Admin\DossierController::class, 'doc'])->name('dossier.doc.new');
+        Route::post('/qovluqlar/{dossier}/sened',                 [Admin\DossierController::class, 'docSave'])->name('dossier.doc.create');
+        Route::post('/qovluqlar/{dossier}/onizleme',              [Admin\DossierController::class, 'preview'])->name('dossier.preview');
+        Route::get('/qovluqlar/{dossier}/sened/{document}',       [Admin\DossierController::class, 'doc'])->name('dossier.doc');
+        Route::post('/qovluqlar/{dossier}/sened/{document}',      [Admin\DossierController::class, 'docSave'])->name('dossier.doc.save');
+        Route::post('/qovluqlar/{dossier}/sened/{document}/derc', [Admin\DossierController::class, 'docPublish'])->name('dossier.doc.publish');
+        Route::post('/qovluqlar/{dossier}/sened/{document}/sil',  [Admin\DossierController::class, 'docDelete'])->name('dossier.doc.delete');
+        Route::post('/qovluqlar/{dossier}/sened/{document}/onizleme', [Admin\DossierController::class, 'preview'])->name('dossier.doc.preview');
+
+        Route::post('/qovluqlar/{dossier}/kod',            [Admin\DossierController::class, 'codeSave'])->name('dossier.code.create');
+        Route::post('/qovluqlar/{dossier}/kod/{code}',     [Admin\DossierController::class, 'codeSave'])->name('dossier.code.save');
+        Route::post('/qovluqlar/{dossier}/kod/{code}/sil', [Admin\DossierController::class, 'codeDelete'])->name('dossier.code.delete');
+
+        Route::post('/qovluqlar/{dossier}/subheli',                [Admin\DossierController::class, 'suspectSave'])->name('dossier.suspect.create');
+        Route::post('/qovluqlar/{dossier}/subheli/{suspect}',      [Admin\DossierController::class, 'suspectSave'])->name('dossier.suspect.save');
+        Route::post('/qovluqlar/{dossier}/subheli/{suspect}/sil',  [Admin\DossierController::class, 'suspectDelete'])->name('dossier.suspect.delete');
+        Route::post('/qovluqlar/{dossier}/sonluq/{suspect}',       [Admin\DossierController::class, 'endingSave'])->name('dossier.ending.save');
+
+        /* Hekayə məlumatı və yekun suallar — qovluğun mətni, sənədlərin yox. */
+        Route::post('/qovluqlar/{dossier}/hekaye',             [Admin\DossierController::class, 'storySave'])->name('dossier.story');
+        Route::post('/qovluqlar/{dossier}/sual',               [Admin\DossierController::class, 'questionSave'])->name('dossier.question.create');
+        Route::post('/qovluqlar/{dossier}/sual/{question}',     [Admin\DossierController::class, 'questionSave'])->name('dossier.question.save');
+        Route::post('/qovluqlar/{dossier}/sual/{question}/sil', [Admin\DossierController::class, 'questionDelete'])->name('dossier.question.delete');
+
+        Route::post('/qovluqlar/{dossier}/sekil',                  [Admin\DossierImageController::class, 'store'])->name('dossier.image.store');
+        Route::post('/qovluqlar/{dossier}/sekil/{image}',          [Admin\DossierImageController::class, 'update'])->name('dossier.image.update');
+        Route::post('/qovluqlar/{dossier}/sekil/{image}/sil',      [Admin\DossierImageController::class, 'destroy'])->name('dossier.image.delete');
 
         Route::get('/parametrler',  [Admin\SettingController::class, 'edit'])->name('settings');
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');

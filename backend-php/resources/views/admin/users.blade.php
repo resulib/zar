@@ -10,11 +10,28 @@
 <div class="page-head"><div><h1>İstifadəçilər</h1><div class="sub">{{ $users->total() }} qeyd</div></div></div>
 
 <form class="filters" method="GET">
-  <input class="input grow" name="q" value="{{ $filters['q'] }}" placeholder="E-poçt, ad və ya UUID">
+  {{-- Axtarış SERVERDƏ aparılır: nişan nömrəsi və göstərilən ad da bura
+       düşür, üstəlik Azərbaycan «İ» hərfi brauzerdə düzgün kiçildilmir. --}}
+  <input class="input grow" name="q" value="{{ $filters['q'] }}"
+         placeholder="E-poçt, ad, UUID və ya nişan nömrəsi">
   <select class="input" name="type">
     <option value="">Hamısı</option>
     <option value="registered" @selected($filters['type'] === 'registered')>Qeydiyyatlı</option>
     <option value="guest" @selected($filters['type'] === 'guest')>Qonaq</option>
+  </select>
+  <select class="input" name="rutbe">
+    <option value="">Bütün rütbələr</option>
+    @foreach($rutbeler as $r)
+      <option value="{{ $r->level }}" @selected((string) $filters['rutbe'] === (string) $r->level)>
+        {{ $r->level }} · {{ $r->title_az }}
+      </option>
+    @endforeach
+  </select>
+  <select class="input" name="avatar">
+    <option value="">Avatar: hamısı</option>
+    <option value="pending"  @selected($filters['avatar'] === 'pending')>Gözləyir</option>
+    <option value="approved" @selected($filters['avatar'] === 'approved')>Təsdiqli</option>
+    <option value="rejected" @selected($filters['avatar'] === 'rejected')>Rədd edilib</option>
   </select>
   <button class="btn btn-sm" type="submit">Süz</button>
   <a class="btn btn-ghost btn-sm" href="{{ route('admin.users') }}">Sıfırla</a>
@@ -22,7 +39,7 @@
 
 <div class="tbl-wrap">
   <table class="tbl">
-    <thead><tr><th>İstifadəçi</th><th>Növ</th><th class="num">Balans</th><th class="num">Sənəd</th><th class="num">Ödəniş</th><th>Son aktivlik</th><th></th></tr></thead>
+    <thead><tr><th>İstifadəçi</th><th>Nişan</th><th>Rütbə</th><th class="num">XP</th><th class="num">İş</th><th>Avatar</th><th class="num">Balans</th><th>Son aktivlik</th><th></th></tr></thead>
     <tbody>
     @forelse ($users as $u)
       <tr>
@@ -30,20 +47,38 @@
           <span class="t" style="font-size:13px">{{ $u->displayName() }}</span>
           <span class="s mono">{{ substr($u->uuid, 0, 13) }}</span>
         </td>
-        <td>
-          <span class="pill {{ $u->is_admin ? 'info' : ($u->isGuest() ? 'mute' : 'ok') }}">
-            {{ $u->is_admin ? 'İdarəçi' : ($u->isGuest() ? 'Qonaq' : 'Qeydiyyatlı') }}
-          </span>
+        @php($pr = $u->investigatorProfile)
+        <td class="mono">
+          {{ $pr?->badge_number ?? '—' }}
           @if ($u->is_blocked)<span class="pill bad">Bloklu</span>@endif
         </td>
+        <td>
+          @if($pr?->rank)
+            <span class="t" style="font-size:12.5px">{{ $pr->rank->title_short }}</span>
+            <span class="s">{{ $pr->departmentLabel() ?: 'şöbəsiz' }}</span>
+          @else
+            <span class="pill {{ $u->is_admin ? 'info' : ($u->isGuest() ? 'mute' : 'ok') }}">
+              {{ $u->is_admin ? 'İdarəçi' : ($u->isGuest() ? 'Qonaq' : 'Qeydiyyatlı') }}
+            </span>
+          @endif
+        </td>
+        <td class="num">{{ $pr?->xp ?? '—' }}</td>
+        <td class="num">{{ $pr?->cases_solved ?? '—' }}</td>
+        <td>
+          @if($pr && $pr->avatar_status !== 'none')
+            <span class="pill {{ $pr->avatar_status === 'approved' ? 'ok'
+              : ($pr->avatar_status === 'pending' ? 'wait' : 'bad') }}">
+              {{ $pr->avatar_status === 'approved' ? 'təsdiqli'
+                : ($pr->avatar_status === 'pending' ? 'gözləyir' : 'rədd') }}
+            </span>
+          @else — @endif
+        </td>
         <td class="num">{{ $u->credits }}</td>
-        <td class="num">{{ $u->documents_count }}</td>
-        <td class="num">{{ number_format((float) ($u->paid_sum ?? 0), 2) }}</td>
         <td class="mono">{{ $u->last_seen_at?->format('d.m.Y H:i') ?: '—' }}</td>
         <td><div class="acts"><a class="btn btn-ghost btn-sm" href="{{ route('admin.users.show', $u->uuid) }}">Bax</a></div></td>
       </tr>
     @empty
-      <tr><td colspan="7" class="tbl-empty">İstifadəçi tapılmadı.</td></tr>
+      <tr><td colspan="9" class="tbl-empty">İstifadəçi tapılmadı.</td></tr>
     @endforelse
     </tbody>
   </table>

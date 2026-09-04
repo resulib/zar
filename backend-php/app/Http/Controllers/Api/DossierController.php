@@ -52,8 +52,16 @@ class DossierController extends Controller
             'state'      => $p->toStateArray(),
             'credits'    => (int) $user->credits,
             'meta'       => (array) $dossier->meta,
-            'suspects'   => (array) $dossier->suspects,
+            /* Şübhəlilər KÖRPÜDƏN keçir: mövcud üç iş `dossiers.suspects`
+               JSON sütununu, idarə panelindən qurulan işlər isə
+               `dossier_suspects` cədvəlini işlədir. Tel formatı eynidir,
+               ona görə `dossier.js` heç nə bilmir. */
+            'suspects'   => $dossier->suspectList(),
             'chronology' => (array) $dossier->chronology,
+            /* Sonluq rejimi TÖRƏMƏDİR — sonluğu olan şübhəlilərin id-ləri.
+               MƏTN GÖNDƏRİLMİR: hökmlər seçimdən sonra gəlir, yoxsa oyunun
+               sonu DevTools açan hər kəsə çatardı. */
+            'endings'    => $this->dossiers->endingSuspectIds($dossier),
             'questions'  => $dossier->questions->map->toListArray()->all(),
             'docs'       => $dossier->documents->map(
                 fn ($d) => $d->toListArray($this->dossiers->isUnlocked($p, $d))
@@ -174,6 +182,54 @@ class DossierController extends Controller
         return response()->json(['ok' => true] + $this->dossiers->submit($dossier, $p, $cavablar));
     }
 
+    /**
+     * Şübhəli seçimi — sonluq rejimi.
+     *
+     * `verdict()` ilə eyni qapıdan keçir: bütün vərəqlər oxunmayıbsa 403.
+     * İşin sonluğu yoxdursa bu uc nöqtə ümumiyyətlə işləmir — rejim
+     * törəmədir və qabıq onu göstərmir, amma qabığın bilməməsi qorunma
+     * deyil, ona görə yoxlama serverdədir.
+     */
+    public function ending(Request $request, string $slug): JsonResponse
+    {
+        [$err, $dossier, $p] = $this->giris($request, $slug);
+
+        if ($err !== null) {
+            return $err;
+        }
+
+        if (! $dossier->hasEndings()) {
+            return $this->err('no_endings', 'Bu iş sonluq rejimində deyil.', 404);
+        }
+
+        if (! $this->dossiers->allRead($dossier, $p)) {
+            return $this->err('sira', 'Bütün vərəqləri oxumadan qərar verilmir.', 403);
+        }
+
+        try {
+            return response()->json($this->dossiers->chooseSuspect($dossier, $p, $request->input('subheli')));
+        } catch (\RuntimeException $e) {
+            return $this->fromException($e);
+        }
+    }
+
+    /**
+     * «Yenidən oyna».
+     *
+     * Yalnız seçimi sıfırlayır: açılmış kodlar və oxunmuş vərəqlər qalır —
+     * «sessiyadakı açılmış kodlar sıfırlanmasın».
+     */
+    public function replay(Request $request, string $slug): JsonResponse
+    {
+        [$err, , $p] = $this->giris($request, $slug);
+
+        if ($err !== null) {
+            return $err;
+        }
+
+        return response()->json(['ok' => true, 'state' => $this->dossiers->replay($p)->toStateArray()]);
+    }
+
     /** Sertifikat şəkli — gövdə xam JPEG-dir (base64 deyil). */
     public function certificate(Request $request, string $slug): JsonResponse
     {
@@ -230,6 +286,7 @@ class DossierController extends Controller
             'no_credits' => ['no_credits', 'Kredit çatmır.', 402],
             'moderation' => ['moderation', 'Adda qadağan olunmuş ifadə var.', 422],
             'bad_image'  => ['bad_image', 'Sertifikat şəkli qəbul edilmədi.', 422],
+            'bad_suspect' => ['bad_suspect', 'Belə şübhəli yoxdur.', 422],
             'not_solved' => ['not_solved', 'İş hələ bağlanmayıb.', 409],
             default      => ['error', 'Əməliyyat alınmadı.', 500],
         };

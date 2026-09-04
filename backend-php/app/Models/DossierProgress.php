@@ -22,8 +22,8 @@ class DossierProgress extends Model
     protected $fillable = [
         'dossier_id', 'user_id', 'investigator',
         'access_at', 'started_at', 'finished_at', 'duration_seconds',
-        'read_ids', 'pinned_ids', 'unlocked_ids',
-        'attempts', 'solved', 'revealed', 'cert_token', 'cert_ready',
+        'read_ids', 'pinned_ids', 'unlocked_ids', 'wrong_suspect_ids',
+        'attempts', 'solved', 'revealed', 'chosen_suspect_id', 'cert_token', 'cert_ready',
     ];
 
     protected function casts(): array
@@ -36,10 +36,12 @@ class DossierProgress extends Model
             'read_ids'         => 'array',
             'pinned_ids'       => 'array',
             'unlocked_ids'     => 'array',
+            'wrong_suspect_ids' => 'array',
             'attempts'         => 'integer',
             'solved'           => 'boolean',
             'revealed'         => 'boolean',
             'cert_ready'       => 'boolean',
+            'chosen_suspect_id' => 'integer',
         ];
     }
 
@@ -134,6 +136,7 @@ class DossierProgress extends Model
             'solved'       => (bool) $this->solved,
             'minutes'      => $this->solved ? \App\Support\Dossier\Dossier::deqiqe($this->duration_seconds) : null,
             'revealed'     => (bool) $this->revealed,
+            'chosen'       => $this->chosen_suspect_id === null ? null : (int) $this->chosen_suspect_id,
             'certToken'    => $this->solved ? (string) $this->cert_token : null,
         ];
     }

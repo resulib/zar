@@ -240,6 +240,15 @@ for (const [f, ad] of [['dossier-cert.js', 'sertifikat şəkli'], ['dossier.js',
   check(ad + ' qeyd daşıyır',
     fs.readFileSync(path.join(FE, f), 'utf8').indexOf('FİKTİV OYUN SƏNƏDİ') >= 0);
 }
+/* YAXA VƏSİQƏSİ — beşinci paylaşılan artefakt. PNG kimi çıxarılıb Story-yə
+   qoyulur, yəni saytdan kənarda yaşayır: qeyd onun ÜZƏRİNDƏ olmalıdır. */
+check('yaxa vəsiqəsi qeyd daşıyır',
+  fs.readFileSync(path.join(APP, 'app', 'Services', 'CardRenderer.php'), 'utf8')
+    .indexOf('Byuro::QEYD_QISA') >= 0);
+check('yaxa vəsiqəsi büro adı daşıyır',
+  fs.readFileSync(path.join(APP, 'app', 'Services', 'CardRenderer.php'), 'utf8')
+    .indexOf('Byuro::AD') >= 0);
+
 check('OG şəkli qeyd daşıyır',
   fs.readFileSync(path.join(ROOT, 'tools', 'render-dossier-og.js'), 'utf8')
     .indexOf('FİKTİV OYUN SƏNƏDİ') >= 0);
@@ -280,7 +289,12 @@ const QURUM_SCAN = files.map(f => path.join(SEED, f))
      `views/dossier/`-dən kənardadır — siyahıya əl ilə əlavə olunur. */
   .concat(komponentFayllari(KOMPONENT))
   .concat([path.join(APP, 'app', 'Support', 'Nisan.php')])
-  .concat(['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css'].map(f => path.join(FE, f)))
+  /* YAXA VƏSİQƏSİ paylaşılan artefaktdır: `CardRenderer` qurum adını və şöbə
+     adını sənədin üzərinə yazır, ona görə qalxan ona da aiddir. Məhz bu,
+     qadağan qurum adının şöbə siyahısına qayıtmasını tutur. */
+  .concat([path.join(APP, 'app', 'Services', 'CardRenderer.php')])
+  .concat(['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css',
+           'dossier-profil.js', 'dossier-profil.css'].map(f => path.join(FE, f)))
   .concat([path.join(ROOT, 'tools', 'render-dossier-og.js')]);
 
 /* `qaydalar.blade.php` taramadan KƏNARDADIR və bu, boşluq deyil: onun işi
@@ -291,6 +305,21 @@ const QAYDALAR = path.join(VIEWS, 'qaydalar.blade.php');
 const qaydalar = fs.readFileSync(QAYDALAR, 'utf8');
 check('qaydalar səhifəsi qurumu inkar edir',
   /mövcud deyil/.test(qaydalar) && /əlaqəli deyil/.test(qaydalar) && /Byuro::AD/.test(qaydalar));
+
+/* ŞÖBƏ ADLARI qadağan qurum ifadələri ilə TOQQUŞMAMALIDIR.
+
+   Config faylının özü bütöv taramaya salına bilməz — qadağan siyahısı elə
+   orada yaşayır. Ona görə yalnız şöbə adları yoxlanılır. Bu, konkret bir
+   reqressiya testidir: «Məhkəmə-Tibb Ekspertizası» real dövlət qurumunun
+   adıdır və şöbə siyahısına qayıtmamalıdır. */
+const SOBE = [...cfg.matchAll(/'(?:[A-Z]{2})'\s*=>\s*'([^']+)'/g)]
+  .map(m => m[1])
+  .filter(a => /[A-ZƏÖÜÇŞĞİ]/.test(a.charAt(0)));
+check('şöbə siyahısı doludur', SOBE.length >= 5, SOBE);
+for (const ad of SOBE) {
+  const tapilan = ORG_BAN.filter(w => fold(ad).indexOf(w) >= 0);
+  check('şöbə «' + ad + '» real qurum deyil', tapilan.length === 0, tapilan);
+}
 
 for (const f of QURUM_SCAN.filter(f => f !== QAYDALAR)) {
   const body = fold(fs.readFileSync(f, 'utf8'));
@@ -307,7 +336,8 @@ for (const q of qovluqlar) {
   for (const p of q.solution || []) SIRR.push(p.slice(0, 40));
 }
 
-const MUSTERI = ['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css', 'dossier-fonts.css']
+const MUSTERI = ['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css', 'dossier-fonts.css',
+                'dossier-profil.js', 'dossier-profil.css']
   .map(f => path.join(FE, f))
   .concat(fs.readdirSync(VIEWS).filter(f => f.endsWith('.blade.php')).map(f => path.join(VIEWS, f)))
   .concat([path.join(APP, 'resources', 'views', 'layouts', 'dossier.blade.php')]);
@@ -318,13 +348,37 @@ for (const f of MUSTERI) {
   check(path.basename(f) + ' sirr daşımır', tapilan.length === 0, tapilan);
 }
 
-/* Model səviyyəsində gizlətmə — ikinci müdafiə xətti. */
+/* Model səviyyəsində gizlətmə — ikinci müdafiə xətti.
+
+   Siyahılar UZANA bilər (sənədin mətni `content`-dən `body`-yə köçdü), ona
+   görə tam bərabərlik yox, HƏR AÇARIN AYRICA mövcudluğu yoxlanılır: belədə
+   yeni sirr sahəsi əlavə etmək yoxlamanı sındırmır, amma köhnəsini çıxarmaq
+   sındırır. */
+const gizli = (src, cls) => {
+  const m = src.match(/\$hidden\s*=\s*\[([^\]]*)\]/);
+  if (!m) return null;
+  return m[1].split(',').map((x) => x.trim().replace(/^'|'$/g, '')).filter(Boolean);
+};
+
 const doc = fs.readFileSync(path.join(APP, 'app', 'Models', 'DossierDocument.php'), 'utf8');
 const sual = fs.readFileSync(path.join(APP, 'app', 'Models', 'DossierQuestion.php'), 'utf8');
-check('DossierDocument `lock_code` və `content` gizlədir',
-  /\$hidden\s*=\s*\['lock_code',\s*'content'\]/.test(doc));
-check('DossierQuestion `correct_index` və `explanation` gizlədir',
-  /\$hidden\s*=\s*\['correct_index',\s*'explanation'\]/.test(sual));
+const kod = fs.readFileSync(path.join(APP, 'app', 'Models', 'DossierCode.php'), 'utf8');
+const sub = fs.readFileSync(path.join(APP, 'app', 'Models', 'DossierSuspect.php'), 'utf8');
+const son = fs.readFileSync(path.join(APP, 'app', 'Models', 'DossierEnding.php'), 'utf8');
+
+const GIZLI = [
+  ['DossierDocument', doc, ['lock_code', 'content', 'body', 'draft_body']],
+  ['DossierQuestion', sual, ['correct_index', 'explanation']],
+  ['DossierCode', kod, ['code', 'hint_note', 'source_document_ids']],
+  ['DossierSuspect', sub, ['is_culprit']],
+  ['DossierEnding', son, ['reveal_text', 'is_true_ending']],
+];
+
+for (const [ad, src, acarlar] of GIZLI) {
+  const list = gizli(src, ad);
+  const eksik = list === null ? acarlar : acarlar.filter((k) => !list.includes(k));
+  check(ad + ' sirr sahələrini gizlədir', eksik.length === 0, eksik.join(', '));
+}
 
 /* --- 5. Brend sızması ------------------------------------------------- */
 bas('5. Brend sızması');
@@ -345,12 +399,13 @@ for (const f of SCAN) {
   const tapilan = QADAGAN.filter(w => body.indexOf(fold(w)) >= 0);
   check(path.basename(f) + ' təmizdir', tapilan.length === 0, tapilan);
 }
-check('yoxlanan fayl sayı', SCAN.length >= 15, SCAN.length);
+check('yoxlanan fayl sayı', SCAN.length >= 17, SCAN.length);
 
 /* --- 6. Qurulma zənciri ----------------------------------------------- */
 bas('6. Qurulma zənciri');
 const build = fs.readFileSync(path.join(ROOT, 'tools', 'build-laravel.js'), 'utf8');
-const FRONT = ['dossier.css', 'dossier-fonts.css', 'dossier.js', 'dossier-cert.js', 'dossier-site.js'];
+const FRONT = ['dossier.css', 'dossier-fonts.css', 'dossier.js', 'dossier-cert.js', 'dossier-site.js',
+               'dossier-profil.css', 'dossier-profil.js'];
 for (const a of FRONT) {
   check(a + ' ASSETS siyahısındadır', build.indexOf("'" + a + "'") >= 0);
 }
@@ -386,6 +441,55 @@ check('robots.txt satış səhifələrini bağlamır', !/Disallow: \/is\/\s*$/m.
 for (const q of qovluqlar) {
   check(q.slug + ' — önizləmə şəkli hazırdır', fs.existsSync(path.join(FE, 'dossier-og', q.slug + '.jpg')));
 }
+
+/* --- 7. Mətndaxili şəkil ---------------------------------------------- */
+bas('7. Mətndaxili şəkil');
+
+/* Şəkil BLOK DEYİL və §2-dəki 13-lük saya toxunmur. Amma eyni üçtərəfli
+   intizam ona da aiddir: config ↔ Blade ↔ BlokSxemi. */
+const SEKIL_NOV = (cfg.match(/'sekil_novleri'\s*=>\s*\[([^\]]*)\]/) || [, ''])[1]
+  .split(',').map(x => (x.match(/'([a-z_]+)'/) || [])[1]).filter(Boolean);
+check('şəkil növləri config-də var', SEKIL_NOV.length >= 5, SEKIL_NOV);
+
+for (const n of SEKIL_NOV) {
+  check('şəkil növü «' + n + '» üçün görünüş var',
+    fs.existsSync(path.join(VIEWS, 'sekiller', n + '.blade.php')));
+}
+
+{
+  const sxemi = fs.readFileSync(path.join(APP, 'app', 'Support', 'Dossier', 'BlokSxemi.php'), 'utf8');
+  const php = (sxemi.match(/SEKIL_NOV\s*=\s*\[([^\]]*)\]/) || [, ''])[1]
+    .split(',').map(x => (x.match(/'([a-z_]+)'/) || [])[1]).filter(Boolean);
+  check('şəkil növləri BlokSxemi ilə üst-üstə düşür',
+    php.join(',') === SEKIL_NOV.join(','), [php, SEKIL_NOV]);
+}
+
+/* Tapılmayan nişan görünüşü OYUNÇUYA GETMİR — `SenedRender` onu yalnız idarə
+   önizləməsində çağırır. Fayl mövcud olmalıdır, amma render qatı ondan
+   qorunmalıdır: şərt kodda `$admin` bayrağıdır. */
+check('çatışmayan nişan görünüşü var',
+  fs.existsSync(path.join(VIEWS, 'sekiller', 'yoxdur.blade.php')));
+{
+  const render = fs.readFileSync(path.join(APP, 'app', 'Services', 'SenedRender.php'), 'utf8');
+  check('çatışmayan nişan oyunçuya boş sətirdir', /if \(! \$admin\) \{\s*\n\s*return '';/.test(render));
+  check('nişan əvəzləməsi preg_replace ilə edilmir', !/preg_replace\(.*NISAN/.test(render));
+}
+
+/* Nişan sintaksisi `Metn::fill()` ilə toqquşmamalıdır: `fill()` boşluqsuz
+   `{{açar}}` axtarır, nişan isə prefikslidir. Regexin prefiksi itsə, iki
+   sistem eyni mötərizələr üstündə toqquşardı. */
+{
+  const isare = fs.readFileSync(path.join(APP, 'app', 'Support', 'Dossier', 'Isare.php'), 'utf8');
+  check('nişan regexi prefiks tələb edir', /\(sekil\|blok\)/.test(isare));
+}
+
+/* Şəkil faylları public kökdən kənardadır — `public/` altında qovluq açılsa,
+   bütün spoiler qorunması mənasını itirər. */
+check('şəkillər public kökdən kənardadır',
+  /'path'\s*=>\s*storage_path\('app\/dossier\/sekil'\)/.test(cfg));
+check('şəkil qovluğu public-də yoxdur',
+  !fs.existsSync(path.join(APP, 'public', 'dossier-sekil')) &&
+  !fs.existsSync(path.join(APP, 'public', 'assets', 'dossier-sekil')));
 
 console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz');
 process.exit(fail ? 1 : 0);

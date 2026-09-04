@@ -1,0 +1,276 @@
+/* MÜSTƏNTİQ PROFİLİ, AYARLAR, HESAB VƏ REYTİNQ.
+
+   `dossier.css`-in üzərinə gəlir və onun tokenlərini işlədir — burada
+   `:root` yenidən elan olunmur. Telefon-birinci (`min-width` sorğuları),
+   sınıqlar bölmənin öz sınıqlarıdır: 720 və 1080. */
+
+.pr { padding: 28px 0 60px }
+.pr-dar { max-width: 680px }
+
+/* ---------- Başlıq və ortaq elementlər ---------- */
+
+.pr-baslq { display:flex; align-items:baseline; justify-content:space-between;
+  gap:16px; margin:0 0 22px; flex-wrap:wrap }
+.pr-baslq h1 { margin:0; font:600 26px/1.2 var(--sans); color:var(--paper) }
+.pr-alt-bas { margin:36px 0 14px; font:600 17px/1.2 var(--sans); color:var(--paper2) }
+
+.pr-etiket { display:inline-block; font:500 11px/1 var(--mono); letter-spacing:2px;
+  text-transform:uppercase; color:var(--buff); margin-bottom:10px }
+.pr-etiket-s { display:block; font:500 11px/1 var(--mono); letter-spacing:1.4px;
+  text-transform:uppercase; color:var(--ink3); margin:14px 0 6px }
+
+.pr-qeyd { margin:8px 0 0; font:400 13.5px/1.6 var(--sans); color:var(--ink3) }
+.pr-qeyd b { color:var(--paper2) }
+.pr-izah { margin:0 0 16px }
+.pr-link { font:500 13.5px var(--sans); color:var(--buff); text-decoration:none;
+  background:none; border:0; cursor:pointer; padding:0 }
+.pr-link:hover { color:var(--buff2) }
+
+.pr-btn { display:inline-block; margin-top:14px; padding:11px 20px; border:0; border-radius:3px;
+  background:var(--buff); color:#191C1A; font:600 14px var(--sans); cursor:pointer;
+  text-decoration:none; text-align:center }
+.pr-btn:hover { background:var(--buff2) }
+.pr-btn:disabled { opacity:.5; cursor:default }
+.pr-btn-tam { display:block; width:100% }
+.pr-btn-kicik { margin:0; padding:7px 14px; font-size:12.5px }
+
+.pr-input { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:3px;
+  background:var(--desk2); color:var(--paper); font:400 14px var(--sans) }
+.pr-input:focus { outline:2px solid var(--buff3); outline-offset:1px }
+
+.pr-blok { background:var(--desk2); border:1px solid var(--line); border-radius:4px;
+  padding:18px 20px; margin-bottom:16px }
+.pr-blok h2 { margin:0 0 4px; font:600 15px/1.3 var(--sans); color:var(--paper2) }
+.pr-form .pr-setir { display:flex; gap:10px; align-items:flex-start; margin-top:12px; flex-wrap:wrap }
+.pr-form .pr-setir .pr-input { flex:1 1 200px }
+.pr-form .pr-setir .pr-btn { margin-top:0 }
+
+.pr-flash { padding:11px 14px; border-radius:3px; margin-bottom:18px;
+  font:500 13.5px/1.5 var(--sans) }
+.pr-flash.ok { background:rgba(194,164,104,.14); border:1px solid var(--buff3); color:var(--buff) }
+.pr-flash.xeta { background:rgba(138,42,42,.16); border:1px solid var(--red); color:#E8A9A9 }
+.pr-flash.xeta span { display:block }
+
+/* ---------- Qonaq çağırışı ---------- */
+
+.pr-qonaq { background:var(--desk2); border:1px solid var(--buff3); border-radius:4px;
+  padding:34px 26px; text-align:center }
+.pr-qonaq-in { max-width:520px; margin:0 auto }
+.pr-qonaq h1 { margin:0 0 12px; font:600 24px/1.25 var(--sans); color:var(--paper) }
+.pr-qonaq p { margin:0; font:400 14.5px/1.65 var(--sans); color:var(--ink3) }
+.pr-qonaq p b { color:var(--buff) }
+.pr-qonaq .pr-btn { margin-top:20px }
+
+/* ---------- Vəsiqə ---------- */
+
+.pr-tor { display:grid; gap:24px }
+.pr-kart-sut { max-width:420px }
+.pr-kart { border-radius:6px; overflow:hidden; box-shadow:0 18px 44px rgba(0,0,0,.45) }
+.pr-kart svg { display:block; width:100%; height:auto }
+
+.pr-blok-bas { display:flex; align-items:baseline; justify-content:space-between; gap:12px }
+.pr-blok-bas span { font:600 14px var(--sans); color:var(--paper2) }
+.pr-blok-bas b { font:600 18px var(--mono); color:var(--buff) }
+
+.pr-zolaq { height:7px; margin:12px 0 0; border-radius:4px; background:var(--desk);
+  border:1px solid var(--line); overflow:hidden }
+.pr-zolaq i { display:block; height:100%; background:var(--buff) }
+
+.pr-say { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; margin:0 0 16px;
+  background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden }
+.pr-say > div { background:var(--desk2); padding:13px 14px }
+.pr-say dt { font:500 10.5px/1 var(--mono); letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--ink3) }
+.pr-say dd { margin:6px 0 0; font:600 21px/1 var(--mono); color:var(--paper) }
+
+.pr-movqe { text-align:center }
+.pr-movqe span { display:block; font:500 11px/1 var(--mono); letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--ink3) }
+.pr-movqe b { display:block; margin-top:6px; font:600 32px/1 var(--mono); color:var(--buff) }
+
+/* ---------- Rütbə nərdivanı ---------- */
+
+.pr-nerdivan { list-style:none; margin:0; padding:0; border:1px solid var(--line);
+  border-radius:4px; overflow:hidden }
+.pr-nerdivan li { display:flex; align-items:center; gap:12px; padding:11px 14px;
+  background:var(--desk2); border-top:1px solid var(--line) }
+.pr-nerdivan li:first-child { border-top:0 }
+.pr-nerdivan li.kilidli { opacity:.42 }
+.pr-nerdivan li.indiki { background:rgba(194,164,104,.10) }
+.pr-nerdivan i { width:10px; height:10px; border-radius:50%; flex:none }
+.pr-n-ad { flex:1; font:500 14px var(--sans); color:var(--paper2) }
+.pr-nerdivan li.indiki .pr-n-ad { color:var(--buff); font-weight:600 }
+.pr-n-xp { font:500 12.5px var(--mono); color:var(--ink3) }
+
+/* ---------- İşlərim ---------- */
+
+.pr-isler { display:grid; gap:1px; background:var(--line); border:1px solid var(--line);
+  border-radius:4px; overflow:hidden }
+.pr-is { display:grid; grid-template-columns:1fr auto; gap:2px 12px;
+  background:var(--desk2); padding:12px 14px }
+.pr-is.yarim { opacity:.6 }
+.pr-is-no { font:500 10.5px/1 var(--mono); letter-spacing:1.2px; color:var(--ink3) }
+.pr-is-ad { grid-column:1; font:600 14.5px var(--sans); color:var(--paper2) }
+.pr-is-alt { grid-column:1; font:400 12.5px var(--sans); color:var(--ink3) }
+.pr-is-xp { grid-column:2; grid-row:1/4; align-self:center;
+  font:600 17px var(--mono); color:var(--buff) }
+
+/* ---------- Rütbə əmri ---------- */
+
+.pr-emr { margin:0 0 26px }
+.pr-emr-kagiz { max-width:560px; margin:0 auto; padding:26px 28px 18px;
+  background:var(--paper); color:var(--ink); border-radius:2px;
+  box-shadow:0 16px 40px rgba(0,0,0,.5) }
+.pr-emr-ust { display:flex; align-items:center; gap:12px }
+.pr-emr-ust > div { display:flex; flex-direction:column }
+.pr-emr-org { font:600 12px/1.3 var(--mono); letter-spacing:1.4px; color:var(--ink) }
+.pr-emr-bolme { font:400 10.5px/1.3 var(--mono); letter-spacing:1.2px; color:var(--ink2) }
+.pr-emr-xett { height:2px; margin:12px 0 16px; background:var(--ink); opacity:.55 }
+.pr-emr-bas { margin:0; font:600 16px/1.3 var(--mono); letter-spacing:1.6px; color:var(--ink) }
+.pr-emr-tarix { margin:3px 0 16px; font:400 12px var(--mono); color:var(--ink2) }
+.pr-emr-metn { margin:0 0 20px; font:400 15px/1.75 var(--sans); color:var(--ink) }
+.pr-emr-alt { display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding-top:14px; border-top:1px solid var(--paper3) }
+.pr-emr-imza { font:400 12.5px var(--mono); color:var(--ink2) }
+.pr-emr-fiktiv { margin:14px 0 0; font:400 9px/1.4 var(--mono); letter-spacing:.6px;
+  color:var(--ink3); text-align:center }
+
+/* ---------- Şöbə seçimi ---------- */
+
+.pr-sobeler { display:grid; gap:8px; margin-top:14px }
+.pr-sobe { display:flex; align-items:center; gap:12px; padding:11px 14px; cursor:pointer;
+  background:var(--desk); border:1px solid var(--line); border-radius:3px }
+.pr-sobe:hover { border-color:var(--buff3) }
+.pr-sobe.secili { border-color:var(--buff); background:rgba(194,164,104,.08) }
+.pr-sobe input { accent-color:var(--buff) }
+.pr-sobe b { font:600 13px var(--mono); letter-spacing:1.2px; color:var(--buff); min-width:26px }
+.pr-sobe span { font:400 14px var(--sans); color:var(--paper2) }
+
+.pr-secim { display:flex; align-items:center; gap:9px; font:400 14px var(--sans);
+  color:var(--paper2); cursor:pointer }
+.pr-secim input { accent-color:var(--buff) }
+.pr-cixis { margin-top:22px; text-align:center }
+
+/* ---------- Profil şəkli ---------- */
+
+.pr-hal { padding:9px 12px; border-radius:3px; border:1px solid var(--line) }
+.pr-hal.gozleyir { border-color:var(--buff3); color:var(--buff) }
+.pr-hal.tesdiq { border-color:#3E6B4A; color:#8FCB9F }
+.pr-hal.redd { border-color:var(--red); color:#E8A9A9 }
+.pr-foto-setir { display:flex; gap:14px; align-items:flex-start; margin-top:12px; flex-wrap:wrap }
+.pr-foto-setir .pr-setir { flex:1 1 240px; margin-top:0 }
+.pr-foto-onizleme { width:72px; height:72px; border-radius:3px; object-fit:cover;
+  border:1px solid var(--line) }
+
+/* ---------- Hesab ---------- */
+
+.pr-hesab-bas { margin-bottom:22px }
+.pr-hesab-bas h1 { margin:0 0 10px; font:600 26px/1.2 var(--sans); color:var(--paper) }
+.pr-hesab-bas p { margin:0; font:400 14.5px/1.65 var(--sans); color:var(--ink3) }
+.pr-hesab-bas p b { color:var(--buff) }
+.pr-hesab { display:grid; gap:16px }
+
+/* ---------- Reytinq ---------- */
+
+.pr-tablar, .pr-pencere { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px }
+.pr-tablar a, .pr-pencere a { padding:8px 14px; border-radius:3px; text-decoration:none;
+  border:1px solid var(--line); background:var(--desk2); color:var(--ink3);
+  font:500 13px var(--sans) }
+.pr-tablar a:hover, .pr-pencere a:hover { color:var(--paper2); border-color:var(--buff3) }
+.pr-tablar a.aktiv { background:var(--buff); border-color:var(--buff); color:#191C1A }
+.pr-pencere { margin-bottom:18px }
+.pr-pencere a.aktiv { color:var(--buff); border-color:var(--buff) }
+
+.pr-lovhe { list-style:none; margin:0; padding:0; display:grid; gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden }
+.pr-sira { display:grid; align-items:center; gap:4px 10px; padding:10px 12px;
+  background:var(--desk2);
+  grid-template-columns:34px 40px 1fr auto auto }
+.pr-sira.menim { background:rgba(194,164,104,.10) }
+
+.pr-movqe-n { font:600 15px var(--mono); color:var(--ink3); text-align:center }
+.pr-sira:nth-child(1) .pr-movqe-n { color:var(--buff) }
+.pr-sira:nth-child(2) .pr-movqe-n,
+.pr-sira:nth-child(3) .pr-movqe-n { color:var(--buff2) }
+
+.pr-avatar { width:40px; height:40px; border-radius:3px; overflow:hidden;
+  background:var(--desk); border:1px solid var(--line) }
+.pr-avatar img { width:100%; height:100%; object-fit:cover; display:block }
+.pr-avatar svg { width:100%; height:100%; fill:var(--ink3); opacity:.5 }
+
+.pr-s-ad { min-width:0 }
+.pr-s-ad b { display:block; font:600 14.5px var(--sans); color:var(--paper);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.pr-s-ad small { display:block; font:400 11.5px var(--mono); color:var(--ink3);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+
+.pr-s-pille { width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+  border:2px solid var(--r); color:var(--r); font:600 12px var(--mono) }
+.pr-s-say { display:none; width:44px; text-align:center;
+  font:500 14px var(--mono); color:var(--ink3) }
+.pr-s-xp { width:60px; text-align:right; font:600 16px var(--mono); color:var(--buff) }
+
+.pr-basliqlar { display:none }
+
+.pr-menim-setir { display:grid; align-items:center; gap:10px; margin-top:14px;
+  padding:11px 12px; background:var(--desk2); border:1px solid var(--buff3);
+  border-radius:4px; grid-template-columns:34px 1fr auto }
+.pr-menim-setir .pr-s-say { display:none }
+.pr-gizli { grid-column:1/-1; font:400 11.5px var(--mono); color:var(--ink3) }
+
+.pr-bos { padding:40px 20px; text-align:center; background:var(--desk2);
+  border:1px solid var(--line); border-radius:4px }
+.pr-bos p { margin:0; font:400 14.5px var(--sans); color:var(--ink3) }
+
+/* ---------- Planşet ---------- */
+
+@media (min-width:720px) {
+  .pr { padding:36px 0 70px }
+  .pr-say { grid-template-columns:repeat(4,1fr) }
+  .pr-hesab { grid-template-columns:1fr 1fr }
+  .pr-sobeler { grid-template-columns:1fr 1fr }
+  .pr-sobeler .pr-btn { grid-column:1/-1; justify-self:start }
+
+  .pr-sira { grid-template-columns:40px 44px 1fr 34px 44px 44px 44px 66px }
+  .pr-s-say { display:block }
+
+  /* Sətrin şəbəkəsi ilə EYNİ — sütunlar bir-birinin üstünə oturmalıdır. */
+  .pr-basliqlar { display:grid; gap:4px 10px; padding:0 12px 8px;
+    grid-template-columns:40px 44px 1fr 34px 44px 44px 44px 66px;
+    font:500 10px var(--mono); letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--ink3) }
+  .pr-basliqlar span:first-child { text-align:center }
+  .pr-basliqlar span:nth-child(n+4) { text-align:center }
+  .pr-basliqlar span:last-child { text-align:right }
+
+  .pr-menim-setir { grid-template-columns:40px 1fr 44px 44px 44px 66px }
+  .pr-menim-setir .pr-s-say { display:block }
+  .pr-gizli { grid-column:2/-1 }
+}
+
+/* ---------- Masaüstü ---------- */
+
+@media (min-width:1080px) {
+  .pr-tor { grid-template-columns:420px 1fr; align-items:start }
+  .pr-say { grid-template-columns:repeat(2,1fr) }
+}
+
+/* ---------- İşin öz mini reytinqi (`/is/{slug}`) ---------- */
+
+.teq-suretli { padding:0 0 46px }
+.teq-suretli h2 { margin:0 0 14px; font:600 18px/1.2 var(--sans); color:var(--paper2) }
+.sur-lovhe { list-style:none; margin:0; padding:0; display:grid; gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden }
+.sur-setir { display:grid; align-items:center; gap:10px; padding:10px 13px;
+  background:var(--desk2); grid-template-columns:30px 1fr auto auto }
+.sur-movqe { font:600 14px var(--mono); color:var(--ink3); text-align:center }
+.sur-setir:first-child .sur-movqe { color:var(--buff) }
+.sur-ad b { display:block; font:600 14px var(--sans); color:var(--paper);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.sur-ad small { display:block; font:400 11.5px var(--mono); color:var(--ink3) }
+.sur-temiz { font:500 10.5px var(--mono); letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--buff2); border:1px solid var(--buff3); border-radius:2px; padding:2px 6px }
+.sur-vaxt { font:600 14px var(--mono); color:var(--buff); min-width:58px; text-align:right }
+.sur-qeyd { margin:12px 0 0; font:400 13.5px var(--sans) }
+.sur-qeyd a { color:var(--buff); text-decoration:none }
+.sur-qeyd a:hover { color:var(--buff2) }

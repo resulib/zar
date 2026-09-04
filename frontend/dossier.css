@@ -322,6 +322,82 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .ev-h{display:flex;gap:9px;align-items:baseline;margin-bottom:7px}
 .ev-n{font:600 12px var(--mono);color:#fff;background:var(--ink);padding:2px 7px}
 .ev-t{font:600 13.5px var(--mono)}
+/* ══ MADDİ SÜBUTUN FOTOSU ═════════════════════════════════════════════
+   Çərçivə ŞƏKİL OLMASA DA qalır — real protokolda hər əşya üçün foto yeri
+   ayrılır və boş qalan çərçivə «sonra əlavə ediləcək» deməkdir. Yer
+   sonradan açılsaydı, vərəqin quruluşu şəkil gələndə dəyişərdi.
+
+   Foto sənədin İÇİNƏ yerləşdirilmiş şəkil deyil, ÜSTÜNƏ yapışdırılmış
+   çapdır: ağ haşiyə, kölgə, künclərdə skoç. Möhür isə fotonun kənarına
+   oturur — yarısı fotoda, yarısı vərəqdə. Real qovluqda o, məhz orada olur:
+   fotonun sənədə aid olduğunu təsdiq edir və fotonu dəyişdirmək möhürü də
+   pozmadan mümkün olmasın. */
+/* Foto vərəqi TAM TUTMUR: real protokolda çap 9×13-dür və ətrafında kağız
+   qalır — lentin və möhürün oturacağı yer məhz odur. Yuxarı boşluq lentin
+   başlığı örtməməsi üçündür. */
+.ev-foto{position:relative;margin:19px auto 12px;max-width:min(100%,330px)}
+
+/* Çapın özü. Kəsilmə BURADADIR, kənar qatda yox: skoç və möhür çərçivədən
+   qəsdən kənara çıxır. */
+.ev-foto-k{background:#fff;padding:5px;border:1px solid rgba(21,27,38,.10);
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  transform:rotate(var(--ev-bucaq,0deg));
+  box-shadow:0 2px 5px rgba(21,27,38,.22),0 0 0 .5px rgba(21,27,38,.05)}
+.ev-foto-k img{width:100%;height:100%;object-fit:cover;display:block}
+.ev-foto-bos{font:400 10.5px var(--mono);color:var(--ink3);letter-spacing:.08em}
+
+/* Fotosuz çərçivə sadə qalır: nə əyilik, nə kölgə — orada hələ heç nə
+   yapışdırılmayıb, yalnız yer ayrılıb. */
+.ev-foto:not(.ev-foto-var) .ev-foto-k{background:var(--paper);
+  border:1px dashed var(--paper3);box-shadow:none;transform:none}
+
+/* Möhür üçün aşağıda yer: yarısı vərəqə düşür. */
+.ev-foto-var{margin-bottom:30px}
+
+/* ── SKOÇ ──
+   Lent FİZİKİ OBYEKTDİR və hər ikisinin — fotonun da, kağızın da — ÜSTÜNDƏ
+   durur, ona görə burada «multiply» yoxdur: o, mürəkkəbi kağıza hopdurmaq
+   üçündür və lenti görünməz edirdi (ağ haşiyənin üstündə ağ lent).
+
+   İki lent YUXARI künclərdədir: şəkil belə vurulur, aşağı sağ künc isə
+   möhürə qalır. Hər lentin yarısı fotoda, yarısı vərəqdədir. */
+.ev-skoc{position:absolute;width:70px;height:21px;pointer-events:none;z-index:4;
+  background:linear-gradient(180deg,
+    rgba(198,208,224,.42) 0%,
+    rgba(236,242,250,.66) 26%,
+    rgba(250,252,255,.74) 50%,
+    rgba(236,242,250,.66) 74%,
+    rgba(198,208,224,.42) 100%);
+  border-left:1.5px solid rgba(255,255,255,.85);
+  border-right:1.5px solid rgba(255,255,255,.85);
+  box-shadow:0 1px 3px rgba(21,27,38,.26),
+             inset 0 .5px 0 rgba(255,255,255,.9),
+             inset 0 -.5px 0 rgba(21,27,38,.10)}
+/* Kəsik kənarlar — lent qayçı ilə deyil, əllə qopardılıb. */
+.ev-skoc::before,.ev-skoc::after{content:"";position:absolute;top:0;bottom:0;width:3px;
+  background:repeating-linear-gradient(180deg,
+    rgba(255,255,255,.85) 0 2px, rgba(198,208,224,.30) 2px 4px)}
+.ev-skoc::before{left:-1.5px}
+.ev-skoc::after{right:-1.5px}
+.ev-skoc-u{top:-9px;left:-15px;transform:rotate(-41deg)}
+.ev-skoc-a{top:-9px;right:-15px;transform:rotate(41deg)}
+
+/* ── MÖHÜR ──
+   «multiply» BURADA doğrudur: möhür mürəkkəbdir və həm fotoya, həm kağıza
+   hopur — möhür qatı ilə eyni üsul. Yapışdırılmış etiket kimi görünsəydi,
+   sərhəddə oturmasının mənası qalmazdı. Aşağı sağ künc ona qalır, çünki
+   yuxarı künclər lentlərindir. */
+.ev-foto-m{position:absolute;right:-6px;bottom:-26px;width:88px;
+  /* QIRMIZI — maddi sübut möhürü qeydiyyat möhürü deyil. Vərəqin masthead
+     möhürü mordur (`--stamp`); bu isə əşyanın üstünə vurulur və rəngi ilə
+     ondan ayrılmalıdır. Token möhür qatının `qirmizi` rəngi ilə eynidir. */
+  pointer-events:none;z-index:3;color:var(--red);opacity:.82;
+  mix-blend-mode:multiply;transform:rotate(-11deg)}
+.ev-foto-m .nisan-mohur{width:100%}
+.ev-foto-m svg{width:100%;height:auto;display:block;overflow:visible}
+.ev-foto-m svg text{font-family:var(--mono)}
+
 .ev-d{font:400 12.5px/1.8 var(--mono);color:var(--ink2);max-width:var(--measure)}
 .ev-d.ev-el{font-style:italic;color:var(--pen)}
 
@@ -504,6 +580,72 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-foto-cer img{width:100%;height:100%;object-fit:cover}
 .p-foto-bos{font:400 11px var(--mono);color:var(--ink3);letter-spacing:.08em}
 .p-foto-izah{font:400 11px/1.6 var(--mono);color:var(--ink2);text-align:center;margin-top:6px}
+
+/* ---------- mətndaxili şəkil ----------
+   Şəkil BLOK DEYİL: mətnin ortasına `{{ sekil:slug }}` nişanı ilə düşür.
+   Ölçü `--measure` ilə bağlıdır ki, şəkil sətir uzunluğundan enli olmasın —
+   vərəq oxunuş sahəsini saxlamalıdır.
+
+   `ch` TƏLƏSİ: ölçü burada da öz `font-size`-ına görə hesablanır, ona görə
+   eni `--measure` dəyişənindən alınır, `ch` ilə yenidən yazılmır. */
+.p-sekil{margin:16px auto;max-width:var(--measure)}
+.ps-cer{position:relative;overflow:hidden;background:var(--paper2);
+  display:flex;align-items:center;justify-content:center}
+.ps-cer img{display:block;width:100%;height:auto}
+.ps-izah{font:400 11px/1.6 var(--mono);color:var(--ink2);text-align:center;
+  margin-top:6px;letter-spacing:.01em}
+
+/* Kamera kadrı — boz haşiyə, künc damğaları, dənəvər qat. */
+.p-sekil-kamera .ps-cer{border:1.5px solid var(--ink2);background:#20242C;padding:0}
+.p-sekil-kamera .ps-cer img{filter:grayscale(.72) contrast(1.08) brightness(.96)}
+.ps-dene{position:absolute;inset:0;pointer-events:none;opacity:.3;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),
+                   repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 1px,transparent 1px 2px)}
+.ps-vaxt{position:absolute;bottom:5px;font:400 9.5px var(--mono);
+  color:#D8DEE9;letter-spacing:.1em;text-shadow:0 1px 2px rgba(0,0,0,.9)}
+.ps-vaxt-sol{left:7px}
+.ps-vaxt-sag{right:7px}
+
+/* Sənəd surəti — azca əyri, kağız fakturası ilə. */
+.p-sekil-scan{padding:4px 0}
+.p-sekil-scan .ps-cer{transform:rotate(var(--ps-bucaq,-.7deg));
+  border:1px solid var(--paper3);background:var(--paper);padding:8px;
+  box-shadow:0 1px 3px rgba(21,27,38,.14)}
+.p-sekil-scan .ps-cer img{filter:grayscale(.35) contrast(1.05)}
+.p-sekil-scan .ps-cer::after{content:"";position:absolute;inset:0;pointer-events:none;
+  opacity:.5;background-image:repeating-linear-gradient(0deg,rgba(21,27,38,.035) 0 1px,transparent 1px 4px)}
+
+/* Plan — ağ fon, nazik texniki haşiyə. Fon vərəqdən ağdır: cizgi çap
+   məhsuludur, fotoşəkil deyil. */
+.p-sekil-plan .ps-cer{border:.8px solid var(--ink3);background:#FFF;padding:10px;
+  outline:.5px solid var(--paper3);outline-offset:3px}
+
+/* Mikroskop kadrı — dairəvi maska, obyektiv torları. */
+.p-sekil-micro{max-width:min(var(--measure),300px)}
+.p-sekil-micro .ps-cer{border-radius:50%;aspect-ratio:1/1;border:2px solid var(--ink2);
+  background:#0E1116}
+.p-sekil-micro .ps-cer img{width:100%;height:100%;object-fit:cover}
+.ps-tor{position:absolute;inset:0;pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,transparent 58%,rgba(14,17,22,.55) 100%)}
+.ps-tor::before,.ps-tor::after{content:"";position:absolute;background:rgba(216,222,233,.4)}
+.ps-tor::before{left:50%;top:12%;bottom:12%;width:.5px}
+.ps-tor::after{top:50%;left:12%;right:12%;height:.5px}
+
+/* Foto kartoçkası — mövcud `.p-foto` görkəmi. */
+.p-sekil-photo .ps-cer{border:1px solid var(--ink3);background:var(--paper2);padding:7px}
+
+.p-sekil-generic .ps-cer{border:1px solid var(--paper3);padding:5px}
+
+/* Meta sətri — başlığın altındakı quru sətir: arayış nömrəsi, tarix, saat. */
+.p-meta{font:400 11px/1.7 var(--mono);color:var(--ink3);letter-spacing:.04em;
+  text-align:center;margin:2px 0 12px}
+
+/* Çatışmayan nişan. YALNIZ idarə önizləməsində görünür — oyunçuda
+   `SenedRender` bu bloku ümumiyyətlə qaytarmır. */
+.p-xeta{border:1px solid var(--red);border-left-width:3px;background:#FBEDED;
+  color:var(--red);font:400 12px/1.6 var(--sans);padding:8px 10px;margin:12px 0}
+.p-xeta b{font-weight:600}
+.p-xeta span{display:block;color:var(--ink2);margin-top:2px}
 
 /* ---------- əlavə: ataçla bərkidilmiş kiçik sənəd ---------- */
 .p-elave{position:relative;margin:18px 0;display:flex}
@@ -978,3 +1120,30 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 }
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- sonluq rejimi ----------
+   Yekun ekranı iki formanı daşıyır: köhnə üç suallıq rəy və şübhəli seçimi.
+   Hansının görünəcəyini `.sonluq` sinfi həll edir — rejim işin sonluq sətri
+   olub-olmamasından TÖRƏYİR, ayrıca sütun yoxdur. */
+.end-h,.end-n,#ends{display:none}
+#s-answer.sonluq #qs,
+#s-answer.sonluq #left,
+#s-answer.sonluq #submit,
+#s-answer.sonluq>.sect-h:first-of-type{display:none}
+#s-answer.sonluq .end-h,
+#s-answer.sonluq .end-n{display:block}
+#s-answer.sonluq #ends{display:grid;gap:8px}
+
+.end-n{font:400 13px/1.6 var(--sans);color:var(--ink3);margin:0 0 12px}
+.end-s{display:block;width:100%;text-align:left;background:var(--paper);
+  border:1px solid var(--paper3);border-left:3px solid var(--stamp);
+  padding:11px 13px;cursor:pointer;color:var(--ink);font:inherit}
+.end-s:hover:not(:disabled){border-left-color:var(--red)}
+.end-s:disabled{opacity:.5;cursor:default}
+.end-s b{display:block;font:600 15px/1.3 var(--sans)}
+.end-s span{display:block;font:400 12px var(--mono);color:var(--ink3);margin-top:3px}
+
+/* Sancı sətri — yanlış sonluqdan üç saniyə sonra. Gecikmə brauzerdədir,
+   mətn onsuz da cavabla gəlib: server heç nə saxlamır. */
+.sting{margin:16px 0;padding:12px 14px;border-left:3px solid var(--red);
+  background:#FBEDED;color:var(--red);font:500 14px/1.6 var(--sans)}

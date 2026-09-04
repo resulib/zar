@@ -7,19 +7,27 @@ namespace App\Models;
 use App\Support\Dossier\Dossier as Kod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
 class Dossier extends Model
 {
+    use SoftDeletes;
+
     public const STATUS_DRAFT = 'draft';
     public const STATUS_PUBLISHED = 'published';
     public const STATUS_REMOVED = 'removed';
+    /* İdarəçinin arxivə saldığı qovluq. `removed` ondan fərqlidir — o,
+       moderasiyanın gizlətmə vasitəsidir və panelə çıxarılmır. */
+    public const STATUS_ARCHIVED = 'archived';
 
     protected $fillable = [
         'slug', 'no', 'title', 'blurb', 'place', 'period', 'intro', 'badge', 'is_showcase',
         'difficulty', 'read_minutes', 'price_credits',
         'cover', 'meta', 'suspects', 'chronology', 'axis', 'solution', 'status', 'sort',
+        'cover_image_id', 'views_count', 'published_at',
     ];
 
     protected function casts(): array
@@ -35,6 +43,8 @@ class Dossier extends Model
             'price_credits' => 'integer',
             'sort'          => 'integer',
             'is_showcase'   => 'boolean',
+            'views_count'   => 'integer',
+            'published_at'  => 'datetime',
         ];
     }
 
@@ -53,6 +63,77 @@ class Dossier extends Model
         return $this->hasMany(DossierProgress::class);
     }
 
+    public function codes(): HasMany
+    {
+        return $this->hasMany(DossierCode::class)->orderBy('sort')->orderBy('id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(DossierImage::class)->orderBy('sort')->orderBy('id');
+    }
+
+    /**
+     * Şübhəli SƏTİRLƏRİ — idarəçinin redaktə etdiyi səth.
+     *
+     * Tel formatı bu deyil: oyun `suspectList()`-dən keçir, çünki mövcud üç iş
+     * hələ `dossiers.suspects` JSON sütununu işlədir.
+     */
+    public function suspectRows(): HasMany
+    {
+        return $this->hasMany(DossierSuspect::class)->orderBy('sort')->orderBy('id');
+    }
+
+    public function endings(): HasMany
+    {
+        return $this->hasMany(DossierEnding::class);
+    }
+
+    public function coverImage(): BelongsTo
+    {
+        return $this->belongsTo(DossierImage::class, 'cover_image_id');
+    }
+
+    /**
+     * Oyunun yekun rejimi TÖRƏMƏDİR.
+     *
+     * Sonluq sətri varsa oyunçu şübhəlilərdən birini seçir; yoxsa köhnə üç
+     * suallıq rəy formasını doldurur. Ayrıca sütun sinxronda saxlanılası
+     * ikinci həqiqət olardı — mövcud üç iş sonluq yazmadığı üçün öz axınında
+     * qalır və heç bir yoxlama pozulmur.
+     */
+    public function hasEndings(): bool
+    {
+        return $this->endings()->exists();
+    }
+
+    /**
+     * Şübhəlilərin TEL FORMATI — `/api/is/{slug}/ac` cavabındakı şəkil.
+     *
+     * `dossier.js subheliler()` bu massivi oxuyur və alibi zolaqlarını
+     * `dossiers.axis` pəncərəsinə görə çəkir. Cədvəl sətirləri varsa onlardan
+     * EYNİ ŞƏKİLLİ massiv qurulur, yoxsa köhnə JSON sütunu qaytarılır —
+     * beləliklə mövcud üç iş köçürülmədən işləməyə davam edir.
+     *
+     * @return list<array<string,mixed>>
+     */
+    public function suspectList(): array
+    {
+        $rows = $this->relationLoaded('suspectRows') ? $this->suspectRows : $this->suspectRows()->get();
+
+        if ($rows->isEmpty()) {
+            return array_values((array) ($this->suspects ?? []));
+        }
+
+        return $rows->map(static fn (DossierSuspect $s): array => [
+            'init'   => (string) $s->init,
+            'name'   => (string) $s->name,
+            'role'   => (string) $s->role,
+            'bio'    => (string) $s->bio,
+            'bars'   => array_values((array) ($s->bars ?? [])),
+            'camera' => (string) $s->camera,
+        ])->all();
+    }
     public function scopePublished(Builder $q): Builder
     {
         return $q->where('status', self::STATUS_PUBLISHED);

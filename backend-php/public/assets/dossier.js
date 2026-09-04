@@ -13,7 +13,7 @@
 
   var S = {
     docs: D.docs || [],
-    suspects: [], chrono: [], questions: [],
+    suspects: [], chrono: [], questions: [], endings: [],
     read: [], pinned: [], unlocked: [],
     answers: [], cur: null, tick: null, t0: 0,
     solved: false, revealed: false, left: null, solution: null,
@@ -108,13 +108,16 @@
     if (r.suspects) S.suspects = r.suspects;
     if (r.chronology) S.chrono = r.chronology;
     if (r.questions) S.questions = r.questions;
+    /* Sonluq rejimi TÖRƏMƏDİR: server hansı şübhəlilərin sonluğu olduğunu
+       bildirir, mətnləri yox. Siyahı boşdursa köhnə üç suallıq rejimdir. */
+    if (r.endings) S.endings = r.endings;
     if (r.meta) meta(r.meta);
     hal(r.state || {});
     S.answers = new Array(S.questions.length).fill(null);
 
     $('#topbar').classList.add('on');
     $('#tabbar').classList.add('on');
-    siyahi(); subheliler(); suallar(); nisan(); lentHal();
+    siyahi(); subheliler(); suallar(); sonluqlar(); nisan(); lentHal();
     sayqacBasla((r.state && r.state.elapsed) || 0);
 
     if (S.solved || S.revealed) { netice(null); return; }
@@ -415,6 +418,87 @@
     qaliq();
   }
 
+  /* ---------------- sonluq rejimi ----------------
+     Oyunçu şübhəlilərdən birini seçir və seçiminə uyğun sonluq alır.
+     Cəhd limiti yoxdur: hər sonluğu oxumaq oyunun bir hissəsidir. */
+  function sonluqlar() {
+    var qutu = $('#ends');
+    if (!qutu) return;
+
+    var var_ = S.endings && S.endings.length;
+    $('#s-answer').classList.toggle('sonluq', !!var_);
+
+    if (!var_) { qutu.innerHTML = ''; return; }
+
+    qutu.innerHTML = S.suspects.map(function (s, i) {
+      /* `dossiers.suspects` JSON-unda id yoxdur, cədvəldə var. Serverin
+         göndərdiyi `endings` siyahısı id daşıyır, ona görə sıra üzrə
+         uyğunlaşdırılır: hər ikisi eyni `sort` ilə düzülür. */
+      var id = S.endings[i];
+      if (id == null) return '';
+      return '<button class="end-s" type="button" data-s="' + id + '">' +
+        '<b>' + esc(s.name || '') + '</b><span>' + esc(s.role || '') + '</span></button>';
+    }).join('');
+
+    $$('.end-s').forEach(function (b) {
+      b.onclick = function () {
+        $$('.end-s').forEach(function (x) { x.disabled = true; });
+        API.post(BASE + '/sonluq', { subheli: +b.getAttribute('data-s') })
+          .then(function (r) { sonluqGoster(r); })
+          .catch(function (e) { $$('.end-s').forEach(function (x) { x.disabled = false; }); xeta(e); });
+      };
+    });
+  }
+
+  function sonluqGoster(r) {
+    if (S.tick) { clearInterval(S.tick); S.tick = null; }
+
+    S.solved = !!r.dogru;
+    S.minutes = r.minutes;
+    S.certToken = r.certToken || S.certToken;
+
+    var ok = !!r.dogru;
+
+    $('#res').innerHTML =
+      '<div class="verdict ' + (ok ? 'ok' : 'no') + '">' + esc(r.verdict || '') + '</div>' +
+      (ok && r.reveal ? '<div class="sect-h">AÇILIŞ</div><div class="expl">' +
+        String(r.reveal).split(/\n{2,}/).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+        '</div>' : '') +
+      '<div class="sting" id="sting" hidden></div>' +
+      (ok ? sertifikatHtml() + '<button class="btn" id="share">Nəticəni paylaş</button>' : '') +
+      '<button class="btn ghost" id="yeniden" type="button">Yenidən oyna</button>' +
+      '<a class="btn ghost" href="/is" style="text-align:center;text-decoration:none">Başqa qovluq seç</a>';
+
+    /* Sancı sətri ÜÇ SANİYƏ sonra çıxır. Gecikmə yalnız təqdimatdır —
+       mətn onsuz da cavabla birlikdə gəlib. */
+    if (r.sting) {
+      setTimeout(function () {
+        var el = $('#sting');
+        if (!el) return;
+        el.textContent = r.sting;
+        el.hidden = false;
+      }, 3000);
+    }
+
+    var sh = document.getElementById('share');
+    if (sh) sh.onclick = payla;
+    if (ok) sertifikatGonder();
+
+    var yn = document.getElementById('yeniden');
+    if (yn) {
+      yn.onclick = function () {
+        /* Yalnız seçim sıfırlanır: açılmış kodlar qalır. */
+        yn.disabled = true;
+        API.post(BASE + '/yeniden', {})
+          .then(function () { sonluqlar(); $('#ttl').textContent = 'Yekun qərar'; go('answer'); })
+          .catch(function (e) { yn.disabled = false; xeta(e); });
+      };
+    }
+
+    $('#ttl').textContent = 'Sonluq';
+    go('result');
+  }
+
   function qaliq() {
     var el = $('#left');
     if (!el) return;
@@ -454,24 +538,12 @@
     if (S.minutes == null && D.minutes != null) S.minutes = D.minutes;
 
     var ok = S.solved;
-    var st = (D.cover && D.cover.closeStamp) || ['İŞ', 'BAĞLANDI'];
 
     $('#res').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '">' +
       (ok ? 'Rəy təsdiqləndi. İş üzrə ittiham irəli sürülür.'
           : 'Cəhdlər bitdi. Rəy təsdiqlənmədi — izah aşağıdadır.') + '</div>' +
-      (ok ? '<div class="cert" id="cert">' +
-        '<div class="cert-k">AFİB · OYUN NƏTİCƏSİ</div>' +
-        '<div class="cert-t">İŞ AÇILDI</div>' +
-        '<div class="cert-n">İş № ' + esc(D.no) + ' · ' + esc(D.title) + '</div>' +
-        '<div class="cert-g"><div><b>' + esc(S.minutes == null ? '—' : S.minutes) + '</b><small>dəqiqə</small></div>' +
-        '<div><b>' + S.pinned.length + '</b><small>sancılmış sənəd</small></div></div>' +
-        '<div class="cert-k">' + esc(boyuk(D.investigator || '')) + '</div>' +
-        '<div class="cert-f">Nəticə spoiler saxlamır. Paylaşa bilərsən —<br>dostun eyni qovluğu təmiz açacaq.</div>' +
-        '<div class="cert-fiktiv" data-fq="1">FİKTİV OYUN SƏNƏDİ — yalnız əyləncə məqsədi ilə hazırlanmışdır. Real hüquqi və ya rəsmi sənəd deyil.</div>' +
-        '<div class="stamp" style="position:static;margin:16px auto 0;transform:rotate(-9deg)"><span>' +
-        st.map(esc).join('<br>') + '</span></div>' +
-        '</div><button class="btn" id="share">Nəticəni paylaş</button>' : '') +
+      (ok ? sertifikatHtml() + '<button class="btn" id="share">Nəticəni paylaş</button>' : '') +
       '<div class="sect-h">İZAH</div>' +
       '<div class="expl">' + (S.solution || []).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
       '<a class="btn ghost" href="/is" style="text-align:center;text-decoration:none">Başqa qovluq seç</a>';
@@ -482,6 +554,26 @@
 
     $('#ttl').textContent = 'Yekun rəy';
     go('result');
+  }
+
+  /* Sertifikat lövhəsi — həm üç suallıq, həm sonluq rejimindən çağırılır.
+     Fiktivlik qeydi BURADADIR: paylaşılan şəkil saytdan kənara çıxır və
+     qeydi öz üstündə daşımalıdır. */
+  function sertifikatHtml() {
+    var st = (D.cover && D.cover.closeStamp) || ['İŞ', 'BAĞLANDI'];
+
+    return '<div class="cert" id="cert">' +
+      '<div class="cert-k">AFİB · OYUN NƏTİCƏSİ</div>' +
+      '<div class="cert-t">İŞ AÇILDI</div>' +
+      '<div class="cert-n">İş № ' + esc(D.no) + ' · ' + esc(D.title) + '</div>' +
+      '<div class="cert-g"><div><b>' + esc(S.minutes == null ? '—' : S.minutes) + '</b><small>dəqiqə</small></div>' +
+      '<div><b>' + S.pinned.length + '</b><small>sancılmış sənəd</small></div></div>' +
+      '<div class="cert-k">' + esc(boyuk(D.investigator || '')) + '</div>' +
+      '<div class="cert-f">Nəticə spoiler saxlamır. Paylaşa bilərsən —<br>dostun eyni qovluğu təmiz açacaq.</div>' +
+      '<div class="cert-fiktiv" data-fq="1">FİKTİV OYUN SƏNƏDİ — yalnız əyləncə məqsədi ilə hazırlanmışdır. Real hüquqi və ya rəsmi sənəd deyil.</div>' +
+      '<div class="stamp" style="position:static;margin:16px auto 0;transform:rotate(-9deg)"><span>' +
+      st.map(esc).join('<br>') + '</span></div>' +
+      '</div>';
   }
 
   function boyuk(s) {
@@ -564,7 +656,7 @@
   if (D.access) {
     qur({
       docs: D.docs, suspects: D.suspects, chronology: D.chronology,
-      questions: D.questions, meta: D.meta, state: D.state
+      questions: D.questions, meta: D.meta, state: D.state, endings: D.endings
     });
   }
 })();

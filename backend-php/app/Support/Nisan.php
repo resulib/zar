@@ -41,7 +41,8 @@ final class Nisan
     }
 
     /** Beşguşəli ulduz — `doc.js star5()`. */
-    private static function ulduz(float $cx, float $cy, float $rO, float $rI): string
+    /** Beşguşəli ulduz. `public`, çünki rütbə nişanları da onu çəkir. */
+    public static function ulduz(float $cx, float $cy, float $rO, float $rI): string
     {
         $d = '';
 
@@ -59,7 +60,12 @@ final class Nisan
      * Dəfnə budağı — `doc.js laurel()`. Qövs + üstündə yarpaqlar.
      * Açılar DƏRƏCƏ ilədir və SVG-də 90° aşağını göstərir.
      */
-    private static function celeng(float $cx, float $cy, float $R, float $a0, float $a1,
+    /**
+     * Çələng. `public`, çünki ən yüksək rütbənin nişanı onu təkrar işlədir —
+     * öz bucaqları ilə, ona görə «yanlarda, altdan qalxmadan» qaydası
+     * avtomatik qorunur.
+     */
+    public static function celeng(float $cx, float $cy, float $R, float $a0, float $a1,
                                    int $n, float $len, string $C): string
     {
         $out = '<g fill="' . $C . '" opacity="0.8"><path d="';

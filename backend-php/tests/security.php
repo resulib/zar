@@ -605,5 +605,52 @@ check('robots.txt oyunu və sertifikatı bağlayır',
 check('robots.txt satış səhifələrini bağlamır',
     preg_match('#^Disallow: /is/\s*$#m', $rob['body']) === 0);
 
+echo "\n15. Müstəntiq profili — kimlik və gizlilik\n";
+
+/* İNDEKSLƏMƏ HƏR İKİ İSTİQAMƏTDƏ.
+
+   Profil və hesab BAĞLIDIR: orada real adamın adı və şəkli var.
+   Reytinq isə AÇIQDIR — o, `/is` və `/is/{slug}` kimi satış üzüdür.
+   Ümumi `Disallow: /is/` qayıtsa hər üçü birdən düşərdi. */
+$prof = req($base . '/is/mustentiq');
+check('profil səhifəsi açılır', $prof['status'] === 200, $prof['status']);
+check('profil səhifəsi noindex-dir', str_contains(strtolower($prof['body']), 'noindex'));
+
+$reyt = req($base . '/is/reyting');
+check('reytinq açılır', $reyt['status'] === 200, $reyt['status']);
+check('reytinq indekslənir', str_contains($reyt['body'], 'index, follow'));
+
+check('robots.txt profili bağlayır', str_contains($rob['body'], 'Disallow: /is/mustentiq'));
+check('robots.txt hesabı bağlayır', str_contains($rob['body'], 'Disallow: /is/hesab'));
+check('robots.txt reytinqi BAĞLAMIR', ! str_contains($rob['body'], 'Disallow: /is/reyting'));
+
+/* REYTİNQ ŞƏXSİ MƏLUMAT SIZDIRMIR. Görünən yeganə ad istifadəçinin
+   ÖZÜNÜN seçdiyi addır; e-poçt və uuid heç vaxt siyahıya düşmür. */
+check('reytinqdə e-poçt yoxdur', ! preg_match('/@[a-z0-9.-]+\.[a-z]{2,}/i', strip_tags($reyt['body'])));
+check('reytinqdə uuid yoxdur',
+    preg_match('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $reyt['body']) === 0);
+
+/* QONAĞIN VƏSİQƏSİ YOXDUR — kartın qazanılan bir şey olması bütün
+   mexanizmin özəyidir. */
+check('qonağa vəsiqə göstərilmir', ! str_contains($prof['body'], 'Vəsiqəni endir'));
+check('qonağa qeydiyyat təklif olunur', str_contains($prof['body'], 'Qeydiyyatdan keç'));
+
+/* Şəkil ucu: mövcud olmayan profil üçün 404 — 403 deyil.
+   «İcazə yoxdur» mesajının özü məlumatdır. */
+$r = req($base . '/is/mustentiq/999999/foto.jpg');
+check('naməlum profilin şəkli 404 verir', $r['status'] === 404, $r['status']);
+
+/* CSRF olmadan yazma yolu bağlıdır. */
+$pv = metaSession($base . '/is/hesab');
+$r = req($base . '/is/mustentiq/sobe', 'POST', ['sobe' => 'KR'], $pv['cookies']);
+check('tokensiz şöbə seçilmir', $r['status'] === 419, $r['status']);
+
+/* İdarə paneli qapalıdır. */
+foreach (['/admin/avatarlar'] as $yol) {
+    $r = req($base . $yol);
+    check('giriş olmadan ' . $yol . ' bağlıdır', in_array($r['status'], [302, 403], true), $r['status']);
+}
+
+
 echo "\n" . $pass . ' keçdi, ' . $fail . " uğursuz\n";
 exit($fail > 0 ? 1 : 0);

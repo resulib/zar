@@ -107,6 +107,13 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(30)->by('ip:' . $r->ip()),
         ]);
 
+        /* Profil şəkli: hər yükləmə GD-də yenidən kodlaşdırılır və diskə iki
+           fayl yazır — bu, sadə oxumadan qat-qat bahalı əməliyyatdır. */
+        RateLimiter::for('dossier-foto', fn (Request $r) => [
+            Limit::perMinute(4)->by($key($r)),
+            Limit::perDay(30)->by($key($r)),
+        ]);
+
         RateLimiter::for('dossier-rey', fn (Request $r) => [
             Limit::perMinute(6)->by($key($r)),
             Limit::perMinute(20)->by('ip:' . $r->ip()),

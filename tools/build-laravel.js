@@ -9,7 +9,12 @@ const VIEW_VIEWER = path.join(APP, 'resources', 'views', 'viewer.blade.php');
 const VIEW_DEVET  = path.join(APP, 'resources', 'views', 'devet.blade.php');
 const VIEW_DEVET_V = path.join(APP, 'resources', 'views', 'devet-view.blade.php');
 
-const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
+const ASSETS = ['site.css', 'panel.css',
+                 /* İdarə panelinin iş qovluğu redaktoru. Ad qəsdən `panel-`
+                    prefiksi ilədir: `dossier-*` adlandırma OYUN tərəfinə aiddir
+                    və check-dossier.js brend taramasından keçir, panelde isə
+                    məhsulun adını yazmaq normaldır. */
+                 'panel-qovluq.js', 'fonts.css', 'qr.js', 'templates.js', 'templates-xatire.js',
                  'replies.js', 'sosial.js', 'doc.js', 'export.js', 'app.js',
                  'viewer.css', 'viewer.js',
                  /* Dəvətnamə bölməsi — ayrı səhifə, ayrı stil, ayrı şrift dəsti.
@@ -20,7 +25,8 @@ const ASSETS = ['site.css', 'panel.css', 'fonts.css', 'qr.js', 'templates.js', '
                     export.js burada da ortaqdır (kətandan PNG/JPEG), qalanı bu
                     bölməyə məxsusdur. Qabıq əl ilə yazılmış Blade olduğu üçün
                     emitView() çağırışı yoxdur. */
-                 'dossier.css', 'dossier-fonts.css', 'dossier-cert.js', 'dossier.js', 'dossier-site.js'];
+                 'dossier.css', 'dossier-fonts.css', 'dossier-cert.js', 'dossier.js', 'dossier-site.js',
+                 'dossier-profil.css', 'dossier-profil.js'];
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'fonts'), { recursive: true });

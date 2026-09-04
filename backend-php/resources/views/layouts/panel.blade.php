@@ -10,6 +10,10 @@
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/site.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/panel.css') }}">
+  {{-- Səhifəyə xas üslub: iş qovluğu redaktorunun önizləməsi oyunun öz
+       `dossier.css` faylını tələb edir. Panelin qalan səhifələri buraya
+       heç nə yazmır. --}}
+  @stack('head')
 </head>
 <body>
 
@@ -50,7 +54,11 @@
   <div class="wrap">@yield('nav')</div>
 </nav>
 
-<div class="wrap">
+{{-- Səhifə öz sarğısını genişləndirə bilər. Panelin ümumi eni 1180px-dir
+     (`site.css` `--max`) və oxunuş üçün doğrudur, amma iki sütunlu iş
+     qovluğu redaktoru ora sığmır: mətn və vərəq yan-yana durmalıdır.
+     Defolt boşdur — qalan səhifələr toxunulmur. --}}
+<div class="wrap @yield('shell')">
   <div class="panel-shell">
     <aside class="side">
       <h4>@yield('side-title', 'Bölmələr')</h4>

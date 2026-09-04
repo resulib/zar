@@ -32,6 +32,11 @@ final class BlokSxemi
     public const KILID_NOV   = ['reqem', 'soz', 'tarix'];
     /** Blank başlığının növləri — `config('dossier.blank_novleri')` ilə eyni. */
     public const BLANK_NOV   = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'];
+
+    /* Mətndaxili şəkil növləri. Şəkil BLOK DEYİL — `{{ sekil:slug }}` nişanı
+       ilə çağırılır və `BLOKLAR` sayına toxunmur. Siyahı burada saxlanılır,
+       çünki `config/dossier.php` və `tools/check-dossier.js` onunla tutuşdurulur. */
+    public const SEKIL_NOV   = ['camera_still', 'scan', 'plan', 'micro', 'photo', 'generic'];
     public const MOHUR_FORMA = ['daire', 'duzbucaq'];
     public const MOHUR_RENG  = ['mor', 'qirmizi', 'mavi', 'qara'];
     public const LEKE_NOV    = ['qehve', 'yag', 'su'];
@@ -114,12 +119,26 @@ final class BlokSxemi
                 }
             }
 
-            /* Naməlum açar XƏTADIR: yazı səhvi səssizcə itməməlidir. */
-            $taninan = array_merge($mecburi, $icaze, ['tip', 'kenar']);
+            /* Naməlum açar XƏTADIR: yazı səhvi səssizcə itməməlidir.
+
+               Üç açar HƏR blokda icazəlidir: `tip` növü seçir, `kenar` kənar
+               qeydini bağlayır, `acar` isə bloka mətnin içindən
+               `{{ blok:acar }}` nişanı ilə müraciət etməyə imkan verir.
+               Açarsız bloklar əvvəlki kimi sıra ilə render olunur.
+
+               Nişan açarı `acar` adlanır, `ad` YOX: `ad` artıq `basliq`
+               blokunun başlıq mətnidir və `imza` blokunda imzalayanın
+               adıdır. İki mənalı açar birinci gün işləyər, ikinci gün
+               səhv verər. */
+            $taninan = array_merge($mecburi, $icaze, ['tip', 'kenar', 'acar']);
             foreach (array_keys($b) as $k) {
                 if (! in_array($k, $taninan, true)) {
                     $err[] = $bas . ': naməlum açar «' . $k . '».';
                 }
+            }
+
+            if (isset($b['acar']) && ! self::acarDuzgun($b['acar'])) {
+                $err[] = $bas . ': «acar» yalnız kiçik hərf, rəqəm və defis ola bilər.';
             }
 
             $err = array_merge($err, self::tipXetalari($bas, $tip, $b, $xeb));
@@ -212,6 +231,22 @@ final class BlokSxemi
                 if (! is_array($k) || ! isset($k['ad'], $k['metn'])) {
                     $err[] = $bas . ': kart ' . ($j + 1) . '-də «ad» və ya «metn» yoxdur.';
                     break;
+                }
+
+                /* Sübutun şəkli — kitabxanadakı açar. Fayl adı DEYİL: şəkil
+                   sətri silinib yenidən yüklənəndə fayl adı dəyişir, açar isə
+                   qalır. Boş sətir «şəkil yoxdur» deməkdir və icazəlidir —
+                   qovluqda hər əşyanın fotosu olmaya bilər. */
+                if (isset($k['sekil']) && $k['sekil'] !== '' && ! self::acarDuzgun($k['sekil'])) {
+                    $err[] = $bas . ': kart ' . ($j + 1) . '-də «sekil» açarı düzgün deyil.';
+                    break;
+                }
+
+                foreach (array_keys($k) as $ak) {
+                    if (! in_array($ak, ['ad', 'metn', 'sekil', 'elyazma'], true)) {
+                        $err[] = $bas . ': kart ' . ($j + 1) . '-də naməlum açar «' . $ak . '».';
+                        break 2;
+                    }
                 }
             }
         }
@@ -504,5 +539,15 @@ final class BlokSxemi
         }
 
         return $err;
+    }
+
+    /**
+     * Blokun nişan açarı `{{ blok:acar }}` nişanına düşür, ona görə nişan
+     * əlifbası ilə eyni olmalıdır: kiçik hərf, rəqəm, defis. Böyük «İ» tələsi
+     * buradadır — müqayisə açıq əlifba ilə edilir, `strtolower` ilə yox.
+     */
+    public static function acarDuzgun(mixed $acar): bool
+    {
+        return is_string($acar) && preg_match('/^[a-z0-9][a-z0-9-]{0,58}$/', $acar) === 1;
     }
 }

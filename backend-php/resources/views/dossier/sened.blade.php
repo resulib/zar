@@ -29,8 +29,25 @@
 
 <div class="p-mikro" aria-hidden="true">{{ $mikro }}</div>
 
+{{-- ÜÇ YOL, BİR SARĞI. Yuxarıdakı qoruyucu çap və aşağıdakı fiktivlik
+     zolağı hər üçünə eyni cür düşür — mexaniki qapı elə budur.
+
+     1. Kilidli vərəq — klaviatura ekranı, blokları göndərilmir.
+     2. Mətn rejimi (`body` doludur) — `SenedRender` hazır HTML qaytarır;
+        letterhead burada, gövdədən əvvəl çəkilir, çünki mətn rejimində
+        `blank` bloku yoxdur.
+     3. Blok rejimi — köhnə yol; letterhead `blank` blokunun özündədir,
+        ona görə burada TƏKRAR ÇƏKİLMİR. --}}
 @if($bagli)
   @include('dossier.partials.kilid')
+@elseif(($govde ?? null) !== null)
+  @if($blankNov !== '')
+    <x-dynamic-component :component="'blank.' . $blankNov" :head="$head" :doc="$doc" :dossier="$dossier"/>
+  @endif
+  @if(trim((string) $doc->meta_line) !== '')
+    <div class="p-meta">{{ $doc->meta_line }}</div>
+  @endif
+  {!! $govde !!}
 @else
   @foreach($bloklar as $b)
     @php($blokView = 'dossier.bloklar.' . $b['tip'])

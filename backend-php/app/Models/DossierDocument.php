@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class DossierDocument extends Model
 {
     protected $fillable = [
-        'dossier_id', 'page', 'name', 'kind', 'sort',
-        'is_locked', 'is_sample', 'lock_kind', 'lock_code', 'lock_hint', 'content',
+        'dossier_id', 'page', 'name', 'kind', 'doc_type', 'meta_line', 'sort',
+        'is_locked', 'is_sample', 'lock_kind', 'lock_code', 'lock_hint', 'unlock_code_id',
+        'content', 'body', 'draft_body', 'blank_nov',
     ];
 
     /**
@@ -20,8 +21,13 @@ class DossierDocument extends Model
      * Bu, ikinci müdafiə xəttidir: sənədin məzmunu yalnız `renderDocument()`
      * ilə HTML kimi verilir, kod isə ümumiyyətlə brauzerə çatmır. Modeli
      * səhvən `toArray()`-ə verən kod da sirri sızdırmır.
+     *
+     * `body` və `draft_body` eyni siniflərdir: mətn `content.bloklar`-dan
+     * bura köçəndə sirr də bura köçür. Siyahı UZANA bilər, amma bu dörd
+     * açar HEÇ VAXT çıxarılmamalıdır — `tools/check-dossier.js` §4 hər birini
+     * ayrıca yoxlayır.
      */
-    protected $hidden = ['lock_code', 'content'];
+    protected $hidden = ['lock_code', 'content', 'body', 'draft_body'];
 
     protected function casts(): array
     {
@@ -36,6 +42,30 @@ class DossierDocument extends Model
     public function dossier(): BelongsTo
     {
         return $this->belongsTo(Dossier::class);
+    }
+
+    public function code(): BelongsTo
+    {
+        return $this->belongsTo(DossierCode::class, 'unlock_code_id');
+    }
+
+    /**
+     * Vərəqin oxunacaq mətni — `body` rejimindədirsə mətn, deyilsə `null`.
+     *
+     * `null` render qatına «köhnə yolu işlət» deyir: `content.bloklar`
+     * ardıcıllığı. Bu ayrım sayəsində mövcud 84 vərəq bayt-bayt eyni qalır.
+     */
+    public function govde(): ?string
+    {
+        $m = trim((string) $this->body);
+
+        return $m === '' ? null : $m;
+    }
+
+    /** Dərc olunmamış qaralama var — siyahıda sarı nişan göstərilir. */
+    public function hasDraft(): bool
+    {
+        return $this->draft_body !== null && (string) $this->draft_body !== (string) $this->body;
     }
 
     /** Sənədin özü kodla bağlıdır və hələ açılmayıb. */

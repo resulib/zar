@@ -145,6 +145,59 @@ return [
     */
     'blank_novleri' => ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'],
 
+    'blank_labels' => [
+        'resmi'    => 'Rəsmi blank — standart',
+        'qerar'    => 'Qərar — «TƏSDİQ EDİRƏM» grifi',
+        'arayis'   => 'Arayış — məktub quruluşu',
+        'protokol' => 'Protokol — «Tərtib olundu» sətri',
+        'ekspert'  => 'Ekspert rəyi — xəbərdarlıq qutusu',
+        'izahat'   => 'İzahat — hüquq bildirişi',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mətndaxili şəkil növləri
+    |--------------------------------------------------------------------------
+    | Şəkil BLOK DEYİL: mətnin içindəki `{{ sekil:slug }}` nişanı ilə çağırılır
+    | və on üç blok növünün sayına toxunmur. Növ yalnız görkəmi seçir —
+    | `resources/views/dossier/sekiller/<nov>.blade.php` mövcud olmalıdır;
+    | tools/check-dossier.js siyahı ilə faylları tutuşdurur.
+    */
+    'sekil_novleri' => ['camera_still', 'scan', 'plan', 'micro', 'photo', 'generic'],
+
+    /* İdarə panelində göstərilən adlar. Açarlar ingiliscədir, çünki onlar
+       görünüş faylının adına çevrilir; idarəçi isə açar oxumamalıdır. */
+    'sekil_labels' => [
+        'camera_still' => 'Kamera kadrı',
+        'scan'         => 'Sənəd surəti',
+        'plan'         => 'Plan · sxem',
+        'micro'        => 'Mikroskop kadrı',
+        'photo'        => 'Foto',
+        'generic'      => 'Sadə şəkil',
+    ],
+
+    /*
+    | Sənədin növü — YALNIZ idarə panelinin nişanı və süzgəci üçün. Oyunçuya
+    | görünən söz `kind` sütunudur («Qərar») və sərbəst mətndir; bu isə ağ
+    | siyahıdır, çünki nişan ikonuna çevrilir.
+    */
+    'sened_novleri' => [
+        'testimony', 'expertise', 'camera', 'chat', 'log',
+        'receipt', 'plan', 'protocol', 'other',
+    ],
+
+    'sened_labels' => [
+        'testimony' => 'İfadə · izahat',
+        'expertise' => 'Ekspertiza rəyi',
+        'camera'    => 'Kamera çıxarışı',
+        'chat'      => 'Yazışma',
+        'log'       => 'Sistem jurnalı',
+        'receipt'   => 'Çek · qəbz',
+        'plan'      => 'Plan · sxem',
+        'protocol'  => 'Protokol',
+        'other'     => 'Digər',
+    ],
+
     // Kənar qeydi blok deyil, hər blokun qəbul etdiyi nişandır.
     'kenar_novleri' => ['qeyd', 'sual', 'xett', 'daire'],
     'kenar_yerler'  => ['sag', 'sol', 'alt'],
@@ -187,6 +240,12 @@ return [
     | Növ isə tapmacanın formasını seçir.
     */
     'kilid_novleri' => ['reqem', 'soz', 'tarix'],
+
+    'kilid_labels' => [
+        'reqem' => 'Rəqəm kodu (4 rəqəm)',
+        'soz'   => 'Söz',
+        'tarix' => 'Tarix',
+    ],
 
     'difficulties' => ['asan', 'orta', 'cetin', 'kabus'],
 
@@ -231,6 +290,24 @@ return [
         'investigator' => 26,   // üz qabığındakı ad sahəsi (prototip: maxlength 26)
         'questions'    => 8,
         'options'      => 8,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mətndaxili şəkil faylları
+    |--------------------------------------------------------------------------
+    | Fayllar public kökdən KƏNARDADIR və adları təsadüfi 32 simvoldur: fayl
+    | adı heç bir halda məzmunu bildirməməlidir — qovluqdakı adların siyahısı
+    | belə spoylerdir. Verilmə `Admin\DossierImageController` yoxlamalarından
+    | keçir və pozuntuda 404 qaytarır, «icazə yoxdur» demir.
+    */
+    'sekil' => [
+        'path'      => storage_path('app/dossier/sekil'),
+        'max_bytes' => 8 * 1024 * 1024,
+        // Uzun tərəfə görə iki əlavə ölçü. Orijinal da saxlanılır.
+        'orta'      => 1200,
+        'kicik'     => 300,
+        'keyfiyyet' => 88,
     ],
 
     /*
@@ -297,6 +374,101 @@ return [
             'c' => 'Xeyr. Hər qovluq bədii əsərdir: personajlar, qurumlar, ünvanlar və '
                 . 'hadisələr uydurmadır. Real şəxs və ya təşkilatla oxşarlıq təsadüfdür.',
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Müstəntiq şöbələri — bağlı siyahı
+    |--------------------------------------------------------------------------
+    | Açar İKİ HƏRFLİ koddur və vəsiqə nömrəsinin önəkinə çevrilir
+    | (`CA-26-0147`), ona görə ASCII olmalıdır: nömrə Code-39 barkoduna girir.
+    |
+    | QEYD: «Məhkəmə-Tibb Ekspertizası» QƏSDƏN işlədilmir — o, yuxarıdakı
+    | `org_ban` siyahısındadır, çünki real dövlət qurumunun adıdır. Eyni
+    | səbəbdən bölmənin rütbələri də vaxtilə dəyişdirilib
+    | («Məhkəmə-tibb eksperti» → «AFİB tibbi eksperti»). Şöbə «Tibbi
+    | Ekspertiza» adlanır və qalxan toxunulmaz qalır.
+    */
+    'sobeler' => [
+        'CA' => 'Cinayət Axtarışı',
+        'TE' => 'Tibbi Ekspertiza',
+        'KR' => 'Kriminalistika',
+        'KC' => 'Kibercinayətlər',
+        'XT' => 'Xüsusi Təhqiqat',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | XP düsturu
+    |--------------------------------------------------------------------------
+    | Yeganə həyata keçirmə `App\Support\Dossier\Xp`-dədir; kontrollerlər və
+    | görünüşlər onu təkrarlamır. Bonuslar TOPLANIR, vurulmur:
+    |
+    |   carpan = 1 + dogru_sonluq + ilk_cehd
+    |   xp     = max(0, round(baza × carpan) + kodlar − sehv_ceza × səhv)
+    |
+    | Ölçü: mükəmməl oyun asan 56 · orta 92 · cetin 146 · kabus 236 verir.
+    | Pulsuz `orta` işin ƏN PİS nəticəsi dəqiq 40-dır — yəni ikinci rütbə ilk
+    | işdən sonra zəmanətlidir.
+    */
+    'xp' => [
+        'baza' => [
+            'asan'  => 20,
+            'orta'  => 40,
+            'cetin' => 70,
+            'kabus' => 120,
+        ],
+        'dogru_sonluq' => 0.5,
+        'ilk_cehd'     => 0.3,
+        'kodlar'       => 20,
+        'sehv_ceza'    => 10,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reytinq
+    |--------------------------------------------------------------------------
+    | Keş TTL-ə əsaslanır, açıq ləğvə yox: `CACHE_STORE=database` teq
+    | dəstəkləmir, yəni `Cache::tags()->flush()` yoxdur. Reytinq dünya haqqında
+    | fakt deyil, onun oxunuşudur — beş dəqiqə köhnəlik oyunçuya görünmür.
+    |
+    | `rank_colors` — `ranks.color_token` adlarının HƏRFİ hex qarşılığı.
+    | Kartın SVG-si <img> ilə kətana çəkilir və orada `var(--buff)` həll
+    | olunmur, ona görə CSS dəyişəni yox, hex lazımdır. Dəyərlər
+    | `frontend/dossier.css` `:root` bloku ilə eyni olmalıdır.
+    */
+    'reyting' => [
+        'cache_minutes' => 5,
+        'per_page'      => 50,
+        'is_reytinq'    => 10,
+        'siralamalar'   => ['xp', 'isler', 'sonluqlar', 'ilk-cehd'],
+        'pencereler'    => ['hamisi', 'ay', 'hefte'],
+        'rank_colors'   => [
+            'ink3'  => '#8792A6',
+            'ink2'  => '#4A5568',
+            'buff3' => '#8A6F3C',
+            'buff2' => '#A8894F',
+            'buff'  => '#C2A468',
+            'stamp' => '#46407E',
+            'red'   => '#8A2A2A',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profil şəkli
+    |--------------------------------------------------------------------------
+    | `sekil` bloku ilə eyni model, bir pillə sərt: şəkil MODERASİYADAN keçir
+    | və yalnız təsdiqdən sonra ictimai yerlərdə görünür. Fayl public kökdən
+    | KƏNARDA saxlanılır, adı 32 təsadüfi hex simvoldur, verilmə sabit
+    | başlıqlarla kontrollerdəndir və pozuntuda 404 qaytarır.
+    */
+    'avatar' => [
+        'path'      => storage_path('app/dossier/avatar'),
+        'max_bytes' => 5 * 1024 * 1024,
+        'olcu'      => 400,
+        'orijinal'  => 1200,
+        'keyfiyyet' => 88,
     ],
 
     /*

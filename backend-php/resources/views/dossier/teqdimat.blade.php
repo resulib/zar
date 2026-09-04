@@ -4,6 +4,7 @@
 @section('title', 'İş № ' . $dossier->no . ' — ' . $dossier->title)
 
 @push('head')
+<link rel="stylesheet" href="{{ asset('assets/dossier-profil.css') }}">
 <meta name="description" content="{{ $dossier->blurb }}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $dossier->ogMeta()['title'] }}">
@@ -77,6 +78,30 @@
 
   </div>
 </section>
+
+@if(count($suretli) > 0)
+{{-- ƏN SÜRƏTLİ ON NƏFƏR — spoiler saxlamır: yalnız ad, rütbə və vaxt.
+     Yalnız `is_public` olan və nişanlı profillər siyahıdadır. --}}
+<section class="teq-suretli">
+  <div class="sayt-en">
+    <h2>Bu işi ən sürətli bağlayanlar</h2>
+    <ol class="sur-lovhe">
+      @foreach($suretli as $s)
+        <li class="sur-setir">
+          <span class="sur-movqe">{{ $s['movqe'] }}</span>
+          <span class="sur-ad">
+            <b>{{ $s['ad'] }}</b>
+            <small>{{ $s['rutbe'] }} · {{ $s['nisanNo'] }}</small>
+          </span>
+          @if($s['temiz'])<span class="sur-temiz" title="Yanlış ittiham olmadan">təmiz</span>@endif
+          <span class="sur-vaxt">{{ $s['deqiqe'] }} dəq</span>
+        </li>
+      @endforeach
+    </ol>
+    <p class="sur-qeyd"><a href="{{ route('dossier.reyting') }}">Ümumi reytinqə bax</a></p>
+  </div>
+</section>
+@endif
 
 @include('dossier.partials.altliq')
 @endsection

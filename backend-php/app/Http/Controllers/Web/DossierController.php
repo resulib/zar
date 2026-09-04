@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dossier;
+use App\Models\DossierImage;
 use App\Models\DossierProgress;
 use App\Models\User;
 use App\Services\DossierService;
@@ -92,6 +93,10 @@ class DossierController extends Controller
             'stats'   => $dossier->stats(),
             'access'  => $p?->hasAccess() === true,
             'solved'  => $p?->solved === true,
+            /* Ən sürətli on nəfər — təkrar oynamağa təşviq. Sorğu 10 dəqiqə
+               keşlənir, `Dossier::stats()` ilə eyni müddət: ikisi bu səhifədə
+               yan-yana durur. */
+            'suretli' => app(\App\Services\RankingService::class)->fastest($dossier),
         ]);
     }
 
@@ -125,9 +130,14 @@ class DossierController extends Controller
 
         if ($access && $p !== null) {
             $data['meta'] = (array) $dossier->meta;
-            $data['suspects'] = (array) $dossier->suspects;
+            /* Şübhəlilər körpüdən keçir: köhnə işlər JSON sütununu, idarə
+               panelindən qurulanlar `dossier_suspects` cədvəlini işlədir. */
+            $data['suspects'] = $dossier->suspectList();
             $data['chronology'] = (array) $dossier->chronology;
             $data['questions'] = $dossier->questions->map->toListArray()->all();
+            /* Sonluq rejimi törəmədir. Yalnız ID-lər gedir: hökm mətnləri
+               seçimdən sonra, `/sonluq` cavabında gəlir. */
+            $data['endings'] = $this->dossiers->endingSuspectIds($dossier);
             $data['state'] = $p->toStateArray();
             $data['solution'] = ($p->solved || $p->revealed)
                 ? array_values(array_map('strval', (array) $dossier->solution))
@@ -227,6 +237,47 @@ class DossierController extends Controller
             'Content-Type'           => 'image/jpeg',
             'X-Content-Type-Options' => 'nosniff',
             'Cache-Control'          => 'public, max-age=600',
+            'X-Robots-Tag'           => 'noindex',
+        ]);
+    }
+
+    /**
+     * Mətnin içindəki şəkil.
+     *
+     * Fayl public kökdən kənardadır və buradan SABİT `image/jpeg` başlığı ilə
+     * verilir — sertifikat və dəvətnamə önizləməsi ilə eyni naxış.
+     *
+     * Pozuntuda 404 qaytarılır, 403 yox: 403 şəklin MÖVCUD OLDUĞUNU təsdiqləyər
+     * və hələ açılmamış vərəqin varlığını bildirər.
+     */
+    public function image(Request $request, string $slug, int $id, string $olcu): Response|BinaryFileResponse
+    {
+        $dossier = $this->dossiers->find($slug);
+
+        if ($dossier === null) {
+            return response('', 404);
+        }
+
+        $sekil = DossierImage::query()->find($id);
+
+        if ($sekil === null) {
+            return response('', 404);
+        }
+
+        $user = $this->viewer($request);
+        $p = $user === null ? null : $this->dossiers->progress($user, $dossier);
+        $admin = $user !== null && (bool) $user->is_admin;
+
+        $path = $this->dossiers->imagePath($dossier, $sekil, $p, $olcu, $admin);
+
+        if ($path === null) {
+            return response('', 404);
+        }
+
+        return response()->file($path, [
+            'Content-Type'           => 'image/jpeg',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control'          => 'private, max-age=600',
             'X-Robots-Tag'           => 'noindex',
         ]);
     }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Dossier;
+use App\Models\DossierCode;
 use App\Models\DossierDocument;
 use App\Models\DossierQuestion;
+use App\Models\DossierSuspect;
 use App\Support\Dossier\BlokSxemi;
 use App\Support\Sanitizer;
 use Illuminate\Database\Seeder;
@@ -140,6 +142,9 @@ class DossierSeeder extends Seeder
 
         $this->senedler($dossier, (array) $data['documents']);
         $this->suallar($dossier, (array) ($data['questions'] ?? []));
+        /* Şübhəlilər suallardan SONRA: qatil birinci sualın düzgün
+           variantından çıxarılır. */
+        $this->subheliler($dossier, (array) ($data['suspects'] ?? []), (array) ($data['questions'] ?? []));
 
         return true;
     }
@@ -168,6 +173,7 @@ class DossierSeeder extends Seeder
                 'lock_code' => (string) ($kilid['kod'] ?? ''),
                 'lock_hint' => (string) ($kilid['ipucu'] ?? ''),
                 'content'   => (array) ($row['content'] ?? []),
+                'unlock_code_id' => $this->kod($dossier, $kilid, (string) ($row['name'] ?? ''), $sort),
             ])->save();
 
             unset($qalan[$sort]);
@@ -179,6 +185,122 @@ class DossierSeeder extends Seeder
         }
     }
 
+    /**
+     * Kilidli vərəqin kod reyestri sətri.
+     *
+     * Kodun avtoritet nüsxəsi vərəqin öz `lock_code` sütunudur — `unlock()`
+     * müqayisəni orada aparır. Bu sətir isə idarəçinin görəcəyi səthdir: ad,
+     * qeyd və mənbə vərəqlər. Seed faylında ad və mənbə yoxdur, ona görə ad
+     * vərəqin adından götürülür və idarəçi sonra dəyişə bilər. Sıra isə
+     * açdığı vərəqin sırasıdır — reyestr hekayənin gedişi ilə düzülür.
+     *
+     * @param array<string,mixed> $kilid
+     */
+    protected function kod(Dossier $dossier, array $kilid, string $ad, int $sira): ?int
+    {
+        $kod = (string) ($kilid['kod'] ?? '');
+
+        if ($kod === '') {
+            return null;
+        }
+
+        $row = DossierCode::query()->firstOrNew([
+            'dossier_id' => $dossier->id,
+            'code'       => $kod,
+        ]);
+
+        /* `label` və `hint_note` YALNIZ sətir yeni olanda yazılır: idarəçinin
+           sonradan verdiyi ad təkrar seed ilə geri qayıtmamalıdır. */
+        if (! $row->exists) {
+            $row->fill([
+                'label'               => mb_substr($ad, 0, 80),
+                'hint_note'           => (string) ($kilid['ipucu'] ?? ''),
+                'source_document_ids' => [],
+                'sort'                => $sira,
+            ]);
+        }
+
+        $row->save();
+
+        return (int) $row->id;
+    }
+
+    /**
+     * Şübhəlilər — JSON sütunundan CƏDVƏLƏ.
+     *
+     * `dossiers.suspects` JSON-u TEL FORMATI olaraq qalır və oyun onu oxuyur;
+     * bu cədvəl isə idarəçinin REDAKTƏ SƏTHİDİR. İdxal olmasa, seed ilə gələn
+     * üç iş idarə panelində şübhəlisiz görünür — halbuki hekayənin bütün
+     * məlumatı onlarda var.
+     *
+     * QATİL 1-ci SUALDAN ÇIXARILIR. Seed faylında ayrıca bayraq yoxdur, amma
+     * hər üç qovluqda birinci sualın variantları şübhəli adlarının EYNİ
+     * sırasıdır və `correct` qatili göstərir. Uyğunluq pozulsa, heç kim
+     * işarələnmir — səhv təxmin etməkdənsə boş qoymaq yaxşıdır, çünki
+     * `QovluqYoxlayici` bunu onsuz da xəta kimi bildirəcək.
+     *
+     * `sort` və `is_culprit` YALNIZ sətir yeni olanda yazılır: idarəçinin
+     * sonrakı düzəlişi təkrar seed ilə geri qayıtmamalıdır — `CatalogSeeder`
+     * intizamı.
+     *
+     * @param list<array<string,mixed>> $rows
+     * @param list<array<string,mixed>> $suallar
+     */
+    protected function subheliler(Dossier $dossier, array $rows, array $suallar): void
+    {
+        $qatil = $this->qatilAdi($suallar);
+        $qalan = $dossier->suspectRows()->pluck('id', 'sort')->all();
+
+        foreach (array_values($rows) as $i => $row) {
+            $sort = $i + 1;
+
+            $s = DossierSuspect::query()->firstOrNew([
+                'dossier_id' => $dossier->id,
+                'sort'       => $sort,
+            ]);
+
+            $yeni = ! $s->exists;
+
+            $s->fill([
+                'init'   => (string) ($row['init'] ?? ''),
+                'name'   => (string) ($row['name'] ?? ''),
+                'role'   => (string) ($row['role'] ?? ''),
+                'bio'    => (string) ($row['bio'] ?? ''),
+                'bars'   => array_values((array) ($row['bars'] ?? [])),
+                'camera' => (string) ($row['camera'] ?? ''),
+            ]);
+
+            if ($yeni) {
+                $s->is_culprit = $qatil !== '' && $qatil === (string) ($row['name'] ?? '');
+            }
+
+            $s->save();
+            unset($qalan[$sort]);
+        }
+
+        if ($qalan !== []) {
+            DossierSuspect::query()->whereIn('id', array_values($qalan))->delete();
+        }
+    }
+
+    /**
+     * Qatilin adı — birinci sualın düzgün variantı.
+     *
+     * @param list<array<string,mixed>> $suallar
+     */
+    protected function qatilAdi(array $suallar): string
+    {
+        $ilk = $suallar[0] ?? null;
+
+        if (! is_array($ilk)) {
+            return '';
+        }
+
+        $variant = array_values((array) ($ilk['options'] ?? []));
+        $duz = (int) ($ilk['correct'] ?? -1);
+
+        return isset($variant[$duz]) ? (string) $variant[$duz] : '';
+    }
     /** @param list<array<string,mixed>> $rows */
     protected function suallar(Dossier $dossier, array $rows): void
     {

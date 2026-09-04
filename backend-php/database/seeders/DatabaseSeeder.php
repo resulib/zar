@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(CatalogSeeder::class);
+
+        /* Rütbələr qovluqlardan ƏVVƏL: müstəntiq profili rütbəyə istinad edir,
+           ona görə ən aşağı pillə həmişə mövcud olmalıdır. */
+        $this->call(RankSeeder::class);
         $this->call(DossierSeeder::class);
 
         $email    = trim((string) env('ADMIN_EMAIL', 'admin@zarafat.az'));

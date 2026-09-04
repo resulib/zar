@@ -81,11 +81,19 @@
     <div style="height:20px"></div>
   </section>
 
+  {{-- YEKUN EKRANI İKİ FORMANI DAŞIYIR və hansının görünəcəyini CSS həll
+       edir: `.sonluq` sinfi `dossier.js` tərəfindən qoyulur. Rejim işin
+       sonluq sətri olub-olmamasından TÖRƏYİR — iki ayrı ekran qursaydıq,
+       naviqasiya və lent məntiqi də ikiləşərdi. --}}
   <section class="screen" id="s-answer">
     <div class="sect-h">YEKUN RƏY</div>
     <div id="qs"></div>
     <div class="left-note" id="left"></div>
     <button class="btn" id="submit" type="button" disabled>Rəyi təsdiq et</button>
+
+    <div class="sect-h end-h">KİM?</div>
+    <p class="end-n">Şübhəlilərdən birini seçin. Seçiminizə uyğun sonluq açılacaq.</p>
+    <div id="ends"></div>
   </section>
 
   <section class="screen" id="s-result"><div id="res"></div></section>

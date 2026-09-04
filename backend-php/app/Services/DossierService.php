@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Models\Dossier;
 use App\Models\DossierDocument;
+use App\Models\DossierEnding;
+use App\Models\DossierImage;
 use App\Models\DossierProgress;
 use App\Models\Setting;
 use App\Models\User;
@@ -30,8 +32,11 @@ class DossierService
     /** @var array<int,list<int>> qovluq id → vərəq id-ləri, sıra ilə */
     protected array $sira = [];
 
-    public function __construct(private readonly CreditService $credits)
-    {
+    public function __construct(
+        private readonly CreditService $credits,
+        private readonly SenedRender $render,
+        private readonly RankService $ranks,
+    ) {
     }
 
     public function find(string $slug): ?Dossier
@@ -186,28 +191,161 @@ class DossierService
     /**
      * Sənədin HTML gövdəsi. Yalnız bu metod məzmunu brauzerə buraxır.
      *
-     * Sənəd şablon deyil, blokların ardıcıllığıdır: burada heç bir növ
-     * seçilmir, `sened.blade.php` sadəcə siyahını gəzir.
+     * Sənəd şablon deyil: `body` sahəsi doludursa mətn oxunur və içindəki
+     * `{{ sekil:… }}` / `{{ blok:… }}` nişanları açılır, boşdursa köhnə yol —
+     * `content.bloklar` ardıcıllığı — işləyir. İkinci yol mövcud 84 vərəqi
+     * bayt-bayt eyni saxlayır; nə vaxtsa hamısı birinci yola köçürülə bilər.
      */
-    public function renderDocument(Dossier $dossier, DossierDocument $doc, DossierProgress $p): string
+    public function renderDocument(
+        Dossier $dossier,
+        DossierDocument $doc,
+        DossierProgress $p,
+        bool $admin = false
+    ): string
     {
         $bagli = ! $this->isUnlocked($p, $doc);
         $c = (array) $doc->content;
         $kagiz = (array) ($c['kagiz'] ?? []);
+        $vals = $this->vals($p);
+
+        /* Şəkillər BİR sorğu ilə yığılır və HƏR İKİ yola verilir: mətn
+           rejimində `{{ sekil:… }}` nişanı, blok rejimində isə maddi sübut
+           kartoçkaları onlara müraciət edir. */
+        $sekiller = $dossier->images()->get()->keyBy('slug')->all();
 
         return view('dossier.sened', [
             'dossier'    => $dossier,
             'doc'        => $doc,
             'c'          => $c,
             'bloklar'    => array_values((array) ($c['bloklar'] ?? [])),
+            'govde'      => $bagli ? null : $this->govde($dossier, $doc, $vals, $sekiller, $admin),
+            'sekiller'   => $sekiller,
+            'slug'       => (string) $dossier->slug,
+            'blankNov'   => $this->blankNov($doc),
             'kagiz'      => $kagiz,
             'kagizSinif' => self::kagizSinif($kagiz),
             'egilme'     => isset($kagiz['egilme']) ? (float) $kagiz['egilme'] : null,
             'mohurler'   => array_values((array) ($c['mohurler'] ?? [])),
             'head'       => array_values((array) (($dossier->cover['paperHead'] ?? []) ?: [])),
-            'vals'       => $this->vals($p),
+            'vals'       => $vals,
             'bagli'      => $bagli,
         ])->render();
+    }
+
+    /**
+     * Mətn rejimində gövdə. `null` — köhnə blok yolu işləsin.
+     *
+     * @param array<string,string> $vals
+     * @param array<string,\App\Models\DossierImage> $sekiller
+     */
+    protected function govde(
+        Dossier $dossier,
+        DossierDocument $doc,
+        array $vals,
+        array $sekiller,
+        bool $admin
+    ): ?string {
+        if ($doc->govde() === null) {
+            return null;
+        }
+
+        /* Açarlanmış bloklar — `{{ blok:acar }}` nişanının hədəfi. Açarsızlar
+           bura düşmür: onlar yalnız köhnə sıra ilə render yolunda mənalıdır. */
+        $bloklar = [];
+
+        foreach ((array) (((array) $doc->content)['bloklar'] ?? []) as $b) {
+            if (is_array($b) && isset($b['acar']) && is_string($b['acar'])) {
+                $bloklar[$b['acar']] = $b;
+            }
+        }
+
+        return $this->render->render($doc, (string) $dossier->slug, $sekiller, $bloklar, $vals, $admin);
+    }
+
+    /**
+     * Mətn rejimində letterhead növü.
+     *
+     * Dəyər komponent adına çevrilir, ona görə ağ siyahıdan MÜTLƏQ keçir —
+     * yoxlanmamış dəyər `<x-dynamic-component>`-ə ixtiyari görünüş render
+     * etdirərdi. Blok rejimində boşdur: letterhead orada `blank` blokunun
+     * özündədir və ikinci dəfə çəkilməməlidir.
+     */
+    protected function blankNov(DossierDocument $doc): string
+    {
+        if ($doc->govde() === null) {
+            return '';
+        }
+
+        return Sanitizer::pick(
+            (string) $doc->blank_nov,
+            (array) config('dossier.blank_novleri', []),
+            'resmi'
+        );
+    }
+
+    /**
+     * Şəkil faylının diskdəki yolu — YA DA `null`.
+     *
+     * `null` çağıranda 404-ə çevrilir. «İcazə yoxdur» mesajı verilmir, çünki
+     * mesajın ÖZÜ spoylerdir: «bu şəkil kilidli sənəddədir» cümləsi oyunçuya
+     * hələ tapmadığı bir vərəqin varlığını bildirir.
+     *
+     * Üç qapı var və üçü də keçilməlidir:
+     *   1. Şəkil bu qovluğa aiddir.
+     *   2. Ya nümunə vərəqin şəklidir (ödənişsiz), ya da qovluq açılıb.
+     *   3. Sahibi kilidli vərəqdirsə, kod açılıb.
+     *
+     * Sahibi olmayan şəkil qovluğun ümumi materialıdır və ödəniş tələb edir:
+     * əks halda id-ləri sırayla yoxlayan adam bütün kitabxananı ödənişsiz
+     * görərdi.
+     */
+    public function imagePath(
+        Dossier $dossier,
+        DossierImage $sekil,
+        ?DossierProgress $p,
+        string $olcu,
+        bool $admin = false
+    ): ?string {
+        if ((int) $sekil->dossier_id !== (int) $dossier->id) {
+            return null;
+        }
+
+        if (! $admin) {
+            $owner = $sekil->owner_document_id === null
+                ? null
+                : $this->document($dossier, (int) $sekil->owner_document_id);
+
+            $numune = $owner !== null && $owner->is_sample && ! $owner->is_locked;
+
+            if (! $numune) {
+                if ($p === null || ! $p->hasAccess()) {
+                    return null;
+                }
+
+                if ($owner !== null && $owner->is_locked && ! $this->isUnlocked($p, $owner)) {
+                    return null;
+                }
+            }
+        }
+
+        return $this->sekilFayli($sekil, $olcu);
+    }
+
+    /**
+     * Diskdəki fayl. Ad bazadan gəlir, amma yenə də formatı yoxlanılır —
+     * yol quraşdıran hər sətir traversal namizədidir və yoxlama ucuzdur.
+     */
+    protected function sekilFayli(DossierImage $sekil, string $olcu): ?string
+    {
+        $ad = $sekil->pathFor($olcu);
+
+        if (preg_match('#^[0-9]+/[a-f0-9]{32}\.jpg$#', $ad) !== 1) {
+            return null;
+        }
+
+        $path = rtrim((string) config('dossier.sekil.path'), '/') . '/' . $ad;
+
+        return is_file($path) ? $path : null;
     }
 
     /** Kağızın CSS sinifləri — dərəcə bildirən effektlər sinif kimi verilir. */
@@ -332,6 +470,7 @@ class DossierService
             return $this->neticeArray($p, $dossier, false, false);
         }
 
+        $evvel = (bool) $p->solved;
         $p->attempts = (int) $p->attempts + 1;
 
         if ($netice['ok']) {
@@ -347,10 +486,133 @@ class DossierService
 
         $p->save();
 
+        /* XP KEÇİD ANINDA verilir — `false → true`.
+           Sətrin özünə baxmaq kifayət deyil: metod ikinci dəfə çağırılanda
+           `solved` onsuz da doğrudur. Yuxarıdakı erkən qayıdış birinci
+           sipərdir, bu şərt ikincisi, `case_completions`-un unikal indeksi
+           isə üçüncüsü.
+
+           Səhv ittiham sayı `attempts - 1`-dir: uğurlu cəhd səhv deyil, və
+           `attempts` yalnız forma TAM olduqda artdığı üçün yarımçıq
+           göndərmə xala dəymir. */
+        if (! $evvel && $p->solved) {
+            $this->ranks->awardForCase($p, $dossier, max(0, (int) $p->attempts - 1));
+        } elseif ($p->revealed) {
+            // Bağlanmadı: xal yoxdur, amma cəhd profildə görünməlidir.
+            $this->ranks->recordAttempt($p, $dossier, (int) $p->attempts);
+        }
+
         return $this->neticeArray($p, $dossier, $netice['ok'], true);
     }
 
     /** @return array<string,mixed> */
+    /**
+     * Şübhəli seçimi — sonluq rejiminin yekunu.
+     *
+     * REJİM TÖRƏMƏDİR: işin `dossier_endings` sətri varsa oyunçu şübhəli seçir,
+     * yoxsa köhnə üç suallıq rəy formasını doldurur. Ayrıca sütun bir də
+     * sinxronda saxlanılası dəyər olardı və mövcud üç iş səhvən yeni axına
+     * düşərdi.
+     *
+     * Cəhd limiti YOXDUR — hər şübhəlinin öz sonluğu var və onları oxumaq
+     * oyunun bir hissəsidir. Amma vərəqləri keçmək şərti qalır: işi oxumadan
+     * verilən qərar təxmindir.
+     *
+     * `reveal_text` yalnız DOĞRU sonluqda qaytarılır (modelin `$hidden`-indədir):
+     * səhv seçim edən oyunçu hekayənin açılışını görməməlidir.
+     *
+     * @return array<string,mixed>
+     * @throws \RuntimeException `bad_suspect`
+     */
+    public function chooseSuspect(Dossier $dossier, DossierProgress $p, mixed $subheliId): array
+    {
+        $id = (int) $subheliId;
+
+        $ending = DossierEnding::query()
+            ->where('dossier_id', $dossier->id)
+            ->where('suspect_id', $id)
+            ->first();
+
+        if ($ending === null) {
+            throw new \RuntimeException('bad_suspect');
+        }
+
+        $p->chosen_suspect_id = $id;
+
+        /* SƏHV İTTİHAM hər çağırışda yazılır, yalnız udan seçimdə yox.
+           Siyahı TƏKRARSIZDIR: cəhd limiti olmadığı və hər sonluğu oxumaq
+           oyunun bir hissəsi olduğu üçün eyni şübhəlini ikinci dəfə seçmək
+           bir səhvdir, iki yox. */
+        if (! $ending->is_true_ending) {
+            $p->mark('wrong_suspect_ids', $id);
+        }
+
+        $evvel = (bool) $p->solved;
+
+        if ($ending->is_true_ending && ! $p->solved) {
+            $p->solved = true;
+            $p->finished_at = Carbon::now();
+            $p->duration_seconds = $p->started_at === null
+                ? null
+                : (int) max(0, (int) $p->started_at->diffInSeconds($p->finished_at));
+            $p->cert_token = $p->cert_token ?: $this->newCertToken();
+        }
+
+        $p->save();
+
+        // `submit()` ilə eyni keçid qapısı.
+        if (! $evvel && $p->solved) {
+            $this->ranks->awardForCase($p, $dossier, count($p->ids('wrong_suspect_ids')));
+        }
+
+        return [
+            'ok'        => true,
+            'dogru'     => (bool) $ending->is_true_ending,
+            'subheli'   => $id,
+            'verdict'   => (string) $ending->verdict_text,
+            'sting'     => (string) $ending->sting_line,
+            'reveal'    => $ending->is_true_ending ? (string) $ending->reveal_text : null,
+            'minutes'   => $p->solved ? Kod::deqiqe($p->duration_seconds) : null,
+            'certToken' => $p->solved ? (string) $p->cert_token : null,
+            'state'     => $p->toStateArray(),
+        ];
+    }
+
+    /**
+     * «Yenidən oyna» — YALNIZ seçim sıfırlanır.
+     *
+     * Açılmış kodlar, oxunmuş vərəqlər və girişin özü toxunulmur: oyunçu
+     * tapdığı kodu ikinci dəfə axtarmamalıdır. Həll olunmuş iş də həll olunmuş
+     * qalır — sertifikat geri alınmır.
+     */
+    public function replay(DossierProgress $p): DossierProgress
+    {
+        /* `wrong_suspect_ids` QƏSDƏN TƏMİZLƏNMİR — açılmış kodlar və
+           sertifikatla eyni qayda. Təmizlənsəydi, doğru şübhəlini seçməzdən
+           əvvəl bir «yenidən oyna» ilə həm −10 cəzasını, həm də ilk-cəhd
+           bonusunu bədavaya almaq olardı. */
+        if ($p->chosen_suspect_id !== null) {
+            $p->chosen_suspect_id = null;
+            $p->save();
+        }
+
+        return $p;
+    }
+
+    /**
+     * Oyunçuya göndərilən sonluq siyahısı — MƏTNSİZ.
+     *
+     * Yalnız hansı şübhəlilərin sonluğu olduğu bildirilir; hökm mətni seçim
+     * ediləndən sonra, `chooseSuspect()` cavabında gəlir. Bütün mətnləri
+     * qabaqcadan göndərmək oyunun sonunu DevTools açan hər kəsə verərdi.
+     *
+     * @return list<int>
+     */
+    public function endingSuspectIds(Dossier $dossier): array
+    {
+        return array_values(array_map('intval', $dossier->endings()->pluck('suspect_id')->all()));
+    }
+
     protected function neticeArray(DossierProgress $p, Dossier $dossier, bool $ok, bool $tam): array
     {
         $acildi = $p->solved || $p->revealed;
