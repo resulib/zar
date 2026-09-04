@@ -62,6 +62,11 @@ const acqi = async (page, ad) => {
 
     /* --- oyun --- */
     await acqi(page, 'Ölçü Testi');
+    /* SIRA QAPISI: ikinci vərəq yalnız birinci keçiləndən sonra açılır.
+       Ölçü yoxlaması üçün lazım olan `.p-body` ikinci vərəqdədir. */
+    await page.locator('#list .docrow').first().click();
+    await page.waitForSelector('#s-doc.on .paper', { timeout: 8000 });
+    await page.click('.tab[data-go="index"]');
     await page.locator('#list .docrow').nth(1).click();
     await page.waitForSelector('.p-body', { timeout: 8000 });
 
@@ -84,7 +89,18 @@ const acqi = async (page, ad) => {
         document.getElementById('main').getBoundingClientRect().top);
       check('naviqasiya lenti yuxarıdadır', lentUst);
 
-      /* Ortaq vaxt oxu: bütün alibi zolaqları eyni x-dən başlamalıdır. */
+      /* Ortaq vaxt oxu: bütün alibi zolaqları eyni x-dən başlamalıdır.
+         Şübhəlilər lenti SIRA QAPISININ arxasındadır — əvvəlcə qovluğu
+         əvvəldən sona keçirik. */
+      const say = await page.locator('#list .docrow').count();
+      for (let i = 0; i < say; i++) {
+        await page.click('.tab[data-go="index"]');
+        await page.locator('#list .docrow').nth(i).click();
+        await page.waitForFunction(() => {
+          const b = document.querySelector('#docbody');
+          return b && b.textContent.indexOf('Açılır…') < 0 && b.textContent.length > 0;
+        }, { timeout: 8000 });
+      }
       await page.locator('.tab[data-go="suspects"]').click();
       await page.waitForSelector('.sus .bar');
       const oxlar = await page.evaluate(() =>

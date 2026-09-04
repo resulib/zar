@@ -253,6 +253,22 @@
               "[[Qeyd:]] ilkin dindirmələr saat 09:00-dan başlanılsın. Qonaq siyahısı — 214 nəfər, tam dindirmə mümkün deyil."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "TƏSDİQ EDİRƏM",
+              "FİKTİV"
+            ],
+            "x": 72,
+            "y": 17,
+            "olcu": 150,
+            "bucaq": -11
+          }
         ]
       },
       "sample": false
@@ -310,6 +326,22 @@
             "vezife": "Baxışı aparan, AFİB müstəntiqi",
             "ad": "N.Abbasov",
             "tarix": "16.08.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "QEYDƏ ALINIB",
+              "FİKTİV"
+            ],
+            "x": 76,
+            "y": 15,
+            "olcu": 146,
+            "bucaq": -13
           }
         ]
       },
@@ -448,6 +480,22 @@
             "ad": "F.Rzayeva",
             "tarix": "16.08.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "FİKTİV"
+            ],
+            "x": 74,
+            "y": 16,
+            "olcu": 144,
+            "bucaq": 9
+          }
         ]
       },
       "sample": false
@@ -579,6 +627,22 @@
             "abzaslar": [
               "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 21.]]"
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 75,
+            "y": 13,
+            "olcu": 126,
+            "bucaq": 6
           }
         ]
       },

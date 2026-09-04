@@ -76,6 +76,12 @@ class DossierController extends Controller
             return $this->err('not_found', 'Sənəd tapılmadı.', 404);
         }
 
+        /* SIRA QAPISI. Qabıq da bunu göstərir, amma qərarı server verir —
+           bu ünvan birbaşa da çağırıla bilər. */
+        if (! $this->dossiers->reachable($dossier, $doc, $p)) {
+            return $this->err('sira', 'Əvvəlki vərəqi keçmədən bu vərəq açılmır.', 403);
+        }
+
         $this->dossiers->markRead($p, $doc);
 
         return response()->json([
@@ -151,6 +157,12 @@ class DossierController extends Controller
 
         if ($err !== null) {
             return $err;
+        }
+
+        /* Bütün vərəqlər keçilməyibsə rəy qəbul edilmir — və bu, CƏHD DƏ SAYILMIR.
+           Yoxsa qapını tanımayan qabıq üç cəhdi boş yerə yandırardı. */
+        if (! $this->dossiers->allRead($dossier, $p)) {
+            return $this->err('sira', 'Bütün vərəqləri oxumadan yekun rəy verilmir.', 403);
         }
 
         $cavablar = $request->input('cavablar');

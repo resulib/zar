@@ -542,6 +542,25 @@ check('sənədin üzərində fiktivlik qeydi var', str_contains($html, $QEYD));
 check('qeyd markeri var', str_contains($html, 'data-fq="1"'));
 check('sənəd başlığı büro kodu daşıyır', str_contains($html, 'AFİB'));
 
+/* SIRA QAPISI — vərəq yalnız ondan ƏVVƏLKİLƏR keçiləndən sonra açılır.
+   Qapı serverdədir: qabıq bağlı sətri sönük göstərir, amma bu ünvan
+   birbaşa da çağırıla bilər. Yuxarıda yalnız BİRİNCİ vərəq oxunub. */
+$uzaq = (int) ($docs[5]['id'] ?? 0);
+$r = req($base . '/api/is/' . $SLUG . '/sened/' . $uzaq, 'GET', [], $own);
+check('sıradan kənar vərəq 403 verir', $r['status'] === 403, $r['status']);
+
+/* Yekun rəy də bağlıdır — və bu, CƏHD SAYILMIR: aşağıdakı kilid
+   yoxlamaları hələ üç cəhdin heç birini yandırmamalıdır. */
+$r = req($base . '/api/is/' . $SLUG . '/rey', 'POST',
+    ['_token' => $is['token'], 'cavablar' => [0, 1, 1]], $own);
+check('bütün vərəqlər keçilmədən rəy qəbul edilmir', $r['status'] === 403, $r['status']);
+
+/* Qovluğu sıra ilə keçirik — kilidli sənəd sonuncudur və ona qapıdan
+   keçmədən çatmaq olmur. */
+foreach ($docs as $d) {
+    req($base . '/api/is/' . $SLUG . '/sened/' . (int) $d['id'], 'GET', [], $own);
+}
+
 /* KİLİD NÖV DEYİL, XASSƏDİR: istənilən blok tərkibi kilidli ola bilər və
    kilidli sənədin BLOKLARI ümumiyyətlə brauzerə göndərilmir — yalnız
    klaviatura render olunur. */

@@ -23,6 +23,25 @@ const check = (ad, ok, ekstra) => {
 };
 const bas = (t) => console.log('\n' + t);
 
+/* SIRA QAPISI: vərəqlər yalnız ardıcıl açılır, ona görə testin özü də
+   qovluğu əvvəldən sona qədər keçməlidir. Şübhəlilər və yekun rəy lentləri
+   bundan əvvəl bağlıdır. */
+const gozle = async (page) => {
+  await page.waitForSelector('#s-doc.on', { timeout: 8000 });
+  await page.waitForFunction(() => {
+    const b = document.querySelector('#docbody');
+    return b && b.textContent.indexOf('Açılır…') < 0;
+  }, { timeout: 8000 });
+};
+
+const hamsiniKec = async (page, say) => {
+  for (let i = 0; i < say; i++) {
+    await page.click('.tab[data-go="index"]');
+    await page.locator('#list .docrow').nth(i).click();
+    await gozle(page);
+  }
+};
+
 const ac = async (ctx, ad) => {
   const page = await ctx.newPage();
   await page.goto(BASE + '/is/' + SLUG + '/qovluq', { waitUntil: 'networkidle' });
@@ -111,9 +130,48 @@ const ac = async (ctx, ad) => {
   /* Qeyd qutusu ayrıca blok növü deyil — `cerceve: true` olan mətn blokudur. */
   check('çərçivəli mətn bloku render olundu', (await p1.locator('.paper .p-note').count()) === 1);
 
-  /* Sahə bloku növbəti vərəqdədir — eyni komponent, başqa sıra. */
+  /* --- 4b. Sıra qapısı ------------------------------------------------ */
+  bas('4b. Sıra qapısı');
+  check('vərəqin altında «Davam et» var', (await p1.locator('#davam').count()) === 1);
+  check('«Davam et» növbəti vərəqi göstərir',
+    (await p1.locator('#davam').getAttribute('data-i')) !== null);
+
   await p1.click('.tab[data-go="index"]');
-  await p1.locator('#list .docrow').nth(1).click();
+  check('uzaqdakı vərəq bağlıdır',
+    await p1.locator('#list .docrow').nth(5).evaluate(el => el.classList.contains('qapali')));
+  check('birinci vərəq bağlı deyil',
+    !(await p1.locator('#list .docrow').first().evaluate(el => el.classList.contains('qapali'))));
+
+  /* Bağlı sətrə tıklamaq sənədi açmır — ekran materiallarda qalır.
+     `force` lazımdır: sətir `aria-disabled` daşıyır və Playwright onu
+     tıklanmaz sayır. Real brauzerdə klik BAŞ VERİR (`disabled` deyil),
+     ona görə qarşısını alan JS qapısıdır — məhz onu yoxlayırıq. */
+  await p1.locator('#list .docrow').nth(5).click({ force: true });
+  await p1.waitForTimeout(400);
+  check('bağlı vərəqə tıklamaq keçid vermir', await p1.locator('#s-index.on').isVisible());
+
+  /* QƏRARI SERVER VERİR: ünvan birbaşa çağırılanda da 403 qayıdır. */
+  const uzaq = await p1.evaluate(async (slug) => {
+    const r = await fetch('/api/is/' + slug + '/sened/' + window.DOSSIER.docs[5].id,
+      { credentials: 'same-origin', headers: { Accept: 'application/json' } });
+    return r.status;
+  }, SLUG);
+  check('server uzaq vərəqi 403 ilə rədd edir', uzaq === 403, uzaq);
+
+  check('şübhəlilər lenti bağlıdır',
+    await p1.locator('.tab[data-go="suspects"]').evaluate(el => el.classList.contains('kilidli')));
+  check('yekun rəy lenti bağlıdır',
+    await p1.locator('.tab[data-go="answer"]').evaluate(el => el.classList.contains('kilidli')));
+  await p1.locator('.tab[data-go="answer"]').click({ force: true });
+  await p1.waitForTimeout(300);
+  check('bağlı lentə tıklamaq keçid vermir', !(await p1.locator('#s-answer.on').isVisible()));
+
+  /* Sahə bloku növbəti vərəqdədir — eyni komponent, başqa sıra.
+     «Davam et» ilə keçirik: düymənin özü də bu yolla yoxlanılır. */
+  await p1.click('.tab[data-go="index"]');
+  await p1.locator('#list .docrow').first().click();
+  await gozle(p1);
+  await p1.click('#davam');
   await p1.waitForSelector('.paper .p-fields', { timeout: 8000 });
   check('sahə bloku render olundu', (await p1.locator('.paper .p-fields div').count()) >= 4);
   /* Boş dəyər icazəlidir: real blankda doldurulmamış sahə olur. */
@@ -130,6 +188,7 @@ const ac = async (ctx, ad) => {
 
   /* --- 6. Kilid ------------------------------------------------------- */
   bas('6. Kodla bağlı sənəd');
+  await hamsiniKec(p1, say);
   await p1.click('.tab[data-go="index"]');
   await p1.locator('#list .docrow.locked').first().click();
   await p1.waitForSelector('.lockwrap');
@@ -150,6 +209,10 @@ const ac = async (ctx, ad) => {
 
   /* --- 7. Səhv rəy ×3 -------------------------------------------------- */
   bas('7. Yekun rəy — cəhdlər');
+  check('bütün vərəqlərdən sonra rəy lenti açılır',
+    !(await p1.locator('.tab[data-go="answer"]').evaluate(el => el.classList.contains('kilidli'))));
+  check('şübhəlilər lenti də açılır',
+    !(await p1.locator('.tab[data-go="suspects"]').evaluate(el => el.classList.contains('kilidli'))));
   await p1.click('.tab[data-go="answer"]');
   await p1.waitForSelector('.q');
   check('3 sual var', (await p1.locator('.q').count()) === 3);
@@ -168,6 +231,7 @@ const ac = async (ctx, ad) => {
   bas('8. Düzgün rəy');
   const c2 = await browser.newContext({ viewport: { width: 412, height: 880 } });
   const p2 = await ac(c2, 'Nərmin Əliyeva');
+  await hamsiniKec(p2, say);
   await p2.click('.tab[data-go="answer"]');
   await p2.waitForSelector('.q');
   for (let q = 0; q < 3; q++) await p2.click('.opt[data-q="' + q + '"][data-o="' + DUZ[q] + '"]');

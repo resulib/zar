@@ -2,7 +2,13 @@
      ekrana yazılır — sənədlərin məzmunu heç vaxt qabaqcadan yüklənmir.
 
      Sənəd HAZIR ŞABLON DEYİL, blokların ardıcıllığıdır: aşağıdakı döngü
-     hekayəni tanımır, yalnız blok növünü tanıyır. --}}
+     hekayəni tanımır, yalnız blok növünü tanıyır.
+
+     VƏRƏQİN ÇƏRÇİVƏSİ BLOK DEYİL. Mikromətn haşiyəsi, çərçivə, kölgə gerbi,
+     forma sətri və fiktivlik zolağı burada — HƏR sənədin keçdiyi yeganə
+     sarğıda — durur. Blok-blok yazılan qayda unudulan qaydadır; sarğıya
+     yazılan qaydanı isə heç bir blok növü yandan keçə bilmir. --}}
+@php($mikro = trim(str_repeat(\App\Support\Dossier\Byuro::QISA . ' · FİKTİV OYUN SƏNƏDİ · REAL RƏSMİ SƏNƏD DEYİL · ', 14)))
 <div class="paper {{ $kagizSinif }}" data-sened="{{ $doc->id }}" @if($egilme)style="--egilme:{{ $egilme }}deg"@endif>
 
 {{-- FİZİKİ QAT — substrat. Blok növlərindən asılı deyil, istənilən sənədə
@@ -11,6 +17,15 @@
 @if($kagiz !== [])
   @include('dossier.partials.kagiz')
 @endif
+
+{{-- QORUYUCU ÇAP — çərçivə və kölgə gerbi. Mətnin ALTINDADIR (`z-index:0`),
+     ona görə oxunuşa mane olmur, amma vərəqi «boş kağız» olmaqdan çıxarır. --}}
+<div class="p-cerceve p-qat" aria-hidden="true"></div>
+<div class="p-hayalet p-qat" aria-hidden="true">
+  <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/><path d="M22 15h14l10 10v24H22z"/><path d="M36 15v10h10"/></svg>
+</div>
+
+<div class="p-mikro" aria-hidden="true">{{ $mikro }}</div>
 
 @if($bagli)
   @include('dossier.partials.kilid')
@@ -26,6 +41,15 @@
   @include('dossier.partials.mohur')
 @endforeach
 
+{{-- Vərəqin altlığı: forma nömrəsi və vərəq nişanı. Real blankın ən son
+     sətri həmişə budur və məhz o, vərəqi «çap məhsulu» kimi göstərir. --}}
+<div class="p-forma">
+  <span>Forma № {{ \App\Support\Dossier\Byuro::QISA }}-{{ str_pad((string) $doc->sort, 2, '0', STR_PAD_LEFT) }}
+    · İş № {{ $dossier->no }} · Nüsxə 1
+    · «{{ \App\Support\Dossier\Byuro::QISA }}-Poliqrafiya» (mövcud deyil)</span>
+  <span>Vərəq {{ $doc->page }}</span>
+</div>
+
 {{-- MEXANİKİ QAPI. Fiktivlik qeydi ayrı-ayrı bloklara deyil, HƏR sənədin
      keçdiyi bu YEGANƏ sarğıya yazılır — `doc.js`-dəki `inner()` qapısının
      eyni məntiqi. On üç blok növü var və sabah on dördüncüsü gələcək;
@@ -33,4 +57,5 @@
      Kilidli sənəd də zolağı alır: klaviatura ekranı da fiktiv artefaktdır.
      `data-fq` markeri mətnə görə deyil, atributa görə yoxlanılır. --}}
 <div class="p-fiktiv" data-fq="1">{{ \App\Support\Dossier\Byuro::QEYD }}</div>
+<div class="p-mikro p-mikro-alt" aria-hidden="true">{{ $mikro }}</div>
 </div>

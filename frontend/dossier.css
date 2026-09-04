@@ -120,32 +120,114 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .docrow.read .dr-name{color:var(--ink3)}
 .docrow.locked .dr-name{color:var(--buff)}
 
+/* SIRA QAPISI. Bağlı vərəq gizlədilmir — adı görünür, çünki materialların
+   siyahısı onsuz da təqdimat səhifəsindədir. Görünən yalnız ONA HƏLƏ
+   ÇATMADIĞIDIR: sönük yazı və ⊘ nişanı. */
+.docrow.qapali{cursor:not-allowed}
+.docrow.qapali .dr-no,
+.docrow.qapali .dr-name,
+.docrow.qapali .dr-kind{color:var(--ink3);opacity:.5}
+.docrow.qapali .dr-mark{color:var(--ink3);opacity:.6}
+.docrow.qapali:active{background:none}
+
 /* ---------- kağız ---------- */
 /* ÖLÇÜ TƏLƏSİ: `ch` elementin ÖZ `font-size`-ına görə hesablanır. `.paper`
    `font-size` elan etmir və `body`-dən 16px miras alır — `max-width` burada
    `ch` ilə yazılsaydı hesab 18% sürüşərdi. Ona görə sətir uzunluğu aşağıda,
    öz ölçüsünü elan edən elementlərin üstündədir. */
+/* ARXA QAT — blankın «çap izi». Real blankda qurumun nişanı vərəqin ortasına
+   solğun basılır və mətn onun üstünə yazılır. FON ŞƏKLİ kimi verilir, ayrıca
+   element kimi yox: fon həmişə bütün məzmunun altındadır, yəni heç bir blokun
+   z-index-i ilə əlləşmək lazım gəlmir. Rəng burada sabitdir (`var()` data
+   URI-nin içində işləmir), ona görə opaklıq SVG-nin özündədir. */
 .paper{background:var(--paper);color:var(--ink);margin-inline:auto;
   padding:22px var(--paper-x) 34px;max-width:var(--paper-w);
   min-height:100%;font-family:var(--mono);position:relative}
+/* ═══ QORUYUCU ÇAP ══════════════════════════════════════════════════
+   Çərçivə, kölgə gerbi və mikromətn haşiyəsi — üçü də vərəqin özünə aiddir,
+   heç bir bloka yox, ona görə sarğıdadır. Mətnin altındadır (`z-index:0`). */
+.p-qat{position:absolute;pointer-events:none;z-index:0}
+.p-cerceve{inset:9px;border:1.3px solid var(--ink3);opacity:.5}
+.p-cerceve::after{content:"";position:absolute;inset:4px;border:.5px solid var(--ink3);opacity:.75}
+.p-hayalet{left:50%;top:44%;width:min(56%,290px);transform:translate(-50%,-50%);opacity:.055}
+.p-hayalet svg{width:100%;height:auto;display:block}
+.p-hayalet circle,.p-hayalet path{fill:none;stroke:var(--ink);stroke-width:1.3}
+
+/* MİKROMƏTN HAŞİYƏSİ. Qoruyucu çapın ən tanınan elementidir və eyni zamanda
+   hüquqi qalxanın bir hissəsi: ekran görüntüsü böyüdüləndə vərəqin öz
+   kənarında «FİKTİV OYUN SƏNƏDİ» yazısı oxunur. */
+.p-mikro{margin:0 calc(var(--paper-x) * -1) 10px;padding:0 6px;
+  font:400 3.6px/1.9 var(--mono);letter-spacing:.02em;color:var(--ink3);
+  opacity:.75;overflow:hidden;white-space:nowrap;text-overflow:clip;
+  user-select:none}
+.p-mikro-alt{margin:8px calc(var(--paper-x) * -1) 0}
+
+/* Vərəqin altlığı — forma nömrəsi və vərəq nişanı. */
+.p-forma{display:flex;justify-content:space-between;gap:12px;margin-top:22px;
+  padding-top:8px;border-top:.5px solid var(--paper3);
+  font:400 8.5px/1.6 var(--mono);color:var(--ink3);letter-spacing:.03em}
+.p-forma span:last-child{flex:0 0 auto}
 .paper::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(105deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 78%,rgba(0,0,0,.05) 100%)}
-.p-head{text-align:center;font:500 11px/1.75 var(--mono);letter-spacing:.06em;color:var(--ink2)}
-.p-rule{height:1px;background:var(--ink3);opacity:.55;margin:12px 0}
-.p-title{text-align:center;font:600 15.5px/1.4 var(--mono);letter-spacing:.02em;margin:14px 0 4px}
+/* ═══ BLANKIN BAŞLIĞI ═══════════════════════════════════════════════
+   Quruluş saytın digər bölməsindəki sənəd blanklarından götürülüb — orada
+   gerb, iri hərfli qurum adı, ikiqat xətt və qəbul sətri vərəqi «rəsmi»
+   edən şeydir. Burada eyni quruluş, amma AFİB ilə və kağız palitrasında. */
+.p-blank{text-align:center;padding-top:4px}
+.p-gerb svg{width:56px;height:56px;display:block;margin:0 auto 8px}
+.p-gerb circle,.p-gerb path{fill:none;stroke:var(--ink2);stroke-width:2.2}
+.p-gerb .ic{stroke-width:.9}
+.p-gerb text{fill:var(--ink2);stroke:none;font:700 13px var(--mono);letter-spacing:.04em}
+.p-qurum{font:600 13.5px/1.35 var(--mono);letter-spacing:.17em;color:var(--ink)}
+.p-qurum2{font:500 10px/1.7 var(--mono);letter-spacing:.13em;color:var(--ink2);margin-top:3px}
+.p-qurum3{font:400 8.5px/1.6 var(--mono);letter-spacing:.09em;color:var(--ink3);margin-top:5px}
+/* `.p-head` indi SARĞIDIR — görkəm içəridəki sətirlərdədir. Sinif qalır,
+   çünki vərəq başlığının müqaviləsi odur (brauzer testi və security.php
+   məhz bunu axtarır). */
+.p-head{text-align:center}
+/* İkiqat xətt — blankı mətndən ayıran rəsmi ayırıcı. */
+.p-rule{height:3px;margin:11px 0 0;border-top:1.5px solid var(--ink2);
+  border-bottom:.5px solid var(--ink3);background:none;opacity:.75}
+
+/* ═══ QƏBUL SƏTRİ ═══════════════════════════════════════════════════
+   Solda çıxış nömrəsi, ORTADA kargüzarlıq möhürü, sağda sənədin adı.
+   Möhür mərkəzdədir, çünki real blankda o, sənədin ağzına vurulur. */
+.p-qebul{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;
+  align-items:start;margin:14px 0 4px;font:400 9.5px/1.75 var(--mono);color:var(--ink2)}
+.p-qebul b{font-weight:600;color:var(--ink)}
+.p-qebul-g{text-align:right}
+.p-damga{flex:0 0 auto;border:1.5px solid var(--pen);color:var(--pen);
+  padding:5px 10px 4px;text-align:center;transform:rotate(-1.4deg);opacity:.82;
+  display:flex;flex-direction:column;gap:1px;max-width:190px}
+.p-damga-u{font:500 6.5px var(--mono);letter-spacing:.12em}
+.p-damga-o{font:600 11px var(--mono);letter-spacing:.09em}
+.p-damga-a{font:400 6.5px var(--mono);letter-spacing:.06em;opacity:.85}
+.p-title{text-align:center;font:600 15.5px/1.4 var(--mono);letter-spacing:.06em;margin:18px 0 4px}
 .p-sub{text-align:center;font:400 11.5px var(--mono);color:var(--ink2);margin-bottom:16px}
 .p-body{font:400 13.5px/1.95 var(--mono);text-align:justify;hyphens:auto;
   max-width:var(--measure);margin-inline:auto}
-.p-body p{margin:0 0 13px}
+/* Abzas girintisi — rəsmi sənədin ən ucuz və ən güclü nişanəsi.
+   Qeyd qutusundakı (`.p-note`) mətndə girinti YOXDUR: o, sənəd mətni deyil. */
+.p-body p{margin:0 0 13px;text-indent:2em}
+.p-body p:first-child{text-indent:2em}
 .p-fields{font:400 13px/2.1 var(--mono);margin:0 0 14px}
 .p-fields div{display:flex;gap:8px;align-items:baseline}
 .p-fields b{font-weight:400;color:var(--ink2);flex:0 0 auto}
 .p-fields i{flex:1;border-bottom:1px dotted var(--ink3);font-style:normal;
   align-self:flex-end;transform:translateY(-4px);min-width:10px}
 .p-fields span{font-weight:500}
-.p-sign{margin-top:24px;display:flex;justify-content:space-between;align-items:flex-end;
+.p-sign{margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end;
   font:400 12px var(--mono);color:var(--ink2);gap:16px}
-.p-sign .sig{color:var(--pen);font-style:italic;font-size:15px;transform:rotate(-2deg)}
+.p-sign-v{margin-bottom:2px}
+/* İMZA XƏTTİ. Əlyazma ad xəttin üstünə çıxır (`translateY`) — real imza da
+   xətti kəsir; tam xəttin üstündə duran ad çap kimi görünür. */
+.p-sign-x{min-width:150px;height:26px;border-bottom:1px solid var(--ink2);
+  position:relative;opacity:.85}
+.p-sign .sig{position:absolute;left:14px;bottom:-3px;white-space:nowrap;
+  color:var(--pen);font:400 21px/1 var(--el);letter-spacing:.01em;
+  transform:rotate(-3.5deg);opacity:.9}
+.p-sign-c{margin-top:4px;font-size:10.5px;color:var(--ink3);letter-spacing:.02em}
+.p-sign-d{flex:0 0 auto;white-space:nowrap}
 .p-note{margin:18px auto 0;padding:11px 12px;border:1px solid var(--paper3);
   background:var(--paper2);font:400 12px/1.75 var(--mono);color:var(--ink2);
   max-width:var(--measure)}
@@ -155,8 +237,11 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 /* Fiktivlik qeydi — HƏR sənədin altında. `sened.blade.php` sarğısı onu
    məcburi əlavə edir; burada yalnız görkəmi var. Sənədi boğmur, amma
    ekran görüntüsü kəsiləndə də kadrda qalsın deyə kağızın içindədir. */
-.p-fiktiv{margin-top:26px;padding-top:10px;border-top:1px dotted var(--ink3);
-  font:400 10.5px/1.65 var(--mono);color:var(--ink2);letter-spacing:.01em}
+/* Tünd lent — kəsilmiş ekran görüntüsündə də gözə birinci düşən element
+   olmalıdır. Mətni HƏRFİDİR, yoxlayıcı onu sözbəsöz tutuşdurur. */
+.p-fiktiv{margin:14px calc(var(--paper-x) * -1) 0;padding:9px 14px;
+  background:var(--ink);color:var(--paper);text-align:center;
+  font:500 9.5px/1.6 var(--mono);letter-spacing:.05em}
 
 /* cədvəl */
 .p-tbl{width:100%;border-collapse:collapse;font:400 11.5px/1.5 var(--mono);margin:6px 0 12px}
@@ -288,6 +373,20 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   font:500 13px var(--sans);cursor:pointer}
 .pinbtn.on{border-style:solid;border-color:var(--pen);color:var(--pen)}
 
+/* «Davam et» — vərəqin altındakı əsas hərəkət. Sancaq düyməsindən fərqli
+   olaraq DOLU və enlidir: oxucunun gözü səhifənin sonunda onu axtarır. */
+.davam{display:block;width:min(100% - 40px,var(--paper-w,100%));margin:14px auto 30px;
+  padding:14px 16px;background:var(--buff);border:0;color:var(--desk);
+  font:600 14px var(--sans);text-align:left;cursor:pointer}
+.davam:active{filter:brightness(.92)}
+.davam-s{display:block;margin-top:4px;font:400 11.5px var(--mono);
+  color:var(--desk);opacity:.72;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Bağlı lent. `disabled` işlədilmir — bağlı düymə klik vermir və adam
+   niyə keçmədiyini bilməz; ona görə görünüş sönür, qərarı isə JS verir. */
+.tab.kilidli{opacity:.42}
+.tab.kilidli::after{content:'⊘';font:400 10px var(--mono);margin-left:2px}
+
 /* ---------- bildiriş ---------- */
 .bildiris{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(14px);
   background:#2E2410;color:var(--buff);padding:11px 16px;font:500 13px var(--sans);
@@ -395,7 +494,10 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 
 .paper{transform:rotate(var(--egilme,0deg))}
 .kagiz-qat{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.paper>*:not(.kagiz-qat){position:relative;z-index:1}
+/* Məzmun fiziki qatların ÜSTÜNDƏDİR. Möhür istisnadır: o, `--x/--y` ilə
+   vərəqin istənilən yerinə düşür, yəni `position:absolute` qalmalıdır —
+   yoxsa sıradan bir blok kimi sənədin SONUNA düşür. */
+.paper>*:not(.kagiz-qat):not(.p-mohur):not(.p-qat){position:relative;z-index:1}
 
 /* Köhnəlmə — dənəvərlik + kağızın çalarları. Naxış `data:` SVG-dir. */
 .kagiz-kohnelme-1,.kagiz-kohnelme-2,.kagiz-kohnelme-3{
@@ -450,15 +552,23 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .kagiz-atac-sol-alt{bottom:14px;left:14px;transform:rotate(6deg)}
 
 /* ---------- möhür qatı ---------- */
-.p-mohur{position:absolute;left:var(--x);top:var(--y);width:var(--olcu);height:var(--olcu);
+/* MÖHÜR — SVG. Yazı dairənin kənarı boyunca əyilir (`textPath`); düz sətirli
+   dairə möhürə yox, çərçivəyə oxşayır. `multiply` mürəkkəbi kağıza hopdurur,
+   yəni möhür yapışdırılmış etiket kimi görünmür və altındakı mətn oxunur. */
+.p-mohur{position:absolute;left:var(--x);top:var(--y);width:var(--olcu);
   transform:translate(-50%,-50%) rotate(var(--bucaq));opacity:var(--op);
-  pointer-events:none;z-index:2;display:flex;align-items:center;justify-content:center;
-  text-align:center;color:var(--mohur-reng,var(--stamp))}
-.p-mohur-daire{border:2.5px solid currentColor;border-radius:50%}
-.p-mohur-daire::before{content:"";position:absolute;inset:7px;border:1px solid currentColor;border-radius:50%}
-.p-mohur-duzbucaq{border:2.5px solid currentColor}
-.p-mohur-duzbucaq::before{content:"";position:absolute;inset:5px;border:1px solid currentColor}
-.p-mohur span{font:600 10px/1.45 var(--mono);letter-spacing:.08em;max-width:78%}
+  pointer-events:none;z-index:2;mix-blend-mode:multiply;
+  color:var(--mohur-reng,var(--stamp))}
+.p-mohur svg{width:100%;height:auto;display:block;overflow:visible}
+.p-mohur svg circle,.p-mohur svg rect,.p-mohur svg line{fill:none;stroke:currentColor;stroke-width:2.2}
+.p-mohur svg .ic{stroke-width:1.1}
+.p-mohur svg text{fill:currentColor;stroke:none;font-family:var(--mono);font-weight:600}
+/* QÖVS YAZISININ ÖLÇÜSÜ HESABLANIB, seçilməyib: yuxarı qövsün uzunluğu
+   π·33 ≈ 104 vahiddir, monoaralıqlı şriftin addımı 0.6em-dir, yəni N simvol
+   üçün N·(0.6F + boşluq) ≤ 104. 23 simvolluq qurum sətri üçün F ≈ 6.2 çıxır.
+   Böyük yazılsa mətn qövsdən daşır və möhür oxunmaz ləkəyə çevrilir. */
+.p-mohur svg .qov{font-size:6.2px;letter-spacing:.05em}
+.p-mohur svg .ort{font-size:9px;letter-spacing:.04em}
 .p-mohur-mor{--mohur-reng:var(--stamp)}
 .p-mohur-qirmizi{--mohur-reng:var(--red)}
 .p-mohur-mavi{--mohur-reng:var(--pen)}

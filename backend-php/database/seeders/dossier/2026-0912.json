@@ -255,6 +255,22 @@
               "[[Qeyd:]] parkda 41 işçi çalışır. Gecə növbəsində rəsmi olaraq yalnız mühafizəçi qalmalı idi."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "TƏSDİQ EDİRƏM",
+              "FİKTİV"
+            ],
+            "x": 72,
+            "y": 17,
+            "olcu": 150,
+            "bucaq": -11
+          }
         ]
       }
     },
@@ -313,6 +329,22 @@
             "vezife": "Baxışı aparan, AFİB müstəntiqi",
             "ad": "S.Məmmədli",
             "tarix": "14.09.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "QEYDƏ ALINIB",
+              "FİKTİV"
+            ],
+            "x": 76,
+            "y": 15,
+            "olcu": 146,
+            "bucaq": -13
           }
         ]
       }
@@ -450,6 +482,22 @@
             "vezife": "AFİB tibbi eksperti",
             "ad": "M.Xəlilova",
             "tarix": "14.09.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "FİKTİV"
+            ],
+            "x": 74,
+            "y": 16,
+            "olcu": 144,
+            "bucaq": 9
           }
         ]
       }
@@ -606,6 +654,22 @@
             "abzaslar": [
               "[[Müstəntiqin qeydi:]] 22:12-dən 05:41-ə qədər kassada növbətçi olmamalıdır — kassa 22:15-də bağlanır."
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 75,
+            "y": 13,
+            "olcu": 126,
+            "bucaq": 6
           }
         ]
       },

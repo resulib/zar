@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\DB;
  */
 class DossierService
 {
+    /** @var array<int,list<int>> qovluq id → vərəq id-ləri, sıra ilə */
+    protected array $sira = [];
+
     public function __construct(private readonly CreditService $credits)
     {
     }
@@ -114,6 +117,70 @@ class DossierService
     public function isUnlocked(DossierProgress $p, DossierDocument $doc): bool
     {
         return ! $doc->is_locked || $p->marked('unlocked_ids', (int) $doc->id);
+    }
+
+    /**
+     * SIRA QAPISI — vərəq yalnız ondan əvvəlkilərin hamısı keçiləndən sonra açılır.
+     *
+     * Qovluq hekayədir: 28-ci vərəqi birinci açan adam işi oxumur, cavabı
+     * axtarır. Qapı SERVERDƏDİR, çünki `dossier.js`-dəki eyni qayda yalnız
+     * görünüşdür — `/api/is/{slug}/sened/{id}` birbaşa da çağırıla bilər.
+     *
+     * KODLA BAĞLI VƏRƏQ SIRANI DAYANDIRMIR: onu «keçmək» üçün klaviaturanı
+     * görmək kifayətdir və `markRead()` onu elə orada oxunmuş sayır. Əks halda
+     * kodu hələ tapmamış adam qovluğun qalanını heç vaxt görə bilməzdi —
+     * yəni bir tapmaca bütün hekayəni bağlayardı.
+     */
+    public function reachable(Dossier $dossier, DossierDocument $doc, DossierProgress $p): bool
+    {
+        $read = $p->ids('read_ids');
+
+        foreach ($this->orderedIds($dossier) as $id) {
+            if ($id === (int) $doc->id) {
+                return true;
+            }
+
+            if (! in_array($id, $read, true)) {
+                return false;
+            }
+        }
+
+        /* Sənəd bu qovluğa aid deyilsə buraya düşür — çağıran onsuz da yoxlayır. */
+        return true;
+    }
+
+    /**
+     * Bütün vərəqlər keçilibmi. Şübhəlilər lenti və yekun rəy bundan sonra açılır:
+     * işi oxumadan verilən rəy təxmindir, oyun isə təxmin oyunu deyil.
+     */
+    public function allRead(Dossier $dossier, DossierProgress $p): bool
+    {
+        $read = $p->ids('read_ids');
+
+        foreach ($this->orderedIds($dossier) as $id) {
+            if (! in_array($id, $read, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Vərəq id-ləri sıra ilə. Bir sorğudur və eyni istək daxilində təkrarlanmır —
+     * `reachable()` hər sənəd açılışında çağırılır.
+     *
+     * @return list<int>
+     */
+    protected function orderedIds(Dossier $dossier): array
+    {
+        $k = (int) $dossier->id;
+
+        if (! isset($this->sira[$k])) {
+            $this->sira[$k] = array_map('intval', $dossier->documents()->pluck('id')->all());
+        }
+
+        return $this->sira[$k];
     }
 
     /**

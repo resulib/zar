@@ -703,6 +703,26 @@ the third wrong verdict `revealed` is set: the explanation opens, the certificat
 `throttle:dossier-kilid` (10/min per visitor, 30/min per IP) is what actually protects a 4-digit
 code — the length never could.
 
+**Documents are read in order, and the order is a server rule.** Every sheet ends with a
+**«Davam et»** button that opens the next one; a sheet whose predecessors are unread is dimmed
+(`.docrow.qapali`, `aria-disabled`) and refuses to open. `DossierService::reachable()` is the gate
+and `Api\DossierController::document()` returns **403 `sira`** — the shell's copy of the rule
+(`sirada()` in `dossier.js`) is only how the list *looks*, because `/api/is/{slug}/sened/{id}` can
+be called directly. `allRead()` is the same idea for the whole folder: the **Şübhəlilər** and
+**Cavab** tabs stay locked (`.tab.kilidli`) until every sheet has been passed, and
+`verdict()` refuses with 403 **before** `attempts++`, so a shell that does not know the rule
+cannot burn the three attempts.
+
+> **A code-locked sheet does not stop the sequence.** `markRead()` marks it the moment the keypad
+> renders, so someone who has not yet found the code still reaches the rest of the folder —
+> otherwise one puzzle would close the whole story. That is also why the client marks locked
+> documents read (it used to skip them) — the two sides must agree or a row looks open and 403s.
+>
+> `aria-disabled` (not `disabled`) is deliberate: a disabled button fires no click, so the visitor
+> would never learn *why* nothing happened. The guard lives in the handler and answers with a
+> toast. Playwright treats `aria-disabled` as unclickable, so the tests click those two controls
+> with `{ force: true }` — exactly what a real browser does.
+
 **Progress is in the database, never in `localStorage`** — the point is that someone can close the
 phone and continue in the morning. The same row holds the clock: `started_at` is written server-side
 and `duration_seconds` is computed server-side; the counter in the browser is display only and cannot
@@ -791,6 +811,29 @@ content keys) plus capabilities nothing had used yet.
 `check-dossier.js` asserts `$hidden = ['lock_code','content']` with a regex, and the
 "lock code never appears inside content" check reads the same key. Renaming the column to
 `bloklar` would have silently disabled both.
+
+**The sheet's furniture is not a block.** A document has to *read* as an official form, so the
+wrapper draws the apparatus every sheet shares: a **microtext border** (the fiction notice repeated
+at 3.6px along the top and bottom edges), a **double frame**, the **ghost crest**, the **form line**
+(`Forma № AFİB-NN · İş № … · Vərəq …`) and the fiction notice as a **dark band**. The `blank` block
+draws the letterhead itself — crest, institution name in letterspaced caps, sub-lines, double rule
+and the three-column intake row whose centre is a blue `QEYDƏ ALINIB` stamp. The structure is
+lifted from the zarafat side's blanks, which is where this repo already solved "make it look
+issued"; only the palette and the issuing body differ.
+
+- `imza` renders a real signature: the handwriting face on a **signature rule**, with the printed
+  name in parentheses under it — a name floating in white space reads as a caption, not a signature.
+- `partials/mohur.blade.php` is **SVG, not a CSS box**: real stamps curve their text around the
+  ring, and `border-radius` cannot do that. The ring font size is *computed*, not chosen — the top
+  arc is π·33 ≈ 104 units and a monospace advance is 0.6em, so 23 characters need ≈6.2px. Setting
+  it by eye overflowed the arc and turned the stamp into an unreadable smudge.
+- **`.paper > *:not(.kagiz-qat):not(.p-mohur):not(.p-qat)` is load-bearing.** That rule lifts
+  content above the paper layers, and it outranks `.p-mohur{position:absolute}` — a stamp left in
+  the list silently loses its `--x/--y` and drops to the bottom of the sheet. Any new absolutely
+  positioned layer must be added to that `:not()` chain.
+- The `.p-head` **class is a contract**, not a style: `check-dossier-flow.js` counts it and
+  `tests/security.php` reads its text. It is now a wrapper around the masthead lines; keep the
+  class even when the visual moves to its children.
 
 **The mechanical gate survived the rewrite.** `sened.blade.php` is still the single wrapper
 every document passes through, so the AFİB notice, the paper layer and the stamp layer live

@@ -114,7 +114,7 @@
 
     $('#topbar').classList.add('on');
     $('#tabbar').classList.add('on');
-    siyahi(); subheliler(); suallar(); nisan();
+    siyahi(); subheliler(); suallar(); nisan(); lentHal();
     sayqacBasla((r.state && r.state.elapsed) || 0);
 
     if (S.solved || S.revealed) { netice(null); return; }
@@ -146,20 +146,76 @@
       .replace(/"/g, '&quot;');
   }
 
+  /* ---------------- sıra qaydası ----------------
+     Bu üç funksiya serverdəki `DossierService::reachable()` və `allRead()`
+     metodlarının EYNİSİDİR. Qərarı yenə server verir — buradakı nüsxə yalnız
+     lentin və düymələrin görünüşü üçündür; ikisi bir-birindən ayrılsa,
+     adam açıq görünən vərəqə tıklayıb 403 alar. */
+
+  /** Vərəq açılırmı: ondan əvvəlkilərin HAMISI keçilməlidir. */
+  function sirada(id) {
+    for (var i = 0; i < S.docs.length; i++) {
+      if (S.docs[i].id === id) return true;
+      if (S.read.indexOf(S.docs[i].id) < 0) return false;
+    }
+    return true;
+  }
+
+  /** Bütün vərəqlər keçilibmi — şübhəlilər və yekun rəy bundan sonra açılır. */
+  function hamsiKecilib() {
+    for (var i = 0; i < S.docs.length; i++) {
+      if (S.read.indexOf(S.docs[i].id) < 0) return false;
+    }
+    return S.docs.length > 0;
+  }
+
+  /** Siyahıda növbəti vərəq. Sonuncudan sonra `null`. */
+  function novbeti(id) {
+    for (var i = 0; i < S.docs.length - 1; i++) {
+      if (S.docs[i].id === id) return S.docs[i + 1];
+    }
+    return null;
+  }
+
   /* ---------------- materiallar ---------------- */
   function siyahi() {
+    /* Bir keçiddə həm «oxunub», həm «bağlıdır» hesablanır: ilk keçilməmiş
+       vərəqdən SONRAKILARIN hamısı bağlıdır. */
+    var acilan = true;
+
     $('#list').innerHTML = S.docs.map(function (d) {
       var oxunub = S.read.indexOf(d.id) >= 0;
+      var qapali = !acilan;
+      if (!oxunub) acilan = false;
+
+      var izah = qapali ? 'əvvəlki vərəqi keç'
+        : (d.locked ? 'bağlıdır — dördrəqəmli kod' : esc(d.kind));
+
       return '<button class="docrow ' + (oxunub ? 'read' : '') + ' ' +
-        (d.locked ? 'locked' : '') + ' ' + (d.id === S.cur ? 'cari' : '') +
-        '" data-i="' + d.id + '">' +
+        (d.locked ? 'locked' : '') + ' ' + (qapali ? 'qapali' : '') + ' ' +
+        (d.id === S.cur ? 'cari' : '') +
+        '" data-i="' + d.id + '"' + (qapali ? ' aria-disabled="true"' : '') + '>' +
         '<span class="dr-no">v. ' + esc(d.page) + '</span>' +
         '<span class="dr-mid"><span class="dr-name">' + esc(d.name) + '</span>' +
-        '<span class="dr-kind">' + (d.locked ? 'bağlıdır — dördrəqəmli kod' : esc(d.kind)) + '</span></span>' +
-        '<span class="dr-mark">' + (d.locked ? '⌧' : (oxunub ? '✓' : '')) + '</span></button>';
+        '<span class="dr-kind">' + izah + '</span></span>' +
+        '<span class="dr-mark">' + (qapali ? '⊘' : (d.locked ? '⌧' : (oxunub ? '✓' : ''))) +
+        '</span></button>';
     }).join('');
+
     $$('#list .docrow').forEach(function (b) {
       b.onclick = function () { ac(+b.getAttribute('data-i')); };
+    });
+  }
+
+  /** Şübhəlilər və yekun rəy lentləri — bütün vərəqlər keçilənə qədər bağlıdır. */
+  function lentHal() {
+    var acar = hamsiKecilib() || S.solved || S.revealed;
+
+    $$('.tab').forEach(function (t) {
+      var g = t.getAttribute('data-go');
+      if (g !== 'suspects' && g !== 'answer') return;
+      t.classList.toggle('kilidli', !acar);
+      t.setAttribute('aria-disabled', acar ? 'false' : 'true');
     });
   }
 
@@ -171,6 +227,12 @@
   function ac(id) {
     var d = tap(id);
     if (!d) return;
+
+    if (!sirada(id)) {
+      bildir('Əvvəlki vərəqi keçmədən bu vərəq açılmır.');
+      return;
+    }
+
     S.cur = id;
     /* Siyahı masaüstündə daim açıq qalır, ona görə hansı vərəqin masada
        olduğu görünməlidir. Telefonda `.cari` stilsizdir. */
@@ -182,19 +244,57 @@
     go('doc');
 
     API.get(BASE + '/sened/' + id).then(function (r) {
+      /* KODLU VƏRƏQ DƏ KEÇİLMİŞ SAYILIR — serverdəki `markRead()` ilə eyni.
+         Yoxsa kodu hələ tapmamış adam qovluğun qalanını görə bilməzdi.
+         Sıra `yaz()`-dan ƏVVƏLdir: altlıq və lentlər yenilənmiş siyahını görsün. */
+      if (S.read.indexOf(id) < 0) { S.read.push(id); }
       yaz(r);
-      if (!r.locked && S.read.indexOf(id) < 0) { S.read.push(id); }
+      siyahi();
+      lentHal();
     }).catch(function (e) {
       $('#docbody').innerHTML = '<div class="empty">Sənəd açılmadı.</div>';
       xeta(e);
     });
   }
 
+  /* Vərəqin altındakı düymələr. «Davam et» KODLU vərəqdə də var: klaviaturanı
+     görmək onu keçmək üçün kifayətdir, kodu sonra da tapmaq olar. */
+  function altliq(r) {
+    var h = '';
+
+    if (!r.locked) {
+      var pinli = S.pinned.indexOf(r.id) >= 0;
+      h += '<button class="pinbtn ' + (pinli ? 'on' : '') + '" id="pin">' +
+        (pinli ? 'Qeydlərdən çıxar' : 'Qeyd dəftərinə sanc') + '</button>';
+    }
+
+    var n = novbeti(r.id);
+
+    if (n) {
+      h += '<button class="davam" id="davam" data-i="' + n.id + '">Davam et →' +
+        '<span class="davam-s">v. ' + esc(n.page) + ' · ' + esc(n.name) + '</span></button>';
+    } else {
+      h += '<button class="davam" id="davam" data-go="answer">Yekun rəyə keç →' +
+        '<span class="davam-s">qovluğun sonu — bütün vərəqlər keçildi</span></button>';
+    }
+
+    return h;
+  }
+
   function yaz(r) {
-    var pinli = S.pinned.indexOf(r.id) >= 0;
-    $('#docbody').innerHTML = r.html + (r.locked ? '' :
-      '<button class="pinbtn ' + (pinli ? 'on' : '') + '" id="pin">' +
-      (pinli ? 'Qeydlərdən çıxar' : 'Qeyd dəftərinə sanc') + '</button>');
+    $('#docbody').innerHTML = r.html + altliq(r);
+
+    var dv = $('#davam');
+    if (dv) {
+      dv.onclick = function () {
+        var ni = dv.getAttribute('data-i');
+        if (ni) { ac(+ni); return; }
+        var t = $$('.tab').filter(function (x) {
+          return x.getAttribute('data-go') === 'answer';
+        })[0];
+        if (t) t.click();
+      };
+    }
 
     if (r.locked) { kilid(r.id); return; }
 
@@ -229,6 +329,7 @@
           S.unlocked.push(id);
           if (r.docs) S.docs = r.docs;
           siyahi();
+          lentHal();
           yaz({ id: id, html: r.html, locked: false });
           bildir('Qutu açıldı.');
         }).catch(function (e) {
@@ -432,9 +533,17 @@
   /* ---------------- lentlər ---------------- */
   $$('.tab').forEach(function (t) {
     t.onclick = function () {
+      var g = t.getAttribute('data-go');
+
+      /* Şübhəlilər və yekun rəy işi oxumamış açılmır. `disabled` QOYULMUR —
+         bağlı düymə klik hadisəsi vermir və adam niyə keçmədiyini bilmir. */
+      if ((g === 'suspects' || g === 'answer') && !hamsiKecilib() && !S.solved && !S.revealed) {
+        bildir('Əvvəlcə bütün vərəqləri keç.');
+        return;
+      }
+
       $$('.tab').forEach(function (x) { x.classList.remove('on'); });
       t.classList.add('on');
-      var g = t.getAttribute('data-go');
       if (g === 'index') { siyahi(); $('#ttl').textContent = 'İş materialları'; }
       if (g === 'suspects') $('#ttl').textContent = 'Şübhəlilər';
       if (g === 'notes') { qeydler(); $('#ttl').textContent = 'İşçi qeydlər'; }
