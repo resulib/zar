@@ -134,6 +134,17 @@ return [
     // bu həddi aşan mətn yoxlayıcıda xəbərdarlıq alır.
     'elyazma_hedd' => 180,
 
+    /*
+    | Blank başlığının növləri — hər biri bir təkrar işlənən komponent.
+    |
+    | Qərar, arayış, protokol və izahat real həyatda fərqli formalardır və
+    | eyni başlıqla göstərilməməlidir. Bu, sənəd növü ÜÇÜN ŞABLON DEYİL:
+    | blank bir blokdur, `nov` onun xassəsidir və qalan on iki blok növü
+    | dəyişmir. `resources/views/components/blank/<nov>.blade.php` mövcud
+    | olmalıdır; tools/check-dossier.js siyahı ilə faylları tutuşdurur.
+    */
+    'blank_novleri' => ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'],
+
     // Kənar qeydi blok deyil, hər blokun qəbul etdiyi nişandır.
     'kenar_novleri' => ['qeyd', 'sual', 'xett', 'daire'],
     'kenar_yerler'  => ['sag', 'sol', 'alt'],

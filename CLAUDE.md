@@ -812,10 +812,37 @@ content keys) plus capabilities nothing had used yet.
 "lock code never appears inside content" check reads the same key. Renaming the column to
 `bloklar` would have silently disabled both.
 
+**Document types differ by letterhead, and the type is DATA.** A qərar, an arayış and a protokol
+are different forms in real life and must not share one header. That is **not** a per-type template:
+`views/dossier/senedler/` was deleted for that reason and `check-dossier.js` asserts it stays
+deleted. Instead `blank` gained a `nov` property — exactly like `kilid.nov` — and each style is a
+component under `components/blank/`:
+
+| `nov` | what makes it that form |
+|---|---|
+| `resmi` | default; centred intake row with the `QEYDƏ ALINIB` stamp |
+| `qerar` | right-aligned `TƏSDİQ EDİRƏM` grif, larger crest, thick rule, **no intake row** — a decision is not filed material, it *creates* the file |
+| `arayis` | letter layout: small crest left, org lines left-aligned, `№`/date under them, addressee block right |
+| `protokol` | «Tərtib olundu» strip under the rule — place, case no, sheet |
+| `ekspert` | expert's warning box **before** the text, where a real opinion puts it |
+| `izahat` | rights notice as the sheet's first line |
+
+- All six share `<x-blank.ust>` (crest + institution lines), so that part changes in one place.
+- **`nov` is whitelisted before it reaches `<x-dynamic-component>`.** It becomes a component name;
+  an unvalidated value would try to render an arbitrary view. `config('dossier.blank_novleri')` ↔
+  `BlokSxemi::BLANK_NOV` ↔ the component files are compared by `check-dossier.js`, and the Blade
+  falls back to `resmi` for anything unknown.
+
 **The sheet is the graphite palette, and that is a deliberate split.** `--paper`/`--ink` and the
 accents now match `doc.js`'s `ink` palette (`#F7F8FB` paper, `#151B26` ink, `#17356B` pen) — a
 real blank is cool white, not warm parchment. **The folder around it stays warm** (`--desk`,
 `--buff`, the catalog cards): the desk and the tabs are furniture, the sheet is the document.
+
+**The hologram is not on every sheet, and that is the point.** Foil is expensive and a real file
+carries it only on *authorising* documents — qərar, əmr, formal akt, the final expert opinion.
+`content.holoqram` decides. A stamp, by contrast, sits on **almost every** sheet (27 of 28; locked
+documents show a keypad instead), because every filed page gets a registration mark. A protection
+that is everywhere is not a protection.
 
 **Security print is three shared components, layered under the text.** `<x-naxis>` is the guilloche
 (three rosettes, ported from `doc.js guilloche()`), `<x-gerb>` doubles as the ghost watermark, and
@@ -1291,6 +1318,9 @@ occasional runtime wrinkle on first run.
 - **Crest / seal geometry**: `frontend/doc.js` `crest()` + `seal()` ↔ `App\Support\Nisan`
   (`gerb()` / `mohur()`), and **signature**: `doc.js` `signature()` ↔ `App\Support\Dossier\Imza`
   — the last pair is asserted identical by producing the same path string for the same seed.
+- **Blank types**: `config/dossier.php` `blank_novleri` ↔ `BlokSxemi::BLANK_NOV` ↔ the components
+  in `resources/views/components/blank/` — `tools/check-dossier.js` compares all three and also
+  checks every `nov` used in a seed.
 - **Case-file block types**: `config/dossier.php` `bloklar` ↔ the Blade files in
   `resources/views/dossier/bloklar/` ↔ `BlokSxemi::BLOKLAR` ↔ `Qalereya::bloklar()` —
   `tools/check-dossier.js` §2 compares all four and pins the count at 13.

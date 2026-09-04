@@ -45,10 +45,16 @@
 
 {{-- Vərəqin altlığı: forma nömrəsi və vərəq nişanı. Real blankın ən son
      sətri həmişə budur və məhz o, vərəqi «çap məhsulu» kimi göstərir. --}}
-{{-- Holoqram yaması — optik qoruma nişanı, forma sətrinin yanında. --}}
-<div class="p-holo">
-  <x-holoqram :id="'ho-' . $doc->id" :olcu="52" etiket="HOLOQRAM"/>
-</div>
+{{-- Holoqram yaması — optik qoruma nişanı, forma sətrinin yanında.
+     HƏR VƏRƏQDƏ OLMUR: folqa bahalıdır və real qovluqda yalnız qərar, əmr
+     və yekun rəy kimi TƏSDİQEDİCİ sənədlərə vurulur. Adi çıxarış, izahat və
+     ya qəbz üzərində holoqram onun dəyərini yox edərdi — hər yerdə olan
+     qoruma qoruma deyil. Qərarı məlumat verir: `content.holoqram`. --}}
+@if(($c['holoqram'] ?? false) === true)
+  <div class="p-holo">
+    <x-holoqram :id="'ho-' . $doc->id" :olcu="52" etiket="HOLOQRAM"/>
+  </div>
+@endif
 
 <div class="p-forma">
   <span>Forma № {{ \App\Support\Dossier\Byuro::QISA }}-{{ str_pad((string) $doc->sort, 2, '0', STR_PAD_LEFT) }}

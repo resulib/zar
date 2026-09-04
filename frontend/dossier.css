@@ -207,6 +207,51 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-rule{height:3px;margin:11px 0 0;border-top:1.5px solid var(--ink2);
   border-bottom:.5px solid var(--ink3);background:none;opacity:.75}
 
+/* ─── BLANK NÖVLƏRİ ──────────────────────────────────────────────────
+   Qərar, arayış, protokol, ekspert və izahat fərqli formalardır. Ortaq
+   olan yalnız gerb və qurum sətirləridir (`<x-blank.ust>`); aşağıdakı
+   qaydalar hər növün öz üst hissəsini qurur. */
+
+/* QƏRAR — sağ yuxarıda təsdiq qrifi, qəbul sətri yoxdur. */
+.p-qrif{margin:0 0 10px auto;width:min(58%,240px);text-align:left;
+  font:400 9.5px/1.7 var(--mono);color:var(--ink2)}
+.p-qrif-b{font-weight:600;color:var(--ink);letter-spacing:.08em}
+.p-qrif-x{height:16px;border-bottom:1px solid var(--ink3);margin:2px 0 3px;opacity:.7}
+.p-qrif-t{font-size:9px;color:var(--ink3)}
+.p-blank-qerar .p-qurum{font-size:14.5px;letter-spacing:.2em}
+.p-rule-qalin{height:4px;border-top-width:2.5px}
+
+/* ARAYIŞ — məktub kimi sol-sağ bölünür, gerb solda və kiçikdir. */
+.p-blank-arayis{display:grid;grid-template-columns:1fr auto;gap:16px;
+  align-items:start;text-align:left;padding-top:2px}
+.p-blank-arayis .p-head{text-align:left}
+.p-blank-arayis .p-gerb,.p-blank-arayis .nisan-gerb{margin:0 0 6px}
+.p-blank-arayis .p-qurum{font-size:11px;letter-spacing:.1em}
+.p-blank-arayis .p-qurum2{font-size:9px;letter-spacing:.08em}
+.p-arayis-no{margin-top:9px;font:400 9.5px/1.8 var(--mono);color:var(--ink2)}
+.p-arayis-sag{text-align:right;font:400 9.5px/1.8 var(--mono);color:var(--ink2);
+  max-width:190px}
+.p-arayis-k{font-weight:600;color:var(--ink);letter-spacing:.09em;margin-bottom:3px}
+.p-arayis-v{margin-top:6px;color:var(--ink3);font-size:9px}
+
+/* PROTOKOL — başlığın altında «tərtib olundu» zolağı. */
+.p-tertib{display:flex;flex-wrap:wrap;gap:4px 18px;margin:10px 0 2px;
+  padding:7px 10px;border:1px solid var(--paper3);background:var(--paper2);
+  font:400 9.5px/1.6 var(--mono);color:var(--ink2)}
+.p-tertib em{font-style:normal;color:var(--ink3)}
+
+/* EKSPERT RƏYİ — xəbərdarlıq qutusu mətndən ƏVVƏL. */
+.p-xeber{margin:10px 0 2px;padding:9px 11px;border:1px solid var(--paper3);
+  border-left:3px solid var(--stamp);background:var(--paper2);
+  font:400 10px/1.7 var(--mono);color:var(--ink2)}
+.p-xeber-b{font-weight:600;color:var(--ink);letter-spacing:.07em;margin-bottom:3px}
+.p-xeber-i{margin-top:5px;color:var(--ink3);font-size:9px}
+
+/* İZAHAT — hüquq bildirişi, sənədin ilk sətri. */
+.p-huquq{margin:10px 0 2px;padding:8px 10px;border-top:1px solid var(--paper3);
+  border-bottom:1px solid var(--paper3);font:400 9.5px/1.7 var(--mono);color:var(--ink2)}
+.p-huquq span{display:block;margin-top:4px;color:var(--ink3);font-size:9px}
+
 /* ═══ QƏBUL SƏTRİ ═══════════════════════════════════════════════════
    Solda çıxış nömrəsi, ORTADA kargüzarlıq möhürü, sağda sənədin adı.
    Möhür mərkəzdədir, çünki real blankda o, sənədin ağzına vurulur. */

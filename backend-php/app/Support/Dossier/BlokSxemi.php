@@ -30,6 +30,8 @@ final class BlokSxemi
     public const YON         = ['cixan', 'gelen'];
     public const NISAN_NOV   = ['noqte', 'olcu', 'ox', 'shimal'];
     public const KILID_NOV   = ['reqem', 'soz', 'tarix'];
+    /** Blank başlığının növləri — `config('dossier.blank_novleri')` ilə eyni. */
+    public const BLANK_NOV   = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'];
     public const MOHUR_FORMA = ['daire', 'duzbucaq'];
     public const MOHUR_RENG  = ['mor', 'qirmizi', 'mavi', 'qara'];
     public const LEKE_NOV    = ['qehve', 'yag', 'su'];
@@ -45,7 +47,7 @@ final class BlokSxemi
 
     /** Blok növünə görə: [məcburi açarlar, icazəli açarlar]. */
     private const ACARLAR = [
-        'blank'   => [[], ['setirler']],
+        'blank'   => [[], ['setirler', 'nov']],
         'basliq'  => [['ad'], ['alt']],
         'sahe'    => [['setirler'], []],
         'metn'    => [['abzaslar'], ['duz', 'cerceve']],
@@ -153,6 +155,10 @@ final class BlokSxemi
                     }
                 }
             }
+        }
+
+        if ($tip === 'blank' && isset($b['nov']) && ! in_array($b['nov'], self::BLANK_NOV, true)) {
+            $err[] = $bas . ': naməlum blank növü. İcazəlilər: ' . implode(', ', self::BLANK_NOV) . '.';
         }
 
         if ($tip === 'metn') {

@@ -226,7 +226,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "qerar"
           },
           {
             "tip": "basliq",
@@ -268,12 +269,13 @@
               "FİKTİV",
               "OYUN MATERİALI"
             ],
-            "x": 72,
-            "y": 32.0,
-            "olcu": 152,
-            "bucaq": -11
+            "x": 62,
+            "y": 27,
+            "olcu": 154,
+            "bucaq": -13
           }
-        ]
+        ],
+        "holoqram": true
       }
     },
     {
@@ -287,7 +289,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "protokol"
           },
           {
             "tip": "basliq",
@@ -345,10 +348,10 @@
               "FİKTİV",
               "OYUN MATERİALI"
             ],
-            "x": 76,
-            "y": 30.0,
-            "olcu": 152,
-            "bucaq": -13
+            "x": 69,
+            "y": 38,
+            "olcu": 150,
+            "bucaq": -8
           }
         ]
       }
@@ -483,7 +486,23 @@
               "y": 85
             }
           ]
-        }
+        },
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 76,
+            "y": 35,
+            "olcu": 134,
+            "bucaq": 6
+          }
+        ]
       }
     },
     {
@@ -527,6 +546,22 @@
               "[[Qeyd:]] ikinci kadrda barmaqların açarları sıxmış vəziyyəti aydın görünür — dəstə əlin içinə sonradan qoyulmayıb."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 64,
+            "y": 32,
+            "olcu": 118,
+            "bucaq": -4
+          }
         ]
       }
     },
@@ -541,7 +576,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -584,7 +620,7 @@
         "mohurler": [
           {
             "forma": "daire",
-            "reng": "mavi",
+            "reng": "mor",
             "seffaflik": 0.5,
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
@@ -593,9 +629,9 @@
               "FİKTİV",
               "OYUN MATERİALI"
             ],
-            "x": 74,
-            "y": 31.0,
-            "olcu": 152,
+            "x": 71,
+            "y": 29,
+            "olcu": 148,
             "bucaq": 9
           }
         ]
@@ -610,7 +646,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -655,7 +692,26 @@
             "ad": "M.Xəlilova",
             "tarix": "15.09.2026"
           }
-        ]
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 78,
+            "y": 40,
+            "olcu": 148,
+            "bucaq": -11
+          }
+        ],
+        "holoqram": true
       }
     },
     {
@@ -715,6 +771,22 @@
             "nisbet": "4:3",
             "izah": "boru açarı, götürüldüyü yerdə, miqyas xətkeşi ilə"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 66,
+            "y": 37,
+            "olcu": 118,
+            "bucaq": 3
+          }
         ]
       }
     },
@@ -727,7 +799,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -812,6 +885,24 @@
             "ad": "C.Nəbiyev",
             "tarix": "15.09.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 73,
+            "y": 34,
+            "olcu": 148,
+            "bucaq": -13
+          }
         ]
       }
     },
@@ -824,7 +915,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -858,6 +950,24 @@
             "ad": "C.Nəbiyev",
             "tarix": "16.09.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 80,
+            "y": 31,
+            "olcu": 148,
+            "bucaq": -8
+          }
         ]
       }
     },
@@ -870,7 +980,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -928,6 +1039,24 @@
             "ad": "C.Nəbiyev",
             "tarix": "16.09.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 68,
+            "y": 28,
+            "olcu": 148,
+            "bucaq": 6
+          }
         ]
       }
     },
@@ -940,7 +1069,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "qerar"
           },
           {
             "tip": "basliq",
@@ -987,7 +1117,26 @@
             "ad": "İ.Səfərov",
             "tarix": "13.09.2026"
           }
-        ]
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "TƏSDİQ EDİRƏM",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 75,
+            "y": 39,
+            "olcu": 154,
+            "bucaq": -4
+          }
+        ],
+        "holoqram": true
       }
     },
     {
@@ -1001,7 +1150,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1110,10 +1260,10 @@
               "SURƏTİ",
               "DÜZDÜR"
             ],
-            "x": 75,
-            "y": 28.0,
-            "olcu": 126,
-            "bucaq": 6
+            "x": 63,
+            "y": 36,
+            "olcu": 134,
+            "bucaq": 9
           }
         ],
         "kagiz": {
@@ -1135,7 +1285,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "protokol"
           },
           {
             "tip": "basliq",
@@ -1196,7 +1347,24 @@
             "ad": "S.Məmmədli",
             "tarix": "14.09.2026"
           }
-        ]
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "MÜSADİRƏ",
+              "AKTI"
+            ],
+            "x": 70,
+            "y": 33,
+            "olcu": 118,
+            "bucaq": -11
+          }
+        ],
+        "holoqram": true
       }
     },
     {
@@ -1285,7 +1453,23 @@
               "olcu": 27
             }
           ]
-        }
+        },
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 77,
+            "y": 30,
+            "olcu": 126,
+            "bucaq": 3
+          }
+        ]
       },
       "key": true
     },
@@ -1298,7 +1482,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -1354,6 +1539,24 @@
             "ad": "C.Nəbiyev",
             "tarix": "15.09.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0912",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 65,
+            "y": 27,
+            "olcu": 148,
+            "bucaq": -13
+          }
         ]
       }
     },
@@ -1366,7 +1569,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -1420,6 +1624,22 @@
             "vezife": "İzahatı verən",
             "ad": "F.Quliyev",
             "tarix": "14.09.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 72,
+            "y": 38,
+            "olcu": 118,
+            "bucaq": -8
           }
         ]
       }
@@ -1490,7 +1710,23 @@
           "qat": [
             0.36
           ]
-        }
+        },
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 79,
+            "y": 35,
+            "olcu": 126,
+            "bucaq": 6
+          }
+        ]
       }
     },
     {
@@ -1567,6 +1803,22 @@
               "[[Qeyd:]] iki nəfərin çıxış vaxtı yoxdur. Onlardan biri zərərçəkəndir; ikincisi izahatında arxa darvazadan çıxdığını bildirir."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 67,
+            "y": 32,
+            "olcu": 134,
+            "bucaq": -4
+          }
         ]
       }
     },
@@ -1579,7 +1831,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1651,6 +1904,22 @@
               "Kameralar şəbəkə cərəyanı ilə işləyir və gecə boyu fasiləsiz yazıb; qeydlərdə kəsilmə və ya boşluq yoxdur."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 74,
+            "y": 29,
+            "olcu": 118,
+            "bucaq": 9
+          }
         ]
       }
     },
@@ -1665,7 +1934,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1731,6 +2001,22 @@
             "xarakter": "telesik",
             "bucaq": -1.6,
             "metn": "son zəngin vaxtını qəbz lenti ilə tutuşdur"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 62,
+            "y": 40,
+            "olcu": 126,
+            "bucaq": -11
           }
         ]
       }
@@ -1808,6 +2094,22 @@
             "abzaslar": [
               "[[Diqqət:]] söhbət 22:48-də bitir. Sonrakı mesaj yoxdur, silinmiş mesaj da yoxdur."
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "ÇIXARIŞ",
+              "DÜZDÜR"
+            ],
+            "x": 69,
+            "y": 37,
+            "olcu": 134,
+            "bucaq": 3
           }
         ]
       }
@@ -1897,7 +2199,23 @@
           "qat": [
             0.52
           ]
-        }
+        },
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "ÇIXARIŞ",
+              "DÜZDÜR"
+            ],
+            "x": 76,
+            "y": 34,
+            "olcu": 118,
+            "bucaq": -13
+          }
+        ]
       }
     },
     {
@@ -1911,7 +2229,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -1957,6 +2276,22 @@
               "[[Müstəntiqin qeydi:]] izahat 14.09.2026, saat 12:05-də alınıb."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 64,
+            "y": 31,
+            "olcu": 126,
+            "bucaq": -8
+          }
         ]
       }
     },
@@ -1971,7 +2306,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -2005,6 +2341,22 @@
             "ad": "N.Kərimova",
             "tarix": "14.09.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 71,
+            "y": 28,
+            "olcu": 134,
+            "bucaq": 6
+          }
         ]
       }
     },
@@ -2019,7 +2371,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -2060,6 +2413,22 @@
               "Qardaşı C.Talıbovun izahatı ilə təsdiqlənir: 23:40-da gəlib, səhərə qədər evdə olub."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 78,
+            "y": 39,
+            "olcu": 118,
+            "bucaq": -4
+          }
         ]
       }
     },
@@ -2074,7 +2443,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -2119,6 +2489,22 @@
               "Açarların verilməsi jurnalı ilə təsdiqlənir: emalatxana açarı 00:08-də qaytarılıb."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 66,
+            "y": 36,
+            "olcu": 126,
+            "bucaq": 9
+          }
         ]
       }
     },
@@ -2131,7 +2517,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -2175,6 +2562,22 @@
             "vezife": "İzahatı verən",
             "ad": "A.Rəhimov",
             "tarix": "15.09.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 73,
+            "y": 33,
+            "olcu": 134,
+            "bucaq": -11
           }
         ]
       }

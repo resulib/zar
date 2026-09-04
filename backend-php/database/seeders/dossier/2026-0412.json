@@ -225,7 +225,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -289,10 +290,10 @@
               "SURƏTİ",
               "DÜZDÜR"
             ],
-            "x": 75,
-            "y": 28.0,
-            "olcu": 126,
-            "bucaq": 6
+            "x": 62,
+            "y": 27,
+            "olcu": 118,
+            "bucaq": -13
           }
         ]
       }
@@ -306,6 +307,9 @@
       "content": {
         "mohurler": [
           {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
               "QEYDƏ ALINIB",
@@ -313,18 +317,16 @@
               "FİKTİV",
               "OYUN MATERİALI"
             ],
-            "forma": "daire",
-            "reng": "mavi",
-            "seffaflik": 0.46,
-            "x": 78,
-            "y": 31.0,
-            "olcu": 152,
-            "bucaq": -13
+            "x": 69,
+            "y": 38,
+            "olcu": 150,
+            "bucaq": -8
           }
         ],
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "protokol"
           },
           {
             "tip": "basliq",
@@ -454,7 +456,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -501,7 +504,7 @@
         "mohurler": [
           {
             "forma": "daire",
-            "reng": "mavi",
+            "reng": "mor",
             "seffaflik": 0.5,
             "metn": [
               "AFİB · İSTİNTAQ BÖLMƏSİ",
@@ -510,10 +513,10 @@
               "FİKTİV",
               "OYUN MATERİALI"
             ],
-            "x": 74,
-            "y": 31.0,
-            "olcu": 152,
-            "bucaq": 9
+            "x": 76,
+            "y": 35,
+            "olcu": 148,
+            "bucaq": 6
           }
         ]
       }
@@ -527,7 +530,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -578,6 +582,22 @@
             "vezife": "İfadəni alan, AFİB müstəntiqi",
             "ad": "K.Nəbiyev",
             "tarix": "15.01.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 64,
+            "y": 32,
+            "olcu": 118,
+            "bucaq": -4
           }
         ]
       }
@@ -672,6 +692,22 @@
               "[[Qeyd:]] mesajlar birtərəflidir, Qasımov Fərid heç birinə cavab yazmayıb. Sonuncu mesaj **9 yanvar** tarixlidir. Hadisə günü — 14 yanvar — bu nömrədən Qasımov Fəridə mesaj göndərilməmişdir."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "ÇIXARIŞ",
+              "DÜZDÜR"
+            ],
+            "x": 71,
+            "y": 29,
+            "olcu": 126,
+            "bucaq": 9
+          }
         ]
       }
     },
@@ -747,6 +783,22 @@
               "Yanacaq məntəqəsinin kamerası üzrə: saat 20:15-də Qasımov Fərid kolonkanın yanında, təkdir. Görüntünün keyfiyyəti aydındır, üz tanınır."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 78,
+            "y": 40,
+            "olcu": 134,
+            "bucaq": -11
+          }
         ]
       }
     },
@@ -759,7 +811,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -811,6 +864,22 @@
             "abzaslar": [
               "**Alibi (yoxlanılıb).** Saat 20:40 – 21:20 arası Rüstəmov Elşən 7-ci mənzildə radiator sızmasını təmir edib. Mənzil sahibi, onun həyat yoldaşı və qonşu mənzil 6-nın sakini bunu təsdiqləyir. Ölüm aralığının ikinci yarısı bu alibi ilə örtülür."
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 66,
+            "y": 37,
+            "olcu": 118,
+            "bucaq": 3
           }
         ]
       }
@@ -899,6 +968,22 @@
               "Yazışma komendantın ifadəsini sətir-sətir təsdiqləyir: o, içəri girməyib və xomutu zərərçəkən özü sıxıb. Söhbətin son mesajı **19:37**-dədir."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "ÇIXARIŞ",
+              "DÜZDÜR"
+            ],
+            "x": 73,
+            "y": 34,
+            "olcu": 126,
+            "bucaq": -13
+          }
         ]
       }
     },
@@ -926,7 +1011,8 @@
         },
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -984,10 +1070,10 @@
               "SURƏTİ",
               "DÜZDÜR"
             ],
-            "x": 75,
-            "y": 28.0,
-            "olcu": 126,
-            "bucaq": 6
+            "x": 80,
+            "y": 31,
+            "olcu": 134,
+            "bucaq": -8
           }
         ]
       }
@@ -1001,22 +1087,26 @@
       "content": {
         "mohurler": [
           {
+            "forma": "daire",
+            "reng": "mavi",
+            "seffaflik": 0.5,
             "metn": [
-              "AFİB",
-              "AXTARIŞ"
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "QEYDƏ ALINIB",
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
             ],
-            "forma": "duzbucaq",
-            "reng": "qara",
-            "seffaflik": 0.46,
-            "x": 74,
-            "y": 27.0,
-            "olcu": 138,
-            "bucaq": -8
+            "x": 68,
+            "y": 28,
+            "olcu": 150,
+            "bucaq": 6
           }
         ],
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "protokol"
           },
           {
             "tip": "basliq",
@@ -1089,7 +1179,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -1134,6 +1225,24 @@
             "ad": "T.Həsənova",
             "tarix": "16.01.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 75,
+            "y": 39,
+            "olcu": 148,
+            "bucaq": -4
+          }
         ]
       }
     },
@@ -1146,7 +1255,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -1198,6 +1308,22 @@
             "vezife": "İfadəni alan, AFİB müstəntiqi",
             "ad": "K.Nəbiyev",
             "tarix": "15.01.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 63,
+            "y": 36,
+            "olcu": 134,
+            "bucaq": 9
           }
         ]
       }
@@ -1281,6 +1407,22 @@
               "Çek 17:40-da kəsilib. Ödəniş şəxsi ada bağlı təqaüd kartı ilə aparıldığı üçün alıcının kimliyi mübahisəsizdir. Şarfın tərkibi [[mal kartoçkası ilə təsdiqlənir]] və lif müqayisəsi üçün əsas götürülür (bax: vərəq 31)."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 70,
+            "y": 33,
+            "olcu": 118,
+            "bucaq": -11
+          }
         ]
       }
     },
@@ -1293,7 +1435,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1341,6 +1484,22 @@
               "[[Diqqət:]] 20:18-də kart Xırdalan Dairəsindən avtobusa minik qeyd edir. Bu saatdan sonra kartın sahibi mənzildə ola bilməz."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 77,
+            "y": 30,
+            "olcu": 126,
+            "bucaq": 3
+          }
         ]
       }
     },
@@ -1353,22 +1512,24 @@
       "content": {
         "mohurler": [
           {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
             "metn": [
               "AFİB",
-              "MÜSADİRƏ"
+              "MÜSADİRƏ",
+              "AKTI"
             ],
-            "forma": "duzbucaq",
-            "reng": "mor",
-            "seffaflik": 0.46,
-            "x": 76,
-            "y": 29.0,
-            "olcu": 138,
-            "bucaq": -10
+            "x": 65,
+            "y": 27,
+            "olcu": 134,
+            "bucaq": -13
           }
         ],
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "protokol"
           },
           {
             "tip": "basliq",
@@ -1409,7 +1570,8 @@
             "ad": "K.Nəbiyev",
             "tarix": "15.01.2026"
           }
-        ]
+        ],
+        "holoqram": true
       }
     },
     {
@@ -1421,7 +1583,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -1468,7 +1631,26 @@
             "ad": "R.Əliyev",
             "tarix": "17.01.2026"
           }
-        ]
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 72,
+            "y": 38,
+            "olcu": 148,
+            "bucaq": -8
+          }
+        ],
+        "holoqram": true
       }
     },
     {
@@ -1486,7 +1668,8 @@
         },
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1538,6 +1721,22 @@
               "**Satıcının qeydi.** 19:10-dakı müştərinin üzü şarfla örtülü idi, tanımadım. Sözlə danışmadı, malı göstərdi.",
               "[[Müstəntiqin qeydi:]] hesabatda dörd hadisə var, üçü giriş, biri çıxışdır. 19:41-də girən yaşlı qadının çıxışı 20:12-də qeydə alınıb. **19:10-da girən tünd plaşlı qadının çıxışı isə heç bir kadrda yoxdur.** Kamera 22:30-a qədər fasiləsiz işləyib."
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 79,
+            "y": 35,
+            "olcu": 126,
+            "bucaq": 6
           }
         ]
       }
@@ -1619,6 +1818,22 @@
               "[[Qeyd:]] saç boyası həmin ay doqquz nəfərə satılıb. Dırnaq altındakı mikrolif yalnız markanı göstərir, konkret şəxsi yox — bu material təkbaşına heç kimi ittiham etmir."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 67,
+            "y": 32,
+            "olcu": 134,
+            "bucaq": -4
+          }
         ]
       }
     },
@@ -1632,7 +1847,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -1693,6 +1909,22 @@
               "yer": "sag"
             }
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 74,
+            "y": 29,
+            "olcu": 118,
+            "bucaq": 9
+          }
         ]
       }
     },
@@ -1706,7 +1938,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -1764,6 +1997,22 @@
               "[[Müstəntiqin qeydi:]] mənzil 34-də yaşayan şəxs m. 38-in **mətbəxindən** gələn cümləni sözbəsöz təkrar edir. Bu arayışa görə həmin mövqedən o cümlənin eşidilməsi mümkün deyil. İfadədəki söz ya başqa yerdən eşidilib, ya da ümumiyyətlə eşidilməyib."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 62,
+            "y": 40,
+            "olcu": 126,
+            "bucaq": -11
+          }
         ]
       }
     },
@@ -1776,7 +2025,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "ekspert"
           },
           {
             "tip": "basliq",
@@ -1862,6 +2112,24 @@
             "vezife": "Ekspertizanı aparan, AFİB eksperti",
             "ad": "T.Həsənova",
             "tarix": "18.01.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "daire",
+            "reng": "mor",
+            "seffaflik": 0.5,
+            "metn": [
+              "AFİB · İSTİNTAQ BÖLMƏSİ",
+              "EKSPERTİZA",
+              "2026/0412",
+              "FİKTİV",
+              "OYUN MATERİALI"
+            ],
+            "x": 69,
+            "y": 37,
+            "olcu": 148,
+            "bucaq": 3
           }
         ]
       }
@@ -1955,6 +2223,22 @@
               "[[Diqqət:]] m. 38 üzrə sonuncu qeyd **20:47**-dədir. Ekspert rəyinə görə ölüm aralığı 20:00 – 21:00-dır. Yəni bu saatda mənzildə pultu basan biri var idi."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 76,
+            "y": 34,
+            "olcu": 118,
+            "bucaq": -13
+          }
         ]
       }
     },
@@ -2039,6 +2323,22 @@
               "[[Qeyd:]] m. 38-in şəbəkəsi **NargizWiFi** adlanır. Bu ad zərərçəkənin öz adındandır və mənzil 38-in cihazları normalda məhz bu şəbəkəyə qoşulur."
             ]
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 64,
+            "y": 31,
+            "olcu": 126,
+            "bucaq": -8
+          }
         ]
       }
     },
@@ -2051,7 +2351,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "izahat"
           },
           {
             "tip": "basliq",
@@ -2104,6 +2405,22 @@
             "ad": "K.Nəbiyev",
             "tarix": "16.01.2026"
           }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "QEYDƏ",
+              "ALINIB"
+            ],
+            "x": 71,
+            "y": 28,
+            "olcu": 134,
+            "bucaq": 6
+          }
         ]
       }
     },
@@ -2116,7 +2433,8 @@
       "content": {
         "bloklar": [
           {
-            "tip": "blank"
+            "tip": "blank",
+            "nov": "arayis"
           },
           {
             "tip": "basliq",
@@ -2177,6 +2495,22 @@
             "abzaslar": [
               "[[Müstəntiqin qeydi:]] birtərəfli, qısa və gec saatlı zənglər adətən sevgi əlaqəsinin deyil, **təkid edilən bir tələbin** əlamətidir. Bu fərq işin bütün istiqamətini dəyişir."
             ]
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "qara",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "SURƏTİ",
+              "DÜZDÜR"
+            ],
+            "x": 78,
+            "y": 39,
+            "olcu": 118,
+            "bucaq": -4
           }
         ]
       }
@@ -2314,6 +2648,22 @@
             "vezife": "Sorğunu aparan, AFİB müstəntiqi",
             "ad": "K.Nəbiyev",
             "tarix": "19.01.2026"
+          }
+        ],
+        "mohurler": [
+          {
+            "forma": "duzbucaq",
+            "reng": "mavi",
+            "seffaflik": 0.44,
+            "metn": [
+              "AFİB",
+              "İŞƏ ƏLAVƏ",
+              "EDİLDİ"
+            ],
+            "x": 73,
+            "y": 33,
+            "olcu": 134,
+            "bucaq": -11
           }
         ]
       }

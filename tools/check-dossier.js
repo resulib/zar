@@ -95,6 +95,35 @@ for (const q of qovluqlar) {
 }
 check('qovluqlarda ən azı 8 blok növü işlənir', islenen.size >= 8, [...islenen].sort());
 
+/* Blank başlığının növləri: config ↔ komponent faylları ↔ BlokSxemi.
+   Blok növləri ilə eyni intizam — siyahının bir tərəfi dəyişsə, suit sınır. */
+const BLANK_NOV = (cfg.match(/'blank_novleri'\s*=>\s*\[([^\]]*)\]/) || [, ''])[1]
+  .split(',').map(x => (x.match(/'([a-z]+)'/) || [])[1]).filter(Boolean);
+check('blank növləri config-də var', BLANK_NOV.length >= 4, BLANK_NOV);
+for (const n of BLANK_NOV) {
+  check('blank növü «' + n + '» üçün komponent var',
+    fs.existsSync(path.join(APP, 'resources', 'views', 'components', 'blank', n + '.blade.php')));
+}
+{
+  const sxemi = fs.readFileSync(path.join(APP, 'app', 'Support', 'Dossier', 'BlokSxemi.php'), 'utf8');
+  const php = (sxemi.match(/BLANK_NOV\s*=\s*\[([^\]]*)\]/) || [, ''])[1]
+    .split(',').map(x => (x.match(/'([a-z]+)'/) || [])[1]).filter(Boolean);
+  check('blank növləri BlokSxemi ilə üst-üstə düşür',
+    php.join(',') === BLANK_NOV.join(','), [php, BLANK_NOV]);
+}
+/* Seed-dəki hər `nov` ağ siyahıdadır — yoxsa render `resmi`-yə düşür və
+   səhv səssizcə itər. */
+for (const q of qovluqlar) {
+  for (const d of q.documents || []) {
+    for (const b of ((d.content || {}).bloklar) || []) {
+      if (b.tip === 'blank' && b.nov !== undefined) {
+        check(q.slug + ' v.' + d.page + ' — blank növü tanınır',
+          BLANK_NOV.indexOf(b.nov) >= 0, b.nov);
+      }
+    }
+  }
+}
+
 /* --- 3. Kilid və cavablar -------------------------------------------- */
 bas('3. Kilid və cavablar');
 for (const q of qovluqlar) {
@@ -236,6 +265,12 @@ check('qadağan siyahısı doludur', ORG_BAN.length >= 10, ORG_BAN.length);
 
 const KOMPONENT = path.join(APP, 'resources', 'views', 'components');
 
+/* Komponentlər alt qovluqlara bölünür (`components/blank/*`), ona görə
+   siyahı REKURSİVDİR — yoxsa yeni qovluq qalxanın taramasından yayınardı. */
+const komponentFayllari = (dir) => (fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }) : [])
+  .flatMap(e => e.isDirectory() ? komponentFayllari(path.join(dir, e.name))
+    : (e.name.endsWith('.blade.php') ? [path.join(dir, e.name)] : []));
+
 const QURUM_SCAN = files.map(f => path.join(SEED, f))
   .concat(fs.readdirSync(VIEWS).filter(f => f.endsWith('.blade.php')).map(f => path.join(VIEWS, f)))
   .concat(fs.readdirSync(path.join(VIEWS, 'bloklar')).map(f => path.join(VIEWS, 'bloklar', f)))
@@ -243,8 +278,7 @@ const QURUM_SCAN = files.map(f => path.join(SEED, f))
   /* ORTAQ NİŞAN KOMPONENTLƏRİ (`<x-gerb>`, `<x-mohur>`) sənədin üzərində
      görünür, yəni hüquqi qalxan onlara da aiddir. `views/components/`
      `views/dossier/`-dən kənardadır — siyahıya əl ilə əlavə olunur. */
-  .concat(fs.existsSync(KOMPONENT)
-    ? fs.readdirSync(KOMPONENT).map(f => path.join(KOMPONENT, f)) : [])
+  .concat(komponentFayllari(KOMPONENT))
   .concat([path.join(APP, 'app', 'Support', 'Nisan.php')])
   .concat(['dossier.js', 'dossier-site.js', 'dossier-cert.js', 'dossier.css'].map(f => path.join(FE, f)))
   .concat([path.join(ROOT, 'tools', 'render-dossier-og.js')]);
