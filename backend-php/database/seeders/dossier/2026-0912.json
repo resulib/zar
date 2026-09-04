@@ -420,6 +420,43 @@
                 "x": 300,
                 "y": 86,
                 "bucaq": 0
+              },
+              {
+                "nov": "noqte",
+                "no": 5,
+                "x": 144,
+                "y": 60,
+                "izah": "dispetçer otağı"
+              },
+              {
+                "nov": "noqte",
+                "no": 6,
+                "x": 176,
+                "y": 43,
+                "izah": "ön darvaza, kamera № 1"
+              },
+              {
+                "nov": "noqte",
+                "no": 7,
+                "x": 163,
+                "y": 346,
+                "izah": "arxa darvaza, kamera görmür"
+              },
+              {
+                "nov": "olcu",
+                "x1": 12,
+                "y1": 112,
+                "x2": 12,
+                "y2": 346,
+                "metn": "34 m"
+              },
+              {
+                "nov": "ox",
+                "x1": 163,
+                "y1": 352,
+                "x2": 204,
+                "y2": 392,
+                "metn": "22:50-dən sonra bağlıdır"
               }
             ]
           },
@@ -430,7 +467,19 @@
               "1 — meyitin vəziyyəti · 2 — boru açarı · 3 — kassa qutusu (ofisdə) · 4 — qan ləkəsi.\n[[Əl ilə:]] kamera № 1 yalnız ön darvazanı görür. Arxa darvaza və emalatxananın girişi heç bir kameranın görmə bucağında deyil."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "kohnelme": 1,
+          "qat": [
+            0.48
+          ],
+          "barmaq": [
+            {
+              "x": 79,
+              "y": 85
+            }
+          ]
+        }
       }
     },
     {
@@ -546,7 +595,18 @@
                 "ad": "Zərərçəkənin pencəyi",
                 "metn": "Cibləri toxunulmayıb. Sol cibdə 340 manat nağd pul, sağ cibdə telefon. Oğurluq əlaməti yoxdur."
               }
-            ]
+            ],
+            "kenar": {
+              "metn": "bilet niyə çərçivədədir?",
+              "nov": "sual",
+              "yer": "sag"
+            }
+          },
+          {
+            "tip": "foto",
+            "no": 1,
+            "nisbet": "4:3",
+            "izah": "boru açarı, götürüldüyü yerdə, miqyas xətkeşi ilə"
           }
         ]
       }
@@ -623,7 +683,12 @@
             ],
             "vurgu": [
               5
-            ]
+            ],
+            "kenar": {
+              "metn": "4471 — kassa bağlandıqdan sonra?",
+              "nov": "sual",
+              "yer": "sag"
+            }
           },
           {
             "tip": "elave",
@@ -671,7 +736,14 @@
             "olcu": 126,
             "bucaq": 6
           }
-        ]
+        ],
+        "kagiz": {
+          "kseroks": 1,
+          "qat": [
+            0.4
+          ],
+          "atac": "sag-ust"
+        }
       },
       "key": true
     },
@@ -729,7 +801,12 @@
             ],
             "vurgu": [
               2
-            ]
+            ],
+            "kenar": {
+              "metn": "ofis açarı qaytarılmayıb",
+              "nov": "qeyd",
+              "yer": "sag"
+            }
           },
           {
             "tip": "metn",
@@ -744,7 +821,19 @@
             "ad": "F.Quliyev",
             "tarix": "14.09.2026"
           }
-        ]
+        ],
+        "kagiz": {
+          "kohnelme": 2,
+          "atac": "sol-ust",
+          "leke": [
+            {
+              "nov": "qehve",
+              "x": 74,
+              "y": 27,
+              "olcu": 27
+            }
+          ]
+        }
       },
       "key": true
     },
@@ -808,7 +897,13 @@
               "Səhər ilk reys 06:00-dadır; sürücülər 05:30-da toplaşır."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "kseroks": 2,
+          "qat": [
+            0.36
+          ]
+        }
       }
     },
     {
@@ -869,7 +964,12 @@
                 "abunec": "«Vüqar dispetçer»",
                 "muddet": "cavabsız"
               }
-            ]
+            ],
+            "kenar": {
+              "metn": "00:52 — sonuncu dəfə sağ",
+              "nov": "qeyd",
+              "yer": "sag"
+            }
           },
           {
             "tip": "metn",
@@ -877,6 +977,12 @@
             "abzaslar": [
               "Rəhimovun izahatından: «00:52-də zəng etdi, dedi sabah yanına gələcəm, sənədləri gətirirəm. Səsi normal idi, kiməsə danışırmış kimi deyildi.»"
             ]
+          },
+          {
+            "tip": "elyazma",
+            "xarakter": "telesik",
+            "bucaq": -1.6,
+            "metn": "son zəngin vaxtını qəbz lenti ilə tutuşdur"
           }
         ]
       }
@@ -1037,7 +1143,13 @@
               "Kamera № 1-in qeydinə görə N.Kərimova ön darvazadan 23:05-də çıxıb və həmin gecə qayıtmayıb."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "kseroks": 1,
+          "qat": [
+            0.52
+          ]
+        }
       }
     },
     {

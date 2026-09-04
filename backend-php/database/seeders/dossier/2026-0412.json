@@ -1514,7 +1514,12 @@
             ],
             "vurgu": [
               0
-            ]
+            ],
+            "kenar": {
+              "metn": "bir giriş artıqdır",
+              "nov": "qeyd",
+              "yer": "sag"
+            }
           },
           {
             "tip": "foto",
@@ -1931,7 +1936,12 @@
             ],
             "vurgu": [
               5
-            ]
+            ],
+            "kenar": {
+              "metn": "20:47 — o saatda kim pultu basıb?",
+              "nov": "sual",
+              "yer": "sag"
+            }
           },
           {
             "tip": "metn",

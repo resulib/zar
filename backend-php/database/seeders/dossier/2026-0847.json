@@ -417,6 +417,43 @@
                 "x": 312,
                 "y": 86,
                 "bucaq": 0
+              },
+              {
+                "nov": "noqte",
+                "no": 5,
+                "x": 204,
+                "y": 209,
+                "izah": "mətbəx→dəhliz qapısı, kamera yoxdur"
+              },
+              {
+                "nov": "noqte",
+                "no": 6,
+                "x": 230,
+                "y": 380,
+                "izah": "generator qurğusu, 00:32-də işə düşüb"
+              },
+              {
+                "nov": "noqte",
+                "no": 7,
+                "x": 122,
+                "y": 24,
+                "izah": "ön qapı, kamera № 2"
+              },
+              {
+                "nov": "olcu",
+                "x1": 204,
+                "y1": 150,
+                "x2": 256,
+                "y2": 150,
+                "metn": "1 m 40 sm"
+              },
+              {
+                "nov": "ox",
+                "x1": 268,
+                "y1": 313,
+                "x2": 322,
+                "y2": 298,
+                "metn": "arxa çıxış — kamera görmür"
               }
             ]
           },
@@ -427,7 +464,19 @@
               "[[Əl ilə:]] arxa qapı kameranın görmə bucağından kənardadır."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "kohnelme": 1,
+          "qat": [
+            0.5
+          ],
+          "barmaq": [
+            {
+              "x": 81,
+              "y": 87
+            }
+          ]
+        }
       },
       "sample": true
     },
@@ -619,7 +668,12 @@
             ],
             "vurgu": [
               4
-            ]
+            ],
+            "kenar": {
+              "metn": "23:51-də çıxan adam qayıtmayıb?",
+              "nov": "sual",
+              "yer": "sag"
+            }
           },
           {
             "tip": "metn",
@@ -644,7 +698,13 @@
             "olcu": 126,
             "bucaq": 6
           }
-        ]
+        ],
+        "kagiz": {
+          "kseroks": 2,
+          "qat": [
+            0.34
+          ]
+        }
       },
       "sample": false
     },
@@ -695,7 +755,12 @@
             ],
             "vurgu": [
               2
-            ]
+            ],
+            "kenar": {
+              "metn": "00:32 — izahatla uyğun gəlmir",
+              "nov": "qeyd",
+              "yer": "sag"
+            }
           },
           {
             "tip": "metn",
@@ -710,7 +775,19 @@
             "ad": "E.Qasımov",
             "tarix": "16.08.2026"
           }
-        ]
+        ],
+        "kagiz": {
+          "kohnelme": 2,
+          "atac": "sol-ust",
+          "leke": [
+            {
+              "nov": "yag",
+              "x": 77,
+              "y": 29,
+              "olcu": 26
+            }
+          ]
+        }
       },
       "sample": false,
       "key": true
@@ -963,7 +1040,13 @@
               "Taksi xidmətindən alınan arayışa görə sifariş 01:12-də «Sülh küçəsi 16» ünvanından, yəni obyektdən bir bina aşağıdan verilmişdir."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "kseroks": 1,
+          "qat": [
+            0.5
+          ]
+        }
       },
       "sample": false
     },
@@ -1008,7 +1091,12 @@
               "Musiqi qurtarandan sonra durub çıxdım. Əmimlə o gecə heç danışmadım, salamlaşmaqdan başqa.",
               "Çıxanda salonun işıqları artıq sönmüşdü, ancaq mətbəx tərəfdən generatorun səsi gəlirdi, o səsdən başım ağrıyırdı. Ayaqqabımın dabanı sınmışdı, ona görə maşına qədər asta getdim və küçənin aşağısından taksi çağırdım. Evə təxminən bir yarımda çatdım.",
               "Əmimin ölümündən səhər saat doqquzda bacımın zəngi ilə xəbər tutdum."
-            ]
+            ],
+            "kenar": {
+              "metn": "generatorun səsini haradan eşidib?",
+              "nov": "sual",
+              "yer": "sag"
+            }
           },
           {
             "tip": "imza",
@@ -1226,6 +1314,24 @@
             ]
           },
           {
+            "tip": "elave",
+            "nov": "qebz",
+            "bucaq": -2.2,
+            "yer": "sag",
+            "setirler": [
+              "«SƏDƏF» ŞADLIQ SARAYI",
+              "PUL KİSƏSİ — MÖHÜRLƏNDİ",
+              "",
+              "16.08.2026    00:18",
+              "Kisə № 2",
+              "Sayımda iştirak: 4 nəfər",
+              "",
+              "41 300 AZN",
+              "",
+              "İmza ______________"
+            ]
+          },
+          {
             "tip": "metn",
             "abzaslar": [
               "Sayımda iştirak edənlər: T.Mehdiyev, E.Qasımov, K.Nəsirov, N.Mehdiyev (bəy).",
@@ -1239,7 +1345,20 @@
               "[[Müstəntiqin qeydi:]] 00:14-də çəkilmiş şəkildə masanın üstündə mərmər xatirə lövhəsi görünür. Səhər lövhə masada yoxdur."
             ]
           }
-        ]
+        ],
+        "kagiz": {
+          "qat": [
+            0.3,
+            0.62
+          ],
+          "atac": "sag-ust",
+          "barmaq": [
+            {
+              "x": 23,
+              "y": 79
+            }
+          ]
+        }
       },
       "sample": false
     },
