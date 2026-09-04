@@ -459,5 +459,198 @@ check('robots.txt dəvətnamə yollarını bağlayır',
     str_contains($rob['body'], 'Disallow: /d/')
     && str_contains($rob['body'], 'Disallow: /devetnamelerim'), substr($rob['body'], 0, 160));
 
+echo "\n14. İş qovluğu — sirr serverdə qalır\n";
+
+$SLUG = '2026-0847';
+$is = metaSession($base . '/is/' . $SLUG . '/qovluq');
+check('qovluq səhifəsi CSRF tokeni verir', $is['token'] !== '');
+
+/* Səhifənin MƏNBƏ KODU. Oyunun bütün mənası budur: DevTools açan adam
+   nə kodu, nə cavabı, nə də açılmamış sənədin məzmununu görməməlidir. */
+$govde = req($base . '/is/' . $SLUG . '/qovluq')['body'];
+check('kilidin kodu HTML-də yoxdur', ! str_contains($govde, '0903'));
+check('sənəd məzmunu HTML-də yoxdur', ! str_contains($govde, 'mərmər lövhə'));
+check('şübhəlilər HTML-də yoxdur', ! str_contains($govde, 'Səbinə Hüseynova'));
+check('izah HTML-də yoxdur', ! str_contains($govde, 'Generator 00:32-də'));
+check('oyun səhifəsi noindex-dir', str_contains(strtolower($govde), 'noindex'));
+
+/* SATIŞ ÜZÜ. Ana səhifə HƏQİQİ sənəd göstərir (hero və nümunə vərəqlər),
+   ona görə sirr yoxlaması burada oyun səhifəsindən də vacibdir. */
+$ana = req($base . '/is')['body'];
+check('ana səhifədə kilidin kodu yoxdur', ! str_contains($ana, '0903'));
+check('ana səhifədə şübhəlilər yoxdur', ! str_contains($ana, 'Səbinə Hüseynova'));
+check('ana səhifədə izah yoxdur', ! str_contains($ana, 'Generator 00:32-də'));
+check('ana səhifədə açar sənəd yoxdur', ! str_contains($ana, 'GENERATOR QURĞUSUNUN'));
+/* Satış səhifələri axtarışa AÇIQDIR — kataloq məxfi məlumat deyil. */
+check('ana səhifə indekslənir', str_contains($ana, 'index, follow'));
+
+$teq = req($base . '/is/' . $SLUG)['body'];
+check('təqdimatda sənəd məzmunu yoxdur', ! str_contains($teq, 'mərmər lövhə'));
+check('təqdimatda şübhəlilər yoxdur', ! str_contains($teq, 'Səbinə Hüseynova'));
+check('təqdimat indekslənir', str_contains($teq, 'index, follow'));
+
+/* FİKTİV QURUM. Sənədlər rəsmi sənədin vizual dilini təqlid edir, ona görə
+   fiktivlik artefaktın ÖZ ÜZƏRİNDƏ olmalıdır — ekran görüntüsü kontekstdən
+   qopanda ətrafdakı səhifə onunla getmir. */
+$QEYD = 'FİKTİV OYUN SƏNƏDİ';
+$QADAGAN = ['POLİS BÖLMƏSİ', 'POLİS İDARƏSİ', 'DAXİLİ İŞLƏR', 'ədliyyə leytenantı',
+    'ədliyyə mayoru', 'Məhkəmə-tibb eksperti'];
+
+foreach (['/is', '/is/' . $SLUG, '/is/' . $SLUG . '/qovluq'] as $yol) {
+    $b = req($base . $yol)['body'];
+    $tapilan = array_values(array_filter($QADAGAN, static fn ($q) => str_contains($b, $q)));
+    check('real qurum yoxdur: ' . $yol, $tapilan === [], $tapilan);
+}
+check('ana səhifədə fiktivlik qeydi var', str_contains($ana, $QEYD));
+check('üz qabığında büro adı var', str_contains($govde, 'FİKTİV İSTİNTAQ BÜROSU'));
+
+/* Ödəniş qatı yalnız görünüş deyil: giriş olmadan məzmun ucu bağlıdır. */
+$r = req($base . '/api/is/' . $SLUG . '/sened/1', 'GET', [], $is['cookies']);
+check('giriş olmadan sənəd verilmir', $r['status'] === 403, $r['status']);
+$r = req($base . '/api/is/' . $SLUG . '/rey', 'POST',
+    ['_token' => $is['token'], 'cavablar' => [0, 1, 1]], $is['cookies']);
+check('giriş olmadan rəy qəbul edilmir', $r['status'] === 403, $r['status']);
+
+/* CSRF olmadan yazma yolu bağlıdır. */
+$r = req($base . '/api/is/' . $SLUG . '/ac', 'POST', ['ad' => 'Test Ad'], $is['cookies']);
+check('tokensiz qovluq açılmır', $r['status'] === 419, $r['status']);
+
+$r = req($base . '/api/is/' . $SLUG . '/ac', 'POST',
+    ['_token' => $is['token'], 'ad' => 'Test Ad'], $is['cookies']);
+$acildi = json_decode($r['body'], true);
+$own = $is['cookies'] . ($r['cookies'] !== '' ? '; ' . $r['cookies'] : '');
+check('qovluq açıldı', ($acildi['ok'] ?? false) === true, [$r['status'], substr($r['body'], 0, 120)]);
+check('cavabda düzgün variant göstərilmir',
+    ! str_contains($r['body'], 'correct') && ! str_contains($r['body'], '0903'));
+
+$kilidli = null;
+foreach ((array) ($acildi['docs'] ?? []) as $d) {
+    if (($d['locked'] ?? false) === true) { $kilidli = (int) $d['id']; break; }
+}
+check('kilidli sənəd siyahıda var', $kilidli !== null);
+
+/* Sənədin ÖZÜ qeydi daşımalıdır: `sened.blade.php` sarğısı onu məcburi
+   əlavə edir və heç bir sənəd növü ondan yayına bilmir. */
+/* Sənəd id-si seed-dən sonra dəyişir — siyahıdan götürülür, sabit yazılmır. */
+$docs = (array) ($acildi['docs'] ?? []);
+$ilk = (int) ($docs[0]['id'] ?? 0);
+$r = req($base . '/api/is/' . $SLUG . '/sened/' . $ilk, 'GET', [], $own);
+$sened = json_decode($r['body'], true);
+$html = (string) ($sened['html'] ?? '');
+check('sənəd render olundu', $html !== '', $r['status']);
+check('sənədin üzərində fiktivlik qeydi var', str_contains($html, $QEYD));
+check('qeyd markeri var', str_contains($html, 'data-fq="1"'));
+check('sənəd başlığı büro kodu daşıyır', str_contains($html, 'AFİB'));
+
+/* SIRA QAPISI — vərəq yalnız ondan ƏVVƏLKİLƏR keçiləndən sonra açılır.
+   Qapı serverdədir: qabıq bağlı sətri sönük göstərir, amma bu ünvan
+   birbaşa da çağırıla bilər. Yuxarıda yalnız BİRİNCİ vərəq oxunub. */
+$uzaq = (int) ($docs[5]['id'] ?? 0);
+$r = req($base . '/api/is/' . $SLUG . '/sened/' . $uzaq, 'GET', [], $own);
+check('sıradan kənar vərəq 403 verir', $r['status'] === 403, $r['status']);
+
+/* Yekun rəy də bağlıdır — və bu, CƏHD SAYILMIR: aşağıdakı kilid
+   yoxlamaları hələ üç cəhdin heç birini yandırmamalıdır. */
+$r = req($base . '/api/is/' . $SLUG . '/rey', 'POST',
+    ['_token' => $is['token'], 'cavablar' => [0, 1, 1]], $own);
+check('bütün vərəqlər keçilmədən rəy qəbul edilmir', $r['status'] === 403, $r['status']);
+
+/* Qovluğu sıra ilə keçirik — kilidli sənəd sonuncudur və ona qapıdan
+   keçmədən çatmaq olmur. */
+foreach ($docs as $d) {
+    req($base . '/api/is/' . $SLUG . '/sened/' . (int) $d['id'], 'GET', [], $own);
+}
+
+/* KİLİD NÖV DEYİL, XASSƏDİR: istənilən blok tərkibi kilidli ola bilər və
+   kilidli sənədin BLOKLARI ümumiyyətlə brauzerə göndərilmir — yalnız
+   klaviatura render olunur. */
+$kr = req($base . '/api/is/' . $SLUG . '/sened/' . $kilidli, 'GET', [], $own);
+$khtml = (string) (json_decode($kr['body'], true)['html'] ?? '');
+check('kilidli sənəddə klaviatura var', str_contains($khtml, 'lockwrap'));
+check('kilidli sənədin blokları göndərilmir',
+    ! str_contains($khtml, 'QUTUNUN İÇİNDƏKİLƏR') && ! str_contains($khtml, 'ev-t'));
+check('kilidli sənəd də fiktivlik qeydi daşıyır', str_contains($khtml, $QEYD));
+$tapilan = array_values(array_filter($QADAGAN, static fn ($q) => str_contains($html, $q)));
+check('sənəddə real qurum yoxdur', $tapilan === [], $tapilan);
+
+/* Səhv kod nə ipucu, nə də kodun özünü qaytarır. */
+$r = req($base . '/api/is/' . $SLUG . '/kilid/' . $kilidli, 'POST',
+    ['_token' => $is['token'], 'kod' => '1111'], $own);
+check('səhv kod 422 verir', $r['status'] === 422, $r['status']);
+check('səhv kodun cavabı kodu açmır', ! str_contains($r['body'], '0903'));
+
+/* Dörd rəqəm limitsiz halda dəqiqələr içində tapılardı — kilidin əsl
+   qorunması `throttle:dossier-kilid` limitidir. */
+$limit = false;
+for ($i = 0; $i < 14; $i++) {
+    $r = req($base . '/api/is/' . $SLUG . '/kilid/' . $kilidli, 'POST',
+        ['_token' => $is['token'], 'kod' => str_pad((string) $i, 4, '0', STR_PAD_LEFT)], $own);
+    if ($r['status'] === 429) { $limit = true; break; }
+}
+check('kilid cəhdləri limitlənir', $limit);
+
+/* Başqasının irəliləyişi görünmür: yeni ziyarətçi eyni qovluğa girişsizdir. */
+$yad = metaSession($base . '/is/' . $SLUG);
+$r = req($base . '/api/is/' . $SLUG . '/sened/1', 'GET', [], $yad['cookies']);
+check('yad ziyarətçi başqasının qovluğunu aça bilmir', $r['status'] === 403, $r['status']);
+
+check('naməlum qovluq 404', req($base . '/is/9999-9999')['status'] === 404);
+check('səhv formatlı slug marşrutu tutmur', req($base . '/is/pis-slug')['status'] === 404);
+
+$rob = req($base . '/robots.txt');
+check('robots.txt oyunu və sertifikatı bağlayır',
+    str_contains($rob['body'], 'Disallow: /is/*/qovluq')
+    && str_contains($rob['body'], 'Disallow: /is/*/hesabat/'));
+/* Ümumi `Disallow: /is/` qayıtsa, satış səhifələri də axtarışdan düşərdi. */
+check('robots.txt satış səhifələrini bağlamır',
+    preg_match('#^Disallow: /is/\s*$#m', $rob['body']) === 0);
+
+echo "\n15. Müstəntiq profili — kimlik və gizlilik\n";
+
+/* İNDEKSLƏMƏ HƏR İKİ İSTİQAMƏTDƏ.
+
+   Profil və hesab BAĞLIDIR: orada real adamın adı və şəkli var.
+   Reytinq isə AÇIQDIR — o, `/is` və `/is/{slug}` kimi satış üzüdür.
+   Ümumi `Disallow: /is/` qayıtsa hər üçü birdən düşərdi. */
+$prof = req($base . '/is/mustentiq');
+check('profil səhifəsi açılır', $prof['status'] === 200, $prof['status']);
+check('profil səhifəsi noindex-dir', str_contains(strtolower($prof['body']), 'noindex'));
+
+$reyt = req($base . '/is/reyting');
+check('reytinq açılır', $reyt['status'] === 200, $reyt['status']);
+check('reytinq indekslənir', str_contains($reyt['body'], 'index, follow'));
+
+check('robots.txt profili bağlayır', str_contains($rob['body'], 'Disallow: /is/mustentiq'));
+check('robots.txt hesabı bağlayır', str_contains($rob['body'], 'Disallow: /is/hesab'));
+check('robots.txt reytinqi BAĞLAMIR', ! str_contains($rob['body'], 'Disallow: /is/reyting'));
+
+/* REYTİNQ ŞƏXSİ MƏLUMAT SIZDIRMIR. Görünən yeganə ad istifadəçinin
+   ÖZÜNÜN seçdiyi addır; e-poçt və uuid heç vaxt siyahıya düşmür. */
+check('reytinqdə e-poçt yoxdur', ! preg_match('/@[a-z0-9.-]+\.[a-z]{2,}/i', strip_tags($reyt['body'])));
+check('reytinqdə uuid yoxdur',
+    preg_match('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/', $reyt['body']) === 0);
+
+/* QONAĞIN VƏSİQƏSİ YOXDUR — kartın qazanılan bir şey olması bütün
+   mexanizmin özəyidir. */
+check('qonağa vəsiqə göstərilmir', ! str_contains($prof['body'], 'Vəsiqəni endir'));
+check('qonağa qeydiyyat təklif olunur', str_contains($prof['body'], 'Qeydiyyatdan keç'));
+
+/* Şəkil ucu: mövcud olmayan profil üçün 404 — 403 deyil.
+   «İcazə yoxdur» mesajının özü məlumatdır. */
+$r = req($base . '/is/mustentiq/999999/foto.jpg');
+check('naməlum profilin şəkli 404 verir', $r['status'] === 404, $r['status']);
+
+/* CSRF olmadan yazma yolu bağlıdır. */
+$pv = metaSession($base . '/is/hesab');
+$r = req($base . '/is/mustentiq/sobe', 'POST', ['sobe' => 'KR'], $pv['cookies']);
+check('tokensiz şöbə seçilmir', $r['status'] === 419, $r['status']);
+
+/* İdarə paneli qapalıdır. */
+foreach (['/admin/avatarlar'] as $yol) {
+    $r = req($base . $yol);
+    check('giriş olmadan ' . $yol . ' bağlıdır', in_array($r['status'], [302, 403], true), $r['status']);
+}
+
+
 echo "\n" . $pass . ' keçdi, ' . $fail . " uğursuz\n";
 exit($fail > 0 ? 1 : 0);

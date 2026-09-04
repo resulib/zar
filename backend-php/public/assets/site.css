@@ -172,6 +172,12 @@ input, textarea, select { font: inherit; }
 input[type="time"].input, input[type="date"].input,
 input[type="datetime-local"].input, input[type="number"].input { font-family: var(--mono); }
 
+/* `hidden` atributu HƏMİŞƏ gizlətməlidir. Brauzerin öz `[hidden]{display:none}`
+   qaydası UA mənşəlidir və `.row2 { display: grid }` kimi istənilən müəllif
+   qaydası onu üstələyir — nəticədə `#fNamesRow` gizlədilməsinə baxmayaraq
+   görünürdü (anketli şablonlarda və sosial kartda). */
+[hidden] { display: none !important; }
+
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 /* ==========================================================================
@@ -409,6 +415,46 @@ input[type="datetime-local"].input, input[type="number"].input { font-family: va
 .reply-bar .mono { font-family: var(--mono); letter-spacing: .04em; }
 .reply-bar-acts { display: flex; flex-wrap: wrap; gap: 6px; }
 
+/* ---------- sosial kimlik kartı ---------- */
+.sosial-box {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+  margin-bottom: 18px; padding: 14px 16px;
+  border: 1px solid var(--ink-3); border-left: 3px solid var(--blue);
+  background: var(--tint);
+}
+.sosial-lead { flex: 1 1 280px; min-width: 0; }
+.sosial-lead strong { display: block; font-size: 13.5px; margin-bottom: 2px; }
+.sosial-lead span { font-size: 12.5px; color: var(--ink-2); }
+.sosial-form { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 380px; }
+.sosial-form #sosialPlat { flex: 0 0 118px; }
+.sosial-form #sosialUrl { flex: 1 1 190px; min-width: 0; }
+
+.sosial-panel {
+  margin-bottom: 16px; padding: 14px 16px;
+  border: 1px solid var(--ink-3); border-left: 3px solid var(--blue);
+  background: var(--tint);
+}
+.sos-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.sos-av {
+  flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden;
+  border: 1px solid var(--ink-3); background: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.sos-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sos-av span { font-size: 9.5px; color: var(--ink-2); letter-spacing: .08em; text-transform: uppercase; }
+.sos-id { flex: 1 1 140px; min-width: 0; }
+.sos-id strong { display: block; font-size: 14px; font-family: var(--mono); }
+.sos-id span { font-size: 12px; color: var(--ink-2); }
+.sos-act { display: flex; flex-wrap: wrap; gap: 6px; }
+.sos-act label.btn { cursor: pointer; }
+.sos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+.sos-grid .f { display: flex; flex-direction: column; gap: 4px; }
+.sos-grid .f span {
+  font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2);
+}
+.sosial-panel .hint { margin: 10px 0 0; font-size: 12px; color: var(--ink-2); }
+.sosial-panel .hint:empty { display: none; }
+
 @media (max-width: 980px) {
   .hero .wrap { grid-template-columns: 1fr; gap: 36px; }
   .hero h1 { font-size: 34px; }
@@ -431,6 +477,8 @@ input[type="datetime-local"].input, input[type="number"].input { font-family: va
   .steps > div + div { border-left: 0; border-top: 1px solid var(--rule); }
   .search { margin-left: 0; width: 100%; }
   .row2 { grid-template-columns: 1fr; }
+  .sos-grid { grid-template-columns: 1fr; }
+  .sosial-form { flex-direction: column; }
   .foot-grid { grid-template-columns: 1fr; gap: 24px; }
   .layouts { grid-template-columns: repeat(4, 1fr); }
   .catbar { flex: 1 1 100%; }

@@ -57,6 +57,91 @@
   </div>
 </div>
 
+@if($profile)
+{{-- MÜSTƏNTİQ PROFİLİ.
+
+     XP sütununa birbaşa yazılmır: `RankService::adjust()` ledger sətri yazır
+     və rütbəni yenidən hesablayır. Səbəb məcburidir — audit qeydi olmayan
+     düzəliş sonradan izah edilə bilmir. --}}
+<div class="cols2" style="margin-top:22px">
+  <div class="panel">
+    <div class="panel-head"><span class="label">Müstəntiq profili</span></div>
+    <div class="panel-body">
+      <dl class="kv">
+        <dt>Nişan</dt><dd class="mono">{{ $profile->badge_number ?? 'verilməyib' }}</dd>
+        <dt>Göstərilən ad</dt><dd>{{ $profile->display_name ?: '—' }}</dd>
+        <dt>Şöbə</dt><dd>{{ $profile->departmentLabel() ?: '—' }}
+          @if($profile->department_locked)<span class="pill mute">kilidli</span>@endif</dd>
+        <dt>Rütbə</dt><dd>{{ $profile->rank?->title_az ?? '—' }}</dd>
+        <dt>XP</dt><dd class="mono">{{ $profile->xp }}</dd>
+        <dt>Bağlanmış iş</dt><dd class="mono">{{ $profile->cases_solved }} / {{ $profile->cases_attempted }}</dd>
+        <dt>Birinci cəhddən</dt><dd class="mono">{{ $profile->first_try_solves }}</dd>
+        <dt>Yanlış ittiham</dt><dd class="mono">{{ $profile->total_wrong_accusations }}</dd>
+        <dt>Reytinqdə</dt><dd>{{ $profile->is_public ? 'görünür' : 'gizli' }}</dd>
+        <dt>Mövqe</dt><dd class="mono">{{ $profile->cached_rank_position ?? '—' }}</dd>
+        <dt>Avatar</dt><dd>{{ $profile->avatar_status }}
+          @if($profile->avatar_reason !== '') · {{ $profile->avatar_reason }} @endif</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><span class="label">Xal düzəlişi</span></div>
+    <div class="panel-body">
+      <form method="POST" action="{{ route('admin.profiles.xp', $profile) }}">
+        @csrf
+        <div class="field">
+          <label class="label" for="delta">Xal (mənfi ola bilər)</label>
+          <input class="input" id="delta" name="delta" type="number" min="-100000" max="100000" required>
+        </div>
+        <div class="field">
+          <label class="label" for="sebeb">Səbəb</label>
+          <input class="input" id="sebeb" name="sebeb" maxlength="200" required
+                 placeholder="Məsələn: səhv hesablamanın düzəlişi">
+          <span class="hint">Audit qeydinə yazılır və silinmir.</span>
+        </div>
+        <button class="btn" type="submit">Yaz</button>
+      </form>
+
+      @if($duzelisler->isNotEmpty())
+        <dl class="kv" style="margin-top:16px">
+          @foreach($duzelisler as $d)
+            <dt class="mono">{{ sprintf('%+d', $d->delta) }} → {{ $d->balance_after }}</dt>
+            <dd>{{ $d->reason }} <span class="s">{{ $d->created_at?->format('d.m.Y') }}</span></dd>
+          @endforeach
+        </dl>
+      @endif
+    </div>
+  </div>
+</div>
+
+@if($isler->isNotEmpty())
+<div style="margin-top:22px">
+  <div class="page-head" style="margin-bottom:12px"><h1 style="font-size:17px">İş nəticələri</h1></div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>İş</th><th>Nəticə</th><th class="num">Yanlış</th>
+                 <th class="num">Vaxt</th><th class="num">XP</th><th>Tarix</th></tr></thead>
+      <tbody>
+      @foreach($isler as $c)
+        <tr>
+          <td><span class="t">{{ $c->dossier?->title ?? 'Silinmiş iş' }}</span>
+              <span class="s mono">{{ $c->dossier?->no ?? '—' }} · {{ $c->difficulty }}</span></td>
+          <td><span class="pill {{ $c->is_solved ? 'ok' : 'mute' }}">
+              {{ $c->is_solved ? 'bağlandı' : 'bağlanmadı' }}</span></td>
+          <td class="num">{{ $c->wrong_attempts }}</td>
+          <td class="num">{{ $c->duration_seconds ? \App\Support\Dossier\Dossier::deqiqe($c->duration_seconds) . ' dəq' : '—' }}</td>
+          <td class="num">{{ $c->xp_awarded }}</td>
+          <td class="mono">{{ $c->completed_at?->format('d.m.Y H:i') }}</td>
+        </tr>
+      @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endif
+@endif
+
 <div style="margin-top:22px">
   <div class="page-head" style="margin-bottom:12px"><h1 style="font-size:17px">Əməliyyatlar</h1></div>
   <div class="tbl-wrap">

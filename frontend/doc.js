@@ -652,6 +652,80 @@ window.DOCGEN = (function () {
       '</g>';
   }
 
+  /* ---------------- sosial kimlik kartı ----------------
+     `vesiqe` dizaynı TikTok/Instagram profilindən qurulan kart kimi də işlədilir.
+     Bura yazılan hər şey ŞƏRTLİDİR: `doc.social` və ya `doc.avatar` yoxdursa
+     çıxış bayt-bayt əvvəlki kimi qalır (bax: tools/hash-layouts.js — onun
+     `mkDoc()` funksiyası bu iki açarı heç vaxt qurmur), eynilə `replyBand()` kimi.
+
+     Loqolar burada, `frontend/sosial.js`-də deyil, saxlanılır: doc.js-in yeganə
+     xarici asılılığı `qr.js` olmalıdır. Ticarət nişanı mövqeyi dəyişsə, yalnız
+     bu cədvəli generik nişanla əvəz etmək kifayətdir. */
+  var SOSIAL_AD = { tiktok: 'TikTok', instagram: 'Instagram' };
+
+  function platformLogo(kind, x, y, size, fill) {
+    var g = '<g data-sl="1" transform="translate(' + x + ' ' + y + ') scale(' + (size / 24) + ')">';
+    if (kind === 'instagram') {
+      /* Kamera nişanı ilkin fiqurlardan qurulur — əyilmiş yolun səhv izlənməsindənsə
+         düzbucaqlı + iki dairə nişanın özünü daha dəqiq verir. */
+      g += '<rect x="2.1" y="2.1" width="19.8" height="19.8" rx="5.6" fill="none" stroke="' + fill + '" stroke-width="2.1"/>' +
+        '<circle cx="12" cy="12" r="4.6" fill="none" stroke="' + fill + '" stroke-width="2.1"/>' +
+        '<circle cx="17.7" cy="6.3" r="1.4" fill="' + fill + '"/>';
+    } else {
+      g += '<path fill="' + fill + '" d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.66a5.7 5.7 0 1 0 4.91 5.64V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.3 4.3 0 0 1-3.24-1.48z"/>';
+    }
+    return g + '</g>';
+  }
+
+  /* Foto xanası. Avatar YALNIZ `data:` URI kimi qəbul edilir — kənar linkə icazə
+     versək sənəd «xarici şəkil yoxdur» qaydasını pozar, PNG ixracı sınar və
+     baxan hər kəsin IP-si platformanın CDN-inə düşərdi. */
+  var AVATAR_RE = /^data:image\/(?:jpeg|png);base64,[A-Za-z0-9+/=]+$/;
+
+  function avatarBox(doc, px, py, pw, ph, P, idp) {
+    var s = '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" fill="#fff" stroke="' + P.accent + '" stroke-width="1"/>';
+    if (!doc.avatar || !AVATAR_RE.test(String(doc.avatar))) {
+      return s +
+        '<circle cx="' + (px + pw / 2) + '" cy="' + (py + 68) + '" r="34" fill="' + P.accentL + '" opacity="0.5"/>' +
+        '<path d="M ' + (px + pw / 2 - 52) + ' ' + (py + ph - 10) + ' a 52 60 0 0 1 104 0 Z" fill="' + P.accentL + '" opacity="0.5"/>' +
+        T('FOTO / PHOTO', px + pw / 2, py + ph - 12, { anchor: 'middle', size: 8, fam: SANS, fill: '#fff', ls: 1.6 });
+    }
+    var cid = idp + '-av';
+    return s +
+      '<clipPath id="' + cid + '"><rect x="' + (px + 1) + '" y="' + (py + 1) + '" width="' + (pw - 2) + '" height="' + (ph - 2) + '"/></clipPath>' +
+      '<image href="' + esc(doc.avatar) + '" x="' + (px + 1) + '" y="' + (py + 1) + '" width="' + (pw - 2) + '" height="' + (ph - 2) + '" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + cid + ')"/>' +
+      /* Açıq şəkillərdə yazı itməsin deyə altda tünd zolaq */
+      '<rect x="' + (px + 1) + '" y="' + (py + ph - 24) + '" width="' + (pw - 2) + '" height="23" fill="#0b1220" opacity="0.55"/>' +
+      T('FOTO / PHOTO', px + pw / 2, py + ph - 12, { anchor: 'middle', size: 8, fam: SANS, fill: '#fff', ls: 1.6 });
+  }
+
+  /* 12400 → «12,4 K». Onluq ayırıcı vergüldür (Azərbaycan yazılışı). */
+  function sosialSayi(n) {
+    /* null/undefined/'' NAMƏLUMDUR, sıfır deyil — `Number(null)` 0 verdiyi üçün
+       bu yoxlama əvvəldədir. PHP güzgüsü: Support\Sosial\Sosial::sayi(). */
+    if (n === null || n === undefined || n === '') return '—';
+    n = Number(n);
+    if (!isFinite(n) || n < 0) return '—';
+    n = Math.floor(n);
+    if (n < 1000) return String(n);
+    var v = n < 1000000 ? Math.round(n / 100) / 10 : Math.round(n / 100000) / 10;
+    return String(v).replace('.', ',') + (n < 1000000 ? ' K' : ' M');
+  }
+
+  /* `vesiqe`-nin yeddi ikidilli sətrini sosial variantı ilə əvəz edir. */
+  function socialRows(doc, exp) {
+    var s = doc.social || {};
+    return [
+      ['İSTİFADƏÇİ ADI / USERNAME', s.username ? '@' + s.username : '—'],
+      ['PLATFORMA / PLATFORM', SOSIAL_AD[s.platform] || '—'],
+      ['GÖRÜNƏN AD / DISPLAY NAME', s.name || doc.to || '—'],
+      ['İZLƏYİCİ / FOLLOWERS', sosialSayi(s.followers)],
+      ['PAYLAŞIM / POSTS', sosialSayi(s.posts)],
+      ['QEYDİYYAT № / DOCUMENT NO', doc.regNo],
+      ['VERİLMƏ · ETİBARLIDIR / ISSUE · EXPIRY', doc.date + '  —  ' + exp]
+    ];
+  }
+
   /* Diaqonal qutu ştampı — təsdiq, müddət bitməsi, ləğv və dizayna xas ştamplar.
      `verifiedStamp` bunun sabit arqumentli halıdır: defolt dəyərlər hərfi olaraq
      əvvəlki çıxışı verir, ona görə mövcud dizaynların baytı dəyişmir. */
@@ -1899,7 +1973,7 @@ window.DOCGEN = (function () {
     var h = hash(doc.regNo + 'dob');
     var dob = pad(1 + h % 28, 2) + '.' + pad(1 + h % 12, 2) + '.' + (1970 + h % 30);
     var exp = doc.date.slice(0, 6) + (parseInt(doc.date.slice(6), 10) + 10);
-    var fields = [
+    var fields = doc.social ? socialRows(doc, exp) : [
       ['SOYADI / SURNAME', upper(sur)], ['ADI / GIVEN NAMES', upper(giv)],
       ['VƏTƏNDAŞLIĞI / NATIONALITY', CUR.nation], ['DOĞUM TARİXİ / DATE OF BIRTH', dob],
       ['SƏNƏD № / DOCUMENT NO', doc.regNo], ['VERİLMƏ · ETİBARLIDIR / ISSUE · EXPIRY', doc.date + '  —  ' + exp],
@@ -1927,14 +2001,14 @@ window.DOCGEN = (function () {
 
     out += '<rect x="' + CX + '" y="' + CY + '" width="' + CWid + '" height="44" rx="14" fill="' + P.head + '"/>';
     out += '<rect x="' + CX + '" y="' + (CY + 28) + '" width="' + CWid + '" height="16" fill="' + P.head + '"/>';
-    out += T('VƏSİQƏ / IDENTITY CARD', CX + 22, CY + 29, { size: 11, fam: SANS, weight: 'bold', fill: '#fff', ls: 2.2 });
-    out += T('№ ' + doc.regNo, CX + CWid - 22, CY + 29, { anchor: 'end', size: 11, fam: SANS, weight: 'bold', fill: P.accentL, ls: 1.2 });
+    out += T(doc.social ? 'SOSİAL KİMLİK KARTI / SOCIAL ID' : 'VƏSİQƏ / IDENTITY CARD', CX + 22, CY + 29, { size: 11, fam: SANS, weight: 'bold', fill: '#fff', ls: 2.2 });
+    /* Sosial kartda nömrə soldan 30px sürüşür ki, zolağın sağ küncünə platforma
+       nişanı yerləşsin. `doc.social` yoxdursa ifadə əvvəlki dəyəri verir. */
+    out += T('№ ' + doc.regNo, CX + CWid - 22 - (doc.social ? 30 : 0), CY + 29, { anchor: 'end', size: 11, fam: SANS, weight: 'bold', fill: P.accentL, ls: 1.2 });
+    if (doc.social) out += platformLogo(doc.social.platform, CX + CWid - 46, CY + 10, 24, '#fff');
 
-    /* foto sütunu */
-    out += '<rect x="' + px + '" y="' + py + '" width="' + pw + '" height="' + ph + '" fill="#fff" stroke="' + P.accent + '" stroke-width="1"/>';
-    out += '<circle cx="' + (px + pw / 2) + '" cy="' + (py + 68) + '" r="34" fill="' + P.accentL + '" opacity="0.5"/>';
-    out += '<path d="M ' + (px + pw / 2 - 52) + ' ' + (py + ph - 10) + ' a 52 60 0 0 1 104 0 Z" fill="' + P.accentL + '" opacity="0.5"/>';
-    out += T('FOTO / PHOTO', px + pw / 2, py + ph - 12, { anchor: 'middle', size: 8, fam: SANS, fill: '#fff', ls: 1.6 });
+    /* foto sütunu — avatar varsa şəkil, yoxsa eyni siluet (bax: avatarBox) */
+    out += avatarBox(doc, px, py, pw, ph, P, idp);
     /* ikinci, solğun portret — pasport lüğətinin özəyi */
     var gx = px + pw / 2 - 27, gy2 = py + ph + 12;
     out += '<g opacity="0.35"><rect x="' + gx + '" y="' + gy2 + '" width="54" height="68" fill="none" stroke="' + P.accent + '" stroke-width="0.6"/>' +
@@ -2188,6 +2262,342 @@ window.DOCGEN = (function () {
     viza: L_viza, ekspertiza: L_ekspertiza
   };
 
+  /* ==================================================================
+     SOSİAL KİMLİK KARTI — ayrıca çıxış formatı
+     ==================================================================
+     Bu, A4 sənəd DEYİL: 1080×1350 kətanda iki üzlü, kredit kartı
+     nisbətində (ID-1, 85.6×54 mm ≈ 1.586) kart. Ölçü qəsdən seçilib —
+     Instagram-ın portret formatı ilə eynidir, yəni kart paylaşıma
+     çevrilmədən girir.
+
+     `LAYOUTS` reyestrinə DAXİL EDİLMİR. Səbəb CLAUDE.md-dəki «bijeksiya
+     tələsi»dir: `check-templates.js` hər kateqoriyanın hər dizaynı əhatə
+     etməsini tələb edir, 12 dizayn × 12 şablon isə artıq bijeksiyadır —
+     13-cü dizayn 18 yeni şablon deməkdir. Kart `a4()`/`story()` ilə eyni
+     səviyyədə, üçüncü giriş nöqtəsi kimi yaşayır.
+
+     HÜQUQİ QALXAN kartda da tamdır və `inner()` qapısından KƏNARDA olduğu
+     üçün burada AÇIQ şəkildə çəkilir: möhür, su nişanı (`data-wm`),
+     disclaimer zolağı (`data-dc`), mikromətn və MRZ-dəki `PARODIYA`.
+     `tools/check-sosial.js` §7 hər birini ayrıca yoxlayır.
+
+     Determinizm eynidir: `Date.now()` və `Math.random()` YOXDUR. */
+
+  var KW = 1080, KH = 1350;
+  /* Story kətanı — `story()` içindəki eyni rəqəmlər, burada modul səviyyəsində. */
+  var SKW = 1080, SKH = 1920;
+  var KX = 60, KCW = 960, KCH = 605, KFY = 50, KBY = 695, KR = 34;
+
+  /* Üç stil. Kartın quruluşu eynidir — dəyişən rəng məntiqi və vurğudur.
+     Şablon `cardStyle` ilə seçir; naməlum dəyər `resmi`-yə düşür. */
+  var KART_STILLER = ['resmi', 'tund', 'sade'];
+  var KART_STIL_ADI = { resmi: 'Rəsmi', tund: 'Tünd', sade: 'Sadə' };
+
+  function kartTheme(stil, P) {
+    if (stil === 'tund') {
+      return { bg: '#0e1420', bg2: P.accentD, ink: '#f2f5fa', dim: '#9aa7bd',
+               line: 'rgba(255,255,255,0.14)', chip: 'rgba(255,255,255,0.07)',
+               accent: P.accentL, dark: true };
+    }
+    if (stil === 'sade') {
+      return { bg: '#ffffff', bg2: '#ffffff', ink: P.ink, dim: P.muted,
+               line: 'rgba(0,0,0,0.12)', chip: P.soft,
+               accent: P.accent, dark: false };
+    }
+    return { bg: P.paper, bg2: P.soft, ink: P.head, dim: P.muted,
+             line: 'rgba(0,0,0,0.14)', chip: P.soft,
+             accent: P.accent, dark: false };
+  }
+
+  function kRect(x, y, w, h, r, o) {
+    o = o || {};
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '"' +
+      ' fill="' + (o.fill || 'none') + '"' +
+      (o.stroke ? ' stroke="' + o.stroke + '" stroke-width="' + (o.sw || 1) + '"' : '') +
+      (o.op ? ' opacity="' + o.op + '"' : '') + '/>';
+  }
+
+  /* Kartın su nişanı — A4 `watermark()` W/H-a bağlıdır, ona görə ayrıdır.
+     `data-wm="1"` markeri eynidir ki, mövcud yoxlamalar onu tapsın. */
+  function kartWatermark(P, TH, paid, x, y, w, h) {
+    var cx = x + w / 2, cy = y + h / 2;
+    var op = paid ? 0.07 : 0.14;
+    var out = '<g data-wm="1" opacity="' + op + '" transform="rotate(-18 ' + cx + ' ' + cy + ')">';
+    if (CUR.wmTop) {
+      out += T(CUR.wmTop, cx, cy + 6, { anchor: 'middle', size: 84, weight: 'bold', fam: SANS, fill: TH.accent, ls: 10 }) +
+        T(CUR.wmSub, cx, cy + 46, { anchor: 'middle', size: 22, weight: 'bold', fam: SANS, fill: TH.accent, ls: 5 });
+    } else {
+      out += '<path d="' + rosette(cx, cy, 210, 15, 0.16) + '" fill="none" stroke="' + TH.accent + '" stroke-width="1.4"/>';
+    }
+    out += '</g>';
+
+    if (!paid) {
+      out += '<g opacity="0.12" transform="rotate(-18 ' + cx + ' ' + cy + ')" font-family="' + SANS +
+        '" font-size="19" font-weight="bold" fill="' + TH.accent + '" letter-spacing="6">';
+      for (var ry = y - 60; ry < y + h + 120; ry += 96)
+        for (var rx = x - 140; rx < x + w + 140; rx += 250)
+          if (Math.abs(ry - cy) > 70) out += '<text x="' + rx + '" y="' + ry + '">NÜMUNƏ</text>';
+      out += '</g>';
+    }
+    return out;
+  }
+
+  /* Disclaimer zolağı hüquqi qalxanın bir hissəsidir və HƏMİŞƏ oxunaqlı
+     olmalıdır: tünd kartda tünd zolaq fonla qarışdığı üçün rənglər çevrilir. */
+  function kartDisclaimer(P, TH, x, y, w) {
+    var bg = TH.dark ? '#f0e4c2' : P.head;
+    var fg = TH.dark ? '#12161f' : '#f3e6bf';
+    return '<rect data-dc="1" x="' + x + '" y="' + y + '" width="' + w + '" height="30" rx="8" fill="' + bg + '" opacity="0.96"/>' +
+      T(CUR.band, x + w / 2, y + 20, { anchor: 'middle', size: 10.4, fam: SANS, weight: 'bold', fill: fg, ls: 0.6 });
+  }
+
+  /* Bir statistika xanası: böyük rəqəm + kiçik ikidilli etiket. */
+  function kartStat(label, value, x, y, w, TH) {
+    var vs = fit(value, w - 16, 34, 20, 'bold', SANS);
+    return kRect(x, y, w, 78, 12, { fill: TH.chip }) +
+      T(value, x + w / 2, y + 44, { anchor: 'middle', size: vs, weight: 'bold', fam: SANS, fill: TH.ink }) +
+      T(label, x + w / 2, y + 64, { anchor: 'middle', size: 9.6, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.5 });
+  }
+
+  /* Kartın ön üzü. */
+  function kartOn(doc, C, TH, stil) {
+    var P = C.P, idp = C.idp, s = doc.social || {};
+    var x = KX, y = KFY, w = KCW, h = KCH, out = '';
+
+    out += '<clipPath id="' + idp + '-kf"><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + KR + '"/></clipPath>';
+    out += '<g clip-path="url(#' + idp + '-kf)">';
+    out += kRect(x, y, w, h, KR, { fill: TH.bg });
+
+    /* Fon bəzəyi — stilə görə */
+    if (stil === 'tund') {
+      out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#' + idp + '-kgrad)"/>';
+      out += '<g opacity="0.10">' + guilloche(x + w - 120, y + h - 60, P, 1, 0.7) + '</g>';
+      out += '<circle cx="' + (x + w - 96) + '" cy="' + (y + 96) + '" r="150" fill="url(#' + idp + '-holo)" opacity="0.18"/>';
+    } else if (stil === 'sade') {
+      out += '<rect x="' + x + '" y="' + y + '" width="14" height="' + h + '" fill="' + P.accent + '"/>';
+    } else {
+      out += '<g opacity="0.13">' + guilloche(x + w / 2, y + h / 2, P, 1, 0.85) + '</g>';
+      out += crest(x + w - 120, y + h - 260, 96, P, { detail: 'ghost', op: 0.08, mono: P.accentD, banner: 'HÜQUQİ QÜVVƏSİ YOXDUR' });
+      out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="76" fill="' + P.head + '"/>';
+    }
+
+    out += kartWatermark(P, TH, doc.paid, x, y, w, h);
+
+    /* Başlıq zolağı */
+    var hy = stil === 'resmi' ? y + 48 : y + 54;
+    var hc = stil === 'resmi' ? '#ffffff' : TH.ink;
+    out += T(upper(CUR.org), x + 34, hy - 16, { size: 12, fam: SANS, weight: 'bold', fill: hc, ls: 3.2, op: stil === 'resmi' ? 1 : 0.85 });
+    out += T('SOSİAL KİMLİK KARTI / SOCIAL ID', x + 34, hy + 6, { size: 10, fam: SANS, weight: 'bold', fill: hc, ls: 2, op: 0.72 });
+    if (s.platform) out += platformLogo(s.platform, x + w - 34 - 34, y + 24, 34, hc);
+
+    /* Foto */
+    var px = x + 34, py = y + 118, ps = 210;
+    out += '<clipPath id="' + idp + '-kav"><rect x="' + px + '" y="' + py + '" width="' + ps + '" height="' + ps + '" rx="18"/></clipPath>';
+    if (doc.avatar && AVATAR_RE.test(String(doc.avatar))) {
+      out += '<image href="' + esc(doc.avatar) + '" x="' + px + '" y="' + py + '" width="' + ps + '" height="' + ps +
+        '" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + idp + '-kav)"/>';
+    } else {
+      out += kRect(px, py, ps, ps, 18, { fill: TH.chip });
+      out += '<g clip-path="url(#' + idp + '-kav)" opacity="0.55">' +
+        '<circle cx="' + (px + ps / 2) + '" cy="' + (py + ps * 0.38) + '" r="' + (ps * 0.19) + '" fill="' + P.accentL + '"/>' +
+        '<path d="M ' + (px + ps / 2 - ps * 0.31) + ' ' + (py + ps) + ' a ' + (ps * 0.31) + ' ' + (ps * 0.34) + ' 0 0 1 ' + (ps * 0.62) + ' 0 Z" fill="' + P.accentL + '"/></g>';
+      out += T('FOTO / PHOTO', px + ps / 2, py + ps - 14, { anchor: 'middle', size: 9, fam: SANS, fill: TH.dim, ls: 1.4 });
+    }
+    out += kRect(px, py, ps, ps, 18, { stroke: TH.line, sw: 1.4 });
+
+    /* Ad · istifadəçi adı · platforma */
+    var tx = px + ps + 30, tw = x + w - 34 - tx;
+    var ad = String(s.name || doc.to || '—');
+    var as = fit(ad, tw, 40, 22, 'bold', SANS);
+    out += T('AD / NAME', tx, py + 6, { size: 9.6, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.8 });
+    out += T(ad, tx, py + 40, { size: as, weight: 'bold', fam: SANS, fill: TH.ink });
+
+    var un = s.username ? '@' + s.username : '—';
+    var us = fit(un, tw, 27, 15, 'bold', MONO);
+    out += T('İSTİFADƏÇİ ADI / USERNAME', tx, py + 84, { size: 9.6, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.8 });
+    out += T(un, tx, py + 114, { size: us, weight: 'bold', fam: MONO, fill: TH.accent });
+
+    out += T('PLATFORMA / PLATFORM', tx, py + 158, { size: 9.6, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.8 });
+    out += T(SOSIAL_AD[s.platform] || '—', tx, py + 184, { size: 20, weight: 'bold', fam: SANS, fill: TH.ink });
+    if (s.verified) {
+      var vw = measure(SOSIAL_AD[s.platform] || '—', font(20, 'bold', SANS)) + 14;
+      out += '<circle cx="' + (tx + vw + 9) + '" cy="' + (py + 178) + '" r="9.5" fill="' + TH.accent + '"/>' +
+        '<path d="M ' + (tx + vw + 4.5) + ' ' + (py + 178) + ' l 3.2 3.4 l 6.1 -6.6" fill="none" stroke="' + (TH.dark ? '#0e1420' : '#fff') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
+
+    /* Statistika sətri */
+    var sy = y + h - 152, sw2 = (w - 68 - 24) / 3;
+    out += kartStat('İZLƏYİCİ / FOLLOWERS', sosialSayi(s.followers), x + 34, sy, sw2, TH);
+    out += kartStat('PAYLAŞIM / POSTS', sosialSayi(s.posts), x + 34 + sw2 + 12, sy, sw2, TH);
+    out += kartStat('İZLƏNİLƏN / FOLLOWING', sosialSayi(s.following), x + 34 + (sw2 + 12) * 2, sy, sw2, TH);
+
+    /* Alt sətir — nömrə və etibarlılıq */
+    var by = y + h - 34;
+    out += '<path d="M ' + (x + 34) + ' ' + (by - 30) + ' H ' + (x + w - 34) + '" stroke="' + TH.line + '" stroke-width="1"/>';
+    out += T('№ ' + doc.regNo, x + 34, by - 6, { size: 15, fam: MONO, weight: 'bold', fill: TH.ink, ls: 1 });
+    out += T(CUR.sealBot, x + w - 34, by - 6, { anchor: 'end', size: 10, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.8 });
+
+    out += microtext(x + 8, y + 8, w - 16, h - 16, P, { size: 2.6 });
+    out += '</g>';
+    out += kRect(x, y, w, h, KR, { stroke: TH.dark ? 'rgba(255,255,255,0.22)' : P.accent, sw: 1.6 });
+    return out;
+  }
+
+  /* Kartın arxa üzü — real vəsiqələrdəki kimi bütün texniki qat buradadır.
+     Yerləşdirmə sabit koordinatlarla verilir: sahələr bir-birinin üstünə
+     düşməsin deyə hər blokun yuxarı/aşağı sərhədi şərhdə göstərilib. */
+  function kartArxa(doc, C, TH, stil) {
+    var P = C.P, idp = C.idp, s = doc.social || {};
+    var x = KX, y = KBY, w = KCW, h = KCH, out = '';
+
+    out += '<clipPath id="' + idp + '-kb"><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + KR + '"/></clipPath>';
+    out += '<g clip-path="url(#' + idp + '-kb)">';
+    out += kRect(x, y, w, h, KR, { fill: TH.bg });
+    if (stil === 'tund') out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#' + idp + '-kgrad)"/>';
+
+    /* Maqnit zolağı — 36…104 */
+    out += '<rect x="' + x + '" y="' + (y + 36) + '" width="' + w + '" height="68" fill="#12161f"/>';
+    out += '<rect x="' + x + '" y="' + (y + 36) + '" width="' + w + '" height="68" fill="url(#' + idp + '-holo)" opacity="0.16"/>';
+    /* İncə kənar xətləri: tünd kartda zolaq fondan seçilməzdi. */
+    out += '<path d="M ' + x + ' ' + (y + 36) + ' H ' + (x + w) + ' M ' + x + ' ' + (y + 104) + ' H ' + (x + w) +
+      '" stroke="rgba(255,255,255,0.30)" stroke-width="1"/>';
+
+    /* İmza zolağı — 134…210, etiket 232 */
+    var iy = y + 134, iw = 400;
+    out += kRect(x + 34, iy, iw, 76, 8, { fill: '#ffffff' });
+    out += '<g opacity="0.42">';
+    for (var i = 0; i < 22; i++) {
+      out += '<rect x="' + (x + 40 + i * ((iw - 12) / 22)) + '" y="' + (iy + 6) + '" width="' + ((iw - 12) / 44) + '" height="64" fill="' + P.accentL + '"/>';
+    }
+    out += '</g>';
+    out += signature(doc.regNo + (s.username || ''), x + 56, iy + 10, 220, 56);
+    out += T('SAHİBİN İMZASI / HOLDER SIGNATURE', x + 34, iy + 98, { size: 9.4, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.6 });
+
+    /* Möhür imza zolağının sağ kənarına düşür — əsl vəsiqədəki kimi. 130…242 */
+    out += seal(x + 500, y + 186, 56, P, doc.regNo, idp, -12);
+
+    /* Verən orqan — 272…316 */
+    out += T('VERƏN ORQAN / AUTHORITY', x + 34, y + 272, { size: 9.4, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.6 });
+    out += block(wrap(doc.signOrg || CUR.orgAgency, font(15, 'bold', SANS), 600, 2), x + 34, y + 296, 21,
+      { size: 15, weight: 'bold', fam: SANS, fill: TH.ink });
+
+    /* Verilmə · etibarlılıq — 366…396 */
+    var exp = doc.date.slice(0, 6) + (parseInt(doc.date.slice(6), 10) + 10);
+    out += T('VERİLMƏ / ISSUE', x + 34, y + 366, { size: 9.4, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.6 });
+    out += T(doc.date, x + 34, y + 392, { size: 16, weight: 'bold', fam: MONO, fill: TH.ink });
+    out += T('ETİBARLIDIR / EXPIRY', x + 220, y + 366, { size: 9.4, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1.6 });
+    out += T(exp, x + 220, y + 392, { size: 16, weight: 'bold', fam: MONO, fill: TH.ink });
+
+    /* QR — sağ sütun, 134…284; yazı ALTINDA, 306…320.
+       `qrOrHint()` işlədilmir: onun yazısı QR ilə eyni x-dən başlayır və
+       kart eninə sığmır (A4-də yazı QR-ın SAĞINDA yer alır). */
+    var qs = 150, qx = x + w - 34 - qs, qy = y + 134;
+    if (doc.paid && doc.verifyUrl) {
+      out += kRect(qx - 6, qy - 6, qs + 12, qs + 12, 8, { fill: '#ffffff' });
+      out += qrBlock(doc.verifyUrl, qx, qy, qs);
+      out += T('REYESTRDƏ YOXLA', qx + qs / 2, qy + qs + 24, { anchor: 'middle', size: 10, fam: SANS, weight: 'bold', fill: TH.ink, ls: 0.8 });
+    } else {
+      out += kRect(qx, qy, qs, qs, 8, { stroke: TH.dim, sw: 1 });
+      out += T('QR', qx + qs / 2, qy + qs / 2 - 4, { anchor: 'middle', size: 13, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1 });
+      out += T('KODU', qx + qs / 2, qy + qs / 2 + 16, { anchor: 'middle', size: 13, fam: SANS, weight: 'bold', fill: TH.dim, ls: 1 });
+      out += T('REYESTRDƏ QEYDİYYATDAN KEÇMƏYİB', qx + qs / 2, qy + qs + 24, { anchor: 'middle', size: 9, fam: SANS, weight: 'bold', fill: TH.dim, ls: 0.6 });
+    }
+
+    /* Ştrix-kod — 344…404. Ağ lövhə HRI sətrini də örtür: `barcode()`-un öz
+       `bg` seçimi yalnız zolaqların altını doldurur və tünd kartda insan üçün
+       yazılan nömrə görünməz qalırdı. */
+    var bx = x + w - 34 - 280, by2 = y + 348;
+    out += kRect(bx - 10, by2 - 8, 300, 62, 6, { fill: '#ffffff' });
+    out += barcode(doc.regNo, bx, by2, 280, 38, { hri: true, P: { muted: '#5d6577' } });
+
+    /* MRZ — `PARODIYA` optional-data sahəsindədir, OCR onu oxuyur. 452…522 */
+    var mrz = mrzPair(doc), my = y + 486, adv = (w - 68) / 44;
+    out += kRect(x + 20, y + 452, w - 40, 70, 6, { fill: '#ffffff', op: 0.96 });
+    out += mrzLine(mrz[0], x + 34, my, adv, 15, '#101827');
+    out += mrzLine(mrz[1], x + 34, my + 26, adv, 15, '#101827');
+
+    /* Disclaimer zolağı — 561…591 */
+    out += kartDisclaimer(P, TH, x + 20, y + h - 44, w - 40);
+    out += microtext(x + 8, y + 8, w - 16, h - 16, P, { size: 2.6 });
+    out += '</g>';
+    out += kRect(x, y, w, h, KR, { stroke: TH.dark ? 'rgba(255,255,255,0.22)' : P.accent, sw: 1.6 });
+    return out;
+  }
+
+  /* Kartın defs-i AYRICA emissiya olunur: `defs()` bütün dizaynlar tərəfindən
+     paylaşılır və ora bir gradient əlavə etmək 720 renderin baytını dəyişərdi
+     (bax: tools/hash-layouts.js). */
+  function kartDefs(idp, P, TH) {
+    return '<defs>' +
+      '<linearGradient id="' + idp + '-holo" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#8fd6ff"/><stop offset="30%" stop-color="#c9a7ff"/>' +
+      '<stop offset="60%" stop-color="#ffd6a5"/><stop offset="100%" stop-color="#9bf6c8"/></linearGradient>' +
+      '<linearGradient id="' + idp + '-kgrad" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="' + TH.bg2 + '" stop-opacity="0.55"/>' +
+      '<stop offset="100%" stop-color="' + TH.bg + '" stop-opacity="0"/></linearGradient>' +
+      '</defs>';
+  }
+
+  function kartStil(doc) {
+    var k = doc.cardStyle || (doc.social && doc.social.style);
+    return KART_STILLER.indexOf(k) >= 0 ? k : 'resmi';
+  }
+
+  /* İki üz, bir kətan. */
+  function kart(doc, opts) {
+    var C = ctxFor(doc, opts || {});
+    var stil = kartStil(doc), TH = kartTheme(stil, C.P);
+    var bg = stil === 'tund' ? '#070a11' : (stil === 'sade' ? '#eef0f4' : C.P.soft);
+
+    var out = '<svg xmlns="http://www.w3.org/2000/svg" width="' + KW + '" height="' + KH +
+      '" viewBox="0 0 ' + KW + ' ' + KH + '">';
+    out += kartDefs(C.idp, C.P, TH);
+    out += '<rect width="' + KW + '" height="' + KH + '" fill="' + bg + '"/>';
+    out += kartOn(doc, C, TH, stil);
+    out += kartArxa(doc, C, TH, stil);
+    out += T('ÖN / FRONT', KX, KFY - 14, { size: 10, fam: SANS, weight: 'bold', fill: C.P.muted, ls: 2 });
+    out += T('ARXA / BACK', KX, KBY - 14, { size: 10, fam: SANS, weight: 'bold', fill: C.P.muted, ls: 2 });
+    if (doc.replyTo) out += replyBand(C.P, doc.replyTo);
+    return out + '</svg>';
+  }
+
+  /* Story formatı — kart 1080×1920 kətanın ortasında. */
+  function kartStory(doc, opts) {
+    var C = ctxFor(doc, opts || {});
+    var stil = kartStil(doc), TH = kartTheme(stil, C.P);
+    var sc = 0.86, dy = (SKH - KH * sc) / 2;
+
+    var out = '<svg xmlns="http://www.w3.org/2000/svg" width="' + SKW + '" height="' + SKH +
+      '" viewBox="0 0 ' + SKW + ' ' + SKH + '">';
+    out += '<defs><linearGradient id="' + C.idp + '-sbg" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="' + C.P.head + '"/><stop offset="100%" stop-color="' + C.P.accentD + '"/>' +
+      '</linearGradient></defs>';
+    out += '<rect width="' + SKW + '" height="' + SKH + '" fill="url(#' + C.idp + '-sbg)"/>';
+    out += kartDefs(C.idp, C.P, TH);
+    out += '<g transform="translate(' + ((SKW - KW * sc) / 2) + ',' + dy + ') scale(' + sc + ')">';
+    out += '<rect width="' + KW + '" height="' + KH + '" fill="' + (stil === 'tund' ? '#070a11' : C.P.soft) + '" rx="24"/>';
+    out += kartOn(doc, C, TH, stil);
+    out += kartArxa(doc, C, TH, stil);
+    out += '</g>';
+    out += T(doc.regNo, SKW / 2, dy - 34, { anchor: 'middle', size: 34, fam: MONO, weight: 'bold', fill: '#fff', ls: 3 });
+    out += T(CUR.storyFoot, SKW / 2, SKH - 62, { anchor: 'middle', size: 26, fam: SANS, fill: '#fff', op: 0.82, ls: 1.4 });
+    return out + '</svg>';
+  }
+
+  /* Tək giriş nöqtəsi — çağıran tərəf hansı formatı seçəcəyini bilməməlidir.
+     `doc.social` varsa kart, yoxsa adi A4 sənəd. */
+  function sheet(doc, opts) {
+    return doc && doc.social
+      ? { svg: kart(doc, opts), w: KW, h: KH, kart: true }
+      : { svg: a4(doc, opts), w: W, h: H, kart: false };
+  }
+
+  function share(doc, opts) {
+    return doc && doc.social
+      ? { svg: kartStory(doc, opts), w: SKW, h: SKH, kart: true }
+      : { svg: story(doc, opts), w: SKW, h: SKH, kart: false };
+  }
+
   /* ---------------- defs ---------------- */
   function defs(idp, P) {
     return '<defs>' +
@@ -2272,6 +2682,10 @@ window.DOCGEN = (function () {
   return {
     a4: a4, story: story,
     W: W, H: H, STORY_W: 1080, STORY_H: 1920,
+    /* Sosial kimlik kartı — `LAYOUTS` reyestrindən KƏNARDA, üçüncü format.
+       `sheet()`/`share()` çağıran tərəf üçün tək giriş nöqtəsidir. */
+    kart: kart, kartStory: kartStory, sheet: sheet, share: share,
+    KART_W: KW, KART_H: KH, KART_STILLER: KART_STILLER, KART_STIL_ADI: KART_STIL_ADI,
     LAYOUTS: Object.keys(LAYOUTS), LAYOUT_NAMES: LAYOUT_NAMES, PALETTES: Object.keys(PALETTES),
     TONES: TONES, TONE_NAMES: TONE_NAMES,
     code39: code39, C39: C39

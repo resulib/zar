@@ -71,6 +71,10 @@ class AppServiceProvider extends ServiceProvider
         // açıqdır, amma oğurlanmış sessiya ilə hesabı boşaltmaq mümkün olmasın.
         RateLimiter::for('ai', fn (Request $r) => Limit::perMinute(8)->by($key($r)));
 
+        // Sosial profil axtarışı: hər çağırış kənar platformaya gedir və onların
+        // IP limitindən yeyir. Bloklanmamaq üçün `ai` ilə eyni səviyyədə saxlanılır.
+        RateLimiter::for('sosial', fn (Request $r) => Limit::perMinute(10)->by($key($r)));
+
         // Ölçmə hadisələri: sənəd yaratmaqdan ucuzdur, amma limitsiz qalsa
         // document_events cədvəli sadə döngə ilə doldurula bilər.
         RateLimiter::for('events',    fn (Request $r) => Limit::perMinute(30)->by($key($r)));
@@ -84,6 +88,35 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('devet-read', fn (Request $r) => [
             Limit::perMinute(90)->by($key($r)),
             Limit::perMinute(180)->by('ip:' . $r->ip()),
+        ]);
+
+        /* İş qovluğu bölməsi.
+           `dossier-kilid` bilərəkdən ən sərt limitdir: kod dörd rəqəmdir və
+           on min variant limitsiz halda dəqiqələr içində sınanardı — kilidin
+           əsl qorunması uzunluqda deyil, buradadır.
+           `dossier-rey` isə üç cəhd qaydasının şəbəkə tərəfdəki tamamlayıcısıdır. */
+        RateLimiter::for('dossier', fn (Request $r) => Limit::perMinute(30)->by($key($r)));
+
+        RateLimiter::for('dossier-read', fn (Request $r) => [
+            Limit::perMinute(90)->by($key($r)),
+            Limit::perMinute(180)->by('ip:' . $r->ip()),
+        ]);
+
+        RateLimiter::for('dossier-kilid', fn (Request $r) => [
+            Limit::perMinute(10)->by($key($r)),
+            Limit::perMinute(30)->by('ip:' . $r->ip()),
+        ]);
+
+        /* Profil şəkli: hər yükləmə GD-də yenidən kodlaşdırılır və diskə iki
+           fayl yazır — bu, sadə oxumadan qat-qat bahalı əməliyyatdır. */
+        RateLimiter::for('dossier-foto', fn (Request $r) => [
+            Limit::perMinute(4)->by($key($r)),
+            Limit::perDay(30)->by($key($r)),
+        ]);
+
+        RateLimiter::for('dossier-rey', fn (Request $r) => [
+            Limit::perMinute(6)->by($key($r)),
+            Limit::perMinute(20)->by('ip:' . $r->ip()),
         ]);
 
         // Qonaq cavabı HƏR KƏSƏ açıqdır — ən sərt limit buradadır, yoxsa

@@ -15,7 +15,7 @@ class Template extends Model
         'title', 'tag', 'preamble', 'powers', 'penalty',
         'to_label', 'from_label', 'powers_label', 'penalty_label',
         'reg_prefix', 'sign_title', 'sign_org', 'share',
-        'reply_kind', 'reply_cats',
+        'reply_kind', 'reply_cats', 'social_kind', 'card_style',
         'fields', 'notes', 'cancel_reasons',
         'title_options', 'powers_options', 'powers_min', 'powers_max', 'penalty_options',
         'sort', 'is_active',
@@ -139,6 +139,15 @@ class Template extends Model
 
         if (is_array($this->penalty_options) && $this->penalty_options !== []) {
             $out['penaltyOptions'] = array_values($this->penalty_options);
+        }
+
+        /* Sosial kart qatı. Boşdursa kart hər iki platformaya uyğun gəlir,
+           ona görə açar heç göndərilmir — statik sosial.js ilə eyni forma. */
+        if ($this->social_kind !== null && $this->social_kind !== '') {
+            $out['socialKind'] = $this->social_kind;
+        }
+        if ($this->card_style !== null && $this->card_style !== '') {
+            $out['cardStyle'] = $this->card_style;
         }
 
         /* Cavab qatı — yalnız cavab şablonlarında. `replyCats` boşdursa

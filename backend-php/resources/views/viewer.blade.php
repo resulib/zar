@@ -91,8 +91,8 @@
 <div id="vwToast"><div class="msg"></div></div>
 
 <script src="{{ asset('assets/qr.js') }}?v=2387c0c7"></script>
-<script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
+<script src="{{ asset('assets/doc.js') }}?v=9a536a3c"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
-<script src="{{ asset('assets/viewer.js') }}?v=bb5dcfad"></script>
+<script src="{{ asset('assets/viewer.js') }}?v=8cf5e51e"></script>
 </body>
 </html>

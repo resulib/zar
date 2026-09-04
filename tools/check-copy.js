@@ -6,7 +6,8 @@
      node tools/check-copy.js                 — bütün kataloq
      node tools/check-copy.js couples work    — yalnız göstərilən kateqoriyalar
      node tools/check-copy.js zarafat         — yalnız bir ton
-     node tools/check-copy.js replies         — yalnız cavab şablonları  */
+     node tools/check-copy.js replies         — yalnız cavab şablonları
+     node tools/check-copy.js sosial          — yalnız sosial kimlik kartları  */
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const R = require('./copy-rules.js');
 const ROOT_DIR = path.join(__dirname, '..');
@@ -15,16 +16,18 @@ const FRONT = path.join(ROOT_DIR, 'frontend');
 const sb = { window: {}, QRZ: null, Math, Date, JSON, String, Number, Array, Object,
              isNaN, parseInt, parseFloat, RegExp };
 sb.globalThis = sb; vm.createContext(sb);
-for (const f of ['templates.js', 'templates-xatire.js', 'replies.js'])
+for (const f of ['templates.js', 'templates-xatire.js', 'replies.js', 'sosial.js'])
   vm.runInContext(fs.readFileSync(path.join(FRONT, f), 'utf8'), sb);
 
 const MAIN = sb.window.TEMPLATES, REPLY = sb.window.REPLIES;
-const ALL = MAIN.concat(REPLY);
+const SOSIAL = sb.window.SOSIAL_CARDS || [];
+const ALL = MAIN.concat(REPLY).concat(SOSIAL);
 
 const args = process.argv.slice(2);
 let list = ALL, scope = 'bütün kataloq (' + ALL.length + ' şablon)';
 if (args.length) {
   if (args.length === 1 && args[0] === 'replies') { list = REPLY; scope = 'cavab şablonları'; }
+  else if (args.length === 1 && args[0] === 'sosial') { list = SOSIAL; scope = 'sosial kimlik kartları'; }
   else if (args.length === 1 && (args[0] === 'zarafat' || args[0] === 'xatire')) {
     list = ALL.filter(t => t.tone === args[0]); scope = args[0] + ' tonu';
   } else { list = ALL.filter(t => args.indexOf(t.cat) >= 0); scope = args.join(', '); }

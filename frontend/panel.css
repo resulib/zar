@@ -365,3 +365,236 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .ai-warn { border-left-color: #b8892a; background: #faf4e4; color: #8a6d1f; }
 .ai-warn ul { margin: 5px 0 0; padding-left: 17px; }
 .ai-panel .btn[disabled] { opacity: .55; }
+
+/* ============================================================
+   İŞ QOVLUĞU REDAKTORU
+   ============================================================
+   Ayrı bölmədir, çünki oyun tərəfinin `dossier.css` faylı ilə eyni səhifədə
+   yaşayır: sənəd redaktorunun sağ sütunu oyunun ÖZ üslubu ilə render olunur.
+   Ona görə buradakı seçicilər `qv-` ilə başlayır və `.paper` daxilinə heç
+   nə yazmır — vərəqin görkəmi oyun tərəfinin işidir. */
+
+/* ---------- yoxlama paneli ---------- */
+.qv-rapor{margin:0 0 16px}
+.qv-rapor>div{padding:7px 11px;border-left:3px solid;font-size:13px;line-height:1.5;margin-bottom:4px}
+.qv-rapor b{margin-right:6px;font-weight:600}
+.qv-ok  {border-color:#2E7D4F;background:#EEF7F1;color:#245B3B}
+.qv-xeta{border-color:#8A2A2A;background:#FBEDED;color:#7A2222}
+.qv-qeyd{border-color:#8A6A2A;background:#FBF6E9;color:#6E5520}
+
+/* ---------- tablar ---------- */
+.qv-tablar{display:flex;gap:2px;border-bottom:1px solid var(--line,#D6DCE8);margin:0 0 18px;flex-wrap:wrap}
+.qv-tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  padding:9px 14px;font:500 13.5px inherit;color:var(--muted,#5A6478);cursor:pointer}
+.qv-tab:hover{color:inherit}
+.qv-tab.on{border-bottom-color:currentColor;color:inherit;font-weight:600}
+.qv-panel{display:none}
+.qv-panel.on{display:block}
+
+/* ---------- sənəd siyahısı (sürüşdürülən) ---------- */
+.qv-list{list-style:none;margin:0 0 22px;padding:0}
+.qv-row{display:flex;align-items:center;gap:10px;padding:8px 10px;
+  border:1px solid var(--line,#D6DCE8);border-bottom:0;background:#fff;cursor:grab}
+.qv-row:last-child{border-bottom:1px solid var(--line,#D6DCE8)}
+.qv-row.surusur{opacity:.45;cursor:grabbing}
+.qv-tut{color:#9AA3B4;cursor:grab;user-select:none}
+.qv-sira{min-width:26px;font:500 12px var(--mono,monospace);color:#8792A6}
+.qv-no{min-width:56px;font:500 12px var(--mono,monospace);color:#5A6478}
+.qv-ad{flex:1;text-decoration:none;color:inherit}
+.qv-ad:hover{text-decoration:underline}
+.qv-nov{font:400 11px var(--mono,monospace);color:#8792A6;letter-spacing:.04em}
+.qv-numune{font:600 11px var(--mono,monospace);color:#2E7D4F;
+  border:1px solid currentColor;border-radius:3px;padding:0 4px}
+/* Dərc olunmamış qaralamanın sarı nişanı. */
+.qv-qaralama{color:#C9922B;font-size:15px;line-height:1}
+
+/* ---------- kartlar ---------- */
+.qv-kart{border:1px solid var(--line,#D6DCE8);background:#fff;padding:14px 16px;margin:0 0 14px}
+.qv-kart h3{margin:0 0 10px;font-size:15px}
+.qv-kart .badge{margin-left:6px}
+.sect-h2{margin:26px 0 10px;font-size:15px}
+
+/* ---------- iki sütunlu sənəd redaktoru ----------
+   Bölmə 980px-dən yuxarı: aşağıda önizləmə mətnin altına düşür, çünki dar
+   ekranda iki sütunun hər ikisi oxunmaz olardı. */
+/* Sənəd redaktoru panelin 1180px-lik ümumi enindən çıxır: mətn və vərəq
+   yan-yana durmalıdır. Yalnız bu ekran — `@section('shell')` boş qaldıqda
+   qalan səhifələr toxunulmur. */
+.wrap-genis{max-width:1560px}
+
+.qv-iki{display:block}
+.qv-sol{min-width:0}
+.qv-sag{min-width:0;margin-top:18px}
+/* Bölmə 1200px-dədir, 980 deyil: iki sütun ancaq HƏR İKİSİ oxunaqlı qaldıqda
+   mənalıdır. 1000px-lik ekranda sol sütun 430px-ə düşür və uzun etiketlər
+   («Sənədin sözü (oyunçu görür)») iki sətrə qırılıb formanı qarışdırır —
+   dar ekranda önizləmə mətnin ALTINA düşsün, yanına yox. */
+@media (min-width:1200px){
+  /* Sağ sütun ÖNCƏLİKLİDİR: qiymətləndirilən şey vərəqin özüdür, ona görə
+     ona minimum en verilir və qalanı sol sütuna qalır. */
+  .qv-iki{display:grid;grid-template-columns:minmax(380px,1fr) minmax(480px,560px);
+    gap:26px;align-items:start}
+  .qv-sag{margin-top:0;position:sticky;top:14px}
+}
+.qv-sag-bas{display:flex;justify-content:space-between;align-items:baseline;
+  font:500 12px var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;
+  color:#8792A6;margin-bottom:6px}
+.qv-hal{font-size:11px;letter-spacing:.04em;text-transform:none}
+/* Önizləmə İFRAME-dir, div deyil: `dossier.css` oyunun QLOBAL üslub faylıdır
+   (`*`, `body`, `:root`) və panelin öz sənədinə yüklənsəydi bütün idarə
+   səhifəsini ələ keçirərdi. Buradakı qaydalar yalnız çərçivəyə aiddir —
+   vərəqin içi iframe-in öz sənədindədir və bura sızmır. */
+.qv-kagiz{display:block;width:100%;height:520px;max-height:78vh;
+  border:1px solid var(--line,#D6DCE8);background:#191C1A}
+/* Sahə qrupları — dörd blok, hər biri bir sualı cavablandırır. */
+.qv-qrup{border:1px solid var(--line,#D6DCE8);background:#fff;
+  padding:14px 16px 16px;margin:0 0 16px;min-width:0}
+.qv-qrup>legend{padding:0 6px;margin-left:-6px;
+  font:600 11px var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;
+  color:#8792A6}
+.qv-qrup .fld:last-child,.qv-qrup .grid2:last-child{margin-bottom:0}
+.qv-qrup .chk{margin-top:4px}
+
+.qv-komek-q{margin-top:8px}
+.qv-komek-q summary{cursor:pointer;font-size:12px;color:#5A6478}
+
+/* `min-height` YALNIZ sənədin gövdəsinə aiddir: hekayə və sual sahələri
+   qısa siyahılardır və 320px onları boş yerlə doldururdu. */
+.qv-metn{font:400 13px/1.65 var(--mono,monospace);resize:vertical;width:100%}
+#qvBody{min-height:320px}
+.qv-komek{font-size:12px;line-height:1.7}
+.qv-komek code{background:#F0F2F7;padding:1px 4px;border-radius:2px;font-size:11.5px}
+
+/* ---------- şəkil kitabxanası ---------- */
+.qv-kitabxana{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));
+  gap:10px;margin:0 0 14px}
+.qv-sekil{margin:0;cursor:pointer;border:1px solid var(--line,#D6DCE8);background:#fff;padding:5px}
+.qv-sekil:hover{border-color:#8792A6}
+.qv-sekil img{display:block;width:100%;height:78px;object-fit:cover}
+.qv-sekil figcaption{font:400 10.5px var(--mono,monospace);color:#5A6478;
+  margin-top:4px;overflow-wrap:anywhere}
+
+.qv-yukle{border:1.5px dashed #A9B2C2;padding:18px;text-align:center;color:#5A6478;
+  font-size:13px;margin:0 0 18px}
+.qv-yukle.uzerinde{border-color:#2E7D4F;background:#F2F8F4}
+.qv-yukle p{margin:0}
+.qv-sec{text-decoration:underline;cursor:pointer}
+.qv-yukle-hal{font:400 12px var(--mono,monospace);color:#8792A6;margin-top:6px;min-height:1em}
+
+.qv-sekil-redakte{margin:0 0 24px}
+.qv-sekil-redakte summary{cursor:pointer;font-size:13px;padding:6px 0}
+.qv-sekil-sətir{display:flex;gap:6px;align-items:center;flex-wrap:wrap;
+  padding:6px 0;border-bottom:1px solid var(--line,#D6DCE8)}
+.qv-sekil-sətir img{object-fit:cover;border:1px solid var(--line,#D6DCE8)}
+.qv-inline{display:inline}
+
+/* ---------- maddi sübutlar ----------
+   Hər sətir bir əşyadır: nömrə · ad+təsvir+foto seçimi · kiçik önizləmə.
+   Foto seçimi sətrin İÇİNDƏDİR, çünki şəkli əşya ilə birlikdə seçmək
+   lazımdır — ayrı kitabxana pəncərəsi idarəçini vərəqdən uzaqlaşdırardı. */
+.qv-sub-b{font:600 11px var(--mono,monospace);letter-spacing:.12em;
+  text-transform:uppercase;color:#8792A6;margin:10px 0 6px}
+.qv-subler{display:grid;gap:10px;margin-bottom:6px}
+.qv-sub{display:grid;grid-template-columns:26px minmax(0,1fr) 84px;gap:10px;
+  align-items:start;padding:10px;border:1px solid var(--line,#D6DCE8);background:#FAFBFD}
+.qv-sub-no{font:600 12px var(--mono,monospace);color:#fff;background:#151B26;
+  text-align:center;padding:2px 0}
+.qv-sub-g{display:grid;gap:6px;min-width:0}
+.qv-sub-g textarea{resize:vertical;font:400 12px/1.6 var(--mono,monospace)}
+.qv-sub-s{display:flex;gap:6px;align-items:center}
+.qv-sub-s .qv-sub-sek{flex:1;min-width:0}
+.qv-sub-yukle{cursor:pointer;white-space:nowrap}
+.qv-sub-on{width:84px;height:64px;border:1px solid var(--line,#D6DCE8);background:#fff;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  font:400 10px var(--mono,monospace);color:#8792A6;text-align:center}
+.qv-sub-on img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media (max-width:700px){
+  .qv-sub{grid-template-columns:26px minmax(0,1fr)}
+  .qv-sub-on{display:none}
+}
+.qv-sub-yeni{background:#fff;border-style:dashed}
+.qv-sub-yeni .qv-sub-no{background:#8792A6}
+.qv-nisan-yap{margin-left:8px}
+
+/* Tabın nə olduğunu açan sətir. Panelin ən çox şikayət alan yeri idi:
+   yeddi forma yan-yana durur və hansının oyunda hara düşdüyü görünmür. */
+.qv-izah{margin:0 0 14px;padding:9px 12px;border-left:3px solid #A9B2C2;
+  background:#F4F6FA;font:400 13px/1.6 inherit;color:#3C4658}
+.qv-izah b{font-weight:600}
+.qv-izah code{background:#E7EBF2;padding:1px 4px;border-radius:2px;font-size:12px}
+
+/* Hansı mexanikanın aktiv olduğunu bildirən zolaq. */
+.qv-rejim{margin:0 0 14px;padding:9px 12px;border-left:3px solid #2E7D4F;
+  background:#EEF7F1;font:400 13px/1.6 inherit;color:#245B3B}
+.qv-rejim b{font-weight:600}
+
+/* Tabdakı sayğac. */
+.qv-tab i{font-style:normal;font:600 11px var(--mono,monospace);
+  background:#E7EBF2;color:#5A6478;border-radius:9px;padding:1px 6px;margin-left:5px}
+.qv-tab.on i{background:#151B26;color:#fff}
+
+/* ---------- mətn alətləri ----------
+   İşarələri əl ilə yazmaq lazım deyil. Düymələr işarənin ÖZ görkəmini
+   daşıyır: qırmızı qələm qırmızıdır, üstündən xətt üstündən xətlidir —
+   idarəçi nə seçdiyini adı ilə deyil, gözü ilə tanısın. */
+.qv-alet{display:flex;flex-wrap:wrap;gap:4px;align-items:center;
+  padding:6px;border:1px solid var(--line,#D6DCE8);border-bottom:0;background:#F7F8FB}
+.qv-a{appearance:none;border:1px solid transparent;background:#fff;cursor:pointer;
+  font:500 12px inherit;color:#3C4658;padding:4px 9px;border-radius:3px;line-height:1.4}
+.qv-a:hover{border-color:#A9B2C2}
+.qv-a-qelem{color:#8A2A2A}
+.qv-a-el{font-style:italic;color:#17356B}
+.qv-a-ust{text-decoration:line-through}
+.qv-a-oxu{color:#8792A6}
+.qv-a-daire{border:1px solid #A9B2C2;border-radius:11px}
+.qv-a-ay{width:1px;height:18px;background:#D6DCE8;margin:0 3px}
+.qv-alet + .qv-metn{border-top-left-radius:0;border-top-right-radius:0}
+
+/* Mətnə salınacaq şəklin seçimi — «Şəkil…» düyməsi açır. */
+.qv-sec-sekil{border:1px solid var(--line,#D6DCE8);border-top:0;
+  background:#F7F8FB;padding:10px}
+.qv-sec-bas{display:flex;justify-content:space-between;align-items:center;
+  font:600 11px var(--mono,monospace);letter-spacing:.12em;text-transform:uppercase;
+  color:#8792A6;margin-bottom:8px}
+.qv-sec-tor{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.qv-sec-tor .qv-sekil{appearance:none;text-align:left}
+
+/* ---------- yükləmə forması ----------
+   Brauzer dialoqunun əvəzi: şəkil dərhal görünür, açar fayl adından
+   təklif edilir, görkəm isə öz adı ilə seçilir. */
+.qv-yukle-form{border:1px solid #A9B2C2;background:#fff;padding:14px;margin:0 0 18px}
+.qv-yf-bas{font:600 12px var(--mono,monospace);letter-spacing:.12em;
+  text-transform:uppercase;color:#5A6478;margin-bottom:10px}
+.qv-yf-gov{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:start}
+.qv-yf-on{border:1px solid var(--line,#D6DCE8);background:#F0F2F7;height:100px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.qv-yf-on img{width:100%;height:100%;object-fit:cover;display:block}
+.qv-yf-sahe{min-width:0;display:grid;gap:8px}
+.qv-yf-nov{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px}
+.qv-nov-k{display:flex;align-items:center;gap:6px;padding:5px 8px;cursor:pointer;
+  border:1px solid var(--line,#D6DCE8);background:#fff;font-size:12.5px}
+.qv-nov-k:has(input:checked){border-color:#151B26;background:#F0F2F7;font-weight:600}
+.qv-yf-alt{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px}
+.qv-yf-alt .qv-yukle-hal{margin:0;margin-right:auto}
+
+@media (max-width:700px){
+  .qv-yf-gov{grid-template-columns:1fr}
+}
+
+/* ---------- AI ilə iş qurma ----------
+   Gediş göstəricisi ZƏRURİDİR, bəzək deyil: qurma bir neçə OpenAI çağırışıdır
+   və 30 vərəqlik iş bir neçə dəqiqə çəkir — göstərici olmasa səhifə donmuş
+   görünərdi. */
+.qv-ai{border:1px solid #A9B2C2;background:#fff;padding:0 16px;margin:0 0 20px}
+.qv-ai>summary{cursor:pointer;padding:12px 0;font-weight:600;list-style:none}
+.qv-ai>summary::-webkit-details-marker{display:none}
+.qv-ai>summary::before{content:"▸ ";color:#8792A6}
+.qv-ai[open]>summary::before{content:"▾ "}
+.qv-ai[open]{padding-bottom:16px}
+.qv-ai-hal{font:400 12.5px var(--mono,monospace);color:#5A6478}
+.qv-ai-cubuq{height:5px;background:#E7EBF2;margin:10px 0 0;overflow:hidden}
+.qv-ai-cubuq i{display:block;height:100%;width:0;background:#2E7D4F;transition:width .35s}
+.qv-ai-problem{margin:10px 0 0}
+.qv-ai-problem div{padding:7px 11px;border-left:3px solid #8A6A2A;background:#FBF6E9;
+  color:#6E5520;font-size:13px;line-height:1.6;margin-bottom:4px}

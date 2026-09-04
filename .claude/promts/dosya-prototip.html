@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>İş № 2026/0847 — Sədəf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#191C1A; --desk2:#22261F; --line:#343A33;
+  --buff:#C2A468; --buff2:#A8894F; --buff3:#8A6F3C;
+  --paper:#E9E4D6; --paper2:#DED7C4; --paper3:#CFC6AE;
+  --ink:#26221D; --ink2:#5D564A; --ink3:#8B8271;
+  --stamp:#5A3E8C; --red:#A8382C; --pen:#24417E;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --tab:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{background:#0E100F;font-family:var(--sans);color:var(--paper);
+  display:flex;align-items:center;justify-content:center}
+
+/* phone frame only on wide screens */
+.frame{width:100%;max-width:412px;height:100dvh;max-height:880px;position:relative;
+  background:var(--desk);overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){.frame{border-radius:26px;box-shadow:0 30px 80px rgba(0,0,0,.65);border:1px solid #2A2E2A}}
+
+/* ---------- top bar ---------- */
+#topbar{flex:0 0 auto;height:50px;display:none;align-items:center;gap:10px;
+  padding:0 14px;background:var(--desk2);border-bottom:1px solid var(--line)}
+#topbar.on{display:flex}
+.tb-back{background:none;border:0;color:var(--buff);font:500 15px var(--sans);padding:8px 4px;cursor:pointer}
+.tb-title{flex:1;font:500 13px var(--sans);color:var(--paper3);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-clock{font:500 13px var(--mono);color:var(--ink3);letter-spacing:.04em}
+
+/* ---------- screens ---------- */
+main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.screen{display:none;min-height:100%}
+.screen.on{display:block}
+
+/* ---------- cover ---------- */
+#s-cover{background:
+  radial-gradient(120% 80% at 50% 0%,#D0B378 0%,var(--buff) 45%,var(--buff2) 100%);
+  color:#3A2E14;padding:0;display:flex;flex-direction:column}
+.cov-edge{height:14px;background:linear-gradient(var(--buff3),rgba(0,0,0,0));flex:0 0 auto}
+.cov{flex:1;padding:26px 24px 30px;display:flex;flex-direction:column}
+.cov-org{font:500 11px var(--mono);letter-spacing:.16em;color:#6B5525;line-height:1.7}
+.cov-rule{height:1px;background:#8A6F3C;opacity:.5;margin:14px 0 22px}
+.cov-kind{font:600 13px var(--mono);letter-spacing:.2em;color:#5C4A1E}
+.cov-no{font:600 46px/1 var(--mono);letter-spacing:-.02em;margin:10px 0 4px;color:#2E2410}
+.cov-sub{font:400 14px var(--mono);color:#6B5525}
+.cov-body{margin-top:26px;font:400 14px/1.85 var(--mono);color:#4A3A16}
+.cov-body b{font-weight:600}
+.blank{display:inline-block;min-width:150px;border-bottom:1px solid #7A6230;
+  color:var(--pen);font:400 15px var(--mono);font-style:italic;background:none;
+  outline:none;padding:2px 4px;transform:rotate(-.5deg)}
+.blank::placeholder{color:#8A7340;font-style:normal;font-size:13px}
+.cov-spacer{flex:1;min-height:18px}
+.stamp{position:absolute;right:18px;top:150px;width:132px;height:132px;
+  border:2.5px solid var(--stamp);border-radius:50%;color:var(--stamp);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  transform:rotate(-13deg);opacity:.62;pointer-events:none}
+.stamp::before{content:"";position:absolute;inset:7px;border:1px solid var(--stamp);border-radius:50%}
+.stamp span{font:600 10px/1.45 var(--mono);letter-spacing:.09em;max-width:92px}
+.btn-open{width:100%;padding:17px;background:#2E2410;color:var(--buff);border:0;
+  font:600 15px var(--sans);letter-spacing:.02em;cursor:pointer}
+.btn-open:disabled{opacity:.35}
+.cov-note{margin-top:14px;font:400 11px/1.6 var(--mono);color:#6B5525;opacity:.85}
+
+/* ---------- index ---------- */
+.pad{padding:18px 16px 22px}
+.sect-h{font:600 12px var(--mono);letter-spacing:.14em;color:var(--ink3);
+  padding:0 16px;margin:20px 0 10px}
+.meta{margin:0 16px 4px;padding:14px;background:var(--desk2);border-left:2px solid var(--buff2)}
+.meta dl{margin:0;display:grid;grid-template-columns:96px 1fr;gap:7px 10px;
+  font:400 12.5px var(--mono);line-height:1.5}
+.meta dt{color:var(--ink3)}
+.meta dd{margin:0;color:var(--paper2)}
+.docrow{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;
+  padding:14px 16px;background:none;border:0;border-bottom:1px solid var(--line);
+  color:inherit;font:inherit;cursor:pointer}
+.docrow:active{background:var(--desk2)}
+.dr-no{flex:0 0 44px;font:500 11px var(--mono);color:var(--ink3);padding-top:2px}
+.dr-mid{flex:1;min-width:0}
+.dr-name{font:500 14.5px/1.35 var(--sans);color:var(--paper)}
+.dr-kind{font:400 11.5px var(--mono);color:var(--ink3);margin-top:4px}
+.dr-mark{flex:0 0 auto;width:18px;text-align:center;font:400 13px var(--mono);color:var(--buff);padding-top:2px}
+.docrow.read .dr-name{color:var(--ink3)}
+.docrow.locked .dr-name{color:var(--buff)}
+
+/* ---------- paper ---------- */
+.paper{background:var(--paper);color:var(--ink);margin:0;padding:22px 20px 34px;
+  min-height:100%;font-family:var(--mono);position:relative}
+.paper::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 78%,rgba(0,0,0,.05) 100%)}
+.p-head{text-align:center;font:500 11px/1.75 var(--mono);letter-spacing:.06em;color:var(--ink2)}
+.p-rule{height:1px;background:var(--ink3);opacity:.55;margin:12px 0}
+.p-title{text-align:center;font:600 15.5px/1.4 var(--mono);letter-spacing:.02em;margin:14px 0 4px}
+.p-sub{text-align:center;font:400 11.5px var(--mono);color:var(--ink2);margin-bottom:16px}
+.p-body{font:400 13.5px/1.95 var(--mono);text-align:justify;hyphens:auto}
+.p-body p{margin:0 0 13px}
+.p-fields{font:400 13px/2.1 var(--mono);margin:0 0 14px}
+.p-fields div{display:flex;gap:8px;align-items:baseline}
+.p-fields b{font-weight:400;color:var(--ink2);flex:0 0 auto}
+.p-fields i{flex:1;border-bottom:1px dotted var(--ink3);font-style:normal;
+  align-self:flex-end;transform:translateY(-4px);min-width:10px}
+.p-fields span{font-weight:500}
+.p-sign{margin-top:24px;display:flex;justify-content:space-between;align-items:flex-end;
+  font:400 12px var(--mono);color:var(--ink2);gap:16px}
+.p-sign .sig{color:var(--pen);font-style:italic;font-size:15px;transform:rotate(-2deg)}
+.p-note{margin-top:18px;padding:11px 12px;border:1px solid var(--paper3);
+  background:var(--paper2);font:400 12px/1.75 var(--mono);color:var(--ink2)}
+.redpen{color:var(--red);font-style:italic}
+
+/* table */
+.p-tbl{width:100%;border-collapse:collapse;font:400 11.5px/1.5 var(--mono);margin:6px 0 12px}
+.p-tbl th{text-align:left;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--ink3);padding:7px 6px}
+.p-tbl td{border-bottom:1px solid var(--paper3);padding:8px 6px;vertical-align:top}
+.p-tbl tr.hi td{background:#E3DCC6}
+
+/* evidence cards */
+.ev{border:1px solid var(--paper3);padding:12px;margin:0 0 10px;background:#EFEADD}
+.ev-h{display:flex;gap:9px;align-items:baseline;margin-bottom:7px}
+.ev-n{font:600 12px var(--mono);color:#fff;background:var(--ink);padding:2px 7px}
+.ev-t{font:600 13.5px var(--mono)}
+.ev-d{font:400 12.5px/1.8 var(--mono);color:var(--ink2)}
+
+/* chat printed on page */
+.shot{border:1px solid var(--ink3);background:#ECE5DC;padding:9px;margin:4px 0 8px}
+.shot-bar{display:flex;align-items:center;gap:8px;background:#0B3D36;color:#DDEDE8;
+  padding:8px 10px;margin:-9px -9px 9px}
+.shot-av{width:26px;height:26px;border-radius:50%;background:#3E6E62;flex:0 0 auto}
+.shot-nm{font:500 12.5px var(--sans);line-height:1.25}
+.shot-nm small{display:block;font:400 10px var(--sans);opacity:.7}
+.bub{max-width:78%;padding:7px 9px 5px;margin:0 0 7px;font:400 12.5px/1.55 var(--sans);
+  color:#12211E;position:relative}
+.bub.i{background:#D6EFC7;margin-left:auto}
+.bub.u{background:#FCFAF4}
+.bub time{display:block;text-align:right;font:400 9.5px var(--mono);color:#6C7A72;margin-top:3px}
+.bub.del{background:#EFEAE0;color:#7C776C;font-style:italic}
+.shot-day{text-align:center;font:400 10px var(--mono);color:#6C7A72;margin:2px 0 9px}
+.cap{font:400 11px/1.6 var(--mono);color:var(--ink2);text-align:center}
+
+/* call log */
+.calls{font:400 12px/1.6 var(--mono)}
+.call{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--paper3)}
+.call-t{flex:0 0 52px;font-weight:600}
+.call-b{flex:1}
+.call-b small{display:block;color:var(--ink2);margin-top:2px}
+
+/* keypad */
+.lockwrap{padding:34px 22px;text-align:center}
+.lock-t{font:600 16px var(--mono);margin-bottom:6px}
+.lock-s{font:400 12.5px/1.7 var(--mono);color:var(--ink2);margin-bottom:22px}
+.dots{display:flex;gap:12px;justify-content:center;margin-bottom:22px}
+.dot{width:42px;height:52px;border:1px solid var(--ink3);background:var(--paper2);
+  display:flex;align-items:center;justify-content:center;font:600 22px var(--mono)}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:250px;margin:0 auto}
+.key{padding:15px 0;background:var(--paper2);border:1px solid var(--paper3);
+  font:500 19px var(--mono);color:var(--ink);cursor:pointer}
+.key:active{background:var(--paper3)}
+.lock-err{color:var(--red);font:400 12px var(--mono);height:18px;margin-top:12px}
+.shake{animation:sh .32s}
+@keyframes sh{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ---------- suspects ---------- */
+.sus{margin:0 16px 12px;background:var(--desk2);border:1px solid var(--line)}
+.sus-h{display:flex;gap:12px;padding:13px 14px;align-items:center}
+.sus-init{width:38px;height:38px;flex:0 0 auto;background:var(--buff2);color:#241C08;
+  display:flex;align-items:center;justify-content:center;font:600 14px var(--mono)}
+.sus-n{font:500 14.5px var(--sans)}
+.sus-r{font:400 11.5px var(--mono);color:var(--ink3);margin-top:3px}
+.sus-b{padding:0 14px 14px;font:400 12.5px/1.75 var(--mono);color:var(--paper2)}
+.sus-b em{color:var(--ink3);font-style:normal}
+.bar{height:22px;background:#2E332D;position:relative;margin:9px 0 5px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;background:var(--buff2)}
+.bar u{position:absolute;top:0;bottom:0;background:var(--red);opacity:.55}
+.bar-l{display:flex;justify-content:space-between;font:400 10px var(--mono);color:var(--ink3)}
+
+/* ---------- notes ---------- */
+.empty{padding:60px 30px;text-align:center;font:400 13px/1.9 var(--mono);color:var(--ink3)}
+.note{margin:0 16px 10px;padding:12px 13px;background:var(--desk2);border-left:2px solid var(--buff2)}
+.note-t{font:500 13.5px var(--sans)}
+.note-s{font:400 11.5px var(--mono);color:var(--ink3);margin-top:4px}
+
+/* ---------- answer ---------- */
+.q{margin:0 16px 18px}
+.q-t{font:500 14px/1.5 var(--sans);margin-bottom:9px}
+.opt{display:block;width:100%;text-align:left;padding:13px 14px;margin-bottom:7px;
+  background:var(--desk2);border:1px solid var(--line);color:var(--paper2);
+  font:400 13.5px var(--sans);cursor:pointer}
+.opt.sel{border-color:var(--buff);background:#2C2A1E;color:var(--buff)}
+.btn{display:block;width:calc(100% - 32px);margin:22px 16px 30px;padding:16px;
+  background:var(--buff);color:#241C08;border:0;font:600 15px var(--sans);cursor:pointer}
+.btn:disabled{background:#3A3E38;color:var(--ink3);cursor:default}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--paper2)}
+
+/* ---------- result ---------- */
+.cert{margin:16px;background:var(--paper);color:var(--ink);padding:26px 20px 22px;text-align:center;position:relative}
+.cert-k{font:500 10.5px var(--mono);letter-spacing:.18em;color:var(--ink2)}
+.cert-t{font:600 19px/1.35 var(--mono);margin:14px 0 6px}
+.cert-n{font:400 13px var(--mono);color:var(--ink2);margin-bottom:18px}
+.cert-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--paper3);margin:16px 0}
+.cert-g div{background:var(--paper);padding:12px 8px}
+.cert-g b{display:block;font:600 20px var(--mono)}
+.cert-g small{font:400 10.5px var(--mono);color:var(--ink2)}
+.cert-f{font:400 11px/1.7 var(--mono);color:var(--ink2);margin-top:14px}
+.verdict{padding:12px 16px;margin:0 16px 14px;font:500 13.5px/1.6 var(--sans)}
+.verdict.ok{background:#22301F;color:#B9D6A8;border-left:3px solid #6E9E56}
+.verdict.no{background:#2E211F;color:#E0B0A8;border-left:3px solid var(--red)}
+.expl{padding:0 16px;font:400 13.5px/1.9 var(--sans);color:var(--paper2)}
+.expl p{margin:0 0 13px}
+
+/* ---------- tabbar ---------- */
+#tabbar{flex:0 0 auto;height:var(--tab);display:none;background:var(--desk2);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+#tabbar.on{display:flex}
+.tab{flex:1;background:none;border:0;color:var(--ink3);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font:500 10.5px var(--sans);padding:0}
+.tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6}
+.tab.on{color:var(--buff)}
+.badge{position:absolute;transform:translate(14px,-8px);background:var(--red);color:#fff;
+  font:600 9px var(--mono);border-radius:8px;padding:1px 5px}
+
+.pinbtn{display:block;width:calc(100% - 40px);margin:20px;padding:13px;
+  background:none;border:1px dashed var(--ink3);color:var(--ink2);
+  font:500 13px var(--sans);cursor:pointer}
+.pinbtn.on{border-style:solid;border-color:var(--pen);color:var(--pen)}
+:focus-visible{outline:2px solid var(--buff);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <header id="topbar">
+    <button class="tb-back" id="back">‹ Geri</button>
+    <div class="tb-title" id="ttl">İş materialları</div>
+    <div class="tb-clock" id="clock">00:00</div>
+  </header>
+
+  <main id="main">
+
+    <!-- COVER -->
+    <section class="screen on" id="s-cover">
+      <div class="cov-edge"></div>
+      <div class="cov">
+        <div class="cov-org">DAXİLİ İŞLƏR ORQANI<br>XIRDALAN ŞƏHƏR POLİS BÖLMƏSİ<br>İSTİNTAQ ŞÖBƏSİ</div>
+        <div class="cov-rule"></div>
+        <div class="cov-kind">CİNAYƏT İŞİ</div>
+        <div class="cov-no">2026/0847</div>
+        <div class="cov-sub">Başlanıb: 16.08.2026, saat 08:05</div>
+        <div class="stamp"><span>İSTİNTAQ<br>MATERİALLARI<br>SURƏTİ<br>ÇIXARILMIR</span></div>
+        <div class="cov-body">
+          İş üzrə istintaq aparmaq<br>
+          <b>ədliyyə leytenantı</b><br>
+          <input class="blank" id="who" placeholder="soyad, ad" maxlength="26" autocomplete="off">-a
+          tapşırılsın.
+        </div>
+        <div class="cov-spacer"></div>
+        <button class="btn-open" id="openBtn" disabled>Qovluğu aç</button>
+        <div class="cov-note">Bədii əsərdir. Personajlar, qurumlar və hadisələr uydurmadır.</div>
+      </div>
+    </section>
+
+    <!-- INDEX -->
+    <section class="screen" id="s-index">
+      <div class="meta">
+        <dl>
+          <dt>Hadisə</dt><dd>Qəsdən adam öldürmə</dd>
+          <dt>Yer</dt><dd>«Sədəf» şadlıq sarayı, Xırdalan</dd>
+          <dt>Tarix</dt><dd>16.08.2026, gecə</dd>
+          <dt>Zərərçəkən</dt><dd>Mehdiyev Tofiq Zahid oğlu, 58 yaş</dd>
+          <dt>Vərəq sayı</dt><dd>34</dd>
+        </dl>
+      </div>
+      <div class="sect-h">MATERİALLARIN SİYAHISI</div>
+      <div id="list"></div>
+      <div style="height:16px"></div>
+    </section>
+
+    <!-- DOC -->
+    <section class="screen" id="s-doc"><div id="docbody"></div></section>
+
+    <!-- SUSPECTS -->
+    <section class="screen" id="s-suspects">
+      <div class="sect-h">DİNDİRİLƏNLƏR</div>
+      <div id="sus"></div>
+      <div class="sect-h">GECƏNİN XRONOLOGİYASI</div>
+      <div class="meta"><dl id="chrono"></dl></div>
+      <div style="height:20px"></div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="screen" id="s-notes">
+      <div class="sect-h">İŞÇİ QEYDLƏR</div>
+      <div id="notes"></div>
+      <div style="height:20px"></div>
+    </section>
+
+    <!-- ANSWER -->
+    <section class="screen" id="s-answer">
+      <div class="sect-h">YEKUN RƏY</div>
+      <div id="qs"></div>
+      <button class="btn" id="submit" disabled>Rəyi təsdiq et</button>
+    </section>
+
+    <!-- RESULT -->
+    <section class="screen" id="s-result"><div id="res"></div></section>
+  </main>
+
+  <nav id="tabbar">
+    <button class="tab on" data-go="index"><svg viewBox="0 0 24 24"><path d="M4 4h10l6 6v10H4z"/><path d="M14 4v6h6"/></svg>Materiallar</button>
+    <button class="tab" data-go="suspects"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>Şübhəlilər</button>
+    <button class="tab" data-go="notes"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Qeydlər<span class="badge" id="nb" hidden>0</span></button>
+    <button class="tab" data-go="answer"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L19 7"/></svg>Cavab</button>
+  </nav>
+</div>
+
+<script>
+/* ============ MƏLUMAT ============ */
+const DOCS = [
+{n:"1",name:"İstintaq qrupunun təyin edilməsi haqqında qərar",kind:"Qərar",t:"order"},
+{n:"2–4",name:"Hadisə yerinə baxış protokolu",kind:"Protokol",t:"scene"},
+{n:"5",name:"Hadisə yerinin sxemi",kind:"Sxem",t:"plan"},
+{n:"6–7",name:"Meyitin xarici müayinə aktı",kind:"Ekspert rəyi",t:"med"},
+{n:"8–10",name:"Maddi sübutların siyahısı",kind:"Siyahı",t:"evid"},
+{n:"11",name:"Videomüşahidə qeydlərindən çıxarış",kind:"Arayış",t:"cam"},
+{n:"12",name:"Generator qurğusunun istismar jurnalı",kind:"Sənəd",t:"gen"},
+{n:"13",name:"Telefon danışıqlarının detallaşdırılması",kind:"Arayış",t:"calls"},
+{n:"14–15",name:"Yazışma çıxarışı: R.Nəbiyev — T.Mehdiyev",kind:"Ekran görüntüsü",t:"chat1"},
+{n:"16",name:"Yazışma çıxarışı: S.Hüseynova — həyat yoldaşı",kind:"Ekran görüntüsü",t:"chat2"},
+{n:"17–18",name:"İzahat: Hüseynova Səbinə Zahid qızı",kind:"İzahat",t:"ex1"},
+{n:"19",name:"İzahat: Qasımov Elxan Rəşid oğlu",kind:"İzahat",t:"ex2"},
+{n:"20",name:"İzahat: Nəsirov Kamran Vaqif oğlu",kind:"İzahat",t:"ex3"},
+{n:"21",name:"İzahat: Nəbiyev Ramil Əli oğlu",kind:"İzahat",t:"ex4"},
+{n:"22",name:"Nəmərin sayılması üzrə vərəqə",kind:"Sənəd",t:"money"},
+{n:"23",name:"Avtomobildən götürülmüş metal qutu",kind:"Kodla bağlıdır",t:"lock",locked:true},
+];
+
+const SUS=[
+{i:"SH",n:"Səbinə Hüseynova",r:"38 yaş · zərərçəkənin qardaşı qızı",
+ b:"Novxanıdakı 12 sot torpaq üzrə yeddi ildir pay tələb edir. Toy gecəsi masada eşidib ki, sahə bəyin adına rəsmiləşib.",
+ a:[[0,42]],x:"23:51-də ön qapıdan çıxıb"},
+{i:"EQ",n:"Elxan Qasımov",r:"46 yaş · şadlıq sarayının sahibi",
+ b:"İki il əvvəl 25 000 manat borc alıb, qaytarmayıb. Həmin gecə hesablaşmada zərərçəkən pulu tələb edib.",
+ a:[[0,20],[52,100]],x:"00:35–01:20 mətbəxdə, üç işçi ilə"},
+{i:"KN",n:"Kamran Nəsirov",r:"31 yaş · zərərçəkənin bacısı oğlu",
+ b:"12 000 manat borcu var. Zərərçəkən mikrofonla, iki yüz nəfərin qarşısında borcu xatırladıb.",
+ a:[[0,12]],x:"00:25-də sürücü ilə evə aparılıb"},
+{i:"RN",n:"Ramil Nəbiyev",r:"29 yaş · toy operatoru",
+ b:"Kamerası sındırılıb, ziyanın ödənilməsini tələb edir. Görüşü özü təklif edib, meyitin tapıldığı dəhlizdə olub.",
+ a:[[0,32]],x:"00:37-də binadan çıxıb"},
+];
+
+const CHRONO=[
+["23:30","Musiqi dayanır, qonaqlar dağılışır"],
+["23:51","S.Hüseynova ön qapıdan çıxır (kamera)"],
+["23:40–00:15","Yuxarı otaqda nəmər sayılır"],
+["00:12","R.Nəbiyev görüş üçün mesaj yazır"],
+["00:25","K.Nəsirov evə aparılır"],
+["00:25–00:35","Dəhlizdə mübahisə, 300 manat verilir"],
+["00:30","Rayonda işıq kəsilir"],
+["00:32","Generator işə düşür"],
+["00:37","R.Nəbiyev binadan çıxır (kamera)"],
+["00:44","Zərərçəkən oğluna zəng edir, 40 saniyə"],
+["01:15","Cərəyan bərpa olunur, kamera qeydi davam edir"],
+["07:40","Meyit generator dəhlizində tapılır"],
+];
+
+const QS=[
+{t:"Ölüm kimin əlindən olub?",o:["Səbinə Hüseynova","Elxan Qasımov","Kamran Nəsirov","Ramil Nəbiyev"],c:0},
+{t:"Motiv nə olub?",o:["Nəmər pulu","Novxanıdakı torpaq sahəsi","12 000 manatlıq borc","Sındırılmış kameranın ziyanı"],c:1},
+{t:"Hansı iki sənədin ziddiyyəti bunu sübut edir?",
+ o:["Videomüşahidə çıxarışı və taksi sifarişi","Generator jurnalı və S.Hüseynovanın izahatı","Zəng detallaşdırması və nəmər vərəqəsi","Ekspert rəyi və hadisə yeri sxemi"],c:1},
+];
+
+/* ============ SƏNƏD RENDERİ ============ */
+const head=`<div class="p-head">XIRDALAN ŞƏHƏR POLİS BÖLMƏSİ<br>İSTİNTAQ ŞÖBƏSİ · İŞ № 2026/0847</div><div class="p-rule"></div>`;
+const sign=(who,post)=>`<div class="p-sign"><div>${post}<br><span class="sig">${who}</span></div><div>16.08.2026</div></div>`;
+
+const R={
+order:()=>`${head}
+<div class="p-title">QƏRAR</div><div class="p-sub">istintaq qrupunun təyin edilməsi haqqında</div>
+<div class="p-body">
+<p>Xırdalan şəhəri, Sülh küçəsi 14 ünvanında yerləşən «Sədəf» şadlıq sarayının texniki dəhlizində Mehdiyev Tofiq Zahid oğlunun meyitinin aşkar edilməsi barədə 16.08.2026-cı il tarixdə saat 07:52-də məlumat daxil olmuşdur.</p>
+<p>Baxış zamanı zərərçəkənin baş nahiyəsində küt alətlə vurulmadan əmələ gələn zədə müəyyən edilmiş, hadisə yerindən qan izləri olan mərmər lövhə götürülmüşdür.</p>
+<p>Yuxarıda göstərilənləri nəzərə alaraq, iş üzrə istintaqın <b id="who2">—</b> tərəfindən aparılması qərara alınır.</p>
+</div>${sign("R.Səfərov","Şöbə rəisi, ədliyyə mayoru")}
+<div class="p-note"><span class="redpen">Qeyd:</span> ilkin dindirmələr saat 09:00-dan başlanılsın. Qonaq siyahısı — 214 nəfər, tam dindirmə mümkün deyil.</div>`,
+
+scene:()=>`${head}
+<div class="p-title">HADİSƏ YERİNƏ BAXIŞ PROTOKOLU</div>
+<div class="p-fields">
+<div><b>Baxış başlandı</b><i></i><span>08:20</span></div>
+<div><b>Baxış bitdi</b><i></i><span>10:05</span></div>
+<div><b>Hava</b><i></i><span>açıq, +29°C</span></div>
+<div><b>İştirak edib</b><i></i><span>2 hal şahidi</span></div>
+</div>
+<div class="p-body">
+<p>Baxış «Sədəf» şadlıq sarayının mətbəx blokunun arxasındakı texniki dəhlizdə aparılmışdır. Dəhliz eni 1 m 40 sm, uzunluğu 9 m olub, bir tərəfdən mətbəxə, digər tərəfdən generator otağına açılır. Süni işıqlandırma bir divar çırağı ilə təmin olunur, çıraq baxış anında yanır.</p>
+<p>Meyit dəhlizin generator otağına yaxın hissəsində, üzü aşağı, başı generator otağına tərəf vəziyyətdə aşkar edilmişdir. Meyitin altında və başın sağ tərəfində qan ləkəsi var, ləkənin ölçüsü 42×30 sm-dir. Meyitin ayaq tərəfində, divarın dibində üzəri qan izləri olan mərmər lövhə yerləşir.</p>
+<p>Meyitin sağ ayağının yanında qara rəngli çanta durur. Çanta bağlıdır, açıldıqda içərisində müxtəlif nominallı pul nişanları müəyyən edilmişdir. Sayılma nəticəsində məbləğ 41 300 manat təşkil etmişdir.</p>
+<p>Zərərçəkənin pencəyinin sağ iç cibindən üzərində «Nəsirov K.V. — 12 000 (on iki min) manat» yazısı olan əl ilə yazılmış qəbz götürülmüşdür. Sol iç cib boşdur. Cibin ağzı yırtılmışdır, yırtıq təzədir.</p>
+<p>Mətbəx blokunun arxa qapısı baxış anında bağlı, lakin kilidlənməmişdir. Qapının kilid dilçəyi lentlə bərkidilmişdir. Mətbəx işçisi Ə.Musayevanın izahatına görə qapı isti mövsümdə bu üsulla daim açıq saxlanılır.</p>
+<p>Arxa qapıdan çıxışda, beton döşəmənin üzərində qadın ayaqqabısının dabanına məxsus metal ucluq aşkar edilmiş və götürülmüşdür.</p>
+</div>${sign("N.Abbasov","Baxışı aparan, ədliyyə leytenantı")}`,
+
+plan:()=>`${head}<div class="p-title">HADİSƏ YERİNİN SXEMİ</div>
+<div class="p-sub">miqyassız, ölçülər metrlədir</div>
+<svg viewBox="0 0 340 420" style="width:100%;height:auto;font-family:var(--mono)">
+<g stroke="#26221D" fill="none" stroke-width="1.6">
+<rect x="24" y="24" width="180" height="140"/>
+<rect x="24" y="164" width="180" height="80"/>
+<rect x="204" y="164" width="52" height="200"/>
+<rect x="204" y="364" width="52" height="32"/>
+<rect x="24" y="244" width="180" height="60"/>
+</g>
+<g fill="#26221D" font-size="10.5">
+<text x="34" y="44">SALON (əsas)</text>
+<text x="34" y="184">MƏTBƏX</text>
+<text x="34" y="264">ANBAR</text>
+<text x="210" y="184" transform="rotate(90 210 184)">TEXNİKİ DƏHLİZ</text>
+<text x="210" y="384">GEN.</text>
+</g>
+<g stroke="#26221D" stroke-width="3.2">
+<line x1="104" y1="24" x2="140" y2="24"/>
+<line x1="204" y1="196" x2="204" y2="222"/>
+<line x1="256" y1="300" x2="256" y2="326"/>
+</g>
+<g font-size="9.5" fill="#5D564A">
+<text x="108" y="18">ön qapı</text>
+<text x="150" y="214">mətbəx→dəhliz</text>
+<text x="262" y="316">arxa çıxış</text>
+</g>
+<g fill="#A8382C">
+<circle cx="230" cy="330" r="9"/><text x="226" y="334" fill="#fff" font-size="10" font-weight="600">1</text>
+<circle cx="230" cy="352" r="9"/><text x="226" y="356" fill="#fff" font-size="10" font-weight="600">2</text>
+<circle cx="230" cy="312" r="9"/><text x="226" y="316" fill="#fff" font-size="10" font-weight="600">3</text>
+<circle cx="278" cy="330" r="9"/><text x="274" y="334" fill="#fff" font-size="10" font-weight="600">4</text>
+</g>
+<g stroke="#24417E" stroke-width="1.4" stroke-dasharray="5 4" fill="none">
+<path d="M122 24 L122 8 L300 8 L300 250 L262 250 L262 300"/>
+</g>
+<text x="200" y="20" fill="#24417E" font-size="9.5">ön qapıdan çıxış, 23:51</text>
+</svg>
+<div class="p-note">1 — meyitin vəziyyəti · 2 — mərmər lövhə · 3 — pul çantası · 4 — dabanın metal ucluğu.
+<br><span class="redpen">Əl ilə:</span> arxa qapı kameranın görmə bucağından kənardadır.</div>`,
+
+med:()=>`${head}
+<div class="p-title">MEYİTİN XARİCİ MÜAYİNƏ AKTI</div>
+<div class="p-fields">
+<div><b>Müayinə</b><i></i><span>16.08.2026, 09:10</span></div>
+<div><b>Yaş</b><i></i><span>58</span></div>
+<div><b>Boy / çəki</b><i></i><span>176 sm / 94 kq</span></div>
+</div>
+<div class="p-body">
+<p>Baş nahiyəsinin sağ təpə hissəsində ölçüsü 7×4 sm olan, kənarları qeyri-hamar, dərinliyə gedən yara aşkar olunur. Yaranın forması küt, düzbucaqlı kənarı olan ağır cismin bir dəfə vurulmasına uyğundur. Təkrar zərbənin izi müəyyən edilməmişdir.</p>
+<p>Zərbənin istiqaməti yuxarıdan aşağıya və arxadan qabağadır. Zərbə vuran şəxsin zərərçəkəndən boyca alçaq olması ehtimalı yüksəkdir.</p>
+<p>Əllərin barmaqlarında və biləklərində müdafiə zədələri yoxdur. Bu, zərbənin gözlənilmədən vurulduğunu göstərir.</p>
+<p>Ölümün baş vermə vaxtı meyit ləkələrinin və bədən temperaturunun vəziyyətinə görə müayinədən 8–10 saat əvvələ, yəni <b>23:10–01:10</b> aralığına aid edilir. Daha dəqiq vaxt laboratoriya nəticələrindən sonra göstəriləcək.</p>
+<p>Qanda etil spirtinin qatılığı 1,4 promil təşkil edir — orta dərəcəli sərxoşluğa uyğundur.</p>
+</div>${sign("F.Rzayeva","Məhkəmə-tibb eksperti")}`,
+
+evid:()=>`${head}<div class="p-title">MADDİ SÜBUTLARIN SİYAHISI</div>
+<div class="ev"><div class="ev-h"><span class="ev-n">1</span><span class="ev-t">Mərmər xatirə lövhəsi</span></div>
+<div class="ev-d">Ölçü 24×16×3 sm, çəki 2,1 kq. Üzərində «Nicat və Aysel — 15.08.2026» yazısı. Bir küncündə qan izi. Səthdə istifadəyə yararlı barmaq izi aşkar edilməmişdir — lövhə toxunulmadan əvvəl salfetlə örtülmüş ola bilər. Toy masasının üstündən götürülmüşdür.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">2</span><span class="ev-t">Qara çanta və pul nişanları</span></div>
+<div class="ev-d">41 300 manat. Çanta bağlı vəziyyətdə, meyitin ayağının yanında. Kənar şəxsin toxunma izi yoxdur.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">3</span><span class="ev-t">Əl yazısı ilə qəbz</span></div>
+<div class="ev-d">«Nəsirov K.V. — 12 000 manat». Zərərçəkənin sağ iç cibindən götürülüb, zədəsizdir.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">4</span><span class="ev-t">Ayaqqabı dabanının metal ucluğu</span></div>
+<div class="ev-d">Qadın ayaqqabısına məxsusdur, diametri 9 mm. Arxa çıxışın qarşısındakı betonun üzərində. Yeni qırılmışdır, kənarları oksidləşməyib.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">5</span><span class="ev-t">Zərərçəkənin pencəyi</span></div>
+<div class="ev-d">Sol iç cibin ağzı təzə yırtılmışdır. Cib boşdur. Astarda kağız qırıntısı qalıb — sənəd blankına məxsusdur.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">6</span><span class="ev-t">Kod kilidli metal qutu</span></div>
+<div class="ev-d">Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — <span class="redpen">bax: vərəq 23</span>.</div></div>`,
+
+cam:()=>`${head}<div class="p-title">VİDEOMÜŞAHİDƏ QEYDLƏRİNDƏN ÇIXARIŞ</div>
+<div class="p-sub">kamera № 2 — ön giriş · kamera № 5 — avtomobil dayanacağı</div>
+<table class="p-tbl"><tr><th>Vaxt</th><th>Kam.</th><th>Qeyd</th></tr>
+<tr><td>23:44</td><td>2</td><td>Qonaqlar qrup halında çıxır</td></tr>
+<tr><td>23:51</td><td>2</td><td>S.Hüseynova tək çıxır, sağa dönür</td></tr>
+<tr><td>00:25</td><td>5</td><td>K.Nəsirov sürücü tərəfindən avtomobilə mindirilir</td></tr>
+<tr><td>00:30</td><td>—</td><td class="redpen">Qeyd kəsilir</td></tr>
+<tr class="hi"><td>00:30<br>01:15</td><td>—</td><td><b>Qeyd yoxdur.</b> Qeydedici cihaz generator xəttinə qoşulmayıb, cərəyan kəsildikdə işləmir.</td></tr>
+<tr><td>01:15</td><td>2,5</td><td>Qeyd bərpa olunur</td></tr>
+<tr><td>01:15–07:40</td><td>2</td><td>Giriş-çıxış qeydə alınmayıb</td></tr>
+</table>
+<div class="p-note">Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. <span class="redpen">00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 21.</span></div>`,
+
+gen:()=>`${head}<div class="p-title">GENERATOR QURĞUSUNUN İSTİSMAR JURNALI</div>
+<div class="p-sub">«Sədəf» şadlıq sarayı · avqust 2026</div>
+<table class="p-tbl"><tr><th>Tarix</th><th>İşə düşdü</th><th>Söndü</th><th>Yanacaq</th></tr>
+<tr><td>09.08</td><td>21:14</td><td>21:50</td><td>4 l</td></tr>
+<tr><td>13.08</td><td>19:02</td><td>19:40</td><td>4 l</td></tr>
+<tr class="hi"><td><b>16.08</b></td><td><b>00:32</b></td><td><b>01:40</b></td><td>9 l</td></tr>
+</table>
+<div class="p-body"><p>Qurğu avtomatik rejimdə işləyir, şəbəkə cərəyanı kəsildikdən 90–120 saniyə sonra qoşulur. Qidalandırdığı xətlər: mətbəx soyuducuları, salon işıqlandırması, su nasosu.</p>
+<p>Qurğunun səsi mətbəx blokunda və binanın arxa hissəsində aydın eşidilir. Salonun ön hissəsində səs səviyyəsi aşağıdır.</p></div>
+${sign("E.Qasımov","Obyektin sahibi")}`,
+
+calls:()=>`${head}<div class="p-title">TELEFON DANIŞIQLARININ DETALLAŞDIRILMASI</div>
+<div class="p-sub">abunəçi: Mehdiyev T.Z. · 15–16 avqust</div>
+<div class="calls">
+<div class="call"><div class="call-t">22:18</div><div class="call-b">Çıxan — «Qardaş Elxan»<small>2 dəq 40 san</small></div></div>
+<div class="call"><div class="call-t">23:58</div><div class="call-b">Gələn — nömrə adsız<small>cavabsız</small></div></div>
+<div class="call"><div class="call-t">00:12</div><div class="call-b">Mesaj — «Operator Ramil»<small>gəldi</small></div></div>
+<div class="call"><div class="call-t"><b>00:44</b></div><div class="call-b"><b>Çıxan — «Nicat oğlum»</b><small>40 saniyə · son danışıq</small></div></div>
+<div class="call"><div class="call-t">01:20</div><div class="call-b">Gələn — «Nicat oğlum»<small>cavabsız</small></div></div>
+<div class="call"><div class="call-t">02:05</div><div class="call-b">Gələn — «Həyat yoldaşı»<small>cavabsız</small></div></div>
+</div>
+<div class="p-note">N.Mehdiyevin izahatından: atası 00:44-də zəng edib demişdir ki, sənədləri sabah gətirəcək, hazırda maşına qoyub.</div>`,
+
+chat1:()=>`${head}<div class="p-title">YAZIŞMA ÇIXARIŞI</div>
+<div class="p-sub">R.Nəbiyevin telefonundan · «Tofiq müəllim» adlı söhbət</div>
+<div class="shot">
+<div class="shot-bar"><div class="shot-av"></div><div class="shot-nm">Tofiq müəllim<small>son görülmə 00:46</small></div></div>
+<div class="shot-day">16 avqust</div>
+<div class="bub i">Tofiq müəllim, kamera dağıldı. Obyektiv ayrıca 800 manatdır.<time>00:12</time></div>
+<div class="bub i">Toyu çəkməyimin haqqını demirəm, onu bağışlayıram. Amma kamera mənim çörəyimdir.<time>00:12</time></div>
+<div class="bub u">Səhər danışarıq<time>00:14</time></div>
+<div class="bub i">Səhər getmiş olacam. 5 dəqiqə. Arxa dəhlizdəyəm, mətbəxin yanı.<time>00:19</time></div>
+<div class="bub u">Gəlirəm<time>00:23</time></div>
+<div class="bub i">Sağ olun. Halallıq verirəm, kin saxlamıram.<time>00:36</time></div>
+</div>
+<div class="cap">Şəkil 1 — ekran görüntüsü, 2 vərəqdə</div>
+<div class="p-note"><span class="redpen">Diqqət:</span> son mesaj 00:36-dır. Söhbətdə silinmiş mesaj yoxdur.</div>`,
+
+chat2:()=>`${head}<div class="p-title">YAZIŞMA ÇIXARIŞI</div>
+<div class="p-sub">S.Hüseynovanın telefonundan · «Ev» adlı söhbət</div>
+<div class="shot">
+<div class="shot-bar"><div class="shot-av"></div><div class="shot-nm">Ev<small>onlayn</small></div></div>
+<div class="shot-day">16 avqust</div>
+<div class="bub u">Uşaqlar yatdı. Nə vaxt gəlirsən<time>23:20</time></div>
+<div class="bub i">Bilmirəm<time>23:47</time></div>
+<div class="bub i">Novxananı Nicatın adına keçirib. Masada dedi. Hamının yanında.<time>23:49</time></div>
+<div class="bub u">Səbinə<time>23:52</time></div>
+<div class="bub u">Səbinə cavab yaz<time>00:08</time></div>
+<div class="bub del">Bu mesaj silinib<time>00:41</time></div>
+<div class="bub i">Gəlirəm<time>01:12</time></div>
+<div class="bub u">Taksi çağırım?<time>01:12</time></div>
+<div class="bub i">Çağırdım artıq<time>01:13</time></div>
+</div>
+<div class="cap">Şəkil 1 — ekran görüntüsü</div>
+<div class="p-note">Taksi xidmətindən alınan arayışa görə sifariş 01:12-də «Sülh küçəsi 16» ünvanından, yəni obyektdən bir bina aşağıdan verilmişdir.</div>`,
+
+ex1:()=>`${head}<div class="p-title">İZAHAT</div>
+<div class="p-fields">
+<div><b>Kimdən</b><i></i><span>Hüseynova Səbinə Zahid qızı</span></div>
+<div><b>Doğum ili</b><i></i><span>1988</span></div>
+<div><b>Qohumluq</b><i></i><span>zərərçəkənin qardaşı qızı</span></div>
+</div>
+<div class="p-body">
+<p>Toya ailəliklə dəvətli idik, amma ərim işdə olduğuna görə mən tək getdim. Axşam saat səkkizdə gəlmişəm. Masada bacım və uşaqları ilə oturmuşdum.</p>
+<p>Atam 2019-cu ildə vəfat edəndən sonra Novxanıdakı sahə üzrə əmimlə danışıqlarımız vardı. Hər dəfə «sənədləri düzəldəcəyəm» deyirdi. Toy günü masada bəyə hədiyyə kimi həmin sahəni verdiyini elan etdi. Mən buna bir söz demədim, çünki toy günü idi. Ayıbdır.</p>
+<p>Musiqi qurtarandan sonra durub çıxdım. Əmimlə o gecə heç danışmadım, salamlaşmaqdan başqa.</p>
+<p>Çıxanda salonun işıqları artıq sönmüşdü, ancaq mətbəx tərəfdən generatorun səsi gəlirdi, o səsdən başım ağrıyırdı. Ayaqqabımın dabanı sınmışdı, ona görə maşına qədər asta getdim və küçənin aşağısından taksi çağırdım. Evə təxminən bir yarımda çatdım.</p>
+<p>Əmimin ölümündən səhər saat doqquzda bacımın zəngi ilə xəbər tutdum.</p>
+</div>${sign("S.Hüseynova","İzahatı verən")}
+<div class="p-note"><span class="redpen">Müstəntiqin qeydi:</span> izahat 16.08.2026, saat 11:20-də alınıb. Ayaqqabı təqdim edilməyib.</div>`,
+
+ex2:()=>`${head}<div class="p-title">İZAHAT</div>
+<div class="p-fields"><div><b>Kimdən</b><i></i><span>Qasımov Elxan Rəşid oğlu</span></div>
+<div><b>Vəzifə</b><i></i><span>obyektin sahibi</span></div></div>
+<div class="p-body">
+<p>Tofiq mənim on beş illik dostumdur. Borc məsələsi var idi, düzdür, 25 min. Amma o pulu mən qaçırmırdım, obyektin ikinci mərtəbəsi tikilib qurtaranda qaytaracaqdım və bunu ona demişəm.</p>
+<p>Həmin gecə hesablaşdıq. Toyun haqqını sildim, borcun içindən getsin dedim. O razılaşmadı, «nağd istəyirəm» dedi. Səsimizi qaldırmadıq.</p>
+<p>Sonra işıq getdi. Generator qoşulandan sonra mətbəxə düşdüm, çünki soyuducularda ət qalmışdı. Saat təxminən yarım-otuz beş. Üç işçi ilə birlikdə inventarizasiya etdik, bir yarıma qədər ordaydıq, siyahını da imzalamışıq.</p>
+<p>Kameranın yazmamasına gəlincə — qeydedici adi rozetkadadır, generator xəttinə salınmayıb. Bunu neçə dəfə düzəltmək istəmişəm, əlim çatmayıb.</p>
+</div>${sign("E.Qasımov","İzahatı verən")}`,
+
+ex3:()=>`${head}<div class="p-title">İZAHAT</div>
+<div class="p-fields"><div><b>Kimdən</b><i></i><span>Nəsirov Kamran Vaqif oğlu</span></div>
+<div><b>Qohumluq</b><i></i><span>zərərçəkənin bacısı oğlu</span></div></div>
+<div class="p-body">
+<p>Bəli, borcum var idi. Bəli, mikrofonla dedi. «Kamran, maşını sürürsən, dayının pulunu yadına salmırsan» dedi, camaat güldü. Mən də güldüm, başqa nə edəydim.</p>
+<p>Ondan sonra çox içdim. Necə çıxdığımı yadıma sala bilmirəm. Səhər Fərid dedi ki, məni özü aparıb, qapıda düşürüb.</p>
+<p>Dayımla aramızda pul məsələsindən başqa heç nə yox idi. O pulu qaytaracaqdım, mənim işim var, maşınım var.</p>
+</div>${sign("K.Nəsirov","İzahatı verən")}
+<div class="p-note">Sürücü F.Həsənovun izahatı ilə təsdiqlənir: 00:25-də mindirib, 00:58-də Binəqədidə evinin qarşısında düşürüb.</div>`,
+
+ex4:()=>`${head}<div class="p-title">İZAHAT</div>
+<div class="p-fields"><div><b>Kimdən</b><i></i><span>Nəbiyev Ramil Əli oğlu</span></div>
+<div><b>Peşə</b><i></i><span>video operator</span></div></div>
+<div class="p-body">
+<p>Toyu çəkirdim. Gecənin ortasında Tofiq müəllim yanıma gəldi, dedi çəkmə. Mən dedim iş belədir. O da kameranı əlimdən alıb yerə çırpdı. Camaatın yanında.</p>
+<p>Sonra ona yazdım, dedim gəlin danışaq. Arxa dəhlizdə görüşdük. Əvvəl səsini qaldırdı, sonra sakitləşdi, cibindən üç yüz manat çıxarıb verdi. «Qalanını sonra» dedi. Mən də «sağ olun» dedim və çıxdım.</p>
+<p>Çıxanda saat yarımı keçmişdi. Maşınım küçədə idi, qonşu toyxananın kamerası məni görüb.</p>
+<p>Onu sağ qoyub getmişəm. Nə üçün öldürüm, pulumun bir hissəsini almışdım.</p>
+</div>${sign("R.Nəbiyev","İzahatı verən")}`,
+
+money:()=>`${head}<div class="p-title">NƏMƏRİN SAYILMASI ÜZRƏ VƏRƏQƏ</div>
+<div class="p-sub">yuxarı otaq · 23:40–00:15</div>
+<table class="p-tbl"><tr><th>Nominal</th><th>Say</th><th>Məbləğ</th></tr>
+<tr><td>100 AZN</td><td>212</td><td>21 200</td></tr>
+<tr><td>50 AZN</td><td>284</td><td>14 200</td></tr>
+<tr><td>20 AZN</td><td>295</td><td>5 900</td></tr>
+<tr><th>Cəmi</th><th></th><th>41 300</th></tr></table>
+<div class="p-body"><p>Sayımda iştirak edənlər: T.Mehdiyev, E.Qasımov, K.Nəsirov, N.Mehdiyev (bəy).</p>
+<p>Bəy N.Mehdiyevin izahatından: «Sayım qurtarandan sonra atam pulu çantaya yığdı. Sonra cibindən bir qovluq çıxarıb mənə göstərdi, dedi Novxananın sənədidir, sabah rəsmi verəcəyəm. Qovluğu pencəyinin iç cibinə qoydu.»</p></div>
+<div class="p-note"><span class="redpen">Müstəntiqin qeydi:</span> 00:14-də çəkilmiş şəkildə masanın üstündə mərmər xatirə lövhəsi görünür. Səhər lövhə masada yoxdur.</div>`,
+};
+
+/* ============ VƏZİYYƏT ============ */
+let name="", t0=0, read=new Set(), pins=[], ans=[null,null,null], unlocked=false, cur=null;
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const go=id=>{$$(".screen").forEach(s=>s.classList.toggle("on",s.id==="s-"+id));$("#main").scrollTop=0};
+
+/* cover */
+$("#who").addEventListener("input",e=>{name=e.target.value.trim();$("#openBtn").disabled=name.length<2});
+$("#openBtn").onclick=()=>{
+  t0=Date.now();setInterval(tick,1000);
+  $("#topbar").classList.add("on");$("#tabbar").classList.add("on");
+  buildList();buildSus();buildQs();go("index");
+};
+function tick(){const s=Math.floor((Date.now()-t0)/1000);
+  $("#clock").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+
+/* list */
+function buildList(){
+  $("#list").innerHTML=DOCS.map((d,i)=>{
+    const lk=d.locked&&!unlocked;
+    return `<button class="docrow ${read.has(i)?"read":""} ${lk?"locked":""}" data-i="${i}">
+      <span class="dr-no">v. ${d.n}</span>
+      <span class="dr-mid"><span class="dr-name">${d.name}</span><span class="dr-kind">${lk?"bağlıdır — dördrəqəmli kod":d.kind}</span></span>
+      <span class="dr-mark">${lk?"⌧":read.has(i)?"✓":""}</span></button>`}).join("");
+  $$(".docrow").forEach(b=>b.onclick=()=>openDoc(+b.dataset.i));
+}
+
+function openDoc(i){
+  cur=i;const d=DOCS[i];$("#ttl").textContent=d.name;
+  if(d.locked&&!unlocked){$("#docbody").innerHTML=lockHTML();wireLock()}
+  else{
+    read.add(i);
+    $("#docbody").innerHTML=`<div class="paper">${(d.t==="lock"?boxHTML():R[d.t]())}</div>`+
+      `<button class="pinbtn ${pins.includes(i)?"on":""}" id="pin">${pins.includes(i)?"Qeydlərdən çıxar":"Qeyd dəftərinə sanc"}</button>`;
+    const w=$("#who2");if(w)w.textContent=name;
+    $("#pin").onclick=()=>{const k=pins.indexOf(i);k<0?pins.push(i):pins.splice(k,1);drawBadge();openDoc(i)};
+  }
+  go("doc");
+}
+
+/* lock */
+function lockHTML(){return `<div class="paper"><div class="lockwrap">
+<div class="lock-t">METAL QUTU</div>
+<div class="lock-s">Zərərçəkənin avtomobilinin baqajından götürülüb.<br>Dördrəqəmli kodla bağlanır.</div>
+<div class="dots" id="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" data-k="${n}">${n}</button>`).join("")}
+<button class="key" data-k="x">←</button><button class="key" data-k="0">0</button><button class="key" data-k="ok">↵</button></div>
+<div class="lock-err" id="lerr"></div>
+<div class="p-note" style="text-align:left;margin-top:22px">Həyat yoldaşı G.Mehdiyevanın izahatından: «Bütün şifrələrində Novxananı aldığı günü yazırdı. Nə telefonun kodu, nə seyfin — hamısı o tarixdir.»</div>
+</div></div>`}
+function wireLock(){
+  let buf="";
+  $$(".key").forEach(k=>k.onclick=()=>{
+    const v=k.dataset.k;
+    if(v==="x")buf=buf.slice(0,-1);
+    else if(v==="ok"){
+      if(buf==="0903"){unlocked=true;buildList();openDoc(cur)}
+      else{$("#lerr").textContent="Kod uyğun gəlmir";$("#dots").classList.add("shake");
+        setTimeout(()=>$("#dots").classList.remove("shake"),330);buf=""}
+    } else if(buf.length<4)buf+=v;
+    $$("#dots .dot").forEach((d,i)=>d.textContent=buf[i]?"•":"");
+  });
+}
+function boxHTML(){return `${head}<div class="p-title">QUTUNUN İÇİNDƏKİLƏRİN SİYAHISI</div>
+<div class="p-sub">açılma tarixi: 17.08.2026 · kod: 0903</div>
+<div class="ev"><div class="ev-h"><span class="ev-n">1</span><span class="ev-t">Notarial qaydada təsdiq edilmiş sənəd</span></div>
+<div class="ev-d">12.08.2026 tarixli. Novxanı qəsəbəsindəki 12 sot torpaq sahəsinin Mehdiyev Nicat Tofiq oğlunun adına keçirilməsi barədə. <b>Əsl nüsxə.</b></div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">2</span><span class="ev-t">2011-ci il alqı-satqı müqaviləsi</span></div>
+<div class="ev-d">09.03.2011 tarixli. Sahənin ilkin alınması barədə. Alıcı: Mehdiyev Tofiq Zahid oğlu.</div></div>
+<div class="ev"><div class="ev-h"><span class="ev-n">3</span><span class="ev-t">Əl yazısı ilə qeyd</span></div>
+<div class="ev-d" style="font-style:italic;color:var(--pen)">«Səbinəyə deyəcəm ki, Nicatın adınadır, amma sənəddə payı saxlamışam. Toydan sonra oturub danışarıq. Qoy bir az əsəbləşsin.»</div></div>
+<div class="p-note"><span class="redpen">Qeyd:</span> pencəkdən yırtılan cibdə saxlanan qovluq həmin sənədin surəti olmuşdur. Surət hüquqi qüvvəyə malik deyil.</div>`}
+
+/* suspects */
+function buildSus(){
+  $("#sus").innerHTML=SUS.map(s=>`<div class="sus">
+    <div class="sus-h"><div class="sus-init">${s.i}</div><div><div class="sus-n">${s.n}</div><div class="sus-r">${s.r}</div></div></div>
+    <div class="sus-b">${s.b}
+      <div class="bar">${s.a.map(([a,b])=>`<i style="left:${a}%;width:${b-a}%"></i>`).join("")}</div>
+      <div class="bar-l"><span>23:30</span><span>00:30</span><span>01:30</span></div>
+      <div style="margin-top:8px"><em>Kamera:</em> ${s.x}</div>
+    </div></div>`).join("");
+  $("#chrono").innerHTML=CHRONO.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("");
+}
+
+/* notes */
+function drawNotes(){
+  $("#notes").innerHTML=pins.length?pins.map(i=>`<div class="note" data-i="${i}">
+    <div class="note-t">${DOCS[i].name}</div><div class="note-s">vərəq ${DOCS[i].n} · ${DOCS[i].kind}</div></div>`).join("")
+    :`<div class="empty">Qeyd dəftəri boşdur.<br>Sənədi açıb aşağıdakı düymə ilə sanc.</div>`;
+  $$(".note").forEach(n=>n.onclick=()=>openDoc(+n.dataset.i));
+}
+function drawBadge(){const b=$("#nb");b.hidden=!pins.length;b.textContent=pins.length}
+
+/* answer */
+function buildQs(){
+  $("#qs").innerHTML=QS.map((q,qi)=>`<div class="q"><div class="q-t">${qi+1}. ${q.t}</div>
+    ${q.o.map((o,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}">${o}</button>`).join("")}</div>`).join("");
+  $$(".opt").forEach(b=>b.onclick=()=>{
+    const q=+b.dataset.q;ans[q]=+b.dataset.o;
+    $$(`.opt[data-q="${q}"]`).forEach(x=>x.classList.remove("sel"));
+    b.classList.add("sel");$("#submit").disabled=ans.includes(null);
+  });
+}
+$("#submit").onclick=()=>{
+  const ok=ans.every((a,i)=>a===QS[i].c), sec=Math.floor((Date.now()-t0)/1000);
+  const mm=Math.floor(sec/60);
+  $("#res").innerHTML=`
+  <div class="verdict ${ok?"ok":"no"}">${ok?"Rəy təsdiqləndi. İş üzrə ittiham irəli sürülür.":"Rəy təsdiqlənmədi. Ən azı bir bənd səhvdir."}</div>
+  ${ok?`<div class="cert">
+    <div class="cert-k">İSTİNTAQ MATERİALLARINA DAİR</div>
+    <div class="cert-t">İŞ AÇILDI</div>
+    <div class="cert-n">İş № 2026/0847 · «Sədəf»</div>
+    <div class="cert-g"><div><b>${mm}</b><small>dəqiqə</small></div><div><b>${pins.length}</b><small>sancılmış sənəd</small></div></div>
+    <div class="cert-k">${name.toUpperCase()}</div>
+    <div class="cert-f">Nəticə spoiler saxlamır. Paylaşa bilərsən —<br>dostun eyni qovluğu təmiz açacaq.</div>
+    <div class="stamp" style="position:static;margin:16px auto 0;transform:rotate(-9deg)"><span>İŞ<br>BAĞLANDI<br>2026/0847</span></div>
+  </div>
+  <button class="btn" id="share">Nəticəni paylaş</button>`:""}
+  <div class="sect-h">İZAH</div>
+  <div class="expl">
+    <p>Pul yerində qalıb, borc qəbzi cibdə toxunulmamışdır. Deməli motiv pul deyil. Bəyin ifadəsinə görə 00:15-də cibə qoyulan qovluq isə meyitin üstündən çıxmayıb — sənəd götürülüb.</p>
+    <p>00:44-dəki zəng göstərir ki, zərərçəkən o vaxt sağdır. Bu, 00:25-də aparılan Nəsirovu və 00:37-də çıxan Nəbiyevi kənarlaşdırır. Qasımov 00:35–01:20 arasında üç işçi ilə mətbəxdədir.</p>
+    <p>Hüseynova 23:51-də çıxıb və qayıtmayıb — kameraya görə. Ancaq öz izahatında çıxanda generatorun səsini eşitdiyini yazır. Generator 00:32-də işə düşüb. Deməli o, ən azı 00:32-yə qədər binada olub və kameranın görmədiyi arxa qapıdan çıxıb. Qırılan daban ucluğu da elə orada tapılıb.</p>
+    <p>Ən acısı: apardığı qovluq surət idi. Əsl sənəd maşındakı qutuda qalmışdı, içindəki qeyddə isə payının saxlandığı yazılmışdı.</p>
+  </div>
+  <button class="btn ghost" id="again">Başqa qovluq seç</button>`;
+  const sh=$("#share");if(sh)sh.onclick=()=>alert("Story üçün şəkil çıxarılır — qatil və motiv görünmür.");
+  $("#again").onclick=()=>location.reload();
+  $("#ttl").textContent="Yekun rəy";go("result");
+};
+
+/* tabs */
+$$(".tab").forEach(t=>t.onclick=()=>{
+  $$(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");
+  const g=t.dataset.go;
+  if(g==="index"){buildList();$("#ttl").textContent="İş materialları"}
+  if(g==="suspects")$("#ttl").textContent="Şübhəlilər";
+  if(g==="notes"){drawNotes();$("#ttl").textContent="İşçi qeydlər"}
+  if(g==="answer")$("#ttl").textContent="Yekun rəy";
+  go(g);
+});
+$("#back").onclick=()=>{const a=$$(".tab").find(t=>t.classList.contains("on"));a.click()};
+</script>
+</body>
+</html>

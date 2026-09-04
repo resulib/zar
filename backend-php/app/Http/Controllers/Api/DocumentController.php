@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\Setting;
 use App\Services\DocumentService;
 use App\Support\Moderation;
+use App\Support\Sosial\Sosial;
 use App\Support\RegistryNumber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -73,6 +74,19 @@ class DocumentController extends Controller
             'answers'      => ['nullable', 'array', 'max:14'],
             'answers.*'    => ['nullable'],
             'answers.*.*'  => ['nullable', 'string', 'max:100'],
+
+            /* Sosial kimlik kartının profil bloku. Yalnız PROFİLİ təsvir edir —
+               sənədin mətninə (başlıq/bənd/cəza/preamble) yenə də təsir etmir;
+               `{{username}}` kimi yer tutucular serverdə `Sosial::vals()`-dan
+               doldurulur. Dəyərlər `Sosial::clean()`-dən keçir. */
+            'social'             => ['nullable', 'array'],
+            'social.platform'    => ['nullable', 'string', 'max:12'],
+            'social.username'    => ['nullable', 'string', 'max:30'],
+            'social.name'        => ['nullable', 'string', 'max:40'],
+            'social.followers'   => ['nullable', 'integer', 'min:0'],
+            'social.following'   => ['nullable', 'integer', 'min:0'],
+            'social.posts'       => ['nullable', 'integer', 'min:0'],
+            'social.verified'    => ['nullable', 'boolean'],
         ]);
 
         $moderation = new Moderation(
@@ -105,7 +119,11 @@ class DocumentController extends Controller
             implode(' ', $flat),
             implode(' ', $data['checks'] ?? []),
             implode(' ', $data['notes'] ?? []),
-            (string) ($data['share'] ?? '')
+            (string) ($data['share'] ?? ''),
+
+            /* Profil adı və istifadəçi adı da kartın üzərinə çıxır — yeni sahəni
+               bu siyahıya salmamaq qadağan söz filtrini sükutla keçərdi. */
+            implode(' ', Sosial::texts((array) ($data['social'] ?? [])))
         );
 
         if ($flagged) {

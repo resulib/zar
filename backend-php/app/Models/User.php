@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -55,6 +56,17 @@ class User extends Authenticatable
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * İş qovluğu bölməsinin müstəntiq profili.
+     *
+     * TƏLƏBATA GÖRƏ yaranır (`ProfileService::ensure()`), ona görə burada
+     * `null` ola bilər — qonaq da, hələ heç nə oynamamış hesab da profilsizdir.
+     */
+    public function investigatorProfile(): HasOne
+    {
+        return $this->hasOne(InvestigatorProfile::class);
     }
 
     /** Qeydiyyatdan keçməmiş sessiya. */

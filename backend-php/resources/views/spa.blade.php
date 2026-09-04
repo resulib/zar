@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e2340">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2340'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23c9d3e6' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='bold' fill='%23ffffff'%3EZ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="{{ asset('assets/fonts.css') }}?v=4974ddd3">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=a070d95e">
+<link rel="stylesheet" href="{{ asset('assets/site.css') }}?v=6cba2729">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -105,6 +105,24 @@
       II bölmədə istənilən forma və rəngi tətbiq edə bilərsiniz.
     </p>
 
+    <!-- Sosial kimlik kartı girişi. `sosial.js` yüklənməyibsə app.js bunu gizlədir. -->
+    <div class="sosial-box" id="sosialBox" hidden>
+      <div class="sosial-lead">
+        <strong>TikTok və ya Instagram profilinizdən kimlik kartı</strong>
+        <span>Linki yapışdırın — ad, izləyici sayı və foto karta düşsün.</span>
+      </div>
+      <div class="sosial-form">
+        <select id="sosialPlat" class="input" aria-label="Platforma">
+          <option value="tiktok">TikTok</option>
+          <option value="instagram">Instagram</option>
+        </select>
+        <input id="sosialUrl" class="input" type="text" maxlength="200"
+               placeholder="tiktok.com/ və ya istifadəçi adı"
+               aria-label="Profil linki və ya istifadəçi adı">
+        <button id="sosialGo" class="btn" type="button">Kart hazırla</button>
+      </div>
+    </div>
+
     <div class="toolbar">
       <div class="catbar" id="tabs"></div>
       <div class="search">
@@ -134,12 +152,15 @@
     <!-- Cavab rejimi zolağı — yalnız /?cavab=REG ilə gəlindikdə görünür -->
     <div class="reply-bar" id="replyBar" hidden></div>
 
+    <!-- Sosial profil paneli — app.js `renderSocialPanel()` doldurur -->
+    <div class="sosial-panel" id="socialPanel" hidden></div>
+
     <div class="editor">
       <!-- forma sütunu -->
       <div>
         <div class="panel" style="margin-bottom:16px">
           <div class="panel-head">
-            <span class="label">Blank forması</span>
+            <span class="label" id="designLabel">Blank forması</span>
             <button id="btnResetDesign" class="right chip btn-sm" type="button" style="padding:4px 8px">Şablonun öz forması</button>
           </div>
           <div class="panel-body">
@@ -402,8 +423,9 @@
 <script src="{{ asset('assets/templates.js') }}?v=48244b0c"></script>
 <script src="{{ asset('assets/templates-xatire.js') }}?v=ecc1485b"></script>
 <script src="{{ asset('assets/replies.js') }}?v=ec438984"></script>
-<script src="{{ asset('assets/doc.js') }}?v=7516e7b3"></script>
+<script src="{{ asset('assets/sosial.js') }}?v=75f99e3b"></script>
+<script src="{{ asset('assets/doc.js') }}?v=9a536a3c"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
-<script src="{{ asset('assets/app.js') }}?v=3ebcf161"></script>
+<script src="{{ asset('assets/app.js') }}?v=36885c75"></script>
 </body>
 </html>

@@ -26,7 +26,35 @@ require __DIR__ . '/../app/Support/Payments/SimulationProvider.php';
 require __DIR__ . '/../app/Support/Payments/EpointProvider.php';
 require __DIR__ . '/../app/Support/Ai/OpenAiClient.php';
 require __DIR__ . '/../app/Support/Ai/TemplateBrief.php';
+require __DIR__ . '/../app/Support/Sosial/SosialProvider.php';
+require __DIR__ . '/../app/Support/Sosial/ProfilUrl.php';
+require __DIR__ . '/../app/Support/Sosial/PublicProvider.php';
+require __DIR__ . '/../app/Support/Sosial/Sosial.php';
+require __DIR__ . '/../app/Support/Dossier/Dossier.php';
+require __DIR__ . '/../app/Support/Dossier/Byuro.php';
+require __DIR__ . '/../app/Support/Dossier/BlokSxemi.php';
+require __DIR__ . '/../app/Support/Dossier/Metn.php';
+require __DIR__ . '/../app/Support/Dossier/Sxem.php';
+require __DIR__ . '/../app/Support/Dossier/Rey.php';
+require __DIR__ . '/../app/Support/Dossier/Isare.php';
+require __DIR__ . '/../app/Support/Dossier/Sekil.php';
+require __DIR__ . '/../app/Support/Dossier/QovluqYoxlayici.php';
+require __DIR__ . '/../app/Support/Ai/QovluqBrief.php';
+require __DIR__ . '/../app/Support/Dossier/Xp.php';
+require __DIR__ . '/../app/Support/Dossier/VesiqeNo.php';
 
+use App\Support\Dossier\BlokSxemi;
+use App\Support\Dossier\Byuro;
+use App\Support\Dossier\Dossier as IsQovlugu;
+use App\Support\Dossier\Isare;
+use App\Support\Ai\QovluqBrief;
+use App\Support\Dossier\QovluqYoxlayici;
+use App\Support\Dossier\Sekil as SekilKomek;
+use App\Support\Dossier\Metn;
+use App\Support\Dossier\Rey;
+use App\Support\Dossier\Xp;
+use App\Support\Dossier\VesiqeNo;
+use App\Support\Dossier\Sxem;
 use App\Support\Moderation;
 use App\Support\Packs;
 use App\Support\Payments\EpointProvider;
@@ -38,6 +66,9 @@ use App\Support\Sanitizer;
 use App\Support\Answers;
 use App\Support\Devet;
 use App\Support\TemplateSchema;
+use App\Support\Sosial\ProfilUrl;
+use App\Support\Sosial\PublicProvider;
+use App\Support\Sosial\Sosial;
 use App\Support\Ai\OpenAiClient;
 use App\Support\Ai\TemplateBrief;
 
@@ -676,6 +707,648 @@ check('təkrar qeyd atılır', $an['values']['notes'] === 'Birinci qeyd', $an['v
 check('sxem serverin öz yoxlamasından keçir',
     TemplateSchema::validate($fields, [], null, '{to}') === [],
     TemplateSchema::validate($fields, [], null, '{to}'));
+
+/* ==================================================================
+   Sosial kimlik kartı — link parsinqi, say formatı, kənar mənbə
+   ================================================================== */
+echo "\nSosial kimlik kartı\n";
+
+$HOSTS = [
+    'tiktok'    => ['tiktok.com', 'www.tiktok.com', 'vm.tiktok.com', 'm.tiktok.com'],
+    'instagram' => ['instagram.com', 'www.instagram.com', 'instagr.am'],
+];
+$NAMES = ['tiktok' => 'TikTok', 'instagram' => 'Instagram'];
+$CFG   = ['platforms' => ['tiktok', 'instagram'], 'limits' => ['name' => 40, 'followers' => 999999999]];
+
+$p = static fn (mixed $t, ?string $fb = null): ?array => ProfilUrl::parse($t, $HOSTS, $fb);
+
+check('tam TikTok linki', $p('https://www.tiktok.com/@aysel_92') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('sxemsiz link və sorğu sətri',
+    $p('tiktok.com/@aysel_92?is_from_webapp=1') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('video linkindən istifadəçi adı',
+    $p('https://www.tiktok.com/@scout2015/video/6718335390845095173')['username'] === 'scout2015');
+check('Instagram linki və sondakı kəsik',
+    $p('https://instagram.com/aysel.92/') === ['platform' => 'instagram', 'username' => 'aysel.92']);
+check('paylaşım linki profil deyil', $p('https://www.instagram.com/p/CXY123/') === null);
+check('naməlum host rədd edilir', $p('https://facebook.com/aysel') === null);
+check('boşluqlu mətn ad sayılmır', $p('salam dunya', 'tiktok') === null);
+check('«@ad» seçilmiş platforma ilə',
+    $p('@aysel_92', 'tiktok') === ['platform' => 'tiktok', 'username' => 'aysel_92']);
+check('platforma seçilməyibsə «@ad» rədd edilir', $p('@aysel_92') === null);
+check('boş giriş', $p('') === null && $p(null) === null);
+check('ad təmizlənir', ProfilUrl::cleanUsername('@.Ay sel_92!.') === 'Aysel_92');
+
+/* `sosialSayi()` güzgüsü — frontend/doc.js. İki tərəf ayrılsa, endirilmiş PNG
+   ilə reyestrdəki nüsxə fərqlənər. */
+check('say: minlikdən aşağı olduğu kimi', Sosial::sayi(999) === '999');
+check('say: minlik K ilə', Sosial::sayi(12437) === '12,4 K');
+check('say: tam K sonda sıfır yazmır', Sosial::sayi(12000) === '12 K');
+check('say: milyon M ilə', Sosial::sayi(686358095) === '686,4 M');
+check('say: naməlum tire verir (null sıfır DEYİL)', Sosial::sayi(null) === '—');
+check('say: mənfi və mətn tire verir', Sosial::sayi(-5) === '—' && Sosial::sayi('abc') === '—');
+
+$vals = Sosial::vals(['platform' => 'tiktok', 'username' => 'aysel_92', 'followers' => 12437], $NAMES);
+check('vals: istifadəçi adı @ ilə', $vals['username'] === '@aysel_92', $vals);
+check('vals: platformanın görünən adı', $vals['platform'] === 'TikTok');
+check('vals: olmayan sahə tire', $vals['posts'] === '—' && $vals['name'] === '—');
+
+check('clean: platformasız blok atılır', Sosial::clean(['username' => 'a'], $CFG) === []);
+check('clean: naməlum platforma atılır',
+    Sosial::clean(['platform' => 'twitter', 'username' => 'a'], $CFG) === []);
+$cl = Sosial::clean([
+    'platform' => 'instagram', 'username' => '@Ay sel.92', 'name' => '  Aysel   M.  ',
+    'followers' => '12437', 'posts' => -3, 'verified' => true, 'bio' => 'gizli',
+], $CFG);
+check('clean: ad təmizlənir', $cl['username'] === 'Aysel.92', $cl);
+check('clean: boşluqlar yığılır', $cl['name'] === 'Aysel M.', $cl);
+check('clean: rəqəm sətri ədədə çevrilir', $cl['followers'] === 12437, $cl);
+check('clean: mənfi say qəbul edilmir', ! array_key_exists('posts', $cl), $cl);
+check('clean: bio sənədə düşmür', ! array_key_exists('bio', $cl), $cl);
+check('texts: moderasiyaya ad və istifadəçi adı gedir',
+    Sosial::texts($cl) === ['Aysel.92', 'Aysel M.'], Sosial::texts($cl));
+
+/* PublicProvider — saxta HTTP ilə (OpenAiClient testindəki eyni üsul) */
+$EP = ['tiktok_oembed' => 'https://x/oembed', 'instagram_web' => 'https://x/ig', 'instagram_app_id' => '1'];
+$calls = [];
+$reply = ['status' => 200, 'body' => '{}'];
+$http  = static function (string $url, array $h, int $t) use (&$calls, &$reply): array {
+    $calls[] = ['url' => $url, 'headers' => $h];
+    return $reply;
+};
+
+$prov  = new PublicProvider($EP, 5, $http);
+$reply = ['status' => 200, 'body' => json_encode(['author_name' => 'Aysel M.'])];
+check('tiktok: yalnız görünən ad qayıdır', $prov->fetch('tiktok', 'aysel_92') === ['name' => 'Aysel M.']);
+check('tiktok: profil ünvanı kodlanaraq göndərilir',
+    str_contains($calls[0]['url'], rawurlencode('https://www.tiktok.com/@aysel_92')), $calls[0]['url']);
+
+$reply = ['status' => 200, 'body' => json_encode(['data' => ['user' => [
+    'full_name' => 'Aysel', 'biography' => 'salam', 'is_verified' => true, 'is_private' => false,
+    'profile_pic_url_hd' => 'https://cdn/x.jpg',
+    'edge_followed_by' => ['count' => 12437], 'edge_owner_to_timeline_media' => ['count' => 284],
+]]])];
+$ig = $prov->fetch('instagram', 'aysel');
+check('instagram: tam dəst açılır',
+    $ig['name'] === 'Aysel' && $ig['followers'] === 12437 && $ig['posts'] === 284
+    && $ig['verified'] === true && $ig['avatarUrl'] === 'https://cdn/x.jpg', $ig);
+check('instagram: app-id başlığı göndərilir',
+    in_array('x-ig-app-id: 1', end($calls)['headers'], true), end($calls)['headers']);
+
+/* Uğursuzluq XƏTA DEYİL — kartın yaradılması dayanmamalıdır. */
+$reply = ['status' => 403, 'body' => 'Forbidden'];
+check('403 boş massiv verir, istisna atmır', $prov->fetch('tiktok', 'aysel_92') === []);
+$reply = ['status' => 200, 'body' => 'not json'];
+check('pozuq JSON boş massiv verir', $prov->fetch('instagram', 'aysel') === []);
+$boom = new PublicProvider($EP, 5, static function (): array { throw new RuntimeException('şəbəkə'); });
+check('HTTP istisnası udulur', $boom->fetch('instagram', 'aysel') === []);
+check('naməlum platforma sorğu etmir', $prov->fetch('twitter', 'aysel') === []);
+
+echo "\nİş qovluğu\n";
+
+check('slug formatı tanınır', IsQovlugu::isSlug('2026-0847'));
+check('səhv slug rədd olunur', ! IsQovlugu::isSlug('2026/0847') && ! IsQovlugu::isSlug('abc-1234'));
+check('slug nömrəyə çevrilir', IsQovlugu::nomre('2026-0847') === '2026/0847');
+check('nömrə sluga çevrilir', IsQovlugu::slug('2026/0847') === '2026-0847');
+check('token 22 simvoldur', strlen(IsQovlugu::token()) === 22 && IsQovlugu::isToken(IsQovlugu::token()));
+check('səhv token rədd olunur', ! IsQovlugu::isToken('qisa') && ! IsQovlugu::isToken(str_repeat('a', 30)));
+check('tokenlər təkrarlanmır', IsQovlugu::token() !== IsQovlugu::token());
+
+/* «0 dəqiqəyə həll etdi» sertifikatda saxta görünür — ən azı 1 dəqiqə. */
+check('dəqiqə yuxarı yuvarlaqlaşır', IsQovlugu::deqiqe(61) === 2, IsQovlugu::deqiqe(61));
+check('sıfır saniyə 1 dəqiqədir', IsQovlugu::deqiqe(0) === 1 && IsQovlugu::deqiqe(null) === 1);
+check('sertifikat linki qurulur',
+    IsQovlugu::certLink('https://x.az/', '2026-0847', str_repeat('a', 22))
+    === 'https://x.az/is/2026-0847/hesabat/' . str_repeat('a', 22));
+
+echo "\nİş qovluğu — fiktiv qurum\n";
+
+/* Mətn hüquqi tələbdir, ona görə hərfi yoxlanılır. Sinif sabitidir və
+   config deyil: config `.env`-dən oxuna və idarə panelindən boşaldıla bilər. */
+check('məcburi qeydin mətni dəqiqdir',
+    Byuro::QEYD === 'FİKTİV OYUN SƏNƏDİ — yalnız əyləncə məqsədi ilə hazırlanmışdır. '
+        . 'Real hüquqi və ya rəsmi sənəd deyil.', Byuro::QEYD);
+check('qısa forma da fiktivliyi deyir',
+    str_contains(Byuro::QEYD_QISA, 'FİKTİV') && str_contains(Byuro::QEYD_QISA, 'DEYİL'));
+check('büro adı uydurma olduğunu özü deyir', str_contains(Byuro::AD, 'FİKTİV'));
+check('büro kodu AFİB-dir', Byuro::QISA === 'AFİB');
+check('möhürdə «FİKTİV» var', in_array('FİKTİV', Byuro::MOHUR, true), Byuro::MOHUR);
+
+check('qurum sətirləri üç dənədir', count(Byuro::qurumSetirleri()) === 3);
+check('birinci sətir büronun tam adıdır', Byuro::qurumSetirleri()[0] === Byuro::AD);
+
+$bas = Byuro::verqBasligi('AFİB-2026/0847');
+check('vərəq başlığı büro kodu daşıyır', str_contains($bas[0], 'AFİB'), $bas[0]);
+check('vərəq başlığı iş nömrəsini daşıyır', str_contains($bas[1], 'AFİB-2026/0847'), $bas[1]);
+
+check('iş nömrəsi büro kodu ilə qurulur',
+    Byuro::isNomresi('2026-0847') === 'AFİB-2026/0847', Byuro::isNomresi('2026-0847'));
+check('səhv slug boş nömrə verir', Byuro::isNomresi('pis-slug') === '');
+
+echo "\nİş qovluğu — sənəd mətni\n";
+
+check('teqlər escape olunur',
+    Metn::inline('<b>pis</b>') === '&lt;b&gt;pis&lt;/b&gt;', Metn::inline('<b>pis</b>'));
+check('qalın işarəsi açılır', Metn::inline('bir **iki** üç') === 'bir <b>iki</b> üç');
+check('qırmızı qeyd açılır',
+    Metn::inline('[[Qeyd:]] mətn') === '<span class="redpen">Qeyd:</span> mətn');
+check('sətir sonu <br> olur', Metn::inline("bir\niki") === 'bir<br>iki');
+check('əvəzləmə işləyir', Metn::inline('{{mustentiq}} gəldi', ['mustentiq' => 'Elçin']) === 'Elçin gəldi');
+/* Əvəzləmə ƏN AXIRDA gedir: dəyərin içindəki işarə markup kimi oxunmamalıdır. */
+check('əvəzlənən dəyər escape olunur',
+    Metn::inline('{{ad}}', ['ad' => '<i>x</i>']) === '&lt;i&gt;x&lt;/i&gt;');
+check('dəyərin içindəki qalın işarəsi açılmır',
+    Metn::inline('{{ad}}', ['ad' => '**x**']) === '**x**');
+check('qalın içindəki əvəzləmə işləyir',
+    Metn::inline('**{{ad}}**', ['ad' => 'Elçin']) === '<b>Elçin</b>');
+check('massiv boş sətir verir', Metn::inline([]) === '');
+
+/* Zədələnmiş və işarələnmiş mətn — oyun mexanikasıdır: mətnin hansı hissəsinin
+   itdiyi MƏLUMATDA dəqiq göstərilir, render qatı onu tanımır. */
+check('əl ilə əlavə açılır', Metn::inline('++söz++') === '<span class="elavesoz">söz</span>');
+check('üstündən xətt açılır', Metn::inline('~~söz~~') === '<span class="ustxett">söz</span>');
+check('oxunmaz hissə açılır', Metn::inline('((söz))') === '<span class="oxunmaz">söz</span>');
+check('dairəyə alınmış söz açılır', Metn::inline('%%söz%%') === '<span class="dairesoz">söz</span>');
+/* Tək mötərizə adi mətndir — «(on iki min)» kimi ifadələr pozulmamalıdır. */
+check('tək mötərizə toxunulmur', Metn::inline('(on iki min)') === '(on iki min)');
+
+echo "\nİş qovluğu — blok sxemi\n";
+
+/* Sənəd hazır şablon deyil, blokların ardıcıllığıdır. Yoxlayıcı bazaya
+   YÜKLƏNMƏZDƏN ƏVVƏL işləyir: səhv olanda render zamanı ağ ekran yox,
+   aydın xəta görünməlidir. */
+$duz = ['page' => '1', 'content' => ['bloklar' => [
+    ['tip' => 'blank'],
+    ['tip' => 'basliq', 'ad' => 'QƏRAR'],
+    ['tip' => 'metn', 'abzaslar' => ['Bir abzas.']],
+]]];
+check('düzgün sənəd qəbul olunur', BlokSxemi::yoxla($duz)[0] === [], BlokSxemi::yoxla($duz)[0]);
+check('boş blok siyahısı rədd olunur', BlokSxemi::yoxla(['page' => '1', 'content' => []])[0] !== []);
+
+$xeta = static fn (array $bloklar): array => BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => $bloklar]])[0];
+
+check('naməlum blok növü tutulur',
+    (bool) preg_grep('/naməlum blok növü/u', $xeta([['tip' => 'cedvell']])));
+/* Naməlum açar XƏTADIR: yazı səhvi səssizcə itməməlidir. */
+check('naməlum açar tutulur',
+    (bool) preg_grep('/naməlum açar/u', $xeta([['tip' => 'basliq', 'ad' => 'X', 'altt' => 'y']])));
+check('çatışmayan məcburi açar tutulur',
+    (bool) preg_grep('/«abzaslar» açarı yoxdur/u', $xeta([['tip' => 'metn']])));
+check('cədvəl sətir uzunluğu tutulur',
+    (bool) preg_grep('/xana var, başlıq/u',
+        $xeta([['tip' => 'cedvel', 'basliqlar' => ['a', 'b', 'c'], 'setirler' => [['1', '2']]]])));
+check('vurğu indeksi tutulur',
+    (bool) preg_grep('/vurgu/u',
+        $xeta([['tip' => 'cedvel', 'basliqlar' => ['a'], 'setirler' => [['1']], 'vurgu' => [9]]])));
+/* Boş DƏYƏR icazəlidir — real blankda doldurulmamış sahə olur. */
+check('boş sahə dəyəri icazəlidir',
+    $xeta([['tip' => 'sahe', 'setirler' => [['Hava', '']]]]) === []);
+check('sxem SVG olmayanı rədd edir',
+    (bool) preg_grep('/«<svg»/u', $xeta([['tip' => 'sxem', 'svg' => 'salam']])));
+check('nişan koordinatı rəqəm olmalıdır',
+    (bool) preg_grep('/rəqəm olmalıdır/u',
+        $xeta([['tip' => 'sxem', 'svg' => '<svg></svg>', 'nisanlar' => [['nov' => 'noqte', 'x' => 1]]]])));
+check('naməlum əlyazma xarakteri tutulur',
+    (bool) preg_grep('/xarakter/u', $xeta([['tip' => 'elyazma', 'metn' => 'x', 'xarakter' => 'qəribə']])));
+check('naməlum kənar növü tutulur',
+    (bool) preg_grep('/kənar növü/u',
+        $xeta([['tip' => 'metn', 'abzaslar' => ['a'], 'kenar' => ['metn' => 'x', 'nov' => 'yoxdur']]])));
+check('naməlum mesaj növü tutulur',
+    (bool) preg_grep('/mesaj növü/u', $xeta([['tip' => 'yazisma', 'sohbet' => 'X',
+        'gunler' => [['mesajlar' => [['nov' => 'video']]]]]])));
+check('səsli mesajda müddət tələb olunur',
+    (bool) preg_grep('/saniye/u', $xeta([['tip' => 'yazisma', 'sohbet' => 'X',
+        'gunler' => [['mesajlar' => [['nov' => 'sesli', 'yon' => 'cixan']]]]]])));
+
+/* Əlyazma bloku QISA mətn üçündür — bu XƏBƏRDARLIQDIR, xəta deyil. */
+$uzun = BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => [
+    ['tip' => 'elyazma', 'metn' => str_repeat('a', BlokSxemi::ELYAZMA_HEDD + 1)],
+]]]);
+check('uzun əlyazma xəta deyil, xəbərdarlıqdır',
+    $uzun[0] === [] && (bool) preg_grep('/simvolu aşır/u', $uzun[1]));
+
+echo "\nİş qovluğu — fiziki qat və kilid\n";
+
+$kagiz = static fn (array $k): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]], 'kagiz' => $k]])[0];
+
+check('üç ağır effekt icazəlidir',
+    $kagiz(['leke' => [['nov' => 'qehve']], 'cirilma' => 'sag', 'kseroks' => 2]) === []);
+/* Hər vərəq ləkəli və qatlanmış olanda heç biri seçilmir — dizayn qaydası. */
+check('dörd ağır effekt rədd olunur',
+    (bool) preg_grep('/ağır fiziki effekt/u',
+        $kagiz(['leke' => [['nov' => 'qehve']], 'cirilma' => 'sag', 'kseroks' => 2, 'kohnelme' => 3])));
+check('köhnəlmə aralığı yoxlanılır', (bool) preg_grep('/0–3/u', $kagiz(['kohnelme' => 7])));
+check('naməlum ləkə növü tutulur', (bool) preg_grep('/leke\.nov/u', $kagiz(['leke' => [['nov' => 'süd']]])));
+check('naməlum kağız açarı tutulur', (bool) preg_grep('/naməlum açar/u', $kagiz(['kohnelmee' => 1])));
+
+$kilid = static fn (array $k): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]]], 'kilid' => $k])[0];
+
+check('rəqəm kilidi dörd rəqəm istəyir',
+    (bool) preg_grep('/dörd rəqəm/u', $kilid(['nov' => 'reqem', 'kod' => '12', 'ipucu' => 'uzun ipucu mətni'])));
+check('tarix kilidi format istəyir',
+    (bool) preg_grep('/GG\.AA/u', $kilid(['nov' => 'tarix', 'kod' => '2011', 'ipucu' => 'uzun ipucu mətni'])));
+check('söz kilidi qəbul olunur',
+    $kilid(['nov' => 'soz', 'kod' => 'novxana', 'ipucu' => 'uzun ipucu mətni']) === []);
+/* İpucusuz tapmaca həll edilə bilməz. */
+check('ipucusuz kilid rədd olunur',
+    (bool) preg_grep('/ipucu/u', $kilid(['nov' => 'reqem', 'kod' => '0417'])));
+
+$mohur = static fn (array $m): array => BlokSxemi::yoxla(['page' => '1',
+    'content' => ['bloklar' => [['tip' => 'metn', 'abzaslar' => ['a']]], 'mohurler' => [$m]]])[0];
+
+check('möhür mətni tələb olunur', (bool) preg_grep('/«metn»/u', $mohur(['forma' => 'daire'])));
+/* Möhür mətnin üstünə düşəndə mətn oxunaqlı qalmalıdır. */
+check('tam qeyri-şəffaf möhür rədd olunur',
+    (bool) preg_grep('/oxunaqlı/u', $mohur(['metn' => ['A'], 'seffaflik' => 0.98])));
+
+echo "\nİş qovluğu — sxem süzgəci\n";
+
+check('adi SVG keçir', Sxem::temizle('<svg><rect x="1"/></svg>') === '<svg><rect x="1"/></svg>');
+check('SVG olmayan rədd olunur', Sxem::temizle('<div>x</div>') === '' && Sxem::temizle('salam') === '');
+check('script atılır',
+    strpos(Sxem::temizle('<svg><script>alert(1)</script><rect/></svg>'), 'script') === false);
+check('hadisə atributu atılır',
+    strpos(Sxem::temizle('<svg><rect onclick="x()"/></svg>'), 'onclick') === false);
+check('kənar href atılır',
+    strpos(Sxem::temizle('<svg><a href="https://pis.example">x</a></svg>'), 'pis.example') === false);
+check('daxili istinad qalır',
+    strpos(Sxem::temizle('<svg><use href="#a"/></svg>'), '#a') !== false ||
+    Sxem::temizle('<svg><rect fill="url(#a)"/></svg>') === '<svg><rect fill="url(#a)"/></svg>');
+check('foreignObject atılır',
+    strpos(Sxem::temizle('<svg><foreignObject><b>x</b></foreignObject></svg>'), 'foreignObject') === false);
+check('kənar şəkil atılır',
+    strpos(Sxem::temizle('<svg><image href="https://pis.example/a.png"/></svg>'), 'image') === false);
+
+echo "\nİş qovluğu — yekun rəy\n";
+
+$duz = [0, 1, 1];
+check('düzgün cavab tanınır', Rey::yoxla([0, 1, 1], $duz) === ['ok' => true, 'tam' => true]);
+check('səhv cavab rədd olunur', Rey::yoxla([1, 1, 1], $duz) === ['ok' => false, 'tam' => true]);
+/* Natamam cavab cəhd sayılmır — yoxsa səhvən göndərilən forma cəhd yeyərdi. */
+check('natamam cavab tam deyil', Rey::yoxla([0, 1], $duz) === ['ok' => false, 'tam' => false]);
+check('boş cavab tam deyil', Rey::yoxla([], $duz) === ['ok' => false, 'tam' => false]);
+check('mətn cavab tam deyil', Rey::yoxla(['a', 'b', 'c'], $duz)['tam'] === false);
+check('artıq cavablar kəsilir', Rey::yoxla([0, 1, 1, 9, 9], $duz)['ok'] === true);
+check('normalizasiya sual sayına uyğundur', Rey::normalize([2], 3) === [2, null, null]);
+/* Nəticə HANSI bəndin səhv olduğunu heç vaxt açmır. */
+check('nəticədə səhv bəndin indeksi yoxdur',
+    array_keys(Rey::yoxla([1, 0, 0], $duz)) === ['ok', 'tam']);
+
+echo "\nİş qovluğu — mətndaxili nişan\n";
+
+/* Bölmə sırası saxlanılır və heç nə itmir. */
+$parca = Isare::bol("Bir.\n{{ sekil:kamera-01 }}\nİki.\n{{ blok:zeng-1 }}\nÜç.");
+check('nişanlar sıra ilə ayrılır',
+    array_column($parca, 'nov') === ['metn', 'sekil', 'metn', 'blok', 'metn']);
+check('şəkil açarı oxunur', $parca[1]['deyer'] === 'kamera-01');
+check('blok açarı oxunur', $parca[3]['deyer'] === 'zeng-1');
+
+/* DOLLAR TƏLƏSİ. Əvəzləmə `preg_replace` ilə sətir sağ tərəfi işlətsəydi,
+   `$$`, `$&` və `$'` ardıcıllıqları xüsusi oxunar və mətndən itərdi. */
+$dollar = Isare::bol('Qiymət 100$ və $& və $\' qalır.');
+check('dollar işarələri toxunulmur', $dollar[0]['deyer'] === 'Qiymət 100$ və $& və $\' qalır.');
+
+/* `Metn::fill()` boşluqsuz `{{açar}}` axtarır — iki sistem toqquşmur. */
+$vals = Isare::bol('{{mustentiq}} qalır, {{ sekil:a-1 }} açılır.');
+check('vals açarı nişan sayılmır', $vals[0]['deyer'] === '{{mustentiq}} qalır, ');
+check('vals açarı Metn üçün qalır',
+    strpos(Metn::inline('{{mustentiq}}', ['mustentiq' => 'N.Əliyeva']), 'N.Əliyeva') !== false);
+
+/* Prefiksiz və naməlum prefiksli forma nişan DEYİL. */
+check('prefiksiz forma nişan deyil', count(Isare::bol('{{ kamera-01 }}')) === 1);
+check('naməlum prefiks nişan deyil', count(Isare::bol('{{ ses:kamera-01 }}')) === 1);
+/* Böyük hərf əlifbada yoxdur: açar həmişə kiçikdir, «İ» tələsi buradan başlayır. */
+check('böyük hərfli açar nişan deyil', count(Isare::bol('{{ sekil:Kamera-01 }}')) === 1);
+
+check('nişanlar toplanır və təkrarlanmır',
+    Isare::nisanlar('{{ sekil:a }} {{ sekil:a }} {{ blok:b }}')
+    === ['sekil' => ['a'], 'blok' => ['b']]);
+check('nişan yazılışı', Isare::yaz('sekil', 'plan-3') === '{{ sekil:plan-3 }}');
+
+/* Slug SERVERDƏ qurulur: JS-də `'İ'.toLowerCase()` iki kod nöqtəsidir və
+   brauzerdə qurulan açar serverdəkindən fərqlənərdi. */
+check('slug fayl adından qurulur', Isare::slugla('Kamera 01.JPG') === 'kamera-01');
+check('slug Azərbaycan hərflərini foldlayır', Isare::slugla('Şəkil İzahı.png') === 'sekil-izahi');
+check('slug böyük İ ilə başlayan adı tutur', Isare::slugla('İlkin.jpeg') === 'ilkin');
+check('boş ad üçün slug uydurulur', Isare::slugla('  ---  .webp') === 'sekil');
+check('slug nişan əlifbasına uyğundur',
+    preg_match('/^[a-z0-9][a-z0-9-]*$/', Isare::slugla('2-ci mərtəbə.png')) === 1);
+
+/* Blokun adı da eyni əlifbadadır — nişan onu birbaşa daşıyır. */
+check('blok açarı yoxlanılır', BlokSxemi::acarDuzgun('zeng-cedveli') === true);
+check('böyük hərfli blok açarı rədd olunur', BlokSxemi::acarDuzgun('Zeng') === false);
+check('boşluqlu blok açarı rədd olunur', BlokSxemi::acarDuzgun('zeng cedveli') === false);
+/* Nişan açarı `acar` adlanır, `ad` yox: `ad` artıq `basliq` blokunun başlıq
+   mətnidir. İki mənalı açar səssiz səhvdir — aşağıdakı iki yoxlama məhz
+   ikisinin bir blokda YAN-YANA işlədiyini sübut edir. */
+check('«acar» açarı bloklarda icazəlidir',
+    BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => [
+        ['tip' => 'basliq', 'ad' => 'İSTİNTAQ QRUPU', 'acar' => 'ilk-basliq'],
+    ]]])[0] === []);
+check('səhv «acar» dəyəri xətadır',
+    count(BlokSxemi::yoxla(['page' => '1', 'content' => ['bloklar' => [
+        ['tip' => 'basliq', 'ad' => 'BAŞLIQ', 'acar' => 'İLK'],
+    ]]])[0]) === 1);
+
+echo "\nİş qovluğu — dərc yoxlayıcısı\n";
+
+/* Tam düzgün qovluq: iki vərəq, bir kod, iki şübhəli, iki sonluq, bir şəkil. */
+$duzgunQovluq = [
+    'senedler' => [
+        ['id' => 1, 'page' => '1', 'name' => 'Protokol', 'body' => 'Sayğac 69 və 18 göstərir. {{ sekil:kadr }}', 'is_locked' => false],
+        ['id' => 2, 'page' => '2', 'name' => 'Qutu', 'body' => 'Bağlıdır.', 'is_locked' => true, 'unlock_code_id' => 7],
+    ],
+    'kodlar'     => [['id' => 7, 'code' => '6918', 'label' => 'Birinci kod', 'source_document_ids' => [1]]],
+    'subheliler' => [['id' => 11, 'name' => 'A', 'is_culprit' => true], ['id' => 12, 'name' => 'B', 'is_culprit' => false]],
+    'sonluqlar'  => [
+        ['suspect_id' => 11, 'is_true_ending' => true,  'verdict_text' => 'Doğru.'],
+        ['suspect_id' => 12, 'is_true_ending' => false, 'verdict_text' => 'Yanlış.'],
+    ],
+    'sekiller' => [['slug' => 'kadr']],
+];
+
+$r = QovluqYoxlayici::yoxla($duzgunQovluq);
+check('düzgün qovluqda xəta yoxdur', $r['xetalar'] === [], $r['xetalar']);
+check('düzgün qovluqda qeyd də yoxdur', $r['qeydler'] === [], $r['qeydler']);
+check('nəticə yalnız iki açar daşıyır', array_keys($r) === ['xetalar', 'qeydler']);
+
+/* Xətalar YIĞILIR, atılmır: bir səhv qalanları gizlətməməlidir. */
+$pis = QovluqYoxlayici::yoxla(['senedler' => [], 'subheliler' => []]);
+check('boş qovluq bir neçə xəta verir', count($pis['xetalar']) >= 2, $pis['xetalar']);
+
+$dey = static function (array $deyisiklik) use ($duzgunQovluq): array {
+    return QovluqYoxlayici::yoxla(array_merge($duzgunQovluq, $deyisiklik))['xetalar'];
+};
+
+/* 1. Kodun rəqəmləri mənbə vərəqdə yoxdur. */
+check('tapılmayan kod rəqəmi xətadır',
+    count($dey(['kodlar' => [['id' => 7, 'code' => '5555', 'label' => 'K', 'source_document_ids' => [1]]]])) === 1);
+/* Mənbə göstərilməməsi QEYD-dir, xəta yox: seed ilə gələn üç qovluqda bu
+   məlumat yoxdur və onları dərc olunmaz etmək səhv olardı. Doldurulanda isə
+   rəqəmlər həqiqətən orada axtarılır — yoxlama gücə minir. */
+$mensiz = QovluqYoxlayici::yoxla(array_merge($duzgunQovluq,
+    ['kodlar' => [['id' => 7, 'code' => '6918', 'label' => 'K', 'source_document_ids' => []]]]));
+check('mənbəsiz kod yalnız qeyddir', $mensiz['xetalar'] === [] && count($mensiz['qeydler']) === 1, $mensiz);
+check('yad mənbə vərəqi xətadır',
+    count($dey(['kodlar' => [['id' => 7, 'code' => '6918', 'label' => 'K', 'source_document_ids' => [99]]]])) === 1);
+
+/* 2. Kilidli vərəqin kodu. */
+check('kodsuz kilidli vərəq xətadır', count($dey(['senedler' => [
+    ['id' => 1, 'page' => '1', 'name' => 'A', 'body' => '69 18', 'is_locked' => false],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => null],
+]])) === 1);
+
+/* 3. Qatil. */
+check('qatilsiz iş xətadır', count($dey(['subheliler' => [
+    ['id' => 11, 'name' => 'A', 'is_culprit' => false], ['id' => 12, 'name' => 'B', 'is_culprit' => false],
+]])) >= 1);
+check('iki qatil xətadır', count($dey(['subheliler' => [
+    ['id' => 11, 'name' => 'A', 'is_culprit' => true], ['id' => 12, 'name' => 'B', 'is_culprit' => true],
+]])) >= 1);
+
+/* 4. Sonluqlar. Sonluq YOXDURSA — səhv deyil: iş köhnə rejimdədir. */
+check('sonluqsuz iş xəta vermir', $dey(['sonluqlar' => []]) === []);
+check('yarımçıq sonluq siyahısı xətadır',
+    count($dey(['sonluqlar' => [['suspect_id' => 11, 'is_true_ending' => true, 'verdict_text' => 'X']]])) === 1);
+check('doğru sonluq qatilə aid olmalıdır', count($dey(['sonluqlar' => [
+    ['suspect_id' => 11, 'is_true_ending' => false, 'verdict_text' => 'X'],
+    ['suspect_id' => 12, 'is_true_ending' => true,  'verdict_text' => 'Y'],
+]])) === 1);
+check('boş hökm mətni xətadır', count($dey(['sonluqlar' => [
+    ['suspect_id' => 11, 'is_true_ending' => true, 'verdict_text' => ''],
+    ['suspect_id' => 12, 'is_true_ending' => false, 'verdict_text' => 'Y'],
+]])) === 1);
+
+/* 5-6. Nişanlar. */
+check('qarşılığı olmayan şəkil nişanı xətadır', count($dey(['sekiller' => []])) === 1);
+check('qarşılığı olmayan blok nişanı xətadır', count($dey(['senedler' => [
+    ['id' => 1, 'page' => '1', 'name' => 'A', 'body' => '69 18 {{ blok:yoxdur }}', 'is_locked' => false],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+]])) === 1);
+check('açarlanmış blok nişanı qəbul olunur', $dey(['senedler' => [
+    ['id' => 1, 'page' => '1', 'name' => 'A', 'body' => '69 18 {{ blok:cedvel }}', 'is_locked' => false,
+     'bloklar' => [['tip' => 'cedvel', 'acar' => 'cedvel']]],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+], 'sekiller' => []]) === []);
+
+/* 7-8. Vərəq nömrələri — HƏMİŞƏ SƏTİR. «14» rəqəm görünüşlüdür və assosiativ
+   açar kimi işlədilsəydi 14 ilə eyni yerə düşərdi. */
+check('təkrar vərəq nömrəsi xətadır', count($dey(['senedler' => [
+    ['id' => 1, 'page' => '14', 'name' => 'A', 'body' => '69 18', 'is_locked' => false],
+    ['id' => 2, 'page' => '14', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+], 'sekiller' => []])) === 1);
+
+$q = QovluqYoxlayici::yoxla(array_merge($duzgunQovluq, ['senedler' => [
+    ['id' => 1, 'page' => '', 'name' => 'A', 'body' => '69 18', 'is_locked' => false],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+], 'sekiller' => []]));
+check('boş vərəq nömrəsi yalnız qeyddir', $q['xetalar'] === [] && count($q['qeydler']) === 1, $q);
+
+/* 9-10. Qeydlər. */
+$q2 = QovluqYoxlayici::yoxla(array_merge($duzgunQovluq, ['sekiller' => [['slug' => 'kadr'], ['slug' => 'artiq']]]));
+check('istifadəsiz şəkil qeyddir', $q2['xetalar'] === [] && count($q2['qeydler']) === 1, $q2);
+
+$q3 = QovluqYoxlayici::yoxla(array_merge($duzgunQovluq, ['senedler' => [
+    ['id' => 1, 'page' => '1', 'name' => 'A', 'body' => '69 18', 'draft_body' => 'yeni mətn', 'is_locked' => false],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+], 'sekiller' => []]));
+check('dərc olunmamış qaralama qeyddir', $q3['xetalar'] === [] && count($q3['qeydler']) === 1, $q3);
+/* Yoxlayıcı QARALAMANI oxumur: nişan dərc olunmuş mətndə axtarılır. */
+check('qaralamadakı nişan yoxlanmır', QovluqYoxlayici::yoxla(array_merge($duzgunQovluq, ['senedler' => [
+    ['id' => 1, 'page' => '1', 'name' => 'A', 'body' => '69 18', 'draft_body' => '{{ sekil:yoxdur }}', 'is_locked' => false],
+    ['id' => 2, 'page' => '2', 'name' => 'B', 'body' => '', 'is_locked' => true, 'unlock_code_id' => 7],
+], 'sekiller' => []]))['xetalar'] === []);
+
+echo "\nİş qovluğu — şəkil faylı\n";
+
+check('fayl adı 32 onaltılıq simvoldur', preg_match('/^[a-f0-9]{32}\.jpg$/', SekilKomek::ad()) === 1);
+check('fayl adı təkrarlanmır', SekilKomek::ad() !== SekilKomek::ad());
+check('şəkil olmayan bayt rədd olunur', SekilKomek::olcu('salam, bu şəkil deyil') === null);
+
+if (function_exists('imagecreatetruecolor')) {
+    ob_start();
+    imagepng(imagecreatetruecolor(40, 20));
+    $png = (string) ob_get_clean();
+
+    check('PNG tanınır', SekilKomek::olcu($png) === [40, 20]);
+    $jpeg = SekilKomek::olcule($png, 10);
+    check('ölçülmə JPEG qaytarır', $jpeg !== null && SekilKomek::olcu((string) $jpeg) !== null);
+    /* Uzun tərəf hədddir; kiçik şəkil BÖYÜDÜLMÜR. */
+    check('uzun tərəf hədddən keçmir', SekilKomek::olcu((string) $jpeg)[0] === 10);
+    check('kiçik şəkil böyüdülmür', SekilKomek::olcu((string) SekilKomek::olcule($png, 900))[0] === 40);
+}
+
+/* ------------------------------------------------------------------ *
+ | Müstəntiq profili — XP düsturu və vəsiqə nömrəsi
+ * ------------------------------------------------------------------ */
+
+echo "\nXP düsturu\n";
+
+/* Baza dəyərləri: bonussuz, cəzasız, kodsuz oyun. */
+check('baza asan',  Xp::hesabla('asan',  false, false, false, 0) === 20);
+check('baza orta',  Xp::hesabla('orta',  false, false, false, 0) === 40);
+check('baza cetin', Xp::hesabla('cetin', false, false, false, 0) === 70);
+check('baza kabus', Xp::hesabla('kabus', false, false, false, 0) === 120);
+
+/* Naməlum çətinlik `orta`-ya düşür — seed pozulsa da hesablama dayanmır. */
+check('naməlum çətinlik ortaya düşür', Xp::hesabla('yoxdur', false, false, false, 0) === 40);
+
+/* Bonuslar TOPLANIR, vurulmur: 1 + 0.5 + 0.3 = 1.8 */
+check('doğru sonluq ×1.5', Xp::hesabla('orta', true,  false, false, 0) === 60);
+check('ilk cəhd ×1.3',     Xp::hesabla('orta', false, true,  false, 0) === 52);
+check('ikisi birlikdə ×1.8', Xp::hesabla('orta', true, true, false, 0) === 72);
+
+/* Kod bonusu SABİTDİR və faizlərdən SONRA gəlir. */
+check('kod bonusu +20', Xp::hesabla('orta', true, true, true, 0) === 92);
+check('kod bonusu çətinlikdən asılı deyil',
+    Xp::hesabla('asan', false, false, true, 0) - Xp::hesabla('asan', false, false, false, 0) === 20);
+
+/* Səhv ittiham ilk-cəhd bonusunu da söndürür — ikisi bir göstəricidir. */
+check('bir səhv: bonus sönür və 10 çıxılır', Xp::hesabla('orta', true, true, true, 1) === 70);
+check('iki səhv 20 aparır',   Xp::hesabla('orta', true, true, true, 2) === 60);
+check('cəza xəttidir', Xp::hesabla('kabus', true, false, false, 3) === 150);
+
+/* SIFIR DÖŞƏMƏSİ — bir işdən qazanılan xal mənfi olmur. */
+check('sıfır döşəməsi', Xp::hesabla('asan', false, false, false, 99) === 0);
+check('döşəmə mənfi qaytarmır', Xp::hesabla('kabus', true, true, true, 1000) === 0);
+check('mənfi səhv sayı cəza vermir', Xp::hesabla('orta', false, false, false, -5) === 40);
+
+/* Tavanlar — rütbə eşikləri məhz bunların üzərində ölçülüb. */
+check('tavan asan 56',  Xp::tavan('asan')  === 56);
+check('tavan orta 92',  Xp::tavan('orta')  === 92);
+check('tavan cetin 146', Xp::tavan('cetin') === 146);
+check('tavan kabus 236', Xp::tavan('kabus') === 236);
+
+/* İKİNCİ RÜTBƏ ZƏMANƏTLİDİR: pulsuz `orta` işin ƏN PİS nəticəsi — iki
+   uğursuz cəhd, kod tapılmadan — dəqiq 40 xaldır, yəni ikinci pillənin
+   həddi. Bu, «ilk addım asan olsun» tələbinin ədədi sübutudur. */
+check('pulsuz işin ən pis halı ikinci rütbəyə çatdırır',
+    Xp::hesabla('orta', true, false, false, 2) === 40);
+
+/* Konfiqurasiya parametr kimi ötürülür — sinif çərçivəsizdir. */
+$cfgXp = ['baza' => ['orta' => 100], 'dogru_sonluq' => 1.0, 'ilk_cehd' => 0.0,
+          'kodlar' => 5, 'sehv_ceza' => 1];
+check('parametrlər nəzərə alınır', Xp::hesabla('orta', true, true, true, 1, $cfgXp) === 204);
+
+echo "\nVəsiqə nömrəsi\n";
+
+check('format', VesiqeNo::format('CA', 26, 147) === 'CA-26-0147');
+check('kod böyük hərfə çevrilir', VesiqeNo::format('ca', 26, 1) === 'CA-26-0001');
+check('il iki rəqəmə qısalır', VesiqeNo::format('KR', 2026, 5) === 'KR-26-0005');
+check('tavan aşılmır', VesiqeNo::format('XT', 26, 99999) === 'XT-26-9999');
+check('sıfır birə yuvarlanır', VesiqeNo::format('TE', 26, 0) === 'TE-26-0001');
+
+check('nizam düzgünü qəbul edir', VesiqeNo::keceli('KC-26-0147'));
+check('kiçik hərf rədd olunur',   ! VesiqeNo::keceli('kc-26-0147'));
+check('beş rəqəm rədd olunur',    ! VesiqeNo::keceli('KC-26-01470'));
+check('üç hərf rədd olunur',      ! VesiqeNo::keceli('KCX-26-0147'));
+check('ayırıcı məcburidir',       ! VesiqeNo::keceli('KC260147'));
+
+$parse = VesiqeNo::parse('TE-26-0042');
+check('təhlil geri qaytarır', $parse === ['kod' => 'TE', 'il' => 26, 'n' => 42], $parse);
+check('pozuq nömrə null verir', VesiqeNo::parse('yoxdur') === null);
+check('önək', VesiqeNo::onek('CA', 26) === 'CA-26-');
+check('sıra çıxarılır', VesiqeNo::sira('CA-26-0147') === 147);
+check('pozuq nömrədə sıra sıfırdır', VesiqeNo::sira('yanlis') === 0);
+check('boş nömrədə sıra sıfırdır', VesiqeNo::sira(null) === 0);
+
+/* LEKSİKOQRAFİK SIRA = ƏDƏDİ SIRA.
+   `ProfileService::issueBadge()` növbəti nömrəni `ORDER BY badge_number DESC`
+   ilə tapır — sıfırla doldurulma olmasaydı «CA-26-9» «CA-26-10»-dan böyük
+   görünərdi və nömrələr təkrarlanardı. */
+$nomreler = [];
+for ($i = 1; $i <= 200; $i++) {
+    $nomreler[] = VesiqeNo::format('CA', 26, $i * 7 % 9999 + 1);
+}
+$sirali = $nomreler;
+sort($sirali, SORT_STRING);
+$ededi = $nomreler;
+usort($ededi, static fn ($a, $b) => VesiqeNo::sira($a) <=> VesiqeNo::sira($b));
+check('leksikoqrafik sıra ədədi sıra ilə üst-üstə düşür', $sirali === $ededi);
+
+echo "\nİş qovluğu — AI cavabına etibar edilmir\n";
+
+$xamSkelet = [
+    'title'  => 'Anbarda gecə növbəsi 😀',
+    'place'  => 'Sumqayıt',
+    'period' => 'sentyabr',
+    'blurb'  => 'Qısa mətn',
+    'intro'  => 'Giriş',
+    'suspects' => array_map(static fn (int $i): array => [
+        'init' => 'AB', 'name' => 'Şübhəli ' . $i, 'role' => 'rol', 'bio' => 'bio',
+        'camera' => 'kamera', 'bars' => [[$i * 10, 200]],
+    ], [1, 2, 3, 4]),
+    'culprit'      => 9,
+    'motive'       => 'Motiv',
+    'motive_wrong' => ['A', 'B', 'C'],
+    'proof'        => 'Sübut',
+    'proof_wrong'  => ['D', 'E', 'F'],
+    'chronology'   => [['23:40', 'Hadisə'], ['bir']],
+    'axis'         => ['23:30', '01:30', '05:00', '09:00'],
+    'solution'     => ['Bir', 'İki'],
+    'documents'    => array_map(static fn (int $i): array => [
+        'name' => 'Sənəd ' . $i, 'kind' => 'Protokol',
+        'doc_type' => $i === 2 ? 'uydurma' : 'protocol',
+        'blank_nov' => $i === 2 ? 'yalan' : 'protokol',
+        'brief' => 'tapşırıq',
+    ], [1, 2, 3]),
+    'lock' => ['code' => '69-18', 'hint' => 'ipucu', 'doc' => 3, 'sources' => [1, 3, 99]],
+];
+
+['skelet' => $sk, 'problems' => $pr] = QovluqBrief::normalizeSkelet($xamSkelet, 3);
+
+check('emoji silinir', $sk['title'] === 'Anbarda gecə növbəsi');
+/* Siyahıdan kənar indeks sıfıra çəkilir: heç kim işarələnməsəydi, səbəb
+   görünməzdi və iş səssizcə dərc olunmaz qalardı. */
+check('siyahıdan kənar qatil sıfıra çəkilir', $sk['culprit'] === 0);
+check('naməlum sənəd növü ağ siyahıya düşür', $sk['documents'][1]['doc_type'] === 'other');
+check('naməlum blank növü ağ siyahıya düşür', $sk['documents'][1]['blank_nov'] === 'resmi');
+/* Vərəq nömrələri SIRADAN qurulur — model onları təkrarlaya bilər. */
+check('vərəq nömrələri sıradan qurulur',
+    array_column($sk['documents'], 'page') === ['1', '2', '3']);
+check('artıq ox sətri kəsilir', count($sk['axis']) === 3);
+check('natamam xronologiya sətri atılır', count($sk['chronology']) === 1);
+check('alibi zolağı 0–100 aralığına sığır', $sk['suspects'][0]['bars'][0][1] <= 100);
+
+/* Kod dörd rəqəmə endirilir, öz vərəqi mənbə sayılmır, yad nömrə atılır. */
+check('kod yalnız rəqəmlərdən qurulur', $sk['lock']['code'] === '6918');
+check('kodun öz vərəqi mənbə deyil', ! in_array(3, $sk['lock']['sources'], true));
+check('mövcud olmayan mənbə atılır', $sk['lock']['sources'] === [1]);
+
+/* Suallar MODELDƏN soruşulmur — qurulur. Birinci sualın variantları
+   şübhəli adlarının EYNİ sırasıdır: idarə paneli qatili məhz bundan çıxarır. */
+check('üç sual qurulur', count($sk['questions']) === 3);
+check('birinci sualın variantları şübhəli adlarıdır',
+    $sk['questions'][0]['options'] === array_column($sk['suspects'], 'name'));
+check('birinci sualın cavabı qatildir', $sk['questions'][0]['correct'] === $sk['culprit']);
+check('motiv sualının ilk variantı düzgündür', $sk['questions'][1]['options'][0] === 'Motiv');
+
+/* Real qurum adı silinmir — XƏBƏRDARLIQ olur. Səssizcə silmək mətni
+   pozardı; idarəçi onu görüb düzəltməlidir. */
+$pis = QovluqBrief::normalizeSkelet(
+    array_merge($xamSkelet, ['intro' => 'Daxili İşlər Nazirliyi məlumat verdi.']), 3
+);
+check('real qurum adı xəbərdarlıq verir',
+    count(array_filter($pis['problems'], static fn (string $x): bool => str_contains($x, 'real qurum'))) === 1,
+    $pis['problems']);
+
+echo "\nİş qovluğu — AI vərəq mətni\n";
+
+$govde = QovluqBrief::govde("## Başlıq\n- siyahı\nSaat **23:40** 🚔\n\n\n\n[[Qeyd]]");
+check('markdown başlığı atılır', ! str_contains($govde, '#'));
+check('siyahı nişanı atılır', ! str_contains($govde, '- siyahı'));
+check('emoji atılır', ! str_contains($govde, '🚔'));
+/* İşarələr QALIR: `Metn::inline()` onları oxuyur və vərəqin dili budur. */
+check('qalın işarəsi qalır', str_contains($govde, '**23:40**'));
+check('qırmızı qələm qalır', str_contains($govde, '[[Qeyd]]'));
+check('artıq boş sətirlər yığılır', ! str_contains($govde, "\n\n\n"));
+
+$partiya = QovluqBrief::normalizeSenedler(['documents' => [
+    ['no' => 2, 'meta_line' => 'Protokol № 2', 'body' => 'Mətn'],
+    ['no' => 0, 'meta_line' => 'yad', 'body' => 'atılmalıdır'],
+]]);
+check('vərəqlər nömrəyə görə açarlanır', array_keys($partiya) === [2]);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);
