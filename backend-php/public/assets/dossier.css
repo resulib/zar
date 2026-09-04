@@ -172,9 +172,9 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   user-select:none}
 .p-mikro-alt{margin:8px calc(var(--paper-x) * -1) 0}
 
-/* Holoqram — vərəqin sağ altında, forma sətrinin üstündə. Mətnin yanında
-   deyil, kənarda durur: real blankda folqa yaması məhz boş sahəyə vurulur. */
-.p-holo{display:flex;justify-content:flex-end;margin:20px 0 -6px;color:var(--ink3)}
+/* Holoqram — vərəqin SOL altında. Sağ tərəf möhürə qalır: imza solda,
+   möhür sağda durur və folqa yaması onların arasına girməməlidir. */
+.p-holo{display:flex;justify-content:flex-start;margin:20px 0 -6px;color:var(--ink3)}
 .nisan-holo-e{display:block;margin-top:3px;font:400 6.5px var(--mono);
   letter-spacing:.14em;color:var(--ink3)}
 
