@@ -844,6 +844,11 @@ carries it only on *authorising* documents — qərar, əmr, formal akt, the fin
 documents show a keypad instead), because every filed page gets a registration mark. A protection
 that is everywhere is not a protection.
 
+> **The stamp belongs at the bottom, over the signature** (`x` 30–42, `y` 78–84). A seal exists to
+> authenticate a signature, so that is where a real one lands; up in the masthead it reads as
+> decoration. Position and angle are derived from the document's index, so no two sheets carry an
+> identically placed stamp.
+
 **Security print is three shared components, layered under the text.** `<x-naxis>` is the guilloche
 (three rosettes, ported from `doc.js guilloche()`), `<x-gerb>` doubles as the ghost watermark, and
 `<x-holoqram>` is the foil patch (the `doc.js` `-holo` gradient plus a rosette). All sit at
