@@ -12,11 +12,14 @@ namespace App\Support;
  * yazı. Orada bu dizayn artıq işlənib və yaxşı alınıb; burada eyni dil, amma
  * MƏTNİ PARAMETRDİR — yəni eyni komponent fərqli qurum üçün işlədilir.
  *
- * İKİ ELEMENT QƏSDƏN GÖTÜRÜLMƏYİB: beşguşəli ulduz və dəfnə çələngi.
- * `.claude/promts/fiktiv-qurum-qaydalari.md` istintaq bürosunun nişanının
- * rəsmi dövlət simvollarının dilini təkrarlamamasını tələb edir — ulduz və
- * çələng məhz o dildir. Onların yerinə kəsik künclü vərəq nişanı qoyulub;
- * qalan bütün quruluş (üç halqa, rozet, monoqram, lent) olduğu kimidir.
+ * ULDUZ VƏ ÇƏLƏNG VAR, amma çələnglər YANLARDADIR — aşağıdan qalxmır.
+ * Alt tərəfdən başlayan çələng real dövlət gerblərinin ən tanınan cizgisidir;
+ * yanlara qoyulanda isə nişan «rəsmi» qalır, lakin konkret bir gerbi
+ * xatırlatmır. Qadağa `fiktiv-qurum-qaydalari.md`-də ümumidir: real
+ * Azərbaycan dövlət sənədlərinin gerbini KOPYALAMAMAQ. Beşguşəli ulduz və
+ * dəfnə budağı ümumi «rəsmilik» dilidir, konkret bir ölkənin nişanı deyil.
+ * Azərbaycanın rəsmi nişanı səkkizguşəli ulduz və alovdur — burada onların
+ * heç biri yoxdur.
  *
  * Freymvorksuzdur: SVG sətri qaytarır, heç bir fasad çağırmır.
  */
@@ -37,7 +40,53 @@ final class Nisan
         return $d . 'Z';
     }
 
-    /** Kəsik künclü vərəq — bürosunun nişanı. Ulduzun yerini tutur. */
+    /** Beşguşəli ulduz — `doc.js star5()`. */
+    private static function ulduz(float $cx, float $cy, float $rO, float $rI): string
+    {
+        $d = '';
+
+        for ($i = 0; $i < 10; $i++) {
+            $a = -M_PI / 2 + $i * M_PI / 5;
+            $rr = ($i % 2) ? $rI : $rO;
+            $d .= ($i ? 'L' : 'M') . number_format($cx + $rr * cos($a), 2, '.', '')
+                . ' ' . number_format($cy + $rr * sin($a), 2, '.', '');
+        }
+
+        return $d . 'Z';
+    }
+
+    /**
+     * Dəfnə budağı — `doc.js laurel()`. Qövs + üstündə yarpaqlar.
+     * Açılar DƏRƏCƏ ilədir və SVG-də 90° aşağını göstərir.
+     */
+    private static function celeng(float $cx, float $cy, float $R, float $a0, float $a1,
+                                   int $n, float $len, string $C): string
+    {
+        $out = '<g fill="' . $C . '" opacity="0.8"><path d="';
+
+        for ($i = 0; $i <= 20; $i++) {
+            $ar = ($a0 + ($a1 - $a0) * $i / 20) * M_PI / 180;
+            $out .= ($i ? 'L' : 'M') . number_format($cx + $R * cos($ar), 2, '.', '')
+                . ' ' . number_format($cy + $R * sin($ar), 2, '.', '');
+        }
+
+        $out .= '" fill="none" stroke="' . $C . '" stroke-width="'
+            . number_format($len * 0.22, 2, '.', '') . '" stroke-linecap="round"/>';
+
+        $lr = $R + $len * 0.62;
+
+        for ($i = 0; $i < $n; $i++) {
+            $a = $a0 + ($a1 - $a0) * ($i + 0.5) / $n;
+            $ar = $a * M_PI / 180;
+            $out .= sprintf('<ellipse cx="0" cy="0" rx="%.2f" ry="%.2f"'
+                . ' transform="translate(%.2f,%.2f) rotate(%.1f)"/>',
+                $len, $len * 0.40, $cx + $lr * cos($ar), $cy + $lr * sin($ar), $a + 104);
+        }
+
+        return $out . '</g>';
+    }
+
+    /** Kəsik künclü vərəq — büronun öz nişanı, monoqramın altında qalır. */
     private static function vereq(float $cx, float $cy, float $h): string
     {
         $w = $h * 0.78;
@@ -68,7 +117,18 @@ final class Nisan
         $C    = (string) ($o['reng'] ?? 'currentColor');
         $cx = 50.0; $cy = 44.0; $r = 33.0;
 
-        $g = '<g fill="none" stroke="' . $C . '">';
+        /* ÇƏLƏNG YANLARDADIR: qövs 180°-nin (qərb) ətrafında simmetrikdir,
+           yəni budaq sol böyrü tutur və aşağıdan qalxmır. Sağdakı onun
+           güzgü nüsxəsidir. `doc.js`-də qövs 96°–202°-dir, yəni aşağıdan
+           başlayır — fərq yalnız bu iki rəqəmdədir. */
+        $g = '';
+
+        if (($o['celeng'] ?? true) !== false) {
+            $lf = self::celeng($cx, $cy, $r * 1.08, 141, 219, 6, $r * 0.125, $C);
+            $g .= $lf . sprintf('<g transform="translate(%.2f,0) scale(-1,1)">%s</g>', 2 * $cx, $lf);
+        }
+
+        $g .= '<g fill="none" stroke="' . $C . '">';
         $g .= sprintf('<circle cx="%.1f" cy="%.1f" r="%.2f" stroke-width="%.2f"/>', $cx, $cy, $r, $r * 0.055);
         $g .= sprintf('<circle cx="%.1f" cy="%.1f" r="%.2f" stroke-width="%.2f"/>', $cx, $cy, $r * 0.80, $r * 0.030);
         $g .= sprintf('<circle cx="%.1f" cy="%.1f" r="%.2f" stroke-width="%.2f"/>', $cx, $cy, $r * 0.66, $r * 0.022);
@@ -78,9 +138,8 @@ final class Nisan
         }
         $g .= '</g>';
 
-        /* Ulduzun yeri — büronun vərəq nişanı. */
-        $g .= '<path d="' . self::vereq($cx, $cy - $r * 0.34, $r * 0.42)
-            . '" fill="none" stroke="' . $C . '" stroke-width="' . number_format($r * 0.045, 2, '.', '') . '"/>';
+        $g .= '<path d="' . self::ulduz($cx, $cy - $r * 0.36, $r * 0.26, $r * 0.115)
+            . '" fill="' . $C . '" stroke="none" opacity="0.92"/>';
 
         $g .= sprintf('<text x="%.1f" y="%.2f" text-anchor="middle" font-size="%.2f" font-weight="700"'
             . ' letter-spacing="%.2f" fill="%s" stroke="none">%s</text>',
@@ -101,9 +160,14 @@ final class Nisan
                 $cx + $bw / 2 - $nt, $by + $bh / 2, $cx + $bw / 2, $by + $bh,
                 $cx - $bw / 2, $by + $bh, $cx - $bw / 2 + $nt, $by + $bh / 2,
                 $C, $r * 0.02);
+            /* Lentin daxili eni `bw - 2.4·nt`-dir; monoaralıqlı addım 0.6em,
+               yəni N simvol üçün ölçü = en / (N · 0.62). Sabit ölçü yazılsaydı,
+               uzun bölmə adı lentdən daşardı — ilk cəhddə məhz bu oldu. */
+            $ic = $bw - $nt * 2.4;
+            $ls = min($r * 0.16, $ic / (max(1, mb_strlen($lent)) * 0.62));
             $g .= sprintf('<text x="%.1f" y="%.2f" text-anchor="middle" font-size="%.2f" font-weight="700"'
                 . ' letter-spacing="%.2f" fill="%s" stroke="none">%s</text>',
-                $cx, $by + $bh * 0.74, min($r * 0.17, $bw / max(1, mb_strlen($lent)) * 1.5), $r * 0.012, $C, self::e($lent));
+                $cx, $by + $bh * 0.72, $ls, $ls * 0.06, $C, self::e($lent));
         }
 
         return $g;

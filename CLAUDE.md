@@ -818,10 +818,12 @@ rosette guilloche, the ribbon banner, curved ring text — and `<x-gerb>` / `<x-
 (`resources/views/components/`) wrap it. The text is a parameter, so the same component serves a
 different institution; it is used in the letterhead, the ghost watermark and the stamp layer.
 
-- **Two elements were deliberately dropped in the port: the five-pointed star and the laurel
-  wreath.** `.claude/promts/fiktiv-qurum-qaydalari.md` forbids the bureau's mark from repeating
-  the language of real state symbols, and those two *are* that language. A cut-corner sheet glyph
-  takes the star's place; every other part of the design is the original.
+- **The port keeps the star and the laurels; only their placement changed.** The wreath spans
+  141°–219° (the flanks) instead of `doc.js`'s 96°–202° (rising from the base) — see the crest
+  rule below. The rest of the geometry is the original.
+- **Ribbon and ring text size themselves.** Both are computed from the available arc/width and a
+  0.6em monospace advance, never chosen by eye: a fixed size overflows the moment a longer
+  institution name is passed, and the mark degrades into an unreadable smudge.
 - **CSS must not set geometry on these components.** They carry their own `stroke-width` per ring;
   a blanket `.p-mohur svg circle{stroke-width:…}` flattens every ring to one weight and the seal
   stops reading as a seal. The stylesheet supplies colour, position and font family only.
@@ -1001,9 +1003,16 @@ equivalent shield built for a *different* fiction — the invented ZNP crest, th
 deed would say the wrong thing and weaken both shields. The invitations section is for real
 weddings and no investigative disclaimer belongs there at all.
 
-**The bureau's mark must not resemble a state emblem.** The AFİB monogram is a cut-corner sheet
-outline inside a thin circle with the letters `AFİB` — no star, crescent, flame, wreath or
-crest shield. Same discipline as the invented `ZNP` monogram on the other side.
+**The bureau's mark is a full crest, and the constraint is narrower than "no heraldry".**
+It carries three concentric rings, a rosette guilloche, a five-pointed star, laurel branches,
+the `AFİB` monogram, an `EST. 2026` line and a ribbon — the same vocabulary as the invented `ZNP`
+crest on the other side. What it must not do is **copy the actual Azerbaijani state emblem**:
+that one is an eight-pointed star with a flame, and neither appears here.
+
+> **The laurels sit on the flanks, not under the base** (`celeng()` spans 141°–219°, symmetric
+> about due west, mirrored to the right; `doc.js` sweeps 96°–202° and therefore rises from the
+> bottom). A wreath climbing from the base is the single most recognisable line of real state
+> emblems; moving it to the sides keeps the mark official-looking without pointing at one.
 
 ### The case-file section's sales face
 
