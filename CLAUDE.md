@@ -42,6 +42,8 @@ npm run test:copy        # copy quality: style rules (§9) + option-list schema 
 npm run test:title       # longest catalog titles across 12 layouts + story card, in a real browser
 npm run test:templates   # 216 templates: unique ids, tone/category match, fields schema, text budgets
 npm run test:replies     # 71 reply templates: intent coverage, replyCats, prefixes, orgs, render
+npm run test:bolme       # bölmə açarları: bağlı bölmə 404, admin istisnası, kök heç vaxt
+                         #   404 vermir (php artisan serve --port=8099 lazımdır)
 npm run test:oauth       # giriş yolları uçdan-uca: Google OAuth (öz saxta Google-u :8094-də
                          #   qaldırır), avtomatik qonaq qeydiyyatı, hesab birləşdirmə, açıq
                          #   yönləndirmə — backend GOOGLE_TOKEN_URL ilə :8093-də (fayl başlığına bax)
@@ -1945,6 +1947,44 @@ Note from `QURASDIRMA.md`: the Laravel code was written in an environment where 
 impossible, so it has been verified statically (`tests/audit.php`) rather than booted. Expect the
 occasional runtime wrinkle on first run.
 
+### Sections: which product is live
+
+The site carries three products that do not know about each other. Shipping one to production
+while the others are still being written needed a switch, and the only correct meaning of "hidden"
+is **the URLs do not exist**: `bolme:<key>` middleware, **404**, never 403 — an "access denied"
+announces the address, which is the rule `imagePath()` and the invitation board already follow.
+
+`config/bolmeler.php` holds the defaults (and `.env` overrides for a fresh deploy); the live value
+is a `settings` row edited at **`/admin/parametrler`** — the `ai_model` pattern. `BolmeService`
+caches the three flags forever and **forgets the cache on write**, the `CatalogService::forget()`
+discipline; without the cache the middleware would add three queries to every request.
+
+- **Admins bypass a closed section** and get `X-Bolme-Bagli` + `X-Robots-Tag: noindex` on the
+  response. Without the bypass you could not check a section before opening it.
+- **The middleware must never call `$request->visitor()`** — that *creates* a guest row, and this
+  runs on every request (`IdentifyVisitor`'s own rule). `Auth::user()` only reads.
+- **The gate covers the API too.** Closing `/kabinet` while `/api/catalog` still answered would
+  leave the closed product usable by anyone holding an old SPA bundle.
+- **The root is never under the gate.** `/` dispatches instead: `Bolmeler::anaSehife()` returns the
+  chosen section, or the first open one if that choice is closed, or `null` → a 503 «texniki
+  fasilə» page. Otherwise one wrong setting would 404 the whole site. It **redirects (302)** rather
+  than re-rendering: serving the same page at `/` and `/is` makes two canonical URLs, and a 301
+  would be cached by browsers long after the section reopened.
+- **Shared on purpose**: `/api/health`, `/api/packs`, `/api/payments/*`, `/api/reports` and the
+  sign-in routes. Credits are spent by two products; reports are part of the legal shield.
+- **`/r/{regNo}` belongs to `zarafat`.** Closing it 404s the QR URL of every published document.
+  That is deliberate — hiding a product hides its artefacts — but it is the one consequence worth
+  saying out loud before flipping the switch.
+
+> **Closing `zarafat` used to make paid case files unbuyable.** Credits could only be topped up at
+> `/kabinet`, which is the *other product's* cabinet — wrong framing for a case-file player even
+> when it is open, and gone when it is closed. `/is/balans` is the section's own till:
+> `DossierBalanceController`, the section's own layout, no link to `/kabinet`. `PaymentService::checkout()`
+> gained an `$o` argument so the provider page and the return URL name **the buying section** — a
+> player must not see the other brand at the bank, nor land in a closed cabinet afterwards.
+> `dossier.js` sends a `no_credits` error to `/is/balans` after the toast, because a message that
+> does not say *where to buy* is not an answer.
+
 ### Signing in — guest · password · Google
 
 Three ways in, and they all land on **the same `users` row**. That is the whole design: a guest is
@@ -2154,6 +2194,10 @@ sections**, because the sections are physically separate but the auth logic must
 - **Badge number format**: `App\Support\Dossier\VesiqeNo::NIZAM` ↔ the sequential read in
   `ProfileService::issueBadge()`, which silently depends on zero-padding making
   lexicographic order equal numeric order (asserted in `tests/logic.php`).
+- **Section keys**: `App\Support\Bolmeler::ACARLAR` ↔ `config('bolmeler.ilkin')` /
+  `'meta'` ↔ the `bolme:<key>` middleware arguments in `routes/web.php` ↔ the `settings` rows
+  `bolme_<key>`. A key present in `ACARLAR` but on no route is a section nobody can close;
+  a `bolme:` argument outside `ACARLAR` is a section nobody can open.
 - **Auth entry points**: `config('oauth.qayidis')` keys ↔ the `davam` values in
   `account/auth.blade.php`, `dossier/hesab.blade.php` and `OAuthController` ↔ the route names
   they map to. A key with no route name 500s at redirect time; a `davam` value with no key

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminOnly;
+use App\Http\Middleware\BolmeAciq;
 use App\Http\Middleware\IdentifyVisitor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -28,6 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => AdminOnly::class,
+            /* `bolme:zarafat` — bağlı bölmənin ünvanları 404 verir. */
+            'bolme' => BolmeAciq::class,
         ]);
 
         // Ödəniş provayderinin webhook-u CSRF-dən azaddır (imza ilə qorunur).

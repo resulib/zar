@@ -43,6 +43,7 @@ require __DIR__ . '/../app/Support/Ai/QovluqBrief.php';
 require __DIR__ . '/../app/Support/Dossier/Xp.php';
 require __DIR__ . '/../app/Support/Dossier/VesiqeNo.php';
 require __DIR__ . '/../app/Support/Auth/Google.php';
+require __DIR__ . '/../app/Support/Bolmeler.php';
 
 use App\Support\Dossier\BlokSxemi;
 use App\Support\Dossier\Byuro;
@@ -57,6 +58,7 @@ use App\Support\Dossier\Xp;
 use App\Support\Dossier\VesiqeNo;
 use App\Support\Dossier\Sxem;
 use App\Support\Auth\Google;
+use App\Support\Bolmeler;
 use App\Support\Moderation;
 use App\Support\Packs;
 use App\Support\Payments\EpointProvider;
@@ -1598,6 +1600,47 @@ try {
 
 check('açarsız provayder hazır deyil', (new Google('', ''))->hazir() === false);
 check('açarlı provayder hazırdır', (new Google('a', 'b'))->hazir() === true);
+
+/* ==================================================================
+   Bölmələr — hansı məhsul canlıdır
+   ================================================================== */
+echo "\nBölmələr\n";
+
+check('üç bölmə var', Bolmeler::ACARLAR === ['is', 'zarafat', 'devet'], Bolmeler::ACARLAR);
+check('tanınan açar qəbul edilir', Bolmeler::var('is') && Bolmeler::var('devet'));
+check('naməlum açar rədd edilir', ! Bolmeler::var('admin') && ! Bolmeler::var(''));
+
+/* Təmizləmə: naməlum açar ATILIR, çatışmayan açar ilkin dəyəri alır. */
+$t = Bolmeler::temizle(['is' => '1', 'devet' => '0', 'yad' => '1']);
+check('naməlum açar süzülür', ! array_key_exists('yad', $t), array_keys($t));
+check('bütün açarlar doldurulur', count($t) === 3, $t);
+check('«1» açıq deməkdir', $t['is'] === true);
+check('«0» bağlı deməkdir', $t['devet'] === false);
+check('verilməyən açar ilkin dəyəri alır', $t['zarafat'] === true);
+check('ilkin dəyər ötürülə bilir',
+    Bolmeler::temizle([], ['zarafat' => false])['zarafat'] === false);
+
+/* Sətir formaları — parametr bazadan STRİNQ kimi gəlir. */
+foreach (['1' => true, '0' => false, 'true' => true, 'false' => false] as $xam => $gozlenen) {
+    check('«' . $xam . '» → ' . ($gozlenen ? 'açıq' : 'bağlı'),
+        Bolmeler::temizle(['is' => $xam])['is'] === $gozlenen);
+}
+
+/* ANA SƏHİFƏ. Seçilmiş bölmə bağlıdırsa açıq olana keçilir — əks halda
+   bir parametri səhv qoymaq saytın kökünü 404 edərdi. */
+$hamsi = ['is' => true, 'zarafat' => true, 'devet' => true];
+check('açıq seçim saxlanılır', Bolmeler::anaSehife($hamsi, 'zarafat') === 'zarafat');
+check('bağlı seçim açıq olana keçir',
+    Bolmeler::anaSehife(['is' => true, 'zarafat' => false, 'devet' => false], 'zarafat') === 'is');
+/* Ehtiyat sırası `ACARLAR` sırasıdır: iş qovluğu birincidir. */
+check('ehtiyat sırası ACARLAR sırasıdır',
+    Bolmeler::anaSehife(['is' => true, 'zarafat' => false, 'devet' => true], 'zarafat') === 'is');
+check('naməlum seçim də açıq olana keçir',
+    Bolmeler::anaSehife($hamsi, 'yad') === 'is');
+/* Heç nə açıq deyilsə `null` — çağıran «texniki fasilə» göstərir (503),
+   404 yox: ünvan var, məzmun müvəqqəti yoxdur. */
+check('hamısı bağlıdırsa null',
+    Bolmeler::anaSehife(['is' => false, 'zarafat' => false, 'devet' => false], 'is') === null);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

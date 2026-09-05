@@ -12,8 +12,15 @@ use Illuminate\Support\Facades\Route;
 | Açıq səhifələr
 |--------------------------------------------------------------------------
 */
+/* KÖK HEÇ VAXT `bolme:` ARA QATI ALTINDA DEYİL. O, hansı bölmənin açıq
+   olduğuna baxıb ora yönləndirir; ara qat altında olsaydı, zarafat
+   bağlananda saytın kökü 404 verərdi. */
 Route::get('/', [Web\PageController::class, 'home'])->name('home');
+/* Reyestr baxıcısı zarafat bölməsinə aiddir: bölmə bağlananda dərc olunmuş
+   sənədlərin QR ünvanları da 404 verir. Bu, nəzərdən qaçmış nəticə deyil —
+   məhsul gizlədiləndə onun artefaktları da gizlənməlidir. */
 Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
+    ->middleware('bolme:zarafat')
     ->where('regNo', '[A-Za-z]{2,4}-\d{4}-\d{4}')
     ->middleware('throttle:registry')
     ->name('registry.show');
@@ -22,6 +29,7 @@ Route::get('/r/{regNo}', [Web\PageController::class, 'registry'])
    `image/jpeg` başlığı ilə axıdılır — dəvətnamənin /d/{token}/on.jpg yolu ilə
    eyni model. */
 Route::get('/r/{regNo}/avatar.jpg', [Api\SosialController::class, 'showAvatar'])
+    ->middleware('bolme:zarafat')
     ->where('regNo', '[A-Za-z]{2,4}-\d{4}-\d{4}')
     ->middleware('throttle:registry')
     ->name('registry.avatar');
@@ -31,7 +39,11 @@ Route::get('/r/{regNo}/avatar.jpg', [Api\SosialController::class, 'showAvatar'])
 | Dəvətnamələr — ayrı bölmə, ayrı görünüş
 |--------------------------------------------------------------------------
 | Yollar neytraldır: paylaşılan link qonağa göstərilir.
+|
+| BÜTÜN BLOK `bolme:devet` ALTINDADIR — bölmə bağlıdırsa bu ünvanlar
+| mövcud deyil (404), admin isə yoxlaya bilir.
 */
+Route::middleware('bolme:devet')->group(function (): void {
 Route::get('/devetname', [Web\DevetController::class, 'builder'])->name('devet.builder');
 
 /* Tədbir sahibinin lövhəsi. Kabinetdən ayrıdır və öz görünüş çərçivəsini
@@ -59,13 +71,18 @@ Route::get('/d/{token}', [Web\DevetController::class, 'show'])
     ->middleware('throttle:devet-read')
     ->name('devet.show');
 
+});
+
 /*
 |--------------------------------------------------------------------------
 | İş qovluğu — ayrı bölmə, ayrı görünüş
 |--------------------------------------------------------------------------
 | Saytın digər məhsulu ilə heç bir link paylaşmır. Yollar neytraldır və
 | `robots.txt` bunları indeksləməyə bağlayır.
+|
+| BÜTÜN BLOK `bolme:is` ALTINDADIR.
 */
+Route::middleware('bolme:is')->group(function (): void {
 Route::get('/is', [Web\DossierController::class, 'index'])->name('dossier.index');
 
 /* Sabit yollar slug marşrutundan ƏVVƏL elan olunur. */
@@ -108,6 +125,13 @@ Route::post('/is/mustentiq/foto', [Web\DossierProfileController::class, 'storeAv
    «icazə yoxdur» mesajının özü məlumatdır. */
 Route::get('/is/mustentiq/{profil}/foto.jpg', [Web\DossierProfileController::class, 'avatar'])
     ->where('profil', '[0-9]+')->middleware('throttle:dossier-read')->name('dossier.profil.foto');
+
+/* KASSA — bölmənin ÖZ balans ekranı. `/kabinet` zarafat bölməsinindir və
+   bağlana bilər; onsuz ödənişli qovluqlar satıla bilməzdi. */
+Route::get('/is/balans', [Web\DossierBalanceController::class, 'show'])
+    ->middleware('throttle:dossier-read')->name('dossier.balans');
+Route::post('/is/balans', [Web\DossierBalanceController::class, 'topUp'])
+    ->middleware('throttle:payments')->name('dossier.balans.al');
 
 Route::get('/is/reyting', [Web\DossierRankingController::class, 'index'])
     ->middleware('throttle:dossier-read')->name('dossier.reyting');
@@ -155,6 +179,8 @@ Route::get('/is/{slug}', [Web\DossierController::class, 'show'])
     ->middleware('throttle:dossier-read')
     ->name('dossier.show');
 
+});
+
 /*
 |--------------------------------------------------------------------------
 | API — frontend ilə eyni müqavilə (Node backend-i ilə uyğun)
@@ -166,8 +192,17 @@ Route::prefix('api')->group(function (): void {
     Route::get('/health',        [Api\SessionController::class, 'health']);
     // Bu ikisi lazım gələrsə qonaq sətri yaradır — limitsiz qalsa users cədvəli doldurula bilər.
     Route::get('/me',            [Api\SessionController::class, 'me'])->middleware('throttle:registry');
-    Route::get('/me/documents',  [Api\SessionController::class, 'documents'])->middleware('throttle:registry');
+    /* Sənəd siyahısı zarafat bölməsinindir; balans (`/me`) isə ortaqdır. */
+    Route::get('/me/documents',  [Api\SessionController::class, 'documents'])
+        ->middleware(['throttle:registry', 'bolme:zarafat']);
+    /* PAKETLƏR BÖLMƏYƏ BAĞLI DEYİL: kredit hər iki məhsulda işlənir və
+       `/is/balans` də bu siyahını oxuyur. */
     Route::get('/packs',         [Api\SessionController::class, 'packs']);
+
+    /* Zarafat bölməsinin API-si. Bağlı olanda kataloq və sənəd yazma
+       yolları da yox olur — əks halda köhnə SPA paketi ilə bağlı məhsuldan
+       istifadə etmək mümkün qalardı. */
+    Route::middleware('bolme:zarafat')->group(function (): void {
     Route::get('/catalog',       [Api\CatalogController::class, 'index']);
 
     Route::post('/documents', [Api\DocumentController::class, 'store'])->middleware('throttle:documents');
@@ -185,15 +220,19 @@ Route::prefix('api')->group(function (): void {
 
     // Cavab döngəsinin ölçülməsi. Hadisə adı ağ siyahıdadır — bax EventController.
     Route::post('/olcu', [Api\EventController::class, 'store'])->middleware('throttle:events');
+    });
 
     Route::post('/payments/simulate', [Api\PaymentController::class, 'simulate'])->middleware('throttle:payments');
     Route::post('/payments/checkout', [Api\PaymentController::class, 'checkout'])->middleware('throttle:payments');
     Route::post('/payments/callback', [Api\PaymentController::class, 'callback']);
 
+    /* ŞİKAYƏT BÖLMƏYƏ BAĞLI DEYİL: hüquqi qalxanın bir hissəsidir və
+       bağlı bölmənin artefaktı üçün də açıq qalmalıdır. */
     Route::post('/reports', [Api\ReportController::class, 'store'])->middleware('throttle:reports');
 
     /* İş qovluğu. Sənədin məzmunu YALNIZ `sened` ucundan çıxır və hər
        çağırışda giriş yoxlanılır — ödəniş qatı yalnız görünüş deyil. */
+    Route::middleware('bolme:is')->group(function (): void {
     Route::post('/is/{slug}/ac',           [Api\DossierController::class, 'open'])->middleware('throttle:dossier');
     Route::get('/is/{slug}/sened/{id}',    [Api\DossierController::class, 'document'])->middleware('throttle:dossier-read');
     Route::post('/is/{slug}/qeyd/{id}',    [Api\DossierController::class, 'pin'])->middleware('throttle:dossier');
@@ -204,10 +243,12 @@ Route::prefix('api')->group(function (): void {
     Route::post('/is/{slug}/sonluq',       [Api\DossierController::class, 'ending'])->middleware('throttle:dossier-rey');
     Route::post('/is/{slug}/yeniden',      [Api\DossierController::class, 'replay'])->middleware('throttle:dossier');
     Route::post('/is/{slug}/sertifikat',   [Api\DossierController::class, 'certificate'])->middleware('throttle:dossier');
+    });
 
     /* Dəvətnamələr. Yazma yolları `devet`, açıq oxuma `devet-read`,
        qonaq cavabı isə ayrıca `rsvp` limiti ilə gedir — cavab uc nöqtəsi
        hər kəsə açıqdır, ona görə ən sərt limit ondadır. */
+    Route::middleware('bolme:devet')->group(function (): void {
     Route::get('/devet/paketler', [Api\DevetController::class, 'packs']);
 
     Route::post('/devet', [Api\DevetController::class, 'store'])->middleware('throttle:devet');
@@ -221,6 +262,7 @@ Route::prefix('api')->group(function (): void {
     Route::get('/devet/{token}/q/{guest}', [Api\DevetController::class, 'show'])->middleware('throttle:devet-read');
     Route::post('/devet/{token}/cavab', [Api\DevetController::class, 'rsvp'])->middleware('throttle:rsvp');
     Route::post('/devet/{token}/q/{guest}/cavab', [Api\DevetController::class, 'rsvp'])->middleware('throttle:rsvp');
+    });
 });
 
 /*
@@ -243,7 +285,10 @@ Route::post('/qonaq', [Web\OAuthController::class, 'guest'])
 | Kabinet — qonaq üçün də açıqdır
 |--------------------------------------------------------------------------
 */
-Route::prefix('kabinet')->name('account.')->group(function (): void {
+/* Kabinet zarafat bölməsinin hissəsidir — çərçivəsi, naviqasiyası və dili
+   ona aiddir. İş qovluğunun öz balans ekranı var (`/is/balans`), ona görə
+   bu bölməni bağlamaq kreditin alınmasını dayandırmır. */
+Route::middleware('bolme:zarafat')->prefix('kabinet')->name('account.')->group(function (): void {
     Route::get('/',              [Web\AccountController::class, 'index'])->name('index');
     Route::get('/senedler',      [Web\AccountController::class, 'documents'])->name('documents');
     Route::get('/emeliyyatlar',  [Web\AccountController::class, 'transactions'])->name('transactions');
@@ -380,5 +425,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/parametrler',  [Admin\SettingController::class, 'edit'])->name('settings');
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');
         Route::post('/parametrler/ai', [Admin\SettingController::class, 'updateAi'])->name('settings.ai');
+        Route::post('/parametrler/bolmeler', [Admin\SettingController::class, 'updateSections'])->name('settings.sections');
     });
 });

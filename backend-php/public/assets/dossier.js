@@ -59,6 +59,12 @@
 
   function xeta(e) {
     bildir((e && e.message) || 'Əməliyyat alınmadı.');
+
+    /* Kredit çatmayanda mesaj kifayət etmir: oyunçu HARADAN alacağını
+       bilmir. Bildiriş oxunsun deyə keçid gecikdirilir. */
+    if (e && e.error === 'no_credits') {
+      setTimeout(function () { location.href = '/is/balans'; }, 1400);
+    }
   }
 
   /* ---------------- ekranlar ---------------- */

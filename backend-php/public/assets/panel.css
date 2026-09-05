@@ -621,3 +621,25 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .ayirici::before,.ayirici::after{content:'';flex:1;height:1px;background:var(--rule)}
 .ayirici span{font:500 11px/1 var(--mono);letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------------------------------------------------------------------
+   BÖLMƏLƏR — hansı məhsulun canlı olduğu
+   --------------------------------------------------------------------- */
+
+.bolme-siyahi{display:grid;gap:10px}
+.bolme{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;
+  border:1px solid var(--rule);border-radius:3px;background:var(--sheet);cursor:pointer}
+.bolme:hover{border-color:var(--rule-hard)}
+/* Bağlı bölmə solğun görünür, amma OXUNAQLI qalır — admin onu oxuyub
+   yenidən açmalıdır, gizlətmək lazım deyil. */
+.bolme-bagli{background:transparent;border-style:dashed}
+.bolme-bagli .bolme-ad,.bolme-bagli .bolme-izah{opacity:.72}
+.bolme input[type=checkbox]{margin-top:3px;flex:0 0 auto}
+.bolme-govde{display:grid;gap:3px;min-width:0}
+.bolme-ad{font:600 14px/1.3 var(--sans);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bolme-izah{font-size:12.8px;color:var(--ink-2);line-height:1.5}
+.bolme-yollar{font-size:11.5px;color:var(--ink-3);word-break:break-word}
+
+.bolme-ana{display:grid;gap:8px;margin-top:8px}
+.bolme-ana-s{display:flex;gap:10px;align-items:baseline;font-size:13.5px}
+.bolme-ana-s .mono{font-size:12px;color:var(--ink-3)}

@@ -29,6 +29,10 @@ class SessionController extends Controller
             'ok'            => true,
             'provider'      => $provider,
             'paymentsReady' => $ready,
+            /* Hansı bölmələrin açıq olduğu. SPA bunu yalnız altlıqdakı keçidi
+               gizlətmək üçün oxuyur — həqiqi qapı `bolme:` ara qatıdır və
+               müştəriyə güvənmir. */
+            'bolmeler'      => app(\App\Services\BolmeService::class)->hamisi(),
             'time'          => now()->getTimestampMs(),
         ]);
     }

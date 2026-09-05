@@ -790,13 +790,18 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
    ═══════════════════════════════════════════════════════════════════════ */
 
 .sayt-ust{border-bottom:1px solid var(--line);background:var(--desk2)}
-.sayt-ust-in{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
+.sayt-ust-in{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
 .marka{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--buff);
   font:600 15px var(--sans);letter-spacing:.01em}
 .marka svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4}
 .marka .afib-h{font:600 9px var(--mono);fill:currentColor;stroke:none;letter-spacing:.04em}
-.sayt-nav{display:flex;gap:20px}
-.sayt-nav a{color:var(--ink3);text-decoration:none;font:500 13.5px var(--sans)}
+/* Telefonda beş keçid 412px-ə sığmır. Fayl telefon-öncəlidir, ona görə
+   dar dəyər BAZADIR, geniş dəyər `min-width` ilə qayıdır. `overflow-x`
+   ehtiyatdır: gövdə heç vaxt yana sürüşməməlidir, keçid sətri isə öz
+   içində sürüşə bilər (deponun ümumi qaydası). */
+.sayt-nav{display:flex;gap:13px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.sayt-nav::-webkit-scrollbar{display:none}
+.sayt-nav a{color:var(--ink3);text-decoration:none;font:500 12.5px var(--sans);white-space:nowrap}
 .sayt-nav a:hover{color:var(--paper2)}
 
 .bolme-bas{font:600 12px var(--mono);letter-spacing:.16em;color:var(--ink3);
@@ -941,6 +946,13 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .qal-setir{display:grid;gap:16px}
 .qal-kicik .qal-ad{margin-bottom:6px}
 .qal-mohurluq{position:relative;min-height:160px}
+/* Planşetdən yuxarı keçid sətri rahat ölçüyə qayıdır. */
+@media(min-width:720px){
+  .sayt-ust-in{gap:20px}
+  .sayt-nav{gap:20px}
+  .sayt-nav a{font-size:13.5px}
+}
+
 @media(min-width:720px){
   .qal-cut{grid-template-columns:1fr 1fr;align-items:start}
   .qal-setir{grid-template-columns:1fr 1fr}

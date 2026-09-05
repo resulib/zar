@@ -262,6 +262,10 @@ const TARANAN = [
   path.join(VIEWS, 'dossier', 'ayarlar.blade.php'),
   path.join(VIEWS, 'dossier', 'hesab.blade.php'),
   path.join(VIEWS, 'dossier', 'reyting.blade.php'),
+  /* Kassa da oyunçunun gördüyü ekrandır: kreditin harada alındığı
+     digər məhsulun adını daşımamalıdır. */
+  path.join(VIEWS, 'dossier', 'balans.blade.php'),
+  path.join(VIEWS, 'dossier', 'partials', 'ust.blade.php'),
 ];
 for (const f of TARANAN) {
   const body = fold(oxu(f));

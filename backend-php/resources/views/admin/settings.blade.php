@@ -9,6 +9,66 @@
 @section('content')
 <div class="page-head"><div><h1>Parametrlər</h1><div class="sub">Sistem vəziyyəti və moderasiya</div></div></div>
 
+{{-- BÖLMƏLƏR — saytın hansı məhsullarının canlı olduğu.
+     Bağlı bölmənin ünvanları 404 qaytarır; admin isə onları yoxlaya
+     bilir, yoxsa açmadan öncə baxmaq mümkün olmazdı. --}}
+<div class="panel" style="margin-bottom:22px">
+  <div class="panel-head">
+    <span class="label">Bölmələr</span>
+    <span class="right label">bağlı bölmə 404 verir</span>
+  </div>
+  <div class="panel-body">
+    <p class="small" style="margin:0 0 16px">
+      Sayt üç ayrı məhsul daşıyır. Hazır olmayanı bağlaya bilərsiniz — onun bütün
+      ünvanları ziyarətçi üçün mövcud olmayacaq. <b>Siz admin olduğunuz üçün bağlı
+      bölməni yenə aça bilirsiniz</b>, ona görə yoxlamaq mümkündür.
+    </p>
+
+    <form method="POST" action="{{ route('admin.settings.sections') }}">
+      @csrf
+      <div class="bolme-siyahi">
+        @foreach ($bolmeler as $acar => $aciqdir)
+          @php($m = $bolmeMeta[$acar] ?? [])
+          <label class="bolme @if(! $aciqdir) bolme-bagli @endif">
+            <input type="checkbox" name="bolme_{{ $acar }}" value="1" @checked($aciqdir)>
+            <span class="bolme-govde">
+              <span class="bolme-ad">{{ $m['ad'] ?? $acar }}
+                <span class="pill {{ $aciqdir ? 'ok' : 'wait' }}">{{ $aciqdir ? 'açıq' : 'bağlı' }}</span>
+              </span>
+              <span class="bolme-izah">{{ $m['izah'] ?? '' }}</span>
+              <span class="bolme-yollar mono">{{ implode(' · ', (array) ($m['yollar'] ?? [])) }}</span>
+            </span>
+          </label>
+        @endforeach
+      </div>
+
+      <div class="field" style="margin-top:18px">
+        <span class="label">Ana səhifə — «/» hansı bölməyə aparır</span>
+        <div class="bolme-ana">
+          @foreach ($bolmeler as $acar => $aciqdir)
+            <label class="bolme-ana-s">
+              <input type="radio" name="bolme_ana" value="{{ $acar }}" @checked($bolmeAna === $acar)>
+              <span>{{ $bolmeMeta[$acar]['ad'] ?? $acar }}</span>
+              <span class="mono">{{ $bolmeMeta[$acar]['ana'] ?? '/' }}</span>
+            </label>
+          @endforeach
+        </div>
+        <span class="hint">
+          Kök ünvan seçilmiş bölməyə yönləndirir (302). Seçilmiş bölmə bağlıdırsa
+          açıq olanlardan birincisi işlənir — yəni bir parametr bütün saytı bağlaya bilmir.
+          @if ($bolmeFakt !== null && $bolmeFakt !== $bolmeAna)
+            <b>Hazırda «{{ $bolmeMeta[$bolmeFakt]['ad'] ?? $bolmeFakt }}» işləyir, çünki seçim bağlıdır.</b>
+          @elseif ($bolmeFakt === null)
+            <b>Heç bir bölmə açıq deyil — sayt kökü «texniki fasilə» səhifəsi göstərir (503).</b>
+          @endif
+        </span>
+      </div>
+
+      <button class="btn" type="submit" style="margin-top:16px">Yadda saxla</button>
+    </form>
+  </div>
+</div>
+
 <div class="cols2">
   <div class="panel">
     <div class="panel-head"><span class="label">Sistem</span></div>

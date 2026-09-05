@@ -7,7 +7,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\AiService;
+use App\Services\BolmeService;
 use App\Services\PaymentService;
+use App\Support\Bolmeler;
 use App\Support\Moderation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +17,7 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function edit(PaymentService $payments, AiService $ai): View
+    public function edit(PaymentService $payments, AiService $ai, BolmeService $bolmeler): View
     {
         $words = Setting::get('banned_words', (string) config('zarafat.banned_words')) ?? '';
 
@@ -32,6 +34,11 @@ class SettingController extends Controller
             'aiModel'     => $ai->model(),
             'aiKeyHint'   => $ai->keyHint(),
             'aiSuggested' => (array) config('ai.suggested'),
+            /* Bölmə açarları: bağlı bölmənin ünvanları 404 verir. */
+            'bolmeler'    => $bolmeler->hamisi(),
+            'bolmeMeta'   => (array) config('bolmeler.meta'),
+            'bolmeAna'    => $bolmeler->anaSecim(),
+            'bolmeFakt'   => $bolmeler->anaSehife(),
         ]);
     }
 
@@ -65,5 +72,29 @@ class SettingController extends Controller
         return back()->with('status', $model === ''
             ? 'Model sıfırlandı — `.env` faylındakı dəyər işlənəcək.'
             : "AI modeli «{$model}» olaraq təyin edildi.");
+    }
+
+    /**
+     * Bölmələrin açıq/bağlı olması və ana səhifə.
+     *
+     * TƏSDİQ YOXDUR VƏ LAZIM DEYİL: `Bolmeler::temizle()` yalnız tanınan
+     * açarları saxlayır, `anaSehife()` isə bağlı seçimi avtomatik açıq
+     * olana çevirir — yəni səhv dəyər saytı bağlaya bilmir.
+     */
+    public function updateSections(Request $request, BolmeService $bolmeler): RedirectResponse
+    {
+        $aciq = [];
+
+        foreach (Bolmeler::ACARLAR as $a) {
+            $aciq[$a] = $request->boolean('bolme_' . $a);
+        }
+
+        $bolmeler->yaz($aciq, (string) $request->input('bolme_ana', 'zarafat'));
+
+        $bagli = array_keys(array_filter($aciq, static fn (bool $v): bool => ! $v));
+
+        return back()->with('status', $bagli === []
+            ? 'Bütün bölmələr açıqdır.'
+            : 'Bağlanan bölmələr: ' . implode(', ', $bagli) . '. Onların ünvanları indi 404 qaytarır (admin üçün açıq qalır).');
     }
 }

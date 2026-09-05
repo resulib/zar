@@ -71,9 +71,16 @@ class PaymentService
     /**
      * Sifariş yaradır. Simulyasiya provayderində ödəniş dərhal tətbiq olunur.
      *
+     * `$o` HANSI MƏHSULUN SATDIĞINI BİLDİRİR. Kredit hər iki bölmədə
+     * işlənir, ödəniş səhifəsi və qayıdış ünvanı isə ALICININ olduğu
+     * bölməyə aid olmalıdır: iş qovluğu oynayan adam bank səhifəsində
+     * digər məhsulun adını görməməli və ödənişdən sonra onun kabinetinə
+     * düşməməlidir (bölmə bağlı ola bilər — o zaman 404 olardı).
+     *
+     * @param  array{description?:string,success?:string,error?:string}  $o
      * @return array{payment:Payment,redirectUrl:string,autoPaid:bool}
      */
-    public function checkout(User $user, string $packId): array
+    public function checkout(User $user, string $packId, array $o = []): array
     {
         $pack     = $this->packs()->get($packId);
         $provider = $this->provider();
@@ -95,10 +102,10 @@ class PaymentService
                 'orderId'     => $payment->order_id,
                 'amount'      => (float) $pack['amount'],
                 'currency'    => $payment->currency,
-                'description' => 'Zarafat.az — ' . $pack['label'],
+                'description' => (string) ($o['description'] ?? 'Zarafat.az — ' . $pack['label']),
                 'urls'        => [
-                    'success'  => $base . '/?payment=success',
-                    'error'    => $base . '/?payment=error',
+                    'success'  => (string) ($o['success'] ?? $base . '/?payment=success'),
+                    'error'    => (string) ($o['error'] ?? $base . '/?payment=error'),
                     'callback' => $base . '/api/payments/callback',
                 ],
             ]);

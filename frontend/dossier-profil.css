@@ -298,3 +298,18 @@
 .pr-secim .pr-btn-bos { margin-top:16px; background:transparent; color:var(--buff);
   border:1px solid var(--buff3) }
 .pr-secim .pr-btn-bos:hover { background:rgba(194,164,104,.12) }
+
+/* ---------- Kassa: kredit paketləri ---------- */
+
+.pr-paketler { display:grid; gap:10px; grid-template-columns:1fr; margin-top:12px }
+@media (min-width:640px) { .pr-paketler { grid-template-columns:repeat(3,1fr) } }
+
+.pr-paket { display:grid; gap:2px; padding:14px 16px; text-align:left;
+  background:var(--desk); border:1px solid var(--line); border-radius:4px;
+  color:var(--paper); cursor:pointer; font:inherit }
+.pr-paket:hover { border-color:var(--buff3); background:var(--desk2) }
+/* Tövsiyə olunan paket seçilir, amma qalanlarını gizlətmir. */
+.pr-paket-yaxsi { border-color:var(--buff3) }
+.pr-paket-ad { font:600 14.5px var(--sans) }
+.pr-paket-izah { font:400 12.5px var(--sans); color:var(--ink3); min-height:1.2em }
+.pr-paket-qiymet { margin-top:6px; font:600 15px var(--mono,monospace); color:var(--buff) }
