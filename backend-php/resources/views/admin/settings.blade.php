@@ -24,6 +24,17 @@
       bölməni yenə aça bilirsiniz</b>, ona görə yoxlamaq mümkündür.
     </p>
 
+    {{-- Vəziyyətin MƏNBƏYİ göstərilir: eyni nəticə həm saxlanmış seçim, həm
+         də `APP_ENV`-dən gələn ilkin dəyər ola bilər və admin fərqi görməlidir. --}}
+    <p class="small" style="margin:0 0 16px">
+      @if ($bolmeYazilib)
+        Vəziyyət <b>burada saxlanılıb</b> və mühitin ilkin dəyərini üstələyir.
+      @else
+        Hələ heç nə saxlanılmayıb — <b>«{{ $appEnv }}» mühitinin ilkin dəyəri</b> işləyir.
+        İstehsalatda («production») yalnız iş qovluğu açıq qalxır.
+      @endif
+    </p>
+
     <form method="POST" action="{{ route('admin.settings.sections') }}">
       @csrf
       <div class="bolme-siyahi">
@@ -66,6 +77,15 @@
 
       <button class="btn" type="submit" style="margin-top:16px">Yadda saxla</button>
     </form>
+
+    @if ($bolmeYazilib)
+      {{-- Saxlanmış seçimi silmək «eyni dəyəri saxlamaq»dan fərqlidir:
+           silindikdən sonra vəziyyət `APP_ENV` ilə birlikdə dəyişir. --}}
+      <form method="POST" action="{{ route('admin.settings.sections.reset') }}" style="margin-top:10px">
+        @csrf
+        <button class="btn btn-ghost btn-sm" type="submit">Seçimi sil — mühitin ilkin dəyərinə qayıt</button>
+      </form>
+    @endif
   </div>
 </div>
 

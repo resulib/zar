@@ -18,6 +18,8 @@
 
    Test sonda vəziyyəti HƏMİŞƏ bərpa edir — uğursuz olsa da. */
 'use strict';
+const fs   = require('fs');
+const path = require('path');
 
 const B     = (process.argv[2] || 'http://127.0.0.1:8099').replace(/\/$/, '');
 const EMAIL = process.argv[3] || 'admin@zarafat.az';
@@ -69,6 +71,22 @@ async function qur(admin, aciq, ana) {
   if (r.status !== 302) throw new Error('parametr yazılmadı: ' + r.status);
 }
 
+/** Saytın HAZIRKI vəziyyəti — test onu sonda geri qaytarır. */
+async function oxu(admin) {
+  const h = JSON.parse((await admin.get('/api/health')).body);
+  const p = await admin.get('/admin/parametrler');
+  const m = p.body.match(/name="bolme_ana" value="(\w+)"[^>]*checked/);
+
+  /* SAXLANILIB, YOXSA İLKİN DƏYƏR? İkisi eyni görünə bilər, amma fərqlidir:
+     saxlanmamış vəziyyət `APP_ENV` ilə birlikdə dəyişir, saxlanmış isə
+     dondurulub. Test saxlanmamış vəziyyəti sonda YAZMAMALIDIR — yoxsa
+     yerli sınaq həmin bazanı istehsalatda bölmələr açıq qaldıracaq
+     vəziyyətə salardı. */
+  const yazilib = /settings\.sections\.reset|Seçimi sil/.test(p.body);
+
+  return { aciq: h.bolmeler || {}, ana: (m || [])[1] || 'zarafat', yazilib };
+}
+
 /* Bağlı bölmənin ünvanları — səhifələr və API. */
 const ZARAFAT = ['/kabinet', '/kabinet/hesab', '/r/ZRF-2026-0001', '/api/catalog', '/api/me/documents'];
 const DEVET   = ['/devetname', '/devetnamelerim', '/api/devet/paketler'];
@@ -82,7 +100,27 @@ const ORTAQ   = ['/api/health', '/api/packs', '/giris/google'];
   const login = await admin.post('/admin/giris', { email: EMAIL, password: PASS });
   if (login.status !== 302) { console.error('admin girişi alınmadı: ' + login.status); process.exit(1); }
 
+  /* VƏZİYYƏT ƏVVƏLCƏ OXUNUR. Əvvəllər sonda «hamısı açıq» yazılırdı —
+     istehsalat vəziyyəti «yalnız iş qovluğu» olandan sonra bu, testin
+     saytı açıq qoyması demək olardı. Test heç nəyi qərara almır, tapdığını
+     qaytarır. */
+  const evvelki = await oxu(admin);
+
   try {
+    /* --- 0. İstehsalat ilkin dəyəri --- */
+    bas('0. İstehsalat ilkin dəyəri');
+    const cfg = fs.readFileSync(path.join(__dirname, '..', 'backend-php', 'config', 'bolmeler.php'), 'utf8');
+    /* Hazır olmayan məhsulun canlı qalması «kimsə parametri yazmağı unudarsa»
+       halına buraxılmamalıdır — `simulationAllowed()` ilə eyni arqument. */
+    check('zarafat istehsalatda öz-özünə bağlıdır',
+      /'zarafat'\s*=>\s*env\('BOLME_ZARAFAT',\s*env\('APP_ENV'\)\s*!==\s*'production'\)/.test(cfg));
+    check('dəvətnamə istehsalatda öz-özünə bağlıdır',
+      /'devet'\s*=>\s*env\('BOLME_DEVET',\s*env\('APP_ENV'\)\s*!==\s*'production'\)/.test(cfg));
+    check('iş qovluğu heç vaxt öz-özünə bağlanmır',
+      /'is'\s*=>\s*env\('BOLME_IS',\s*true\)/.test(cfg));
+    check('istehsalatda ana səhifə iş qovluğudur',
+      /'ana'\s*=>\s*env\('BOLME_ANA',\s*env\('APP_ENV'\)\s*===\s*'production'\s*\?\s*'is'\s*:\s*'zarafat'\)/.test(cfg));
+
     /* --- 1. Hamısı açıq --- */
     bas('1. Hamısı açıq');
     await qur(admin, { is: true, zarafat: true, devet: true }, 'zarafat');
@@ -167,11 +205,33 @@ const ORTAQ   = ['/api/health', '/api/packs', '/giris/google'];
     check('texniki fasilə mətni görünür', /Texniki fasilə/.test(k3.body));
     check('fasilə səhifəsi indekslənmir', /noindex/.test(k3.body));
 
+    /* --- 6. Seçimin silinməsi --- */
+    bas('6. Seçimin silinməsi');
+    await qur(admin, { is: true, zarafat: false, devet: false }, 'is');
+    const onceki = await oxu(admin);
+    check('seçim saxlanılıb kimi görünür', onceki.yazilib === true);
+    await admin.post('/admin/parametrler/bolmeler/sifirla', {}, '/admin/parametrler');
+    const sonra = await oxu(admin);
+    check('silindikdən sonra saxlanmamış görünür', sonra.yazilib === false);
+    /* Yerli mühitdə ilkin dəyər «hamısı açıq»dır — yəni silmək həqiqətən
+       vəziyyəti dəyişdi, sadəcə sətirləri silmədi. */
+    check('vəziyyət ilkin dəyərə qayıtdı',
+      sonra.aciq.zarafat === true && sonra.aciq.devet === true, sonra.aciq);
+
   } finally {
-    /* VƏZİYYƏT HƏMİŞƏ BƏRPA OLUNUR — uğursuz test saytı bağlı qoymamalıdır. */
+    /* VƏZİYYƏT HƏMİŞƏ BƏRPA OLUNUR — və məhz TAPILDIĞI kimi, «hamısı açıq»
+       kimi yox: sayt bağlı vəziyyətdə idarə olunursa, test onu açıq
+       qoymamalıdır. */
     try {
-      await qur(admin, { is: true, zarafat: true, devet: true }, 'zarafat');
-      console.log('\n(vəziyyət bərpa olundu: hamısı açıq, ana səhifə zarafat)');
+      if (evvelki.yazilib) {
+        await qur(admin, evvelki.aciq, evvelki.ana);
+        console.log('\n(vəziyyət bərpa olundu: '
+          + JSON.stringify(evvelki.aciq) + ', ana səhifə ' + evvelki.ana + ')');
+      } else {
+        /* Əvvəl heç nə saxlanmamışdı — sətir yazmaq vəziyyəti DONDURARDI. */
+        await admin.post('/admin/parametrler/bolmeler/sifirla', {}, '/admin/parametrler');
+        console.log('\n(seçim silindi — vəziyyət yenidən mühitin ilkin dəyərindən gəlir)');
+      }
     } catch (e) {
       console.error('DİQQƏT: vəziyyət bərpa olunmadı — /admin/parametrler-i yoxlayın', e.message);
     }

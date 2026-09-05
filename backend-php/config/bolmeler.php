@@ -16,15 +16,31 @@ use App\Support\Bolmeler;
  */
 return [
 
+    /*
+     | İSTEHSALATDA YALNIZ İŞ QOVLUĞU AÇIQDIR — bu, ilkin dəyərin özündədir,
+     | `.env`-də unudula bilən sətir deyil.
+     |
+     | Səbəb `PaymentService::simulationAllowed()` ilə eynidir: hazır olmayan
+     | məhsulun canlı qalması «kimsə parametri yazmağı yadından çıxarsa» halına
+     | buraxılmamalıdır. Səhv istiqamətdə sınmaq — yəni bağlı qalmaq — düzgün
+     | davranışdır.
+     |
+     | Yerli mühitdə isə hər üçü açıqdır: test dəsti zarafat və dəvətnamə
+     | ünvanlarını gəzir, bağlı olsaydı onlar 404 alardı və bölmə açarları
+     | işlənməyən koda çevrilərdi.
+     |
+     | Hər iki halda `.env` (`BOLME_*`) və idarə paneli (`settings` sətri)
+     | bunu üstələyir; panel ən üstündür.
+     */
     'ilkin' => [
         'is'      => env('BOLME_IS', true),
-        'zarafat' => env('BOLME_ZARAFAT', true),
-        'devet'   => env('BOLME_DEVET', true),
+        'zarafat' => env('BOLME_ZARAFAT', env('APP_ENV') !== 'production'),
+        'devet'   => env('BOLME_DEVET', env('APP_ENV') !== 'production'),
     ],
 
     /* Ana səhifə hansı bölmənin girişidir. Bağlıdırsa açıq olan seçilir
        (`Bolmeler::anaSehife()`). */
-    'ana' => env('BOLME_ANA', 'zarafat'),
+    'ana' => env('BOLME_ANA', env('APP_ENV') === 'production' ? 'is' : 'zarafat'),
 
     /* İdarə panelində göstərilən izahlar. Ünvan siyahısı sırf məlumat
        üçündür — həqiqi qapı marşrutlardakı `bolme:` ara qatıdır. */

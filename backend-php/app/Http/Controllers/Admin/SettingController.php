@@ -39,6 +39,8 @@ class SettingController extends Controller
             'bolmeMeta'   => (array) config('bolmeler.meta'),
             'bolmeAna'    => $bolmeler->anaSecim(),
             'bolmeFakt'   => $bolmeler->anaSehife(),
+            'bolmeYazilib' => $bolmeler->yazilib(),
+            'appEnv'      => (string) config('app.env'),
         ]);
     }
 
@@ -81,6 +83,13 @@ class SettingController extends Controller
      * açarları saxlayır, `anaSehife()` isə bağlı seçimi avtomatik açıq
      * olana çevirir — yəni səhv dəyər saytı bağlaya bilmir.
      */
+    public function resetSections(BolmeService $bolmeler): RedirectResponse
+    {
+        $bolmeler->sifirla();
+
+        return back()->with('status', 'Seçim silindi — vəziyyət yenidən mühitin ilkin dəyərindən gəlir.');
+    }
+
     public function updateSections(Request $request, BolmeService $bolmeler): RedirectResponse
     {
         $aciq = [];

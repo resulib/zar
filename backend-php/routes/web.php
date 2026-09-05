@@ -426,5 +426,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');
         Route::post('/parametrler/ai', [Admin\SettingController::class, 'updateAi'])->name('settings.ai');
         Route::post('/parametrler/bolmeler', [Admin\SettingController::class, 'updateSections'])->name('settings.sections');
+        Route::post('/parametrler/bolmeler/sifirla', [Admin\SettingController::class, 'resetSections'])->name('settings.sections.reset');
     });
 });

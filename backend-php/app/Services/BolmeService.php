@@ -17,7 +17,18 @@ use Illuminate\Support\Facades\Cache;
  */
 class BolmeService
 {
-    public const KES = 'bolmeler.v1';
+    /**
+     * Keş açarı MÜHİTİ DƏ DAŞIYIR.
+     *
+     * İlkin dəyər `APP_ENV`-dən asılıdır (istehsalatda yalnız iş qovluğu),
+     * keş isə `rememberForever`-dir. Eyni baza ilə iki mühit işlədiləndə —
+     * məsələn `APP_ENV=production php artisan …` yerli maşında — biri
+     * digərinin cavabını oxuyardı. Bu, yazarkən elə həmin dəqiqə baş verdi.
+     */
+    public static function kes(): string
+    {
+        return 'bolmeler.v1.' . (string) config('app.env', 'production');
+    }
 
     /** Parametr açarı: `settings` cədvəlində `bolme_is` və s. */
     public static function setrAcari(string $bolme): string
@@ -29,7 +40,7 @@ class BolmeService
     public function hamisi(): array
     {
         /** @var array<string,bool> */
-        return Cache::rememberForever(self::KES, function (): array {
+        return Cache::rememberForever(self::kes(), function (): array {
             $ilkin = Bolmeler::temizle((array) config('bolmeler.ilkin', []));
             $xam   = [];
 
@@ -80,8 +91,47 @@ class BolmeService
         $this->unut();
     }
 
+    /**
+     * Parametr İDARƏ PANELİNDƏN yazılıbmı, yoxsa mühitin ilkin dəyəri işləyir?
+     *
+     * Paneldə görünür, çünki əks halda admin baxıb «bunu kim seçib» sualına
+     * cavab tapa bilmir: eyni vəziyyət həm saxlanmış seçim, həm də
+     * `APP_ENV`-dən gələn ilkin dəyər ola bilər.
+     */
+    public function yazilib(): bool
+    {
+        foreach (Bolmeler::ACARLAR as $a) {
+            if (Setting::get(self::setrAcari($a)) !== null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Saxlanmış seçimi SİLİR — vəziyyət yenidən mühitin ilkin dəyərindən gəlir.
+     *
+     * Lazımdır, çünki «saxlanmamış ilkin dəyər» ilə «eyni dəyəri saxlamaq»
+     * FƏRQLİ vəziyyətlərdir: birincisi `APP_ENV` dəyişəndə özü ilə dəyişir,
+     * ikincisi isə dondurulub. Yerli maşında sınaqdan sonra sətir qalsa,
+     * həmin baza istehsalata köçürüləndə bölmələr açıq qalxardı.
+     */
+    public function sifirla(): void
+    {
+        $acarlar = array_map(
+            static fn (string $a): string => self::setrAcari($a),
+            Bolmeler::ACARLAR
+        );
+        $acarlar[] = 'bolme_ana';
+
+        Setting::query()->whereIn('key', $acarlar)->delete();
+
+        $this->unut();
+    }
+
     public function unut(): void
     {
-        Cache::forget(self::KES);
+        Cache::forget(self::kes());
     }
 }

@@ -1954,11 +1954,29 @@ while the others are still being written needed a switch, and the only correct m
 is **the URLs do not exist**: `bolme:<key>` middleware, **404**, never 403 — an "access denied"
 announces the address, which is the rule `imagePath()` and the invitation board already follow.
 
-`config/bolmeler.php` holds the defaults (and `.env` overrides for a fresh deploy); the live value
-is a `settings` row edited at **`/admin/parametrler`** — the `ai_model` pattern. `BolmeService`
+**The default is gated on `APP_ENV`**: under `production` only `is` is open and the home page is
+`/is`; everywhere else all three are open, because the test suite walks the zarafat and
+invitation URLs and a closed default would turn the whole switch into unexercised code. The
+reason for the production side is `PaymentService::simulationAllowed()`'s: an unfinished product
+staying live must not depend on somebody remembering to set a variable — failing in the closed
+direction is the correct failure. Precedence is **admin panel → `BOLME_*` in `.env` → default**,
+so one click in the panel outranks both.
+
+`config/bolmeler.php` holds those defaults; the live value is a `settings` row edited at
+**`/admin/parametrler`** — the `ai_model` pattern. The panel says which of the two is in force,
+because the same visible state can come from a saved toggle or from the environment default and
+an admin cannot otherwise tell. `BolmeService`
 caches the three flags forever and **forgets the cache on write**, the `CatalogService::forget()`
 discipline; without the cache the middleware would add three queries to every request.
 
+- **«Unsaved default» and «saved to the same value» are different states**, and the panel names which
+  one is in force. Only the first follows `APP_ENV`; the second is frozen. That is why there is a
+  «seçimi sil» button (`BolmeService::sifirla()`) and why `check-bolme.js` resets rather than
+  writing back when it started unsaved — a local test run would otherwise freeze the sections
+  open in a database later copied to production.
+- **The cache key carries `APP_ENV`.** The default depends on the environment and the entry is
+  `rememberForever`, so running `APP_ENV=production php artisan …` against a development database
+  made the local site read the production answer. That happened while writing this.
 - **Admins bypass a closed section** and get `X-Bolme-Bagli` + `X-Robots-Tag: noindex` on the
   response. Without the bypass you could not check a section before opening it.
 - **The middleware must never call `$request->visitor()`** — that *creates* a guest row, and this
