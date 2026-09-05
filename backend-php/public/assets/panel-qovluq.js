@@ -573,6 +573,81 @@
     kitabxana.appendChild(fig);
   }
 
+  /* ---------- Şəkil yuvaları ----------
+     «Şəkillər» tabındakı hər sətir bir yuvadır və açarı ONSUZ DA MƏLUMDUR:
+     o, sənədin mətnindən və bloklarından hesablanıb. İdarəçi yalnız faylı
+     seçir — açarı yazmır, formanı doldurmur, dialoq görmür.
+
+     Səhifə yenidən yüklənmir: uzun siyahıda idarəçi hər yükləmədən sonra
+     yerini yenidən tapmalı olardı. */
+  document.addEventListener('change', function (e) {
+    var giris = e.target;
+    if (!giris || !giris.matches('input[type=file][data-yuva]')) return;
+
+    var fayl = giris.files && giris.files[0];
+    if (!fayl) return;
+
+    var setir = giris.closest('.qv-yuva');
+    var hal = setir ? setir.querySelector('.qv-yuva-hal') : null;
+    var qutu = setir ? setir.querySelector('.qv-yuva-sek') : null;
+
+    function de(m) { if (hal) hal.textContent = m; }
+
+    de('yüklənir…');
+    giris.disabled = true;
+
+    var fd = new FormData();
+    fd.append('sekil', fayl);
+    fd.append('slug', giris.getAttribute('data-yuva'));
+
+    /* Boş çərçivə üçün yuvanın yeri də göndərilir: server şəkli yaradıb
+       açarı blokun içinə yazır. Yoxsa şəkil kitabxanada qalar, vərəqdə
+       isə çərçivə boş görünərdi. */
+    ['sened', 'blok', 'kart'].forEach(function (k) {
+      var v = giris.getAttribute('data-' + k);
+      if (v !== null && v !== '') { fd.append('yuva_' + k, v); }
+    });
+
+    fetch(giris.getAttribute('data-url'), {
+      method: 'POST',
+      headers: { 'X-CSRF-TOKEN': csrf(), 'Accept': 'application/json' },
+      credentials: 'same-origin',
+      body: fd,
+    })
+      .then(function (r) { return r.json().catch(function () { return null; }); })
+      .then(function (j) {
+        giris.disabled = false;
+        giris.value = '';
+
+        if (!j || !j.thumb) { de((j && j.message) ? j.message : 'yüklənmədi'); return; }
+
+        /* Yuva dərhal dolur — səhifəni yeniləmək lazım deyil. */
+        if (qutu) {
+          qutu.innerHTML = '';
+          var img = document.createElement('img');
+          img.src = j.thumb;
+          img.alt = '';
+          qutu.appendChild(img);
+        }
+        if (setir) { setir.classList.remove('qv-yuva-bos'); }
+        var nis = setir ? setir.querySelector('.qv-nis-bos') : null;
+        if (nis) { nis.remove(); }
+        /* Bağlandıqdan sonra yuva artıq boş deyil — düymə də təkrar
+           bağlamağa cəhd etməməlidir. */
+        ['data-sened', 'data-blok', 'data-kart'].forEach(function (k) { giris.removeAttribute(k); });
+        if (j.slug) { giris.setAttribute('data-yuva', j.slug); }
+        var etiket = giris.closest('label');
+        if (etiket) { etiket.lastChild.textContent = ' Dəyişdir'; }
+        de('yükləndi');
+        setTimeout(function () { de(''); }, 2500);
+      })
+      .catch(function () {
+        giris.disabled = false;
+        giris.value = '';
+        de('yüklənmədi');
+      });
+  });
+
   /* ---------- AI ilə iş qurma ----------
 
      İKİ MƏRHƏLƏ. 30 vərəqi bir OpenAI cavabına sığdırmaq mümkün deyil, altı

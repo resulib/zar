@@ -701,3 +701,33 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 
 .qv-sec-xeta{margin:0 0 12px;padding:8px 10px;border-radius:3px;
   border:1px solid #8A2A2A;background:#FBEDED;color:#7A2222;font-size:12.5px}
+
+/* ---------- şəkil yuvaları ----------
+   Sənədlərin İSTƏDİYİ şəkillər. Siyahı hesablanır, ona görə burada yalnız
+   vəziyyət göstərilir: dolu, yoxsa gözləyir. */
+
+.qv-yuvalar{display:grid;gap:10px}
+.qv-yuva{display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:start;
+  padding:12px;border:1px solid var(--rule);border-radius:3px;background:var(--sheet)}
+/* Boş yuva KƏSİK haşiyə ilə: bir baxışda nəyin gözlədiyi görünür. */
+.qv-yuva-bos{border-style:dashed;background:transparent}
+
+.qv-yuva-sek{width:96px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border:1px solid var(--rule);background:#E8EBF0}
+.qv-yuva-sek img{width:100%;height:100%;object-fit:cover;display:block}
+.qv-yuva-sek span{font:400 10.5px var(--mono);color:var(--ink-3);text-align:center;padding:4px}
+
+.qv-yuva-govde{min-width:0}
+.qv-yuva-ad{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.qv-yuva-ad code{font:600 13px var(--mono);color:var(--ink)}
+.qv-nis-bos{font:600 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:#7A2222;border:1px solid #C99;border-radius:2px;padding:1px 5px}
+.qv-yuva-yer{margin:0;padding:0;list-style:none;font-size:12.3px;line-height:1.65;color:var(--ink-2)}
+.qv-yuva-yer em{color:var(--ink-3);font-style:normal}
+
+.qv-yuva-emel{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+/* Fayl girişi gizlidir, etiket düymə kimi görünür — idarəçi forma yox,
+   düymə görür. */
+.qv-yuva-btn{cursor:pointer;white-space:nowrap}
+.qv-yuva-hal{font:400 11.5px var(--mono);color:var(--ink-3)}
+.qv-catismir{color:#7A2222}

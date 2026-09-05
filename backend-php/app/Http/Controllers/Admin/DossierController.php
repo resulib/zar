@@ -15,6 +15,7 @@ use App\Models\DossierProgress;
 use App\Models\DossierSuspect;
 use App\Services\DossierService;
 use App\Support\Dossier\BlokSxemi;
+use App\Support\Dossier\SekilYuvalari;
 use App\Support\Dossier\Dossier as Kod;
 use App\Support\Dossier\QovluqYoxlayici;
 use Illuminate\Http\JsonResponse;
@@ -77,7 +78,45 @@ class DossierController extends Controller
             'sekiller' => $dossier->exists ? $dossier->images()->get() : collect(),
             'suallar'  => $dossier->exists ? $dossier->questions()->get() : collect(),
             'rapor'    => $dossier->exists ? $this->yoxla($dossier) : ['xetalar' => [], 'qeydler' => []],
+            /* ŞƏKİL YUVALARI — sənədlərin özündən hesablanır. Ayrıca cədvəl
+               yoxdur və olmamalıdır: yuva mətndəki nişandan və blokların
+               `sekil` açarından doğur, yəni sənəd dəyişəndə siyahı da
+               özü dəyişməlidir. */
+            'yuvalar'  => $dossier->exists ? $this->sekilYuvalari($dossier) : [],
         ]);
+    }
+
+    /**
+     * Sənədlərin istədiyi şəkil yuvaları + hər birinin vəziyyəti.
+     *
+     * SUAL TƏRSİNƏ ÇEVRİLİR. Redaktorda idarəçi şəkli yükləyəndə açarı əl
+     * ilə yazır, yəni yuvanın adını qabaqcadan bilməli olur. Halbuki cavab
+     * sənədlərin içindədir: `{{ sekil:… }}` nişanı, `foto` blokunun və
+     * maddi sübut kartlarının `sekil` açarı. Onları oxuyub siyahı qurmaq
+     * idarəçini yadda saxlamaqdan azad edir.
+     *
+     * @return list<array<string,mixed>>
+     */
+    protected function sekilYuvalari(Dossier $dossier): array
+    {
+        $senedler = $dossier->documents()->orderBy('sort')->get()
+            ->map(static fn (DossierDocument $d): array => [
+                'id'      => (int) $d->id,
+                'page'    => (string) $d->page,
+                'name'    => (string) $d->name,
+                /* Qaralama da taranır: idarəçi hələ dərc etməyib, amma
+                   şəkli indidən yükləmək istəyə bilər. */
+                'body'    => (string) ($d->draft_body ?: $d->body),
+                'content' => (array) $d->content,
+            ])->all();
+
+        $var = $dossier->images()->get()->keyBy('slug');
+
+        return array_map(static function (array $y) use ($var): array {
+            $y['sekil'] = $y['acar'] === '' ? null : $var->get($y['acar']);
+
+            return $y;
+        }, SekilYuvalari::qovluqda($senedler));
     }
 
     public function save(Request $request, ?Dossier $dossier = null): RedirectResponse

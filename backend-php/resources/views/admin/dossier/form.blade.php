@@ -46,6 +46,7 @@
   <button class="qv-tab on" type="button" data-tab="umumi" role="tab">Ümumi</button>
   <button class="qv-tab" type="button" data-tab="senedler" role="tab">Sənədlər <i>{{ $docs->count() }}</i></button>
   <button class="qv-tab" type="button" data-tab="subheliler" role="tab">Şübhəlilər <i>{{ $subhelil->count() }}</i></button>
+  <button class="qv-tab" type="button" data-tab="sekiller" role="tab">Şəkillər <i>{{ count($yuvalar) }}</i></button>
   <button class="qv-tab" type="button" data-tab="hekaye" role="tab">Hekayə</button>
   <button class="qv-tab" type="button" data-tab="cavab" role="tab">Cavab <i>{{ $suallar->count() + $sonluql->count() }}</i></button>
 </div>
@@ -279,6 +280,84 @@
 {{-- ---------- 4. HEKAYƏ ----------
      Qovluğun mətni — sənədlərin yox. Oyunçu bunları «Şübhəlilər», «Qeydlər»
      və yekun ekranlarında görür. --}}
+{{-- ŞƏKİLLƏR — sənədlərin İSTƏDİYİ yuvalar, əl ilə yazılan siyahı deyil.
+
+     Yuva mətndəki şəkil nişanından, `foto` blokunun və maddi
+     sübut kartlarının `sekil` açarından doğur. Ona görə burada ayrıca
+     cədvəl yoxdur: sənəd dəyişəndə siyahı da özü dəyişir. İdarəçinin işi
+     yalnız uyğun faylı yükləməkdir — açar onsuz da hazırdır. --}}
+<section class="qv-panel" data-panel="sekiller">
+  <p class="qv-izah">Bu siyahı sənədlərdən <b>hesablanır</b>: mətndəki
+    <code>{{ \App\Support\Dossier\Isare::yaz('sekil', 'acar') }}</code> nişanları, foto çərçivələri və maddi
+    sübut kartları. Açarı yazmaq lazım deyil — sadəcə uyğun şəkli yükləyin,
+    o, həmin vərəqdə görünəcək.</p>
+
+  @if($yuvalar === [])
+    <p class="qv-bos">Sənədlər hələ heç bir şəkil istəmir. Sənəd redaktorunda
+      foto çərçivəsi əlavə edin və ya mətnə şəkil nişanı salın.</p>
+  @else
+    @php($catismir = collect($yuvalar)->filter(fn ($y) => $y['sekil'] === null)->count())
+    <p class="qv-izah">
+      Cəmi <b>{{ count($yuvalar) }}</b> yuva ·
+      @if($catismir > 0)
+        <b class="qv-catismir">{{ $catismir }}</b> şəkil gözləyir
+      @else
+        hamısı doludur
+      @endif
+    </p>
+
+    <div class="qv-yuvalar">
+      @foreach($yuvalar as $y)
+        <div class="qv-yuva @if($y['sekil'] === null) qv-yuva-bos @endif">
+          <div class="qv-yuva-sek">
+            @if($y['sekil'] !== null)
+              <img src="{{ route('admin.dossier.image', [$y['sekil'], 'kicik']) }}" alt="" loading="lazy">
+            @else
+              <span>şəkil yoxdur</span>
+            @endif
+          </div>
+
+          <div class="qv-yuva-govde">
+            <div class="qv-yuva-ad">
+              {{-- Açarı olmayan çərçivə üçün ad TƏKLİF olunur: idarəçi onu
+                   yazmır, yükləmə anında blokun içinə özü yazılır. --}}
+              <code>{{ $y['acar'] !== '' ? $y['acar'] : $y['teklif'] }}</code>
+              @if($y['acar'] === '')<span class="qv-nis-bos">açar təklif olunur</span>
+              @elseif($y['sekil'] === null)<span class="qv-nis-bos">gözləyir</span>@endif
+            </div>
+            <ul class="qv-yuva-yer">
+              @foreach($y['yerler'] as $yer)
+                <li>v. {{ $yer['page'] }} — {{ $yer['name'] }} <em>({{ $yer['haradan'] }})</em></li>
+              @endforeach
+            </ul>
+          </div>
+
+          <div class="qv-yuva-emel">
+            {{-- Açar GİZLİ sahədədir: idarəçi onu yazmır, yalnız fayl seçir.
+                 Yükləmə mövcud şəkli əvəz etmir — yeni sətir yaranır və
+                 köhnəsi kitabxanada qalır, yəni səhv fayl seçmək itki deyil. --}}
+            <label class="btn btn-sm qv-yuva-btn">
+              {{-- Boş çərçivə üçün yükləmə həm şəkli yaradır, HƏM DƏ açarı
+                   blokun içinə yazır — yoxsa şəkil kitabxanada qalar,
+                   vərəqdə isə çərçivə boş görünərdi. --}}
+              <input type="file" accept="image/*" hidden
+                     data-yuva="{{ $y['acar'] !== '' ? $y['acar'] : $y['teklif'] }}"
+                     @if($y['acar'] === '')
+                       data-sened="{{ $y['yerler'][0]['id'] }}"
+                       data-blok="{{ $y['blok'] }}"
+                       @if($y['kart'] !== null) data-kart="{{ $y['kart'] }}" @endif
+                     @endif
+                     data-url="{{ route('admin.dossier.image.store', $dossier) }}">
+              {{ $y['sekil'] === null ? 'Şəkil yüklə' : 'Dəyişdir' }}
+            </label>
+            <span class="qv-yuva-hal" aria-live="polite"></span>
+          </div>
+        </div>
+      @endforeach
+    </div>
+  @endif
+</section>
+
 <section class="qv-panel" data-panel="hekaye">
   @if(! $dossier->exists)
     <p class="muted">Əvvəlcə işi yadda saxlayın.</p>

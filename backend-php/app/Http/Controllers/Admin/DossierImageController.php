@@ -39,6 +39,12 @@ class DossierImageController extends Controller
             'izah'   => ['nullable', 'string', 'max:300'],
             'nov'    => ['nullable', Rule::in(config('dossier.sekil_novleri'))],
             'sahibi' => ['nullable', 'integer'],
+            /* YUVA — şəkli birbaşa boş çərçivəyə bağlamaq üçün.
+               «Şəkillər» tabı bunu göndərir: yükləmə həm şəkli yaradır,
+               həm də açarı blokun içinə yazır. */
+            'yuva_sened' => ['nullable', 'integer'],
+            'yuva_blok'  => ['nullable', 'integer'],
+            'yuva_kart'  => ['nullable', 'integer'],
         ], [], ['sekil' => 'şəkil', 'slug' => 'açar', 'izah' => 'izah']);
 
         $file = $request->file('sekil');
@@ -93,8 +99,11 @@ class DossierImageController extends Controller
 
         $sekil->save();
 
+        $baglandi = $this->yuvayaBagla($dossier, $sekil, $request);
+
         return response()->json([
             'ok'    => true,
+            'yuva'  => $baglandi,
             'id'    => (int) $sekil->id,
             'slug'  => (string) $sekil->slug,
             'izah'  => (string) $sekil->caption,
@@ -102,6 +111,63 @@ class DossierImageController extends Controller
             'nisan' => Isare::yaz('sekil', (string) $sekil->slug),
             'thumb' => route('admin.dossier.image', [$sekil, 'kicik']),
         ]);
+    }
+
+    /**
+     * Yeni şəkli BOŞ ÇƏRÇİVƏYƏ bağlayır.
+     *
+     * «Şəkillər» tabında yuvanın açarı hələ yoxdur — çərçivə var, adı yox.
+     * Şəkli yaratmaq kifayət etmir: açar blokun içinə yazılmasa, şəkil
+     * kitabxanada qalar, vərəqdə isə çərçivə boş görünərdi.
+     *
+     * Yalnız `sekil` açarına toxunur — izah, nömrə və nisbət sənədin
+     * məzmunudur və dəyişməməlidir.
+     */
+    protected function yuvayaBagla(Dossier $dossier, DossierImage $sekil, Request $request): bool
+    {
+        $senedId = (int) $request->input('yuva_sened', 0);
+        $blok    = $request->input('yuva_blok');
+
+        if ($senedId <= 0 || $blok === null) {
+            return false;
+        }
+
+        $doc = $dossier->documents()->whereKey($senedId)->first();
+
+        if ($doc === null) {
+            return false;
+        }
+
+        $content = (array) $doc->content;
+        $bloklar = (array) ($content['bloklar'] ?? []);
+        $i       = (int) $blok;
+
+        if (! isset($bloklar[$i]) || ! is_array($bloklar[$i])) {
+            return false;
+        }
+
+        $kart = $request->input('yuva_kart');
+
+        if ($kart === null) {
+            if (($bloklar[$i]['tip'] ?? '') !== 'foto') {
+                return false;
+            }
+
+            $bloklar[$i]['sekil'] = (string) $sekil->slug;
+        } else {
+            $k = (int) $kart;
+
+            if (($bloklar[$i]['tip'] ?? '') !== 'kart' || ! isset($bloklar[$i]['kartlar'][$k])) {
+                return false;
+            }
+
+            $bloklar[$i]['kartlar'][$k]['sekil'] = (string) $sekil->slug;
+        }
+
+        $content['bloklar'] = $bloklar;
+        $doc->forceFill(['content' => $content])->save();
+
+        return true;
     }
 
     public function update(Request $request, Dossier $dossier, DossierImage $image): RedirectResponse

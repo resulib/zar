@@ -43,6 +43,7 @@ require __DIR__ . '/../app/Support/Ai/QovluqBrief.php';
 require __DIR__ . '/../app/Support/Dossier/Xp.php';
 require __DIR__ . '/../app/Support/Dossier/VesiqeNo.php';
 require __DIR__ . '/../app/Support/Dossier/Tarix.php';
+require __DIR__ . '/../app/Support/Dossier/SekilYuvalari.php';
 require __DIR__ . '/../app/Support/Auth/Google.php';
 require __DIR__ . '/../app/Support/Bolmeler.php';
 
@@ -58,6 +59,7 @@ use App\Support\Dossier\Rey;
 use App\Support\Dossier\Xp;
 use App\Support\Dossier\VesiqeNo;
 use App\Support\Dossier\Tarix;
+use App\Support\Dossier\SekilYuvalari;
 use App\Support\Dossier\Sxem;
 use App\Support\Auth\Google;
 use App\Support\Bolmeler;
@@ -1698,6 +1700,81 @@ check('tarixsiz halda boş forma qalır',
     Tarix::yaz(null) === '«____» ____________ 2026-cı il', Tarix::yaz(null));
 check('qısa forma sıfırla doldurulur', Tarix::qisa([5, 9, 2026]) === '05.09.2026');
 check('on iki ay adı var', count(Tarix::AYLAR) === 12);
+
+/* ==================================================================
+   Şəkil yuvaları — sənədlərin istədiyi şəkillər
+   ================================================================== */
+echo "\nŞəkil yuvaları\n";
+
+$sn = [
+    'id' => 7, 'page' => '6–7', 'name' => 'Fotocədvəl',
+    'body' => "Birinci abzas.\n\n{{ sekil:kamera-01 }}\n\nİkinci.",
+    'content' => ['bloklar' => [
+        ['tip' => 'basliq', 'ad' => 'BAŞLIQ'],
+        ['tip' => 'foto', 'izah' => 'Mətbəx dəhlizi', 'sekil' => 'dehliz'],
+        ['tip' => 'foto', 'izah' => 'Generator otağı'],            // BOŞ çərçivə
+        ['tip' => 'kart', 'kartlar' => [
+            ['ad' => 'Mərmər lövhə', 'sekil' => 'lovhe'],
+            ['ad' => 'Metal qutu'],                                 // BOŞ kart
+        ]],
+    ]],
+];
+
+$y = SekilYuvalari::senedde($sn);
+$acarlar = array_column($y, 'acar');
+
+/* ÜÇ MƏNBƏ DƏ TARANIR — biri unudulsa, o yuva siyahıda görünməzdi. */
+check('mətndəki nişan tapılır', in_array('kamera-01', $acarlar, true), $acarlar);
+check('foto blokunun açarı tapılır', in_array('dehliz', $acarlar, true), $acarlar);
+check('maddi sübutun açarı tapılır', in_array('lovhe', $acarlar, true), $acarlar);
+
+/* BOŞ ÇƏRÇİVƏ DƏ YUVADIR: məhz o, şəkil gözləyir. */
+$bos = array_values(array_filter($y, static fn (array $x): bool => $x['acar'] === ''));
+check('boş çərçivələr də sayılır', count($bos) === 2, count($bos));
+check('boş çərçivəyə açar TƏKLİF olunur',
+    $bos[0]['teklif'] !== '' && $bos[1]['teklif'] !== '', array_column($bos, 'teklif'));
+/* Təklif əşyanın adından doğur — «sekil-2» heç nə demir. */
+check('təklif adı əşyadan götürür',
+    str_contains($bos[1]['teklif'], 'metal'), $bos[1]['teklif']);
+
+/* Yuvanın YERİ də lazımdır: yükləmə açarı məhz həmin blokun içinə yazır. */
+check('boş foto blokunun indeksi verilir', $bos[0]['blok'] === 2, $bos[0]['blok']);
+check('boş foto kart deyil', $bos[0]['kart'] === null);
+check('boş kartın indeksləri verilir',
+    $bos[1]['blok'] === 3 && $bos[1]['kart'] === 1, [$bos[1]['blok'], $bos[1]['kart']]);
+
+/* `yazisma` blokunun `sekil` NÖVLÜ mesajı yuva DEYİL — onun açarı yoxdur. */
+$yz = SekilYuvalari::senedde(['content' => ['bloklar' => [
+    ['tip' => 'yazisma', 'sohbet' => [['nov' => 'sekil', 'metn' => 'foto']], 'gunler' => []],
+]]]);
+check('yazışmadakı şəkil mesajı yuva deyil', $yz === [], $yz);
+
+/* QOVLUQ SƏVİYYƏSİ: eyni açar iki vərəqdə işlənə bilər — şəkil bir dəfə
+   yüklənir, hər yerdə görünür, ona görə sətirlər birləşir. */
+$q = SekilYuvalari::qovluqda([
+    ['id' => 1, 'page' => '1', 'name' => 'Bir', 'body' => '{{ sekil:ortaq }}', 'content' => []],
+    ['id' => 2, 'page' => '2', 'name' => 'İki', 'body' => '{{ sekil:ortaq }}', 'content' => []],
+]);
+check('eyni açar bir sətirdə birləşir', count($q) === 1, count($q));
+check('hər iki vərəq sətirdə görünür', count($q[0]['yerler']) === 2, $q[0]['yerler']);
+
+/* Boş çərçivələr BİRLƏŞMİR: iki fərqli vərəqin portret yeri iki fərqli
+   şəkil istəyir. */
+$q2 = SekilYuvalari::qovluqda([
+    ['id' => 1, 'page' => '1', 'name' => 'Bir', 'content' => ['bloklar' => [['tip' => 'foto', 'izah' => 'Portret']]]],
+    ['id' => 2, 'page' => '2', 'name' => 'İki', 'content' => ['bloklar' => [['tip' => 'foto', 'izah' => 'Portret']]]],
+]);
+check('boş çərçivələr birləşmir', count($q2) === 2, count($q2));
+/* Eyni ad iki dəfə təklif olunsaydı, ikinci şəkil birincinin üstünə yazardı. */
+check('təkrarlanan təklif nömrələnir',
+    $q2[0]['teklif'] !== $q2[1]['teklif'], [$q2[0]['teklif'], $q2[1]['teklif']]);
+
+/* BOŞLAR ƏVVƏLDƏ: onlar iş tələb edir, dolular yalnız məlumatdır. */
+$q3 = SekilYuvalari::qovluqda([
+    ['id' => 1, 'page' => '1', 'name' => 'Bir', 'body' => '{{ sekil:var }}',
+     'content' => ['bloklar' => [['tip' => 'foto', 'izah' => 'Boş']]]],
+]);
+check('boş yuva siyahının əvvəlindədir', $q3[0]['acar'] === '', array_column($q3, 'acar'));
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);
