@@ -12,22 +12,21 @@
 @section('content')
 @include('dossier.partials.ust')
 
+@include('dossier.partials.bas', [
+  'dar'   => true,
+  'nisan' => $isler > 0 ? $isler . ' İŞ BAĞLANIB' : null,
+  'ust'   => 'Kadr şöbəsi',
+  'bas'   => 'Müstəntiq vəsiqəsi',
+  'alt'   => $isler > 0
+      ? 'Siz artıq ' . $xp . ' XP toplamısınız. Qeydiyyat bu nəticəni hesabınıza yazır — heç nə itmir.'
+      : 'Vəsiqə, rütbə və reytinqdə yer qeydiyyatdan sonra açılır. Bağladığınız işlər hesabınıza yazılır.',
+])
+
 <section class="pr">
   <div class="sayt-en pr-dar">
 
     @include('dossier.partials.flash')
 
-    <div class="pr-hesab-bas">
-      <span class="pr-etiket">Kadr şöbəsi</span>
-      <h1>Müstəntiq vəsiqəsi</h1>
-      @if($isler > 0)
-        <p>Siz artıq <b>{{ $isler }}</b> iş bağlamısınız və <b>{{ $xp }} XP</b>
-           toplamısınız. Qeydiyyat bu nəticəni hesabınıza yazır — heç nə itmir.</p>
-      @else
-        <p>Vəsiqə, rütbə və reytinqdə yer qeydiyyatdan sonra açılır.
-           Bağladığınız işlər hesabınıza yazılır.</p>
-      @endif
-    </div>
 
     @if($google)
       {{-- Ən sürətli yol yuxarıda dayanır: dörd sahə doldurmaqla bir düyməni
@@ -87,7 +86,7 @@
          oxunur və həll olunur. Qeydiyyatın verdiyi şey vəsiqə nömrəsi və
          reytinqdə yerdir — bunu gizlətmək əvəzinə açıq demək daha
          dürüstdür və oyunçunu qapıda saxlamır. --}}
-    <div class="pr-blok pr-secim">
+    <div class="pr-blok pr-qonaqsec">
       <h2>Qonaq kimi davam et</h2>
       <p class="pr-qeyd">
         Siz <b>{{ $ad }}</b> adı ilə avtomatik qeydə alınmısınız. İşləri

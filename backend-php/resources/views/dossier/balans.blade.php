@@ -12,6 +12,14 @@
 @section('content')
 @include('dossier.partials.ust')
 
+@include('dossier.partials.bas', [
+  'dar'   => true,
+  'nisan' => $user->credits . ' KREDİT',
+  'ust'   => 'Kassa',
+  'bas'   => 'Balans',
+  'alt'   => 'Bir iş qovluğu ' . $qiymet . ' kreditdir və bir dəfə alınır — açdığınız işə istənilən vaxt qayıda bilərsiniz.',
+])
+
 <section class="pr">
   <div class="sayt-en pr-dar">
 
@@ -23,13 +31,6 @@
       <div class="pr-flash xeta"><span>Ödəniş tamamlanmadı. Kart məlumatlarını yoxlayıb yenidən cəhd edin.</span></div>
     @endif
 
-    <div class="pr-hesab-bas">
-      <span class="pr-etiket">Kassa</span>
-      <h1>Balans</h1>
-      <p>Hazırkı balansınız <b>{{ $user->credits }} kredit</b>.
-         Bir iş qovluğu <b>{{ $qiymet }} kredit</b>dir və bir dəfə alınır —
-         açdığınız işə istənilən vaxt qayıda bilərsiniz.</p>
-    </div>
 
     <div class="pr-blok">
       <h2>Paket seç</h2>
@@ -54,7 +55,7 @@
         kodları açmaq, qatili adlandırmaq və sertifikat almaq üçün əlavə
         ödəniş yoxdur. Açılmış qovluq geri alınmır.
       </p>
-      <a class="pr-btn pr-btn-bos" href="{{ route('dossier.index') }}">Kataloqa qayıt</a>
+      <a class="pr-btn pr-btn-bos pr-qonaqsec-btn" href="{{ route('dossier.index') }}">Kataloqa qayıt</a>
     </div>
 
   </div>

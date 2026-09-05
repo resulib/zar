@@ -25,11 +25,21 @@
 @section('content')
 @include('dossier.partials.ust')
 
-<section class="teq">
+<section class="teq sbas">
+  @include('dossier.partials.lovhe')
   <div class="sayt-en teq-in">
 
     <div class="teq-sol">
-      <p class="teq-no">İŞ № {{ $dossier->no }}</p>
+      <p class="teq-no">
+        @if($solved)
+          <span class="nisan-q bitib">BAĞLANIB</span>
+        @elseif($access)
+          <span class="nisan-q">SİZDƏ AÇIQDIR</span>
+        @else
+          <span class="nisan-q">AÇIQ İŞ</span>
+        @endif
+        İŞ № {{ $dossier->no }}
+      </p>
       <h1 class="teq-ad">{{ $dossier->title }}</h1>
       <p class="teq-yer">
         @if($dossier->place !== ''){{ $dossier->place }}@endif
@@ -63,7 +73,7 @@
     </div>
 
     <div class="teq-sag">
-      <h2 class="teq-bas">Qovluqdakı materiallar</h2>
+      <h2 class="teq-bas bolme-bas">Qovluqdakı materiallar</h2>
       <p class="teq-l">Adları göstərilir, məzmunu qovluq açılandan sonra oxunur.</p>
       <ol class="teq-siyahi">
         @foreach($docs as $d)

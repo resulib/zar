@@ -1776,6 +1776,20 @@ files and must not start (the sheet has to stay sharp at every size, and its tex
 > `@yield('wrap')`. This is the same trap CLAUDE.md already records for the admin preview iframe —
 > it had simply also been live on the phone the whole time.
 
+**One header, six pages.** `dossier/partials/bas.blade.php` carries the board treatment — grid,
+fingerprint, red status chip, h1, lede — and `partials/lovhe.blade.php` holds the layers the
+hero and the guest call-to-action reuse. Copying the effect into each page is how it drifts
+apart in six places; the SVG in particular exists exactly once.
+
+> **`dar` is not cosmetic.** `pr` pages put their content in a 680px column while `.sayt-en` is
+> 1180px, so an unconstrained header sets its `h1` a few hundred pixels left of the content it
+> introduces. The flag makes the header share the content's measure.
+
+> **`.pr-secim` was already taken.** It is the settings page's inline choice row and it is
+> `display:flex`, so reusing the name for the guest block on `/is/hesab` split it into three
+> columns with the heading breaking one word per line. The same near-miss as `.pr-qonaq` one
+> commit earlier — in a hand-written stylesheet with real class names, check before you name.
+
 ### The case-file section's sales face
 
 The section has three faces and each earns its keep:

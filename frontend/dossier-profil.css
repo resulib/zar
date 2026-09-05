@@ -293,11 +293,13 @@
 .pr-ayirici span { font:600 11px/1 var(--mono,monospace); letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink3) }
 
-/* Qonaq seçimi. `.pr-qonaq` İŞLƏDİLMİR — o, profil səhifəsindəki mərkəzi
-   çağırış blokudur və `h1` üçün qurulub; burada blok sıravi seçimdir. */
-.pr-secim .pr-btn-bos { margin-top:16px; background:transparent; color:var(--buff);
-  border:1px solid var(--buff3) }
-.pr-secim .pr-btn-bos:hover { background:rgba(194,164,104,.12) }
+/* Qonaq seçimi. NƏ `.pr-qonaq`, NƏ DƏ `.pr-secim` işlədilmir: birincisi
+   profil səhifəsinin mərkəzi çağırış blokudur (`h1` üçün qurulub),
+   ikincisi isə ayarlardakı sətir-səviyyəli SEÇİM QUTUSUDUR və
+   `display:flex`-dir — adının oxşarlığı bu bloku üç sütuna bölmüşdü. */
+.pr-qonaqsec .pr-btn-bos,.pr-qonaqsec-btn { margin-top:16px; background:transparent;
+  color:var(--buff); border:1px solid var(--buff3) }
+.pr-qonaqsec .pr-btn-bos:hover,.pr-qonaqsec-btn:hover { background:rgba(194,164,104,.12) }
 
 /* ---------- Kassa: kredit paketləri ---------- */
 

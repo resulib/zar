@@ -859,14 +859,10 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(120% 80% at 50% 0%,transparent 40%,rgba(0,0,0,.55) 100%)}
 
-.hero-lovhe{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-
-/* Barmaq izi — bölmənin ən tanınan nişanı. Uydurma naxışdır: konkret
-   adamın izi deyil. Opaklıq qəsdən çox aşağıdır (0.055) — nişan
-   hiss olunmalıdır, oxunmamalı. */
-.hero-iz{position:absolute;left:-14px;bottom:-56px;width:min(46vw,300px);height:auto;
-  fill:none;stroke:var(--buff);stroke-width:1.1;opacity:.075;
-  transform:rotate(-14deg)}
+/* Birinci ekranda iz SOL AŞAĞIDADIR — ortaq başlıqda isə sağ yuxarıda.
+   Burada sağ tərəfi vərəq tutur, yəni ortaq mövqe izi tamam gizlədərdi. */
+.hero .sbas-iz{left:-14px;right:auto;bottom:-56px;top:auto;
+  width:min(46vw,300px);opacity:.075;transform:rotate(-14deg)}
 
 /* Qırmızı sap — lövhədə sənədləri birləşdirən ip. İki incə xətt kifayətdir;
    çox olsa lövhə deyil, cızma-qara olur. */
@@ -1154,6 +1150,9 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   #s-cover .stamp{top:286px}
 
   .sayt-en{padding:0 32px}
+  .sbas-in{padding:40px 32px 34px}
+  .sbas h1{font-size:30px}
+
   .hero-in{padding:56px 32px 0;flex-direction:row;align-items:flex-start;gap:44px}
   .hero-metn{flex:1 1 46%;padding-bottom:56px}
   .hero-metn h1{font-size:32px}
@@ -1342,3 +1341,60 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-hokm span + span{margin-top:4px;font-weight:400;letter-spacing:.04em;
   color:var(--ink3)}
 .p-blank-mehkeme .p-qurum3{color:var(--red);letter-spacing:.14em}
+
+/* ---------------------------------------------------------------------
+   ORTAQ SƏHİFƏ BAŞLIĞI — istintaq lövhəsi dili
+   ---------------------------------------------------------------------
+   Ana səhifədəki birinci ekranın kiçildilmiş variantı. Bölmənin bütün
+   səhifələri eyni fonla açılır: şəbəkə, barmaq izi, qırmızı nişan.
+   Effekti hər səhifəyə köçürmək onun altı yerdə bir-birindən sürüşməsi
+   demək olardı, ona görə bir sinif və bir partial. */
+
+.sbas{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+  background:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/100% 92px,
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/92px 100%,
+    radial-gradient(120% 120% at 82% 0%,#23271F 0%,var(--desk) 66%)}
+.sbas::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 0%,transparent 46%,rgba(0,0,0,.5) 100%)}
+
+.sbas-lovhe{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.sbas-iz{position:absolute;right:-30px;top:-46px;width:min(42vw,240px);height:auto;
+  fill:none;stroke:var(--buff);stroke-width:1.1;opacity:.06;transform:rotate(11deg)}
+
+.sbas-in{position:relative;padding:30px 20px 26px}
+.sbas-ust{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;
+  font:500 11px var(--mono);letter-spacing:.18em;color:var(--buff2)}
+.sbas h1{margin:0;font:600 25px/1.24 var(--sans);color:var(--paper);max-width:22ch}
+.sbas-alt{margin:12px 0 0;font:400 14px/1.75 var(--sans);color:var(--ink3);max-width:56ch}
+
+/* QIRMIZI NİŞAN — vəziyyət çipi. Səhifədə tək qalmalıdır: iki qırmızı
+   nişan bir-birini söndürür və heç biri diqqət çəkmir. */
+.nisan-q{padding:3px 7px;border:1px solid var(--red);border-radius:2px;
+  color:var(--red);filter:brightness(1.5);letter-spacing:.12em;white-space:nowrap}
+.nisan-q.bitib{border-color:var(--buff3);color:var(--buff);filter:none}
+
+/* Təqdimat səhifəsi lövhə fonunu daşıyır, amma başlığı `.sbas-in` deyil,
+   öz sütunudur — nömrə, ad və yer bir yerdə qalmalıdır. */
+.teq.sbas{border-bottom:0}
+.teq.sbas .sbas-iz{right:-96px;top:-76px;width:min(34vw,240px);opacity:.045}
+.teq-no{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* `.teq-bas` `.bolme-bas` ilə birlikdə işlədilir: etiketin nişanı və xətti
+   oradan gəlir, ölçüsü isə buradan. Sıra vacibdir — `.bolme-bas` sonra
+   gəldiyi üçün `display:flex`-i o təyin edir. */
+.teq-bas.bolme-bas{margin:0 0 6px}
+
+/* Qonaq çağırışı da lövhədir — səhifə boş fonda tək qutu olaraq
+   qalmamalıdır. `.pr-qonaq` öz fonunu təyin edir, ona görə `.sbas`-ın
+   fonu burada yenidən yazılır. */
+.pr-qonaq.sbas{position:relative;overflow:hidden;border:1px solid var(--buff3);
+  border-radius:4px;
+  background:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/100% 92px,
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/92px 100%,
+    radial-gradient(120% 140% at 84% 0%,#262A22 0%,var(--desk2) 68%)}
+.pr-qonaq.sbas .sbas-iz{right:-56px;top:-64px;width:min(38vw,230px);opacity:.055}
+.pr-qonaq-in{position:relative}
+.pr-qonaq .nisan-q{display:inline-block;margin-bottom:12px;
+  font:600 11px var(--mono)}

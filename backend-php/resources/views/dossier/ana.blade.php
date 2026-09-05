@@ -47,19 +47,7 @@
      faylı yoxdur və olmamalıdır (vərəq hər ölçüdə iti qalmalıdır). --}}
 <section class="hero">
   {{-- Lövhənin qatları: barmaq izi, ölçü şəbəkəsi, qırmızı sap. --}}
-  <div class="hero-lovhe" aria-hidden="true">
-    <svg class="hero-iz" viewBox="0 0 200 240" preserveAspectRatio="xMidYMid meet">
-      {{-- Barmaq izi — kriminalistikanın ən tanınan nişanı. Uydurma
-           papilyar naxışdır: konkret adamın izi deyil və ola bilməz. --}}
-      @for($i = 0; $i < 9; $i++)
-        <ellipse cx="100" cy="120" rx="{{ 16 + $i * 9 }}" ry="{{ 22 + $i * 11 }}"
-                 transform="rotate({{ -8 + $i }} 100 120)"/>
-      @endfor
-      <path d="M100 62v116M74 78c14 26 14 62 0 88M126 78c-14 26-14 62 0 88"/>
-    </svg>
-    <span class="hero-sap hero-sap-1"></span>
-    <span class="hero-sap hero-sap-2"></span>
-  </div>
+  @include('dossier.partials.lovhe', ['sap' => true])
 
   <div class="sayt-en hero-in">
     <div class="hero-metn">

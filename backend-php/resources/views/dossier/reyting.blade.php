@@ -15,12 +15,15 @@
 @section('content')
 @include('dossier.partials.ust')
 
+@include('dossier.partials.bas', [
+  'ust' => 'Kadr şöbəsi',
+  'bas' => 'Müstəntiq reytinqi',
+  'alt' => 'Bağlanmış işlər, doğru sonluqlar və birinci cəhddən tapılanlar. Yalnız açıq profillər siyahıdadır.',
+])
+
 <section class="pr">
   <div class="sayt-en">
 
-    <div class="pr-baslq">
-      <h1>Müstəntiq reytinqi</h1>
-    </div>
 
     @php($tablar = [
       'xp'        => 'XP',
