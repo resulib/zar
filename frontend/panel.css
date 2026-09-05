@@ -731,3 +731,16 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .qv-yuva-btn{cursor:pointer;white-space:nowrap}
 .qv-yuva-hal{font:400 11.5px var(--mono);color:var(--ink-3)}
 .qv-catismir{color:#7A2222}
+
+/* Yuvanın qısa təsviri — sənədin öz sözləri. */
+.qv-yuva-izah{margin:6px 0 0;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+
+/* Şəkil tapşırığı — AI-yə veriləcək mətn. Yığılmış saxlanılır: siyahı
+   iyirmi sətirdirsə, hər birində altı sətirlik mətn açıq dursaydı,
+   səhifə oxunmaz olardı. */
+.qv-yuva-brif{margin-top:8px}
+.qv-yuva-brif summary{font:500 12px var(--mono);letter-spacing:.06em;
+  color:var(--blue);cursor:pointer}
+.qv-yuva-brif textarea{margin-top:8px;font:400 12.5px/1.6 var(--mono);
+  resize:vertical;width:100%}
+.qv-kopya{margin-top:6px}

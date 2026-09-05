@@ -330,6 +330,21 @@
                 <li>v. {{ $yer['page'] }} — {{ $yer['name'] }} <em>({{ $yer['haradan'] }})</em></li>
               @endforeach
             </ul>
+
+            {{-- QISA TƏSVİR — sənədin öz sözləri: foto altyazısı, əşyanın
+                 təsviri və ya nişanın ətrafındakı cümlə. Uydurulmur. --}}
+            @if($y['izah'] !== '')
+              <p class="qv-yuva-izah">{{ \Illuminate\Support\Str::limit($y['izah'], 190) }}</p>
+            @endif
+
+            {{-- TAPŞIRIQ — şəkli AI ilə hazırlamaq üçün hazır mətn: işin
+                 konteksti, vərəq, əşya və çəkiliş üslubu. Kopyalanır, çünki
+                 o, başqa alətə yapışdırılmaq üçündür. --}}
+            <details class="qv-yuva-brif">
+              <summary>Şəkil tapşırığı</summary>
+              <textarea class="input" rows="6" readonly>{{ $y['tapsiriq'] }}</textarea>
+              <button type="button" class="btn btn-ghost btn-sm qv-kopya" data-kopya>Kopyala</button>
+            </details>
           </div>
 
           <div class="qv-yuva-emel">

@@ -112,8 +112,31 @@ class DossierController extends Controller
 
         $var = $dossier->images()->get()->keyBy('slug');
 
-        return array_map(static function (array $y) use ($var): array {
+        $uslub = (array) config('dossier.sekil_uslub');
+
+        /* TAPŞIRIQ — şəkli AI ilə hazırlamaq üçün hazır mətn.
+           İşin, vərəqin və əşyanın konteksti bir yerdə: «mərmər lövhə»
+           tək başına heç nə demir, «hadisə yerindən götürülmüş, üzərində
+           qan izləri olan mərmər lövhə» isə deyir. */
+        return array_map(function (array $y) use ($var, $uslub, $dossier): array {
             $y['sekil'] = $y['acar'] === '' ? null : $var->get($y['acar']);
+
+            $yer = $y['yerler'][0] ?? [];
+            $setir = array_filter([
+                /* Yer çox vaxt işin adı ilə başlayır («Sədəf» şadlıq sarayı
+                   · «Sədəf» şadlıq sarayı, Xırdalan) — təkrar atılır. */
+                'İş: ' . $dossier->title
+                    . ($dossier->place !== '' && ! str_contains($dossier->place, $dossier->title)
+                        ? ' · ' . $dossier->place : '')
+                    . ($dossier->place !== '' && str_contains($dossier->place, $dossier->title)
+                        ? ' · ' . trim(str_replace($dossier->title, '', $dossier->place), ' ,·') : '')
+                    . ($dossier->period !== '' ? ' · ' . $dossier->period : ''),
+                'Vərəq ' . ($yer['page'] ?? '') . ' — ' . ($yer['name'] ?? ''),
+                $y['izah'] !== '' ? 'Şəkildə: ' . $y['izah'] : '',
+                (string) ($uslub[$y['nov']] ?? ''),
+            ], static fn (string $x): bool => trim($x) !== '');
+
+            $y['tapsiriq'] = implode("\n", $setir);
 
             return $y;
         }, SekilYuvalari::qovluqda($senedler));

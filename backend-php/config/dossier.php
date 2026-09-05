@@ -168,6 +168,31 @@ return [
 
     /* İdarə panelində göstərilən adlar. Açarlar ingiliscədir, çünki onlar
        görünüş faylının adına çevrilir; idarəçi isə açar oxumamalıdır. */
+    /*
+    | Şəkil üslubu — «Şəkillər» tabındakı tapşırıqda işlənir.
+    |
+    | İdarəçi şəkilləri AI ilə hazırlayır, ona görə tapşırıq şəklin nə
+    | GÖSTƏRDİYİNİ deyil, necə ÇƏKİLDİYİNİ də deməlidir: kriminalistik
+    | foto ilə reklam fotosu arasındakı fərq məhz burada yaranır.
+    |
+    | Config-dədir, kodda deyil: üslub məzmun qərarıdır və deploy
+    | gözləmədən dəyişməlidir.
+    */
+    'sekil_uslub' => [
+        'foto' => 'Üslub: hadisə yeri fotosu. Sənədli, bəzəksiz kadr — düz baxış, '
+            . 'sərt qısa fokus, çılpaq flaş və ya təbii işıq, bir qədər soyuq ağ '
+            . 'balansı, cüzi kompressiya izi. Bədii kompozisiya, insan üzü, '
+            . 'şəklin ÜZƏRİNƏ əlavə olunan altyazı, su nişanı və loqotip olmasın '
+            . '(əşyanın öz üzərindəki yazı qalır). Nisbət 4:3.',
+        'kart' => 'Üslub: maddi sübut fotosu. Əşya neytral boz-ağ fonda tək '
+            . 'dayanır, yanında santimetr xətkeşi, üstdən düz işıq, kölgə '
+            . 'minimal. Kataloq kadrı kimi: arxa fon boş, əl və ya insan '
+            . 'görünmür, şəklin üzərinə altyazı və loqotip əlavə edilmir '
+            . '(əşyanın öz üzərindəki yazı qalır). Nisbət 4:3.',
+        'nisan' => 'Üslub: sənədə əlavə olunan foto. Sənədli, bəzəksiz kadr; '
+            . 'şəklin üzərinə altyazı və loqotip əlavə edilmir. Nisbət 4:3.',
+    ],
+
     'sekil_labels' => [
         'camera_still' => 'Kamera kadrı',
         'scan'         => 'Sənəd surəti',

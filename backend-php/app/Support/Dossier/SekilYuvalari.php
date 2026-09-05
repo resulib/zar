@@ -38,11 +38,23 @@ final class SekilYuvalari
         /* 1. Mətndəki nişanlar. */
         $body = (string) ($sened['body'] ?? '');
 
-        if ($body !== '' && preg_match_all(Isare::NISAN, $body, $m, PREG_SET_ORDER)) {
+        if ($body !== '' && preg_match_all(Isare::NISAN, $body, $m, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
             foreach ($m as $x) {
-                if ($x[1] === 'sekil') {
-                    $out[] = self::yuva($x[2], 'mətndəki nişan', '');
+                if ($x[1][0] !== 'sekil') {
+                    continue;
                 }
+
+                $out[] = self::yuva(
+                    $x[2][0],
+                    'mətndəki nişan',
+                    '',
+                    null,
+                    null,
+                    'nisan',
+                    /* Nişanın ƏTRAFINDAKI cümlə şəklin nə olduğunu deyir —
+                       açar tək başına «kamera-01»dir və heç nə izah etmir. */
+                    self::etraf($body, (int) $x[0][1])
+                );
             }
         }
 
@@ -53,11 +65,16 @@ final class SekilYuvalari
             $tip = (string) ($b['tip'] ?? '');
 
             if ($tip === 'foto') {
+                $izah = self::temiz((string) ($b['izah'] ?? ''));
+
                 $out[] = self::yuva(
                     trim((string) ($b['sekil'] ?? '')),
                     'foto çərçivəsi',
-                    trim((string) ($b['izah'] ?? '')),
-                    (int) $i
+                    $izah,
+                    (int) $i,
+                    null,
+                    'foto',
+                    $izah
                 );
 
                 continue;
@@ -72,12 +89,19 @@ final class SekilYuvalari
                    demir, «kamera-01 — Mətbəx dəhlizi» isə deyir. */
                 $ad = trim((string) ($k['ad'] ?? ''));
 
+                /* Əşyanın MƏTNİ şəklin nə göstərməli olduğunu deyir —
+                   ad tək başına «Mərmər lövhə»dir, mətn isə ölçüsünü,
+                   vəziyyətini və üzərindəki izləri yazır. */
+                $metn = self::temiz((string) ($k['metn'] ?? ''));
+
                 $out[] = self::yuva(
                     trim((string) ($k['sekil'] ?? '')),
                     $ad === '' ? 'maddi sübut' : 'maddi sübut: ' . $ad,
                     $ad,
                     (int) $i,
-                    (int) $ki
+                    (int) $ki,
+                    'kart',
+                    trim($ad . ($metn !== '' ? ' — ' . $metn : ''), ' -—')
                 );
             }
         }
@@ -100,15 +124,42 @@ final class SekilYuvalari
         string $haradan,
         string $ad,
         ?int $blok = null,
-        ?int $kart = null
+        ?int $kart = null,
+        string $nov = '',
+        string $izah = ''
     ): array {
         return [
             'acar'    => $acar,
             'teklif'  => $acar === '' ? Isare::slugla(($ad !== '' ? $ad : $haradan) . '.x') : '',
             'haradan' => $haradan,
+            'nov'     => $nov,
+            /* İZAH — şəklin NƏ OLMALI olduğunu deyən mətn. Sənədin öz
+               sözləridir: foto çərçivəsinin altyazısı, əşyanın təsviri
+               və ya nişanın ətrafındakı cümlə. Uydurulmur. */
+            'izah'    => $izah,
             'blok'    => $blok,
             'kart'    => $kart,
         ];
+    }
+
+    /**
+     * Sənəd işarələrini atır: `**qalın**`, `[[qırmızı]]`, `((oxunmaz))` və s.
+     * Onlar vərəqin dilidir, şəklin təsviri deyil.
+     */
+    private static function temiz(string $m): string
+    {
+        $m = preg_replace('/\{\{[^}]*\}\}/u', '', $m) ?? $m;
+        $m = preg_replace('/[*+~%]{2}|\[\[|\]\]|\(\(|\)\)/u', '', $m) ?? $m;
+
+        return trim(preg_replace('/\s+/u', ' ', $m) ?? $m);
+    }
+
+    /** Nişanın ətrafındakı cümlə — şəklin kontekstini o verir. */
+    private static function etraf(string $body, int $yer): string
+    {
+        $bas = max(0, $yer - 220);
+
+        return self::temiz(mb_strcut($body, $bas, 440));
     }
 
     /**
@@ -137,6 +188,15 @@ final class SekilYuvalari
                     /* Eyni açar bir neçə vərəqdə işlənə bilər — şəkil bir
                        dəfə yüklənir, hər yerdə görünür. */
                     $dolu[$y['acar']]['acar'] = $y['acar'];
+                    $dolu[$y['acar']]['nov'] ??= $y['nov'];
+
+                    /* İzah BİRİNCİ işlənən yerdən götürülür: sonrakı
+                       vərəqlər eyni şəkli təkrar göstərir, təsvir isə
+                       birinci dəfə verilir. */
+                    if (($dolu[$y['acar']]['izah'] ?? '') === '') {
+                        $dolu[$y['acar']]['izah'] = $y['izah'];
+                    }
+
                     $dolu[$y['acar']]['yerler'][] = $yer + ['haradan' => $y['haradan']];
 
                     continue;
@@ -147,6 +207,8 @@ final class SekilYuvalari
                 $bos[] = [
                     'acar'   => '',
                     'teklif' => self::bosluqsuz($y['teklif'], $dolu, $bos),
+                    'nov'    => $y['nov'],
+                    'izah'   => $y['izah'],
                     'yerler' => [$yer + ['haradan' => $y['haradan']]],
                     'blok'   => $y['blok'],
                     'kart'   => $y['kart'],

@@ -573,6 +573,36 @@
     kitabxana.appendChild(fig);
   }
 
+  /* Tapşırığın kopyalanması. `navigator.clipboard` yalnız HTTPS və ya
+     localhost-da işləyir; olmadıqda mətn SEÇİLİR — idarəçi ⌘C ilə özü
+     kopyalayır, yəni düymə heç bir halda «ölü» qalmır. */
+  document.addEventListener('click', function (e) {
+    var d = e.target.closest('[data-kopya]');
+    if (!d) return;
+
+    var ta = d.parentNode.querySelector('textarea');
+    if (!ta) return;
+
+    var kohne = d.textContent;
+
+    function de(m) {
+      d.textContent = m;
+      setTimeout(function () { d.textContent = kohne; }, 1800);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(
+        function () { de('kopyalandı'); },
+        function () { ta.select(); de('seçildi — ⌘C'); }
+      );
+
+      return;
+    }
+
+    ta.select();
+    de('seçildi — ⌘C');
+  });
+
   /* ---------- Şəkil yuvaları ----------
      «Şəkillər» tabındakı hər sətir bir yuvadır və açarı ONSUZ DA MƏLUMDUR:
      o, sənədin mətnindən və bloklarından hesablanıb. İdarəçi yalnız faylı
