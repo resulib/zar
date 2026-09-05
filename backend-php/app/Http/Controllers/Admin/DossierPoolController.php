@@ -11,6 +11,7 @@ use App\Models\DossierPoolImage;
 use App\Support\Dossier\Isare;
 use App\Support\Dossier\Sekil;
 use App\Support\Sanitizer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -150,12 +151,25 @@ class DossierPoolController extends Controller
      * həmin sənədə bağlanır və kilidli vərəqin spoiler qoruması avtomatik
      * işə düşür — yükləmə formasının qaydası.
      */
-    public function copy(Request $request, Dossier $dossier, DossierPoolImage $image): RedirectResponse
+    /**
+     * Hovuzdakı şəkli işin kitabxanasına köçürür.
+     *
+     * CAVAB İKİ CÜRDÜR. Adi forma göndərişi yönləndirmə alır (köhnə panel
+     * belə işləyir), sənəd redaktorundakı şəkil seçicisi isə JSON istəyir:
+     * o, köçürməni edib DƏRHAL nişanı kursora salmalıdır. Səhifə yenidən
+     * yüklənsəydi, mətndəki kursorun yeri itərdi və idarəçi nişanı əl ilə
+     * axtarıb yapışdırardı.
+     */
+    public function copy(Request $request, Dossier $dossier, DossierPoolImage $image): RedirectResponse|JsonResponse
     {
         $baza = rtrim((string) config('dossier.sekil.path'), '/');
         $qovluq = $baza . '/' . $dossier->id;
 
         if (! is_dir($qovluq) && ! @mkdir($qovluq, 0775, true) && ! is_dir($qovluq)) {
+            if ($request->expectsJson()) {
+                return response()->json(['ok' => false, 'message' => 'Qovluq yaradılmadı.'], 422);
+            }
+
             return back()->withErrors(['sekil' => 'Qovluq yaradılmadı.']);
         }
 
@@ -165,6 +179,10 @@ class DossierPoolController extends Controller
             $menbe = $baza . '/' . $image->{$k};
 
             if (! is_file($menbe)) {
+                if ($request->expectsJson()) {
+                    return response()->json(['ok' => false, 'message' => 'Hovuzdakı fayl tapılmadı.'], 422);
+                }
+
                 return back()->withErrors(['sekil' => 'Hovuzdakı fayl tapılmadı.']);
             }
 
@@ -186,6 +204,15 @@ class DossierPoolController extends Controller
         ] + $yollar);
 
         $sekil->save();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'ok'    => true,
+                'slug'  => $sekil->slug,
+                'nisan' => Isare::yaz('sekil', (string) $sekil->slug),
+                'thumb' => route('admin.dossier.image', [$sekil, 'kicik']),
+            ]);
+        }
 
         return back()->with('status', '«' . $sekil->slug . '» şəkli işin kitabxanasına köçürüldü.');
     }

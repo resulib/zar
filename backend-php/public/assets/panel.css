@@ -684,3 +684,20 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 /* «Yoxdur» xanası şəkilsizdir — hündürlüyü qonşuları ilə eyni olmalıdır. */
 .qv-qabiq-yox{display:flex;align-items:center;justify-content:center;min-height:78px}
 .qv-qabiq-yox .qv-qabiq-k{color:var(--ink-2)}
+
+/* Şəkil seçicisində iki qrup: işin öz kitabxanası və ümumi hovuz.
+   Hovuzdan seçmək şəkli əvvəlcə bu işə köçürür, sonra nişanı yapışdırır. */
+.qv-sec-qrup + .qv-sec-qrup{margin-top:16px;padding-top:14px;
+  border-top:1px solid var(--rule)}
+.qv-sec-ad{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;
+  font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3)}
+.qv-sec-ad a{font:400 11.5px var(--sans);letter-spacing:0;text-transform:none}
+.qv-sec-l{margin:0 0 10px;font-size:12px}
+
+/* Hovuz şəkli hələ bu işin deyil — kəsik haşiyə bunu deyir. */
+.qv-sekil-hovuz{border-style:dashed !important}
+.qv-sekil-gozle{opacity:.5;cursor:progress}
+
+.qv-sec-xeta{margin:0 0 12px;padding:8px 10px;border-radius:3px;
+  border:1px solid #8A2A2A;background:#FBEDED;color:#7A2222;font-size:12.5px}

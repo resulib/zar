@@ -145,23 +145,55 @@
         <textarea class="input qv-metn" name="body" id="qvBody" rows="20" maxlength="60000"
                   placeholder="Sənədin mətni. Boş sətir abzası bölür.">{{ old('body', $doc->draft_body ?? $doc->body) }}</textarea>
 
-        {{-- Şəkil seçimi — «Şəkil…» düyməsi açır. Kitabxanadakı hər şəkil
-             thumb-ı ilə görünür; klik nişanı kursora salır. --}}
+        {{-- Şəkil seçimi — «Şəkil…» düyməsi açır. İKİ QRUP GÖSTƏRİLİR:
+             bu işin kitabxanası və ÜMUMİ HOVUZ. Əvvəl yalnız işin öz
+             kitabxanası görünürdü, yəni hovuzdakı şəkli işlətmək üçün
+             idarəçi əvvəlcə səhifənin altına enib «Ümumi hovuzdan götür»
+             panelindən köçürməli, sonra yuxarı qayıdıb nişanı seçməli idi.
+
+             Hovuzdan seçmək bir addımdır: şəkil işin kitabxanasına
+             köçürülür və nişan dərhal kursora düşür. Köçürmə MƏCBURİDİR —
+             `{{ sekil:… }}` nişanı işin öz kitabxanasında axtarılır, hovuz
+             sətri isə orada yoxdur. --}}
         <div class="qv-sec-sekil" id="qvSecSekil" hidden>
-          <div class="qv-sec-bas">Kitabxanadan seç
+          <div class="qv-sec-bas">Şəkil seç
             <button type="button" class="btn btn-ghost btn-sm" data-bagla="1">Bağla</button>
           </div>
-          @if($sekiller->isEmpty())
-            <p class="muted">Kitabxana boşdur — aşağıdan şəkil yükləyin.</p>
-          @else
-            <div class="qv-sec-tor">
-              @foreach($sekiller as $sk)
-                @php($nisanS = \App\Support\Dossier\Isare::yaz('sekil', $sk->slug))
-                <button type="button" class="qv-sekil" data-nisan="{{ $nisanS }}">
-                  <img src="{{ route('admin.dossier.image', [$sk, 'kicik']) }}" alt="" loading="lazy">
-                  <span>{{ $sk->slug }}</span>
-                </button>
-              @endforeach
+
+          <p class="qv-sec-xeta" id="qvSecXeta" hidden role="alert"></p>
+
+          <div class="qv-sec-qrup">
+            <div class="qv-sec-ad">Bu işin kitabxanası</div>
+            @if($sekiller->isEmpty())
+              <p class="muted">Kitabxana boşdur — aşağıdan şəkil yükləyin.</p>
+            @else
+              <div class="qv-sec-tor" id="qvSecTor">
+                @foreach($sekiller as $sk)
+                  @php($nisanS = \App\Support\Dossier\Isare::yaz('sekil', $sk->slug))
+                  <button type="button" class="qv-sekil" data-nisan="{{ $nisanS }}">
+                    <img src="{{ route('admin.dossier.image', [$sk, 'kicik']) }}" alt="" loading="lazy">
+                    <span>{{ $sk->slug }}</span>
+                  </button>
+                @endforeach
+              </div>
+            @endif
+          </div>
+
+          @if($hovuz->isNotEmpty())
+            <div class="qv-sec-qrup">
+              <div class="qv-sec-ad">Ümumi hovuz ({{ $hovuz->count() }})
+                <a href="{{ route('admin.hovuz') }}">idarə et</a>
+              </div>
+              <p class="muted qv-sec-l">Seçdiyiniz şəkil bu işin kitabxanasına köçürülür.</p>
+              <div class="qv-sec-tor" id="qvSecHovuz">
+                @foreach($hovuz as $h)
+                  <button type="button" class="qv-sekil qv-sekil-hovuz"
+                          data-kocur="{{ route('admin.hovuz.copy', [$dossier, $h]) }}">
+                    <img src="{{ route('admin.hovuz.image', [$h, 'kicik']) }}" alt="" loading="lazy">
+                    <span>{{ $h->slug }}</span>
+                  </button>
+                @endforeach
+              </div>
             </div>
           @endif
         </div>

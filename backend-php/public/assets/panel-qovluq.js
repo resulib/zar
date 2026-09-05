@@ -289,12 +289,69 @@
   /* Şəkil seçici — nişanı kursora salır və qutunu bağlayır. */
   var secQutu = $('qvSecSekil');
 
+  /* Xəta seçicinin öz sətrində yazılır — brauzer dialoqu yox:
+     `check-dossier-admin.js` dialoq sayının sıfır olduğunu yoxlayır. */
+  function xeta(m) {
+    var q = document.getElementById('qvSecXeta');
+    if (!q) return;
+    q.textContent = m;
+    q.hidden = false;
+    setTimeout(function () { q.hidden = true; }, 4000);
+  }
+
   if (secQutu) {
     secQutu.addEventListener('click', function (e) {
       if (e.target.closest('[data-bagla]')) { secQutu.hidden = true; return; }
 
       var fig = e.target.closest('.qv-sekil');
       if (!fig) return;
+
+      /* HOVUZDAN SEÇİM İKİ İŞDİR: əvvəlcə şəkil bu işin kitabxanasına
+         köçürülür, sonra nişan kursora düşür. Köçürmə məcburidir —
+         `{{ sekil:… }}` nişanı işin ÖZ kitabxanasında axtarılır və hovuz
+         sətri orada yoxdur.
+
+         Səhifə yenidən yüklənmir: mətndəki kursorun yeri itərdi. */
+      var kocur = fig.getAttribute('data-kocur');
+
+      if (kocur) {
+        if (fig.disabled) return;
+        fig.disabled = true;
+        fig.classList.add('qv-sekil-gozle');
+
+        fetch(kocur, {
+          method: 'POST',
+          headers: { 'X-CSRF-TOKEN': csrf(), 'Accept': 'application/json' },
+          credentials: 'same-origin',
+        })
+          .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+          .then(function (j) {
+            fig.disabled = false;
+            fig.classList.remove('qv-sekil-gozle');
+
+            if (!j || !j.ok) { xeta(j && j.message ? j.message : 'Şəkil köçürülmədi.'); return; }
+
+            /* Köçürülmüş şəkil artıq işin kitabxanasındadır — həm seçicidə
+               yuxarı qrupa keçir, həm də aşağıdakı kitabxana torunda
+               görünür. Əks halda idarəçi onu təkrar köçürərdi. */
+            fig.removeAttribute('data-kocur');
+            fig.classList.remove('qv-sekil-hovuz');
+            fig.setAttribute('data-nisan', j.nisan);
+            var ust = document.getElementById('qvSecTor');
+            if (ust) { ust.appendChild(fig); }
+            elaveEt({ nisan: j.nisan, thumb: j.thumb, slug: j.slug });
+
+            yapisdir(j.nisan);
+            secQutu.hidden = true;
+          })
+          .catch(function () {
+            fig.disabled = false;
+            fig.classList.remove('qv-sekil-gozle');
+            xeta('Şəkil köçürülmədi.');
+          });
+
+        return;
+      }
 
       yapisdir(fig.getAttribute('data-nisan'));
       secQutu.hidden = true;
