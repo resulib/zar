@@ -6,11 +6,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\AccountService;
+use App\Services\OAuthService;
 use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Illuminate\Validation\Rule;
 
 /**
@@ -31,10 +33,15 @@ class DossierAccountController extends Controller
     public function __construct(
         private readonly AccountService $accounts,
         private readonly ProfileService $profiles,
+        private readonly OAuthService $oauth,
     ) {
     }
 
-    public function show(Request $request): Response
+    /* Qonağa GÖRÜNÜŞ, hesablıya YÖNLƏNDİRMƏ qaytarır — ikisinin ortaq
+       atası Symfony Response-dur. `Illuminate\Http\Response` yazılsa
+       (əvvəl belə idi) hesablı ziyarətçi bu ünvana girəndə 500 alır:
+       `RedirectResponse` ondan törəmir. */
+    public function show(Request $request): SymfonyResponse
     {
         $user = $request->visitor();
 
@@ -50,6 +57,8 @@ class DossierAccountController extends Controller
             'profile' => $p,
             'xp'      => (int) ($p->xp ?? 0),
             'isler'   => (int) ($p->cases_solved ?? 0),
+            'google'  => $this->oauth->hazir(),
+            'ad'      => $user->displayName(),
         ]));
     }
 

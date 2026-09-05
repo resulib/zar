@@ -13,7 +13,7 @@
 
   var S = {
     docs: D.docs || [],
-    suspects: [], chrono: [], questions: [], endings: [],
+    suspects: [], chrono: [], questions: [], endings: [], spoilers: [],
     read: [], pinned: [], unlocked: [],
     answers: [], cur: null, tick: null, t0: 0,
     solved: false, revealed: false, left: null, solution: null,
@@ -59,6 +59,12 @@
 
   function xeta(e) {
     bildir((e && e.message) || 'Əməliyyat alınmadı.');
+
+    /* Kredit çatmayanda mesaj kifayət etmir: oyunçu HARADAN alacağını
+       bilmir. Bildiriş oxunsun deyə keçid gecikdirilir. */
+    if (e && e.error === 'no_credits') {
+      setTimeout(function () { location.href = '/is/balans'; }, 1400);
+    }
   }
 
   /* ---------------- ekranlar ---------------- */
@@ -111,6 +117,7 @@
     /* Sonluq rejimi TÖRƏMƏDİR: server hansı şübhəlilərin sonluğu olduğunu
        bildirir, mətnləri yox. Siyahı boşdursa köhnə üç suallıq rejimdir. */
     if (r.endings) S.endings = r.endings;
+    if (r.spoilers) S.spoilers = r.spoilers;
     if (r.meta) meta(r.meta);
     hal(r.state || {});
     S.answers = new Array(S.questions.length).fill(null);
@@ -222,8 +229,12 @@
     });
   }
 
+  /* Sonluq vərəqləri `S.docs`-da DEYİL — materiallar siyahısı onlarsız
+     qalmalıdır. Amma `ac()` ilk sətirdə `tap()` işlədir, ona görə axtarış
+     hər iki massivə baxır. */
   function tap(id) {
     for (var i = 0; i < S.docs.length; i++) if (S.docs[i].id === id) return S.docs[i];
+    for (var j = 0; j < S.spoilers.length; j++) if (S.spoilers[j].id === id) return S.spoilers[j];
     return null;
   }
 
@@ -271,6 +282,13 @@
         (pinli ? 'Qeydlərdən çıxar' : 'Qeyd dəftərinə sanc') + '</button>';
     }
 
+    /* Sonluq vərəqi sıranın bir hissəsi deyil — «Davam et» mənasızdır və
+       «Yekun rəyə keç» oyunçunu artıq keçdiyi ekrana qaytarardı. */
+    if (r.spoiler) {
+      return h + '<button class="davam" id="geriNetice" type="button">← Nəticəyə qayıt' +
+        '<span class="davam-s">işin sonluğu</span></button>';
+    }
+
     var n = novbeti(r.id);
 
     if (n) {
@@ -286,6 +304,9 @@
 
   function yaz(r) {
     $('#docbody').innerHTML = r.html + altliq(r);
+
+    var geri = $('#geriNetice');
+    if (geri) { geri.onclick = function () { go('result'); }; }
 
     var dv = $('#davam');
     if (dv) {
@@ -456,6 +477,7 @@
     S.solved = !!r.dogru;
     S.minutes = r.minutes;
     S.certToken = r.certToken || S.certToken;
+    if (r.spoilers) S.spoilers = r.spoilers;
 
     var ok = !!r.dogru;
 
@@ -466,6 +488,7 @@
         '</div>' : '') +
       '<div class="sting" id="sting" hidden></div>' +
       (ok ? sertifikatHtml() + '<button class="btn" id="share">Nəticəni paylaş</button>' : '') +
+      sonluqHtml() +
       '<button class="btn ghost" id="yeniden" type="button">Yenidən oyna</button>' +
       '<a class="btn ghost" href="/is" style="text-align:center;text-decoration:none">Başqa qovluq seç</a>';
 
@@ -524,6 +547,7 @@
       S.minutes = r.minutes;
       S.certToken = r.certToken || S.certToken;
       S.solution = r.solution || null;
+      if (r.spoilers) S.spoilers = r.spoilers;
     }
 
     if (!S.solved && !S.revealed) {
@@ -545,7 +569,10 @@
           : 'Cəhdlər bitdi. Rəy təsdiqlənmədi — izah aşağıdadır.') + '</div>' +
       (ok ? sertifikatHtml() + '<button class="btn" id="share">Nəticəni paylaş</button>' : '') +
       '<div class="sect-h">İZAH</div>' +
+      /* Sonluq bloku `.expl`-dən KƏNARDADIR: `check-dossier-flow.js` iki
+         yerdə `.expl p` sayının dəqiq dörd olduğunu yoxlayır. */
       '<div class="expl">' + (S.solution || []).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
+      sonluqHtml() +
       '<a class="btn ghost" href="/is" style="text-align:center;text-decoration:none">Başqa qovluq seç</a>';
 
     var sh = document.getElementById('share');
@@ -555,6 +582,29 @@
     $('#ttl').textContent = 'Yekun rəy';
     go('result');
   }
+
+  /* ---------- işin sonluğu ----------
+     Qatilin dindirilmə protokolu və məhkəmə qərarı. Onlar QOVLUĞUN ÖZ
+     vərəqləridir — eyni blank, eyni möhür, eyni fiktivlik zolağı — amma
+     materiallar siyahısında görünmür: adları belə hekayəni açardı.
+     Server onları yalnız `solved || revealed` halında göndərir. */
+  function sonluqHtml() {
+    if (!S.spoilers.length) return '';
+
+    return '<div class="sect-h">İŞİN SONU</div>' +
+      '<div class="son-list">' + S.spoilers.map(function (d) {
+        return '<button class="son-row" type="button" data-i="' + d.id + '">' +
+          '<span class="son-ad">' + esc(d.name) + '</span>' +
+          '<span class="son-nov">' + esc(d.kind || '') + '</span></button>';
+      }).join('') + '</div>';
+  }
+
+  /* Delegasiya: blok `#res` içərisində hər dəfə yenidən çəkilir. */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.son-row') : null;
+    if (!b) return;
+    ac(+b.getAttribute('data-i'));
+  });
 
   /* Sertifikat lövhəsi — həm üç suallıq, həm sonluq rejimindən çağırılır.
      Fiktivlik qeydi BURADADIR: paylaşılan şəkil saytdan kənara çıxır və

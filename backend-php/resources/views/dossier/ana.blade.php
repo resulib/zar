@@ -20,18 +20,47 @@
 @section('content')
 @include('dossier.partials.ust')
 
+{{-- ══ 0. İŞ LENTİ — büronun vəziyyət sətri ════════════════════════════
+     Rəqəmlər bazadan gəlir. Sabit yazılsaydı, dördüncü iş əlavə olunanda
+     lent yalan danışardı — və məhz belə sətirlər ən uzun müddət yalan
+     danışır, çünki heç kim onlara baxmır. --}}
+<div class="lent" role="status">
+  <div class="sayt-en lent-in">
+    <span class="lent-nq" aria-hidden="true"></span>
+    <span class="lent-b">AFİB · İSTİNTAQ BÖLMƏSİ</span>
+    <span class="lent-d"><b>{{ $lent['is'] }}</b> aktiv iş</span>
+    <span class="lent-d"><b>{{ $lent['sened'] }}</b> sənəd</span>
+    <span class="lent-d"><b>{{ $lent['subheli'] }}</b> şübhəli</span>
+    <span class="lent-d lent-gizle"><b>{{ $lent['deqiqe'] }}</b> dəqiqə material</span>
+    <span class="lent-son">HƏLL EDİLMƏYİB</span>
+  </div>
+</div>
+
 {{-- ══ 1. Birinci ekran: şüar deyil, məhsulun özü ══════════════════════
      Sağdakı vərəq şəkil DEYİL — saytın öz render qatı ilə çıxarılır, ona
-     görə hər ölçüdə düzgün oturur və şəkil ağırlığı yaratmır. --}}
+     görə hər ölçüdə düzgün oturur və şəkil ağırlığı yaratmır.
+
+     BU EKRAN İSTİNTAQ LÖVHƏSİDİR. Vərəq lövhəyə SANCILIB: əyilib, künclərində
+     lent var, üstündə iynə və qırmızı sap. Səbəb məhsulun öz məntiqidir —
+     oyunçu materialı masada araşdırır, ona görə birinci ekran da masa
+     olmalıdır, kataloq kartı yox. Hər şey CSS və SVG-dir: bölmədə şəkil
+     faylı yoxdur və olmamalıdır (vərəq hər ölçüdə iti qalmalıdır). --}}
 <section class="hero">
+  {{-- Lövhənin qatları: barmaq izi, ölçü şəbəkəsi, qırmızı sap. --}}
+  @include('dossier.partials.lovhe', ['sap' => true])
+
   <div class="sayt-en hero-in">
     <div class="hero-metn">
-      <p class="hero-ust">Onlayn iş qovluğu</p>
-      <h1>Bir cinayət işi. Bütün materiallar. Qatili özün tapırsan.</h1>
+      <p class="hero-ust"><span class="hero-ust-x">İŞ AÇIQDIR</span> Onlayn iş qovluğu</p>
+      {{-- Başlıqdakı örtük: söz REDAKTƏ EDİLİB kimi qaralanıb və üstünə
+           gələndə açılır. Mətn HƏMİŞƏ DOM-dadır — örtük yalnız rəngdir,
+           yəni ekran oxuyucusu və axtarış sistemi tam cümləni görür. --}}
+      <h1>Bir cinayət işi. Bütün materiallar. Qatili
+        <span class="ortuk"><span>özün</span></span> tapırsan.</h1>
       <p class="hero-l">Protokollar, ekspert rəyi, zəng detallaşdırması, yazışma çıxarışları —
         həqiqi iş qovluğu kimi. Ziddiyyəti tapmaq sənin işindir.</p>
       @if($showcase)
-        <a class="duyme" href="{{ route('dossier.play', $showcase->slug) }}">
+        <a class="duyme duyme-is" href="{{ route('dossier.play', $showcase->slug) }}">
           Birinci işi pulsuz aç
         </a>
         <p class="hero-alt">{{ $showcase->documents_count }} sənəd ·
@@ -40,7 +69,15 @@
     </div>
 
     @if($hero !== '')
-      <div class="hero-sened" aria-hidden="true">{!! $hero !!}</div>
+      {{-- Sancılmış vərəq. Əyilmə SABİTDİR (təsadüfi deyil): səhifə hər
+           açılışda eyni görünməlidir — `Imza::yol()`-un qaydası. --}}
+      <div class="hero-sened" aria-hidden="true">
+        <span class="hero-iyne"></span>
+        <span class="hero-skoc hero-skoc-sol"></span>
+        <span class="hero-skoc hero-skoc-sag"></span>
+        <span class="hero-grif">İSTİNTAQ MATERİALI</span>
+        {!! $hero !!}
+      </div>
     @endif
   </div>
   <p class="hero-fiktiv">{{ \App\Support\Dossier\Byuro::QEYD }}
@@ -110,6 +147,9 @@
 @endif
 
 {{-- ══ 3. İşlərin siyahısı ═════════════════════════════════════════════ --}}
+{{-- Lent sərhəddir: buradan o tərəfə iş qovluqları başlayır. --}}
+<div class="skoc-eyri">@include('dossier.partials.skoc')</div>
+
 <section class="kataloq" id="isler">
   <div class="sayt-en">
     <h2 class="bolme-bas">İş qovluqları</h2>

@@ -10,6 +10,7 @@ use App\Services\DossierAiService;
 use App\Support\Ai\QovluqBrief;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Throwable;
 
@@ -38,6 +39,10 @@ class DossierAiController extends Controller
         try {
             $dossier = $ai->skelet($data);
         } catch (Throwable $e) {
+            /* Xəta LOGA da düşür: brauzerdə yalnız bir sətir görünür və
+               modelin nə qaytardığını sonradan araşdırmaq mümkün olmalıdır. */
+            Log::warning('qovluq-ai: skelet alınmadı', ['sebeb' => $e->getMessage()]);
+
             return response()->json(['ok' => false, 'message' => $e->getMessage()], 422);
         }
 
@@ -65,6 +70,10 @@ class DossierAiController extends Controller
         try {
             $res = $ai->partiya($dossier);
         } catch (Throwable $e) {
+            Log::warning('qovluq-ai: partiya alınmadı', [
+                'qovluq' => $dossier->slug, 'sebeb' => $e->getMessage(),
+            ]);
+
             return response()->json(['ok' => false, 'message' => $e->getMessage()], 422);
         }
 

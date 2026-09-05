@@ -42,6 +42,8 @@ require __DIR__ . '/../app/Support/Dossier/QovluqYoxlayici.php';
 require __DIR__ . '/../app/Support/Ai/QovluqBrief.php';
 require __DIR__ . '/../app/Support/Dossier/Xp.php';
 require __DIR__ . '/../app/Support/Dossier/VesiqeNo.php';
+require __DIR__ . '/../app/Support/Auth/Google.php';
+require __DIR__ . '/../app/Support/Bolmeler.php';
 
 use App\Support\Dossier\BlokSxemi;
 use App\Support\Dossier\Byuro;
@@ -55,6 +57,8 @@ use App\Support\Dossier\Rey;
 use App\Support\Dossier\Xp;
 use App\Support\Dossier\VesiqeNo;
 use App\Support\Dossier\Sxem;
+use App\Support\Auth\Google;
+use App\Support\Bolmeler;
 use App\Support\Moderation;
 use App\Support\Packs;
 use App\Support\Payments\EpointProvider;
@@ -1279,7 +1283,7 @@ $xamSkelet = [
         'init' => 'AB', 'name' => 'Şübhəli ' . $i, 'role' => 'rol', 'bio' => 'bio',
         'camera' => 'kamera', 'bars' => [[$i * 10, 200]],
     ], [1, 2, 3, 4]),
-    'culprit'      => 9,
+    'culprit'      => 'Şübhəli 2',
     'motive'       => 'Motiv',
     'motive_wrong' => ['A', 'B', 'C'],
     'proof'        => 'Sübut',
@@ -1299,9 +1303,33 @@ $xamSkelet = [
 ['skelet' => $sk, 'problems' => $pr] = QovluqBrief::normalizeSkelet($xamSkelet, 3);
 
 check('emoji silinir', $sk['title'] === 'Anbarda gecə növbəsi');
-/* Siyahıdan kənar indeks sıfıra çəkilir: heç kim işarələnməsəydi, səbəb
-   görünməzdi və iş səssizcə dərc olunmaz qalardı. */
-check('siyahıdan kənar qatil sıfıra çəkilir', $sk['culprit'] === 0);
+/* Qatil ADA görə tapılır — indeks deyil. Model `culprit: 3` yazıb motivdə
+   başqa şəxsi adlandıra bilər; ad isə mətnlə birbaşa tutuşdurulur. */
+check('qatil ada görə tapılır', $sk['culprit'] === 1);
+/* Model bəzən «Hüseynli Kamran» yazır, siyahıda isə «Hüseynli Kamran Ənvər
+   oğlu» durur — soyad üzrə də tapılmalıdır. Adlar burada ayrıca verilir,
+   çünki yuxarıdakı sınaq şübhəliləri eyni sözlə başlayır. */
+$adli = $xamSkelet;
+$adli['suspects'] = array_map(static function (array $x, string $ad): array {
+    $x['name'] = $ad;
+    return $x;
+}, $adli['suspects'], ['Əliyev Nurlan Rəşad oğlu', 'Hüseynli Kamran Ənvər oğlu',
+                       'Qasımova Nərgiz Elman qızı', 'Səlimov Tural Vahid oğlu']);
+$adli['culprit'] = 'Qasımova Nərgiz';
+check('soyada görə də tapılır',
+    QovluqBrief::normalizeSkelet($adli, 3)['skelet']['culprit'] === 2);
+$tapilmayan = QovluqBrief::normalizeSkelet(array_merge($xamSkelet, ['culprit' => 'Yad Adam']), 3);
+check('tapılmayan qatil bildirilir və birinciyə düşür',
+    $tapilmayan['skelet']['culprit'] === 0
+    && count(array_filter($tapilmayan['problems'], static fn (string $x): bool => str_contains($x, 'siyahısında yoxdur'))) === 1);
+/* Motiv BAŞQA şübhəlidən danışırsa, qovluq öz-özü ilə ziddiyyətlidir:
+   birinci sual bir adı, ikinci sual başqasını göstərir. */
+$zidd = QovluqBrief::normalizeSkelet(
+    array_merge($xamSkelet, ['culprit' => 'Şübhəli 1', 'motive' => 'Şübhəli 4 pulu götürüb.']), 3
+);
+check('qatil-motiv ziddiyyəti bildirilir',
+    count(array_filter($zidd['problems'], static fn (string $x): bool => str_contains($x, 'Motiv mətni'))) === 1,
+    $zidd['problems']);
 check('naməlum sənəd növü ağ siyahıya düşür', $sk['documents'][1]['doc_type'] === 'other');
 check('naməlum blank növü ağ siyahıya düşür', $sk['documents'][1]['blank_nov'] === 'resmi');
 /* Vərəq nömrələri SIRADAN qurulur — model onları təkrarlaya bilər. */
@@ -1349,6 +1377,270 @@ $partiya = QovluqBrief::normalizeSenedler(['documents' => [
     ['no' => 0, 'meta_line' => 'yad', 'body' => 'atılmalıdır'],
 ]]);
 check('vərəqlər nömrəyə görə açarlanır', array_keys($partiya) === [2]);
+
+echo "\nİş qovluğu — AI blokları\n";
+
+/* ƏSAS İDDİA: blokları MODEL YAZMIR, biz qururuq — ona görə nəticə həmişə
+   `BlokSxemi`-dən keçir. Model blok JSON-u yazsaydı, on üç növün açar
+   cədvəlini əzbərləməli olardı və naməlum açar XƏTA sayılır. */
+$xamSened = [
+    'meta_line' => 'Protokol № 2 · 14.09.2026',
+    'body'      => "Birinci abzas **qalın** ilə.\n\nİkinci abzas.",
+    'sahe'      => [['ad' => 'Kimdən', 'deyer' => 'A.Məmmədova'], ['ad' => '', 'deyer' => 'atılmalı']],
+    /* Xana sayı QƏSDƏN əskikdir. */
+    'cedvel'    => ['basliqlar' => ['Saat', 'Hadisə', 'Qeyd'],
+                    'setirler'  => [['23:40', 'növbə'], ['00:15', 'işıq', 'kəsildi']]],
+    'yazisma'   => ['sohbet' => 'Anbar', 'gorulme' => '00:52', 'mesajlar' => [
+        ['saat' => '23:50', 'yon' => 'cixan', 'metn' => 'Buradasan?'],
+        ['saat' => '23:52', 'yon' => 'uydurma', 'metn' => 'Çıxıram.'],
+        ['saat' => '23:53', 'yon' => 'gelen', 'metn' => ''],
+    ]],
+    'zeng'      => [['saat' => '00:12', 'yon' => 'cixan', 'abunec' => '«Anbar»', 'muddet' => '40 san'],
+                    ['saat' => '', 'yon' => 'gelen', 'abunec' => 'boş saat', 'muddet' => '']],
+    'kart'      => [['ad' => 'Metal açar', 'metn' => 'Anbar açarı.'], ['ad' => '', 'metn' => 'adsız']],
+    'foto'      => [['izah' => 'Giriş qapısı']],
+    'imza'      => ['vezife' => 'AFİB müstəntiqi', 'ad' => 'E.Məmmədov'],
+];
+
+$c = QovluqBrief::bloklar($xamSened, 'Baxış protokolu', 'protokol', 2, '2026/0001');
+$tipler = array_column($c['bloklar'], 'tip');
+
+check('blank hər vərəqdə birincidir', $tipler[0] === 'blank');
+check('blankın növü saxlanılır', $c['bloklar'][0]['nov'] === 'protokol');
+check('başlıq ikincidir', $tipler[1] === 'basliq');
+check('meta sətri başlığın altındadır', $c['bloklar'][1]['alt'] === 'Protokol № 2 · 14.09.2026');
+check('bütün struktur blokları qurulur',
+    array_intersect(['sahe', 'metn', 'cedvel', 'yazisma', 'zeng', 'kart', 'foto', 'imza'], $tipler)
+    === array_values(array_intersect(['sahe', 'metn', 'cedvel', 'yazisma', 'zeng', 'kart', 'foto', 'imza'], $tipler)),
+    $tipler);
+check('imza sonuncudur', end($tipler) === 'imza');
+
+$tap = static function (string $tip) use ($c): array {
+    foreach ($c['bloklar'] as $b) {
+        if ($b['tip'] === $tip) {
+            return $b;
+        }
+    }
+    return [];
+};
+
+/* Cədvəlin xana sayı başlıq sayına BƏRABƏRLƏŞDİRİLİR — `BlokSxemi` fərqi
+   xəta sayır və model tez-tez bir xananı unudur. */
+check('cədvəl xanaları bərabərləşdirilir',
+    count($tap('cedvel')['setirler'][0]) === 3 && $tap('cedvel')['setirler'][0][2] === '—');
+check('boş sahə sətri atılır', count($tap('sahe')['setirler']) === 1);
+check('naməlum istiqamət «gelen»-ə düşür',
+    $tap('yazisma')['gunler'][0]['mesajlar'][1]['yon'] === 'gelen');
+check('boş mesaj atılır', count($tap('yazisma')['gunler'][0]['mesajlar']) === 2);
+/* Saat YALNIZ «HH:MM»: model bura tez-tez tarix yazır və o, baloncuğun
+   altında saat kimi görünərək ekran görüntüsünü yalan edir. */
+check('saat formatı süzülür', $tap('yazisma')['gunler'][0]['mesajlar'][0]['saat'] === '23:50');
+$tarixli = QovluqBrief::bloklar(['yazisma' => ['sohbet' => 'A', 'gorulme' => '', 'mesajlar' => [
+    ['saat' => '14 noyabr', 'yon' => 'gelen', 'metn' => 'salam'],
+]]], 'A', 'resmi', 1, '2026/0001');
+check('tarix saat kimi qəbul edilmir',
+    $tarixli['bloklar'][2]['gunler'][0]['mesajlar'][0]['saat'] === '');
+check('saatsız zəng atılır', count($tap('zeng')['zengler']) === 1);
+check('adsız sübut atılır', count($tap('kart')['kartlar']) === 1);
+check('sübut bloku açarlanır', $tap('kart')['acar'] === 'subutlar');
+check('abzaslar bölünür', count($tap('metn')['abzaslar']) === 2);
+
+/* Fiziki qat — bunlarsız hər vərəq eyni təmiz blank kimi görünür. */
+check('möhür qatı qurulur', count($c['mohurler']) === 1);
+check('möhür fiktivlik daşıyır', in_array('FİKTİV', $c['mohurler'][0]['metn'], true));
+check('kağız qatı qurulur', isset($c['kagiz']['kohnelme']));
+/* Holoqram YALNIZ təsdiqedici sənədlərdə: hər yerdə olan qoruma qoruma deyil. */
+check('protokolda holoqram yoxdur', $c['holoqram'] === false);
+check('qərarda holoqram var',
+    QovluqBrief::bloklar($xamSened, 'Qərar', 'qerar', 1, '2026/0001')['holoqram'] === true);
+
+/* Möhürün yeri NÖMRƏDƏN törəyir: `rand()` işlədilsəydi, vərəq ikinci dəfə
+   açılanda möhür yerini dəyişər və sənəd özünü saxta elan edərdi. */
+check('möhürün yeri təkrarlanandır',
+    QovluqBrief::bloklar($xamSened, 'A', 'resmi', 5, '2026/0001')['mohurler'][0]['x']
+    === QovluqBrief::bloklar($xamSened, 'A', 'resmi', 5, '2026/0001')['mohurler'][0]['x']);
+check('möhürün yeri vərəqdən-vərəqə dəyişir',
+    QovluqBrief::bloklar($xamSened, 'A', 'resmi', 5, '2026/0001')['mohurler'][0]['x']
+    !== QovluqBrief::bloklar($xamSened, 'A', 'resmi', 6, '2026/0001')['mohurler'][0]['x']);
+
+/* YEKUN: qurulan bloklar seed validatorundan keçməlidir. */
+[$xeta, $xeb] = BlokSxemi::yoxla(['page' => '2', 'content' => $c]);
+check('qurulan bloklar BlokSxemi-dən keçir', $xeta === [], $xeta);
+
+/* Boş məlumat da keçərli vərəq verməlidir — model hər şeyi `null` qaytara bilər. */
+$bos = QovluqBrief::bloklar(['meta_line' => '', 'body' => ''], 'Adsız', 'resmi', 1, '2026/0001');
+[$xeta2] = BlokSxemi::yoxla(['page' => '1', 'content' => $bos]);
+check('boş cavab da keçərli vərəq verir', $xeta2 === [], $xeta2);
+check('boş vərəqdə də blank və başlıq var',
+    array_column($bos['bloklar'], 'tip') === ['blank', 'basliq']);
+
+echo "\nİş qovluğu — məhkəmə blankı\n";
+
+/* Məhkəmə blankı ayrıdır və ayrı olmalıdır: `qerar` grifində «AFİB bölmə
+   rəisi» yazır, yəni sənədi İSTİNTAQ təsdiq edir. Hökmü isə istintaq çıxara
+   bilməz — ittihamı o irəli sürür, cəzanı məhkəmə verir. */
+check('məhkəmə növü ağ siyahıdadır', in_array('mehkeme', BlokSxemi::BLANK_NOV, true));
+check('AI ağ siyahısı ilə üst-üstə düşür',
+    QovluqBrief::BLANK === BlokSxemi::BLANK_NOV, [QovluqBrief::BLANK, BlokSxemi::BLANK_NOV]);
+check('məhkəmə qurumu fiktivdir', str_contains(Byuro::MEHKEME, 'FİKTİV'));
+/* «Azərbaycan Respublikası» `org_ban` siyahısındadır — hökm blankı onu
+   daşıya bilməz. */
+check('məhkəmə adında respublika yoxdur',
+    ! str_contains(mb_strtolower(Byuro::MEHKEME, 'UTF-8'), 'respublikas'));
+
+$hokm = QovluqBrief::bloklar([
+    'meta_line' => 'Qərar № 1',
+    'body'      => "Təqsirli bilinir.\n\n11 (on bir) il azadlıqdan məhrumetmə.",
+    'imza'      => ['vezife' => 'AFİB fiktiv məhkəmə sədri', 'ad' => 'R.Əliyev'],
+], 'Məhkəmə qərarı', 'mehkeme', 30, '2026/0847');
+
+check('məhkəmə blankı saxlanılır', $hokm['bloklar'][0]['nov'] === 'mehkeme');
+[$xetaH] = BlokSxemi::yoxla(['page' => '30', 'content' => $hokm]);
+check('hökm vərəqi BlokSxemi-dən keçir', $xetaH === [], $xetaH);
+/* Holoqram yalnız təsdiqedici blanklarda — hökm onlardan biri deyil,
+   çünki foil istintaq sənədinin nişanıdır. */
+check('hökmdə holoqram yoxdur', $hokm['holoqram'] === false);
+
+/* ==================================================================
+   Google ilə giriş — PKCE və `id_token` iddiaları
+   ================================================================== */
+echo "\nGoogle girişi\n";
+
+$GID = '123.apps.googleusercontent.com';
+
+/* Saxta Google: token uc nöqtəsinin cavabını qaytarır. `Google` sinfi
+   framework tanımır, ona görə HTTP çağırışı konstruktorla dəyişdirilir —
+   `EpointProvider` və `PublicProvider` ilə eyni naxış. */
+$jwt = static function (array $iddia): string {
+    $b64 = static fn (array $a): string => rtrim(strtr(base64_encode(
+        json_encode($a, JSON_UNESCAPED_UNICODE)), '+/', '-_'), '=');
+
+    return $b64(['alg' => 'RS256']) . '.' . $b64($iddia) . '.imza-yoxlanilmir';
+};
+
+$saxta = static function (array $iddia, int $kod = 200) use ($jwt): callable {
+    return static fn (string $u, array $form): array => [
+        'kod'   => $kod,
+        'govde' => json_encode(['id_token' => $jwt($iddia), 'gonderilen' => $form]),
+    ];
+};
+
+$duzgun = [
+    'iss' => 'https://accounts.google.com', 'aud' => $GID, 'exp' => time() + 3600,
+    'sub' => '11223344', 'email' => 'Adam@Example.COM', 'email_verified' => true,
+    'name' => 'Rəşad Əliyev',
+];
+
+/* --- PKCE --- */
+$dog = Google::dogrulayici();
+check('doğrulayıcı uzunluğu 43-128 arasındadır',
+    strlen($dog) >= 43 && strlen($dog) <= 128, strlen($dog));
+check('doğrulayıcıda yalnız icazəli simvollar var',
+    preg_match('#^[A-Za-z0-9\-._~]+$#', $dog) === 1, $dog);
+check('doğrulayıcı təkrarlanmır', Google::dogrulayici() !== Google::dogrulayici());
+check('barmaq izi S256-dır',
+    Google::barmaqIzi('abc') === rtrim(strtr(base64_encode(hash('sha256', 'abc', true)), '+/', '-_'), '='));
+
+/* --- Razılıq ünvanı --- */
+$g   = new Google($GID, 'sirr', $saxta($duzgun));
+$url = $g->unvan('https://x.az/giris/google/cavab', 'ACAR', $dog);
+foreach (['code_challenge_method=S256', 'response_type=code', 'prompt=select_account',
+          'state=ACAR', 'client_id=123'] as $par) {
+    check('ünvanda «' . $par . '» var', str_contains($url, $par), $url);
+}
+/* DOĞRULAYICININ ÖZÜ HEÇ VAXT ÜNVANDA OLMUR — yalnız barmaq izi gedir.
+   Əks halda PKCE mənasız olardı: kodu oğurlayan doğrulayıcını da görərdi. */
+check('doğrulayıcı ünvanda yoxdur', ! str_contains($url, $dog));
+check('barmaq izi ünvandadır', str_contains($url, rawurlencode(Google::barmaqIzi($dog))));
+
+/* --- Token dəyişimi --- */
+$token = $g->deyisdir('KOD', 'https://x.az/giris/google/cavab', $dog);
+$gond  = json_decode((string) json_encode($token['gonderilen'] ?? []), true);
+check('doğrulayıcı token sorğusunda göndərilir', ($gond['code_verifier'] ?? '') === $dog);
+check('grant_type düzgündür', ($gond['grant_type'] ?? '') === 'authorization_code');
+
+$kimlik = $g->kimlik($token);
+check('sub oxunur', $kimlik['sub'] === '11223344');
+/* E-poçt həmişə kiçik hərflə saxlanılır: hesabın tapılması e-poçt
+   müqayisəsi ilə gedir və «Adam@» ilə «adam@» eyni hesabdır. */
+check('e-poçt kiçik hərfə salınır', $kimlik['email'] === 'adam@example.com');
+check('ad oxunur', $kimlik['name'] === 'Rəşad Əliyev');
+
+/* --- Rədd edilməli hallar --- */
+$redd = static function (string $ad, array $deyis) use ($GID, $saxta, $duzgun): void {
+    $g = new Google($GID, 'sirr', $saxta(array_merge($duzgun, $deyis)));
+    try {
+        $g->kimlik($g->deyisdir('K', 'https://x.az/c', 'v'));
+        check($ad, false, 'qəbul edildi');
+    } catch (\RuntimeException $e) {
+        check($ad, true);
+    }
+};
+
+$redd('yad yazıçı rədd edilir', ['iss' => 'https://evil.example']);
+/* «Confused deputy»: başqa sayt üçün verilmiş token burada işləməməlidir. */
+$redd('başqa tətbiqin tokeni rədd edilir', ['aud' => '999.apps.googleusercontent.com']);
+$redd('vaxtı keçmiş token rədd edilir', ['exp' => time() - 3600]);
+/* Təsdiqlənməmiş e-poçt qəbul edilsəydi, istənilən adam başqasının
+   ünvanını yazıb hesabını ələ keçirə bilərdi. */
+$redd('təsdiqlənməmiş e-poçt rədd edilir', ['email_verified' => false]);
+$redd('e-poçtsuz token rədd edilir', ['email' => '']);
+$redd('sub-suz token rədd edilir', ['sub' => '']);
+
+$gx = new Google($GID, 'sirr', static fn (string $u, array $f): array => [
+    'kod' => 400, 'govde' => json_encode(['error_description' => 'invalid_grant']),
+]);
+try {
+    $gx->deyisdir('K', 'https://x.az/c', 'v');
+    check('400 cavabı xəta verir', false);
+} catch (\RuntimeException $e) {
+    /* Səbəb mətnə düşməlidir: «alınmadı» mesajı ilə problemi tapmaq mümkün deyil. */
+    check('400 cavabı xəta verir', str_contains($e->getMessage(), 'invalid_grant'), $e->getMessage());
+}
+
+check('açarsız provayder hazır deyil', (new Google('', ''))->hazir() === false);
+check('açarlı provayder hazırdır', (new Google('a', 'b'))->hazir() === true);
+
+/* ==================================================================
+   Bölmələr — hansı məhsul canlıdır
+   ================================================================== */
+echo "\nBölmələr\n";
+
+check('üç bölmə var', Bolmeler::ACARLAR === ['is', 'zarafat', 'devet'], Bolmeler::ACARLAR);
+check('tanınan açar qəbul edilir', Bolmeler::var('is') && Bolmeler::var('devet'));
+check('naməlum açar rədd edilir', ! Bolmeler::var('admin') && ! Bolmeler::var(''));
+
+/* Təmizləmə: naməlum açar ATILIR, çatışmayan açar ilkin dəyəri alır. */
+$t = Bolmeler::temizle(['is' => '1', 'devet' => '0', 'yad' => '1']);
+check('naməlum açar süzülür', ! array_key_exists('yad', $t), array_keys($t));
+check('bütün açarlar doldurulur', count($t) === 3, $t);
+check('«1» açıq deməkdir', $t['is'] === true);
+check('«0» bağlı deməkdir', $t['devet'] === false);
+check('verilməyən açar ilkin dəyəri alır', $t['zarafat'] === true);
+check('ilkin dəyər ötürülə bilir',
+    Bolmeler::temizle([], ['zarafat' => false])['zarafat'] === false);
+
+/* Sətir formaları — parametr bazadan STRİNQ kimi gəlir. */
+foreach (['1' => true, '0' => false, 'true' => true, 'false' => false] as $xam => $gozlenen) {
+    check('«' . $xam . '» → ' . ($gozlenen ? 'açıq' : 'bağlı'),
+        Bolmeler::temizle(['is' => $xam])['is'] === $gozlenen);
+}
+
+/* ANA SƏHİFƏ. Seçilmiş bölmə bağlıdırsa açıq olana keçilir — əks halda
+   bir parametri səhv qoymaq saytın kökünü 404 edərdi. */
+$hamsi = ['is' => true, 'zarafat' => true, 'devet' => true];
+check('açıq seçim saxlanılır', Bolmeler::anaSehife($hamsi, 'zarafat') === 'zarafat');
+check('bağlı seçim açıq olana keçir',
+    Bolmeler::anaSehife(['is' => true, 'zarafat' => false, 'devet' => false], 'zarafat') === 'is');
+/* Ehtiyat sırası `ACARLAR` sırasıdır: iş qovluğu birincidir. */
+check('ehtiyat sırası ACARLAR sırasıdır',
+    Bolmeler::anaSehife(['is' => true, 'zarafat' => false, 'devet' => true], 'zarafat') === 'is');
+check('naməlum seçim də açıq olana keçir',
+    Bolmeler::anaSehife($hamsi, 'yad') === 'is');
+/* Heç nə açıq deyilsə `null` — çağıran «texniki fasilə» göstərir (503),
+   404 yox: ünvan var, məzmun müvəqqəti yoxdur. */
+check('hamısı bağlıdırsa null',
+    Bolmeler::anaSehife(['is' => false, 'zarafat' => false, 'devet' => false], 'is') === null);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

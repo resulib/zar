@@ -377,10 +377,35 @@ final class QovluqYoxlayici
         return $qeyd;
     }
 
-    /** Yoxlamaların oxuduğu mətn — dərc olunmuş gövdə, qaralama yox. */
+    /**
+     * Yoxlamaların oxuduğu mətn — dərc olunmuş gövdə, qaralama yox.
+     *
+     * BLOKLAR DA DAXİLDİR. Vərəqin mətni iki yerdə ola bilər: `body`
+     * (mətn rejimi) və ya `content.bloklar` (blok rejimi — seed ilə gələn
+     * 84 vərəq və AI-nin qurduğu hər vərəq belədir). Yalnız `body`
+     * oxunsaydı, kodun rəqəmləri bloklu vərəqdə HEÇ VAXT tapılmazdı və
+     * hər belə iş dərc olunmaz qalardı.
+     */
     protected static function senedMetni(array $s): string
     {
-        return (string) ($s['body'] ?? '');
+        $metn = (string) ($s['body'] ?? '');
+
+        /* Blokların bütün mətn dəyərləri düzə yığılır: quruluş burada
+           əhəmiyyətsizdir, axtarılan yalnız sözlər və rəqəmlərdir. */
+        /* Massiv DƏYİŞƏNƏ yığılır: `array_walk_recursive()` birinci arqumenti
+           istinadla alır və ifadə ötürülə bilməz. */
+        $bloklar = (array) ($s['bloklar'] ?? []);
+
+        array_walk_recursive(
+            $bloklar,
+            static function ($v) use (&$metn): void {
+                if (is_scalar($v)) {
+                    $metn .= "\n" . $v;
+                }
+            }
+        );
+
+        return $metn;
     }
 
     protected static function senedAdi(array $s): string

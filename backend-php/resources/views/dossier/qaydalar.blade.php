@@ -6,9 +6,15 @@
 @section('content')
 @include('dossier.partials.ust')
 
+@include('dossier.partials.bas', [
+  'nisan' => 'RƏSMİ SƏNƏD DEYİL',
+  'ust'   => 'Hüquqi qeyd',
+  'bas'   => 'İstifadə şərtləri və məxfilik',
+  'alt'   => 'Bu bölmə bədii detektiv oyunudur. Aşağıdakılar onun nə olduğunu və nə OLMADIĞINI dəqiq yazır.',
+])
+
 <section class="metn-sehife">
   <div class="sayt-en">
-    <h1>İstifadə şərtləri və məxfilik</h1>
 
     <h2>Məhsul nədir</h2>
     <p>Bu bölmə bədii detektiv oyunudur. Hər iş qovluğu uydurmadır: personajlar, qurumlar,

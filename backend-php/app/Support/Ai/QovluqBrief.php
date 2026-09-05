@@ -51,12 +51,12 @@ final class QovluqBrief
     ];
 
     /** Vərəqin blank növləri — `config('dossier.blank_novleri')` güzgüsü. */
-    public const BLANK = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'];
+    public const BLANK = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat', 'mehkeme'];
 
     /** Sənəd növləri — `config('dossier.sened_novleri')` güzgüsü. */
     public const NOV = [
         'testimony', 'expertise', 'camera', 'chat', 'log',
-        'receipt', 'plan', 'protocol', 'other',
+        'receipt', 'plan', 'protocol', 'biography', 'other',
     ];
 
     /* ----------------------------------------------------------------
@@ -67,6 +67,7 @@ final class QovluqBrief
     {
         $ad = Byuro::AD;
         $qisa = Byuro::QISA;
+        $mehkeme = Byuro::MEHKEME;
 
         return <<<METN
         Sən Azərbaycan dilində detektiv iş qovluqları yazan redaktorsan.
@@ -106,6 +107,18 @@ final class QovluqBrief
 
         İki vərəq bir-birini TƏKZİB ETSİN — həlli sübut edən ziddiyyət odur.
 
+        Hər dindirilən şəxs (ifadə və ya izahat verən) və zərərçəkən üçün BİR
+        «Tərcümeyi-hal» vərəqi planlaşdır (`doc_type: biography`, blank: resmi):
+        zərərçəkəninki işin əvvəlində, meyit müayinəsindən əvvəl; hər şəxsinki
+        öz ifadəsindən dərhal əvvəl. Vərəqdə qısa ümumi məlumat olur — doğum
+        ili, ünvan, iş yeri, ailə vəziyyəti — və o, qatili ELƏ VERMƏMƏLİDİR:
+        hamısı eyni quru, neytral dildə yazılır.
+
+        `culprit` qatilin TAM ADIDIR və şübhəlilər siyahısındakı adlardan biri
+        ilə HƏRFİ-HƏRFİNƏ eyni olmalıdır. `motive` və `proof` mətnləri məhz
+        HƏMİN şəxsdən danışmalıdır — başqa şübhəlinin adını çəkməsi qovluğu
+        ziddiyyətli edir.
+
         Bir vərəqi kodla bağla: dörd rəqəmli kod, və kodun rəqəmləri BAŞQA
         vərəqlərin mətnində gizlənsin. `lock.sources` həmin vərəqlərin sıra
         nömrələridir (1-dən).
@@ -123,6 +136,8 @@ final class QovluqBrief
      */
     public static function senedUser(array $skelet, array $plan): string
     {
+        $mehkeme = Byuro::MEHKEME;
+
         $hekaye = json_encode([
             'title'      => $skelet['title'] ?? '',
             'place'      => $skelet['place'] ?? '',
@@ -143,6 +158,18 @@ final class QovluqBrief
                 (string) ($p['blank_nov'] ?? 'resmi'),
                 (string) ($p['brief'] ?? ''),
             );
+
+            /* KİLİD RƏQƏMİ. Kod tapılası olmalıdır: rəqəm mətnə dairəyə
+               alınmış formada yerləşdirilir (`%%N%%`), yəni oxucu onu görür,
+               amma nə üçün olduğunu bilmir. Bu göstəriş olmadan model
+               rəqəmləri heç yerə qoymur və kilid həll edilə bilməz olur. */
+            if (isset($p['kilid_reqemi'])) {
+                $siyahi .= sprintf(
+                    "     BU VƏRƏQDƏ «%%%%%s%%%%» rəqəmi görünsün — nömrə, ölçü və ya\n"
+                    . "     seriya kimi, dairəyə alınmış halda. Nə üçün olduğu yazılmır.\n",
+                    (string) $p['kilid_reqemi'],
+                );
+            }
         }
 
         return <<<METN
@@ -153,7 +180,42 @@ final class QovluqBrief
         `meta_line` (bir quru sətir: sənəd nömrəsi, tarix, saat) və `body`.
 
         {$siyahi}
-        MƏTN QAYDALARI:
+        VƏRƏQİN QURULUŞU. Hər vərəq eyni görünməməlidir — sənədin növünə görə
+        ƏLAVƏ SAHƏLƏRİ doldur, qalanlarını `null` burax:
+
+        · İfadə və izahat → `body` (mətn) + `sahe` + `imza`. `sahe` yalnız
+          BURADA işlənir: «Kimdən» (ifadəni verən şəxsin tam adı),
+          «Vəzifə» (onun işi, müstəntiqin yox), «Alınma vaxtı».
+        · Qərar, protokol, ekspertiza rəyi, arayış → `body` + `imza`.
+          `sahe` YAZILMIR — bu sənədlərdə rekvizit sətri olmur.
+        · Yazışma (WhatsApp, mesaj) → `yazisma`: söhbətin adı və mesajlar
+          siyahısı. `body` yalnız bir-iki cümlə giriş olsun. `yon` = «cixan»
+          telefonun sahibindən gedən, «gelen» ona gələn mesajdır.
+        · Zəng detallaşdırması → `zeng`: saat, istiqamət, abunəçi, müddət.
+        · Jurnal, qəbz, iz cədvəli, növbə cədvəli → `cedvel`: başlıqlar və
+          sətirlər. Hər sətrin xana sayı başlıqların sayına bərabər olsun.
+        · Maddi sübutların siyahısı → `kart`: hər əşyanın adı və təsviri.
+        · Hadisə yeri baxışı, kamera çıxarışı → `foto`: bir-iki kadrın izahı
+          (şəkil sonra əlavə olunacaq, indi yalnız izah lazımdır).
+
+        İŞİN SONLUĞU. İki vərəq oyunçuya YALNIZ iş bağlandıqdan sonra göstərilir
+        və tapşırığında bu yazılır:
+        · Dindirilmə protokolu — qatilin etirafı. `body` SUAL-CAVAB formasındadır:
+          hər sual «**Sual:** …», hər cavab «**Cavab:** …» sətri ilə başlayır.
+          Qatil cinayəti necə hazırladığını, necə işlətdiyini və sonra nə
+          etdiyini danışır. Peşmanlıq və ya soyuqqanlılıq — hekayənin tonuna
+          uyğun. `sahe` doldurulur, `imza` müstəntiqindir.
+        · Məhkəmə qərarı — «{$mehkeme}» adından çıxarılır.
+          Təqsirli bilinir, AZADLIQDAN MƏHRUMETMƏ MÜDDƏTİ İLLƏRLƏ yazılır
+          (məsələn «11 (on bir) il»). Cəza əməlin ağırlığına uyğun olsun.
+          `imza` sədrindir: vəzifə «AFİB fiktiv məhkəmə sədri».
+
+        İMZA. Rəsmi sənədlərin hamısı imzalanır: `imza.vezife` yalnız
+        «AFİB müstəntiqi», «AFİB bölmə rəisi» və ya «AFİB tibbi eksperti»
+        ola bilər; `imza.ad` isə «A.Soyadov» formasındadır. Yazışma və zəng
+        çıxarışı imzalanmır — onlar texniki əlavələrdir.
+
+        MƏTN QAYDALARI (`body` üçün):
         · Boş sətir abzası bölür.
         · Vacib faktı **iki ulduzla** qalın et.
         · Müstəntiqin qeydini [[iki kvadrat mötərizə]] içinə al.
@@ -162,7 +224,7 @@ final class QovluqBrief
         · Kseroksda itmiş hissəni ((iki mötərizə)) arasına al.
         · Dairəyə alınmış rəqəmi %%iki faiz%% arasına al.
         · Başqa heç bir işarə, markdown başlığı və ya siyahı nişanı işlətmə.
-        · Hər vərəq 90–220 söz.
+        · Mətn vərəqi 60–200 söz; struktur sahəsi olan vərəqdə daha qısa.
         METN;
     }
 
@@ -211,7 +273,11 @@ final class QovluqBrief
                             ],
                         ],
                     ],
-                    'culprit'      => ['type' => 'integer'],
+                    /* İNDEKS DEYİL, AD. Model `culprit: 3` yazıb motivdə
+                       başqa şəxsi adlandıra bilər — iki dəyər arasında heç bir
+                       bağ yoxdur və uyğunsuzluq səssiz qalır. Ad isə mətnlə
+                       birbaşa tutuşdurula bilir. */
+                    'culprit'      => ['type' => 'string'],
                     'motive'       => ['type' => 'string'],
                     'motive_wrong' => ['type' => 'array', 'minItems' => 3, 'maxItems' => 3, 'items' => ['type' => 'string']],
                     'proof'        => ['type' => 'string'],
@@ -254,9 +320,25 @@ final class QovluqBrief
         ];
     }
 
-    /** @return array<string,mixed> */
+    /**
+     * Vərəq partiyasının sxemi.
+     *
+     * Model YALNIZ MƏLUMAT verir — blokları biz qururuq (`bloklar()`).
+     * Ona blok JSON-u yazdırmaq on üç növün açar cədvəlini əzbərlətmək
+     * deməkdir və o, gec-tez `BlokSxemi`-nin rədd edəcəyi bir şey qaytarardı.
+     * Burada isə hər sahə sadə siyahıdır: cədvəl xanaları, mesajlar, zənglər.
+     *
+     * Boş sahələr `null` ilə gəlir: OpenAI-nin strict rejimi hər açarı
+     * `required` tələb edir, ona görə «yoxdur» yalnız növ kimi ifadə oluna
+     * bilər.
+     *
+     * @return array<string,mixed>
+     */
     public static function senedSchema(): array
     {
+        $metn = ['type' => 'string'];
+        $siyahi = ['type' => 'array', 'items' => $metn];
+
         return [
             'name'   => 'is_qovlugu_senedleri',
             'strict' => true,
@@ -269,11 +351,71 @@ final class QovluqBrief
                         'type' => 'array', 'minItems' => 1, 'maxItems' => self::PARTIYA,
                         'items' => [
                             'type' => 'object', 'additionalProperties' => false,
-                            'required' => ['no', 'meta_line', 'body'],
+                            'required' => ['no', 'meta_line', 'body', 'sahe', 'cedvel', 'yazisma', 'zeng', 'kart', 'foto', 'imza'],
                             'properties' => [
                                 'no'        => ['type' => 'integer'],
-                                'meta_line' => ['type' => 'string'],
-                                'body'      => ['type' => 'string'],
+                                'meta_line' => $metn,
+                                'body'      => $metn,
+
+                                /* Sahə sətirləri: «Kimdən … Vəzifə … Alınma vaxtı». */
+                                'sahe' => ['type' => ['array', 'null'], 'items' => [
+                                    'type' => 'object', 'additionalProperties' => false,
+                                    'required' => ['ad', 'deyer'],
+                                    'properties' => ['ad' => $metn, 'deyer' => $metn],
+                                ]],
+
+                                'cedvel' => ['type' => ['object', 'null'], 'additionalProperties' => false,
+                                    'required' => ['basliqlar', 'setirler'],
+                                    'properties' => [
+                                        'basliqlar' => $siyahi,
+                                        'setirler'  => ['type' => 'array', 'items' => $siyahi],
+                                    ],
+                                ],
+
+                                'yazisma' => ['type' => ['object', 'null'], 'additionalProperties' => false,
+                                    'required' => ['sohbet', 'gorulme', 'mesajlar'],
+                                    'properties' => [
+                                        'sohbet'  => $metn,
+                                        'gorulme' => $metn,
+                                        'mesajlar' => ['type' => 'array', 'items' => [
+                                            'type' => 'object', 'additionalProperties' => false,
+                                            'required' => ['saat', 'yon', 'metn'],
+                                            'properties' => [
+                                                'saat' => $metn,
+                                                'yon'  => ['type' => 'string', 'enum' => ['cixan', 'gelen']],
+                                                'metn' => $metn,
+                                            ],
+                                        ]],
+                                    ],
+                                ],
+
+                                'zeng' => ['type' => ['array', 'null'], 'items' => [
+                                    'type' => 'object', 'additionalProperties' => false,
+                                    'required' => ['saat', 'yon', 'abunec', 'muddet'],
+                                    'properties' => [
+                                        'saat'    => $metn,
+                                        'yon'     => ['type' => 'string', 'enum' => ['cixan', 'gelen']],
+                                        'abunec'  => $metn,
+                                        'muddet'  => $metn,
+                                    ],
+                                ]],
+
+                                'kart' => ['type' => ['array', 'null'], 'items' => [
+                                    'type' => 'object', 'additionalProperties' => false,
+                                    'required' => ['ad', 'metn'],
+                                    'properties' => ['ad' => $metn, 'metn' => $metn],
+                                ]],
+
+                                'foto' => ['type' => ['array', 'null'], 'items' => [
+                                    'type' => 'object', 'additionalProperties' => false,
+                                    'required' => ['izah'],
+                                    'properties' => ['izah' => $metn],
+                                ]],
+
+                                'imza' => ['type' => ['object', 'null'], 'additionalProperties' => false,
+                                    'required' => ['vezife', 'ad'],
+                                    'properties' => ['vezife' => $metn, 'ad' => $metn],
+                                ],
                             ],
                         ],
                     ],
@@ -311,10 +453,20 @@ final class QovluqBrief
             $problem[] = 'Model dörd şübhəli qaytarmadı — əskik olanları əl ilə əlavə edin.';
         }
 
-        /* Qatilin indeksi siyahıdan KƏNARA çıxa bilməz: çıxsaydı, heç kim
-           işarələnməzdi və səbəb görünməzdi. */
-        $qatil = (int) ($raw['culprit'] ?? 0);
-        $qatil = ($subheli !== [] && isset($subheli[$qatil])) ? $qatil : 0;
+        /* Qatil ADA görə tapılır. Tapılmasa birinci şübhəli götürülür və
+           idarəçiyə deyilir — heç kim işarələnməsəydi, səbəb görünməzdi. */
+        $qatilAd = self::metn($raw['culprit'] ?? '');
+        $qatil = self::qatilIndeksi($qatilAd, $subheli);
+
+        if ($qatil === null) {
+            $problem[] = 'Qatilin adı («' . $qatilAd . '») şübhəlilər siyahısında yoxdur — birinci şübhəli işarələndi.';
+            $qatil = 0;
+        }
+
+        /* Motiv və sübut mətnləri BAŞQA şübhəlini adlandırırsa, qovluq öz-özü
+           ilə ziddiyyətlidir: birinci sual bir adı, ikinci sual başqasını
+           göstərir. Səssizcə düzəltmək olmaz — mətni idarəçi oxumalıdır. */
+        $problem = array_merge($problem, self::qatilZiddiyyeti($raw, $subheli, $qatil));
 
         $senedler = [];
         $i = 0;
@@ -390,10 +542,10 @@ final class QovluqBrief
     }
 
     /**
-     * Bir partiya vərəq mətni.
+     * Bir partiya vərəq — xam məlumat, hələ blok deyil.
      *
      * @param array<string,mixed> $raw
-     * @return array<int,array{meta_line:string,body:string}>  vərəq nömrəsi → mətn
+     * @return array<int,array<string,mixed>>  vərəq nömrəsi → məlumat
      */
     public static function normalizeSenedler(array $raw): array
     {
@@ -409,12 +561,356 @@ final class QovluqBrief
             $out[$no] = [
                 'meta_line' => self::qisa(self::metn($d['meta_line'] ?? ''), 200),
                 'body'      => self::govde((string) ($d['body'] ?? '')),
+                'sahe'      => $d['sahe'] ?? null,
+                'cedvel'    => $d['cedvel'] ?? null,
+                'yazisma'   => $d['yazisma'] ?? null,
+                'zeng'      => $d['zeng'] ?? null,
+                'kart'      => $d['kart'] ?? null,
+                'foto'      => $d['foto'] ?? null,
+                'imza'      => $d['imza'] ?? null,
             ];
         }
 
         return $out;
     }
 
+    /**
+     * Vərəqin BLOKLARINI qurur — modelin verdiyi məlumatdan.
+     *
+     * Model blok JSON-u yazmır və yazmamalıdır: on üç növün açar cədvəli var,
+     * `BlokSxemi` naməlum açarı XƏTA sayır, və model gec-tez uyduracaq bir
+     * açar əlavə edəcək. Burada isə hər blok bizim əlimizlə yığılır — yəni
+     * çıxış həmişə sxemə uyğundur.
+     *
+     * Vərəqin quruluşu real sənədin quruluşudur: blank → başlıq → rekvizit
+     * sətirləri → mətn → struktur (cədvəl / yazışma / zəng / sübut / foto) →
+     * imza. Fiziki qat (möhür, kağız, holoqram) da buradan gəlir, çünki onsuz
+     * bütün vərəqlər eyni təmiz blank kimi görünür.
+     *
+     * @param array<string,mixed> $d
+     * @return array<string,mixed>  `content` sütununun dəyəri
+     */
+    public static function bloklar(array $d, string $ad, string $blankNov, int $no, string $isNo, string $docType = ''): array
+    {
+        $bloklar = [];
+
+        /* 1. Blank — sənədin növünə uyğun letterhead. */
+        $bloklar[] = ['tip' => 'blank', 'nov' => in_array($blankNov, self::BLANK, true) ? $blankNov : 'resmi'];
+
+        /* 2. Başlıq. Meta sətri altda kiçik yazı olur. */
+        $basliq = ['tip' => 'basliq', 'ad' => self::qisa(self::metn($ad), 160)];
+        $alt = self::qisa(self::metn($d['meta_line'] ?? ''), 200);
+
+        if ($alt !== '') {
+            $basliq['alt'] = $alt;
+        }
+
+        $bloklar[] = $basliq;
+
+        /* Tərcümeyi-hal: portret foto çərçivəsi başlıqdan dərhal sonra durur —
+           şəkil sonra yüklənir, yeri isə rekvizitlərin üstündədir. Sondakı
+           ümumi 4:3 çərçivələr bu növdə buraxılır ki, bir vərəqdə iki cür
+           boş çərçivə olmasın. */
+        if ($docType === 'biography') {
+            $bloklar[] = ['tip' => 'foto', 'nisbet' => '3:4', 'izah' => '3×4 sm fotoşəkil — vərəqəyə əlavə olunur'];
+            unset($d['foto']);
+        }
+
+        /* 3. Rekvizit sətirləri — «Kimdən … Vəzifə … Alınma vaxtı». */
+        $sahe = self::saheler($d['sahe'] ?? null);
+
+        if ($sahe !== []) {
+            $bloklar[] = ['tip' => 'sahe', 'setirler' => $sahe];
+        }
+
+        /* 4. Mətn. */
+        $abzaslar = self::abzaslar((string) ($d['body'] ?? ''));
+
+        if ($abzaslar !== []) {
+            $bloklar[] = ['tip' => 'metn', 'abzaslar' => $abzaslar];
+        }
+
+        /* 5. Struktur — vərəqi digərlərindən ayıran hissə. */
+        $bloklar = array_merge($bloklar, self::strukturBloklari($d));
+
+        /* 6. İmza. */
+        $imza = self::imza($d['imza'] ?? null);
+
+        if ($imza !== null) {
+            $bloklar[] = $imza;
+        }
+
+        return [
+            'bloklar'  => $bloklar,
+            'mohurler' => self::mohurler($no, $isNo, $blankNov),
+            'kagiz'    => self::kagiz($no),
+            /* Holoqram YALNIZ təsdiqedici sənədlərdə: folqa bahalıdır və hər
+               vərəqdə olan qoruma qoruma deyil. */
+            'holoqram' => in_array($blankNov, ['qerar', 'ekspert'], true),
+        ];
+    }
+
+    /* ---------- blok qurucuları ---------- */
+
+    /** @return list<array<string,mixed>> */
+    protected static function strukturBloklari(array $d): array
+    {
+        $out = [];
+
+        /* Cədvəl — jurnal, qəbz, iz siyahısı. Xana sayı başlıq sayına
+           BƏRABƏRLƏŞDİRİLİR: `BlokSxemi` fərqi xəta sayır və model tez-tez
+           bir xananı unudur. */
+        $c = $d['cedvel'] ?? null;
+
+        if (is_array($c)) {
+            $basliqlar = self::sətirlər($c['basliqlar'] ?? [], 6, 40);
+            $setirler = [];
+
+            foreach (array_slice((array) ($c['setirler'] ?? []), 0, 24) as $sr) {
+                $sr = self::sətirlər($sr, count($basliqlar), 120);
+
+                while (count($sr) < count($basliqlar)) {
+                    $sr[] = '—';
+                }
+
+                $setirler[] = $sr;
+            }
+
+            if ($basliqlar !== [] && $setirler !== []) {
+                $out[] = ['tip' => 'cedvel', 'basliqlar' => $basliqlar, 'setirler' => $setirler];
+            }
+        }
+
+        /* Yazışma — ekran görüntüsü. `gunler` quruluşu `BlokSxemi`-nindir;
+           model isə düz mesaj siyahısı verir və günə bölməni biz edirik. */
+        $y = $d['yazisma'] ?? null;
+
+        if (is_array($y)) {
+            $mesajlar = [];
+
+            foreach (array_slice((array) ($y['mesajlar'] ?? []), 0, 30) as $m) {
+                if (! is_array($m)) {
+                    continue;
+                }
+
+                $metn = self::qisa(self::metn($m['metn'] ?? ''), 300);
+
+                if ($metn === '') {
+                    continue;
+                }
+
+                $mesajlar[] = [
+                    'nov'  => 'metn',
+                    'yon'  => in_array($m['yon'] ?? '', ['cixan', 'gelen'], true) ? (string) $m['yon'] : 'gelen',
+                    'metn' => $metn,
+                    /* Yalnız HH:MM. Model bura tez-tez tarix yazır («14 noyabr»)
+                       və o, mesaj baloncuğunun altında saat kimi görünərək
+                       ekran görüntüsünü yalan edir. */
+                    'saat' => self::saat($m['saat'] ?? ''),
+                ];
+            }
+
+            if ($mesajlar !== []) {
+                $blok = [
+                    'tip'    => 'yazisma',
+                    'sohbet' => self::qisa(self::metn($y['sohbet'] ?? ''), 60) ?: 'Yazışma',
+                    'gunler' => [['tarix' => '', 'mesajlar' => $mesajlar]],
+                ];
+
+                $gor = self::qisa(self::metn($y['gorulme'] ?? ''), 60);
+
+                if ($gor !== '') {
+                    $blok['gorulme'] = $gor;
+                }
+
+                $out[] = $blok;
+            }
+        }
+
+        /* Zəng detallaşdırması. */
+        $zengler = [];
+
+        foreach (array_slice((array) ($d['zeng'] ?? []), 0, 20) as $z) {
+            if (! is_array($z)) {
+                continue;
+            }
+
+            $saat = self::saat($z['saat'] ?? '');
+            $abunec = self::qisa(self::metn($z['abunec'] ?? ''), 60);
+
+            if ($saat === '' || $abunec === '') {
+                continue;
+            }
+
+            $zengler[] = [
+                'saat'   => $saat,
+                'yon'    => in_array($z['yon'] ?? '', ['cixan', 'gelen'], true) ? (string) $z['yon'] : 'gelen',
+                'abunec' => $abunec,
+                'muddet' => self::qisa(self::metn($z['muddet'] ?? ''), 24),
+            ];
+        }
+
+        if ($zengler !== []) {
+            $out[] = ['tip' => 'zeng', 'zengler' => $zengler];
+        }
+
+        /* Maddi sübutlar — hər əşyanın foto yeri ilə. */
+        $kartlar = [];
+
+        foreach (array_slice((array) ($d['kart'] ?? []), 0, 12) as $k) {
+            if (! is_array($k)) {
+                continue;
+            }
+
+            $kad = self::qisa(self::metn($k['ad'] ?? ''), 120);
+
+            if ($kad === '') {
+                continue;
+            }
+
+            $kartlar[] = ['ad' => $kad, 'metn' => self::qisa(self::metn($k['metn'] ?? ''), 900)];
+        }
+
+        if ($kartlar !== []) {
+            $out[] = ['tip' => 'kart', 'acar' => 'subutlar', 'kartlar' => $kartlar];
+        }
+
+        /* Foto yerləri — şəkil sonra yüklənir, çərçivə isə indidən durur. */
+        $i = 0;
+
+        foreach (array_slice((array) ($d['foto'] ?? []), 0, 4) as $ft) {
+            if (! is_array($ft)) {
+                continue;
+            }
+
+            $izah = self::qisa(self::metn($ft['izah'] ?? ''), 200);
+
+            if ($izah === '') {
+                continue;
+            }
+
+            $out[] = ['tip' => 'foto', 'no' => ++$i, 'nisbet' => '4:3', 'izah' => $izah];
+        }
+
+        return $out;
+    }
+
+    /** @return array<string,mixed>|null */
+    protected static function imza(mixed $xam): ?array
+    {
+        if (! is_array($xam)) {
+            return null;
+        }
+
+        $vezife = self::qisa(self::metn($xam['vezife'] ?? ''), 80);
+
+        if ($vezife === '') {
+            return null;
+        }
+
+        $blok = ['tip' => 'imza', 'vezife' => $vezife];
+        $ad = self::qisa(self::metn($xam['ad'] ?? ''), 60);
+
+        if ($ad !== '') {
+            $blok['ad'] = $ad;
+        }
+
+        return $blok;
+    }
+
+    /** @return list<array{0:string,1:string}> */
+    protected static function saheler(mixed $xam): array
+    {
+        $out = [];
+
+        foreach (array_slice((array) $xam, 0, 6) as $x) {
+            if (! is_array($x)) {
+                continue;
+            }
+
+            $ad = self::qisa(self::metn($x['ad'] ?? ''), 40);
+
+            if ($ad === '') {
+                continue;
+            }
+
+            $out[] = [$ad, self::qisa(self::metn($x['deyer'] ?? ''), 120)];
+        }
+
+        return $out;
+    }
+
+    /** @return list<string> */
+    protected static function abzaslar(string $metn): array
+    {
+        $out = [];
+
+        foreach (preg_split('/\n{2,}/u', $metn) ?: [] as $a) {
+            $a = trim($a);
+
+            if ($a !== '') {
+                $out[] = self::qisa($a, 1600);
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Möhür qatı.
+     *
+     * Yer və bucaq vərəqin NÖMRƏSİNDƏN törəyir: `rand()` işlədilsəydi, vərəq
+     * ikinci dəfə açılanda möhür yerini dəyişər və sənəd özünü saxta elan
+     * edərdi — `Imza::yol()` ilə eyni qayda. Möhür imza zonasındadır, çünki
+     * möhür imzanı təsdiq edir.
+     *
+     * @return list<array<string,mixed>>
+     */
+    protected static function mohurler(int $no, string $isNo, string $blankNov): array
+    {
+        $orta = $blankNov === 'qerar' ? 'TƏSDİQ EDİRƏM' : 'QEYDƏ ALINIB';
+
+        return [[
+            'forma'      => 'daire',
+            'reng'       => $blankNov === 'qerar' ? 'mor' : 'mavi',
+            'seffaflik'  => 0.5,
+            'metn'       => [
+                Byuro::QISA . ' · İSTİNTAQ BÖLMƏSİ',
+                $orta,
+                $isNo,
+                'FİKTİV',
+                'OYUN MATERİALI',
+            ],
+            'x'          => 62 + ($no * 7) % 16,
+            'y'          => 78 + ($no * 5) % 6,
+            'olcu'       => 148 + ($no * 11) % 20,
+            'bucaq'      => -16 + ($no * 13) % 26,
+        ]];
+    }
+
+    /**
+     * Fiziki qat — köhnəlmə və qat izi.
+     *
+     * Ağır effektlər (`leke`, `cirilma`, `kseroks`) İŞLƏDİLMİR: onların
+     * yerini məzmun müəllifi seçməlidir, yoxsa hər vərəq eyni ləkə ilə çıxır
+     * və effekt təsadüfi deyil, şablon kimi oxunur.
+     *
+     * @return array<string,mixed>
+     */
+    protected static function kagiz(int $no): array
+    {
+        $out = ['kohnelme' => 1 + $no % 2];
+
+        if ($no % 3 === 0) {
+            $out['qat'] = [0.34 + ($no % 4) * 0.08];
+        }
+
+        if ($no % 5 === 0) {
+            $out['atac'] = ['sol-ust', 'sag-ust', 'sol-alt'][$no % 3];
+        }
+
+        return $out;
+    }
     /**
      * Vərəqin mətni.
      *
@@ -479,6 +975,74 @@ final class QovluqBrief
                 'explanation' => '',
             ],
         ];
+    }
+
+    /**
+     * Şübhəlinin indeksi — ada görə.
+     *
+     * Əvvəlcə tam uyğunluq, sonra soyad axtarılır: model bəzən «Hüseynli
+     * Kamran» yazır, siyahıda isə «Hüseynli Kamran Ənvər oğlu» durur.
+     *
+     * @param list<array<string,mixed>> $subheli
+     */
+    protected static function qatilIndeksi(string $ad, array $subheli): ?int
+    {
+        if ($ad === '' || $subheli === []) {
+            return null;
+        }
+
+        foreach ($subheli as $i => $s) {
+            if ((string) $s['name'] === $ad) {
+                return $i;
+            }
+        }
+
+        $soyad = self::soyad($ad);
+
+        foreach ($subheli as $i => $s) {
+            if ($soyad !== '' && $soyad === self::soyad((string) $s['name'])) {
+                return $i;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Motiv və sübut mətni BAŞQA şübhəlini adlandırırmı.
+     *
+     * @param array<string,mixed> $raw
+     * @param list<array<string,mixed>> $subheli
+     * @return list<string>
+     */
+    protected static function qatilZiddiyyeti(array $raw, array $subheli, int $qatil): array
+    {
+        $out = [];
+
+        foreach (['motive' => 'Motiv', 'proof' => 'Sübut'] as $acar => $ad) {
+            $metn = self::metn($raw[$acar] ?? '');
+
+            foreach ($subheli as $i => $sb) {
+                $soyad = self::soyad((string) $sb['name']);
+
+                if ($i !== $qatil && $soyad !== '' && mb_strpos($metn, $soyad) !== false) {
+                    $out[] = $ad . ' mətni «' . $sb['name'] . '»-dan danışır, qatil isə «'
+                        . $subheli[$qatil]['name'] . '» işarələnib. Cavab tabında düzəldin.';
+
+                    break;
+                }
+            }
+        }
+
+        return $out;
+    }
+
+    /** Tam addan soyad — «Hüseynli Kamran Ənvər oğlu» → «Hüseynli». */
+    protected static function soyad(string $ad): string
+    {
+        $par = preg_split('/\s+/u', trim($ad)) ?: [];
+
+        return $par === [] ? '' : (string) $par[0];
     }
 
     /**
@@ -570,6 +1134,17 @@ final class QovluqBrief
 
     /* Kəsmə emoji silindikdən SONRA gedir: əks halda emojinin yerində
        qalan boşluq sətrin sonunda ilişib qalır. */
+    /**
+     * Saat — «HH:MM». Uyğun gəlməyən dəyər BOŞ qalır.
+     *
+     * Sərbəst mətn saxlansaydı, «14 noyabr» mesajın altında saat kimi
+     * görünərdi və ekran görüntüsü öz-özünü təkzib edərdi.
+     */
+    protected static function saat(mixed $v): string
+    {
+        return preg_match('/\b([01]?\d|2[0-3]):[0-5]\d\b/', self::metn($v), $m) === 1 ? $m[0] : '';
+    }
+
     protected static function metn(mixed $v): string
     {
         return trim(self::emojisiz(is_scalar($v) ? (string) $v : ''));

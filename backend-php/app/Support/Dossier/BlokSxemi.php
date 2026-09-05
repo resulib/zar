@@ -31,7 +31,7 @@ final class BlokSxemi
     public const NISAN_NOV   = ['noqte', 'olcu', 'ox', 'shimal'];
     public const KILID_NOV   = ['reqem', 'soz', 'tarix'];
     /** Blank başlığının növləri — `config('dossier.blank_novleri')` ilə eyni. */
-    public const BLANK_NOV   = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'];
+    public const BLANK_NOV   = ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat', 'mehkeme'];
 
     /* Mətndaxili şəkil növləri. Şəkil BLOK DEYİL — `{{ sekil:slug }}` nişanı
        ilə çağırılır və `BLOKLAR` sayına toxunmur. Siyahı burada saxlanılır,
@@ -249,6 +249,14 @@ final class BlokSxemi
                     }
                 }
             }
+        }
+
+        /* Foto blokunun şəkli də kitabxana açarıdır — kartın qaydası: fayl
+           adı və ya URL deyil, yenidən yükləmədə sağ qalan açar. `null` və
+           boş sətir «foto əlavə edilməyib» deməkdir və icazəlidir. */
+        if ($tip === 'foto' && isset($b['sekil']) && $b['sekil'] !== null
+            && $b['sekil'] !== '' && ! self::acarDuzgun($b['sekil'])) {
+            $err[] = $bas . ': «sekil» kitabxana açarı olmalıdır (kiçik hərf, rəqəm, defis).';
         }
 
         if ($tip === 'zeng') {

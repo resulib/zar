@@ -9,6 +9,8 @@
     <nav class="sayt-nav">
       <a href="{{ route('dossier.index') }}#isler">İşlər</a>
       <a href="{{ route('dossier.reyting') }}">Reytinq</a>
+      {{-- Kassa bölmənin ÖZ ekranıdır: kabinet digər məhsuldur və bağlana bilər. --}}
+      <a href="{{ route('dossier.balans') }}">Balans</a>
       @if(auth()->check())
         <a href="{{ route('dossier.profil') }}">Vəsiqəm</a>
       @else

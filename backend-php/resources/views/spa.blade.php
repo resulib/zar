@@ -322,7 +322,7 @@
         </ul>
         <!-- Dəvətnamələr ayrı məhsuldur: keçid YALNIZ bu istiqamətdədir,
              dəvətnamə səhifələri bu saytı heç vaxt xatırlatmır. -->
-        <p class="foot-ayri">
+        <p class="foot-ayri" id="footDevet">
           Real tədbiriniz üçün ciddi dəvətnamə lazımdırsa —
           <a href="/devetname">Dəvətnamələr</a> bölməsi.
         </p>
@@ -426,6 +426,6 @@
 <script src="{{ asset('assets/sosial.js') }}?v=75f99e3b"></script>
 <script src="{{ asset('assets/doc.js') }}?v=9a536a3c"></script>
 <script src="{{ asset('assets/export.js') }}?v=5f74b5a6"></script>
-<script src="{{ asset('assets/app.js') }}?v=36885c75"></script>
+<script src="{{ asset('assets/app.js') }}?v=b428132a"></script>
 </body>
 </html>

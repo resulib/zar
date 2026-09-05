@@ -45,7 +45,12 @@
       <tr>
         <td>
           <span class="t" style="font-size:13px">{{ $u->displayName() }}</span>
-          <span class="s mono">{{ substr($u->uuid, 0, 13) }}</span>
+          {{-- Hesabın NECƏ açıldığı: qonaq · parol · Google. Dəstək sualı
+               «parolumu unutdum» olanda ilk baxılan yer budur — Google ilə
+               açılmış hesabda parol ümumiyyətlə yoxdur. --}}
+          <span class="s mono">{{ substr($u->uuid, 0, 13) }} ·
+            @if($u->isGuest())qonaq@elseif($u->hasGoogle() && $u->hasPassword())Google+parol@elseif($u->hasGoogle())Google@else parol @endif
+          </span>
         </td>
         @php($pr = $u->investigatorProfile)
         <td class="mono">

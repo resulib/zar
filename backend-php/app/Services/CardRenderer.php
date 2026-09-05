@@ -53,6 +53,15 @@ class CardRenderer
     private const MUREKKEB2 = '#4A5568';
     private const MUREKKEB3 = '#8792A6';
 
+    /**
+     * Möhürün qırmızısı — `dossier.css` `--red`.
+     *
+     * HƏRFİ HEX-DİR, `var(--red)` DEYİL: kart <img> ilə kətana çəkilir və
+     * orada CSS dəyişəni həll olunmur (bu faylın 2-ci qaydası). Dəyər
+     * `check-mustentiq.js` tərəfindən `dossier.css` ilə tutuşdurulur.
+     */
+    public const QIRMIZI = '#8A2A2A';
+
     /** Ad sütununun eni — avtomatik kiçilmənin həddi. */
     private const AD_EN = 276;
 
@@ -142,6 +151,43 @@ class CardRenderer
 
         // Rütbə nişanı — imzanın sağında, boş sahədə
         $o .= '<g transform="translate(400 556)">' . $this->nisan($nisan, $reng) . '</g>';
+
+        /* HOLOQRAM — ŞƏKLİN SAĞ AŞAĞI KÜNCÜNDƏ, dördə bir hissəsi fotonun
+           üstündə, qalanı kartın özündə.
+           Real vəsiqədə folqa məhz portretin üzərinə basılır: onu qaldırmadan
+           şəkli dəyişdirmək mümkün olmur, yəni qoruma məhz qorunası şeyin
+           üstündədir. Vərəqdə folqa sənədin küncündədir, çünki orada
+           qorunan şey mətndir; burada isə üzdür.
+
+           ŞƏFFAFDIR VƏ ŞƏFFAF QALMALIDIR: folqa altındakı sifət oxunmasa,
+           yama qorumanı deyil, ləkəni göstərir.
+
+           ŞƏRTSİZDİR — folqa kartın öz materialıdır, vurulan akt deyil,
+           ona görə təyinat gözləyən kartda da var. */
+        $o .= '<g transform="translate(159 303) scale(0.90)" opacity="0.78">'
+            . Nisan::holoqram($id . '-hl', ['reng' => self::MUREKKEB2, 'opaklik' => 0.40]) . '</g>';
+
+        /* MÖHÜR — SAĞ AŞAĞIDA, imzanın əksində. Vərəqin qaydası dəyişmir:
+           imza solda, möhür sağda, heç nə üst-üstə düşmür. Möhür sənədin
+           BOŞ sahəsinə vurulur — imzanın üstünə düşsəydi, təsdiqlədiyi
+           yeganə şeyi basdırıb yanında ağ yer qoyardı.
+
+           QIRMIZIDIR: vərəqin öz möhürləri mordur (`--stamp`) və sənədi
+           QEYDƏ ALIR; bu isə şəxsi təsdiqləyən ayrı bir akdır.
+
+           YALNIZ VƏSİQƏ VERİLİBSƏ: nömrəsi olmayan kart hələ verilməyib,
+           möhür isə verilmə faktının özüdür. */
+        if ($verilb) {
+            $o .= '<g transform="translate(382 664) scale(1.22) rotate(-7 50 50)" opacity="0.82">'
+                . Nisan::mohur($id . '-m', [
+                    'ust'    => Byuro::QISA . ' · KADR ŞÖBƏSİ',
+                    'orta'   => 'VƏSİQƏ',
+                    'no'     => (string) $p->badge_number,
+                    'etiket' => 'FİKTİV',
+                    'alt'    => 'QEYDƏ ALINIB',
+                    'reng'   => self::QIRMIZI,
+                ]) . '</g>';
+        }
 
         // Barkod — nişan nömrəsini kodlayır
         if ($verilb) {
@@ -291,14 +337,22 @@ class CardRenderer
         return 'data:image/jpeg;base64,' . base64_encode((string) file_get_contents($yol));
     }
 
-    /** Etiket solda, dəyər sağda, arada nöqtəli xətt — vərəqin `sahe` bloku. */
+    /**
+     * Bir sahə sətri: etiket solda, dəyər sağda, altında ayırıcı.
+     *
+     * ETİKET VƏ DƏYƏR EYNİ XƏTT ÜZƏRİNDƏDİR. Əvvəl dəyər `y + 30`-da idi,
+     * yəni nöqtəli xəttin ALTINDA, sətirlər arası məsafə isə 44 — belədə
+     * «Cinayət Axtarışı» öz etiketindən uzaq, NÖVBƏTİ etiketə yaxın düşür
+     * və vəsiqə «şöbə boşdur, nömrə şöbədir» kimi oxunurdu. İndi nöqtəli
+     * xətt sətrin ALTINDA, ayırıcı rolunda durur.
+     */
     protected function sahe(string $etiket, string $deyer, float $y): string
     {
         $o  = $this->t($etiket, 36, $y, ['size' => 13, 'fill' => self::MUREKKEB3, 'ls' => 2]);
-        $o .= '<path d="M36 ' . ($y + 10) . 'H' . (self::EN - 36) . '" stroke="' . self::MUREKKEB3
-            . '" stroke-width="0.9" stroke-dasharray="2 3.5" opacity="0.65"/>';
-        $o .= $this->t($this->sigdir($deyer, 300, 17, 12), self::EN - 36, $y + 30,
+        $o .= $this->t($this->sigdir($deyer, 268, 17, 12), self::EN - 36, $y,
             ['size' => 17, 'anchor' => 'end', 'weight' => 600]);
+        $o .= '<path d="M36 ' . ($y + 14) . 'H' . (self::EN - 36) . '" stroke="' . self::MUREKKEB3
+            . '" stroke-width="0.9" stroke-dasharray="2 3.5" opacity="0.55"/>';
 
         return $o;
     }

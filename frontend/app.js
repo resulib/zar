@@ -46,7 +46,19 @@
     init: function () {
       return fetch('/api/health', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-        .then(function (j) { API.online = true; API.provider = j.provider || 'simulation'; })
+        .then(function (j) {
+          API.online = true;
+          API.provider = j.provider || 'simulation';
+          /* Dəvətnamə bölməsi bağlıdırsa altlıqdakı keçid gizlədilir —
+             yoxsa yeganə keçidimiz 404-ə aparardı. Şərt BURADA olmalıdır:
+             `index.html`-də Blade direktivi yazmaq olmaz (`build-laravel.js`
+             onu rədd edir), ona görə vəziyyət `/api/health`-dən gəlir. */
+          var b = j.bolmeler || {};
+          if (b.devet === false) {
+            var fd = document.getElementById('footDevet');
+            if (fd) fd.hidden = true;
+          }
+        })
         .catch(function () { API.online = false; });
     },
     _post: function (url, body) {

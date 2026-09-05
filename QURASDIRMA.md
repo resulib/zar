@@ -254,7 +254,17 @@ php artisan view:cache
 php artisan migrate --force
 ```
 
-`.env`-də:
+`.env` üçün hazır nümunə var — əl ilə yığmaq lazım deyil:
+
+```bash
+cd backend-php
+cp .env.production.example .env
+php artisan key:generate
+# APP_URL, EPOINT_* və (istəsəniz) GOOGLE_* / OPENAI_API_KEY doldurun
+php doctor.php
+```
+
+Ən vacib sətirlər:
 
 ```
 APP_ENV=production
@@ -262,8 +272,28 @@ APP_DEBUG=false
 APP_URL=https://sizin-domen.az
 PAYMENT_PROVIDER=epoint
 ALLOW_SIMULATED_PAYMENTS=false
-ADMIN_PASSWORD=uzun-ve-tesadufi-parol
+ADMIN_PASSWORD=            # boş → seeder təsadüfi güclü parol yaradır və bir dəfə yazır
 ```
+
+### Hansı bölmələr canlı olacaq
+
+`APP_ENV=production` olduqda sayt **yalnız iş qovluğu ilə** qalxır — bu, ilkin
+dəyərin özündədir, `.env`-də unudula bilən sətir deyil:
+
+| ünvan | cavab |
+|---|---|
+| `/` | 302 → `/is` |
+| `/is`, `/is/balans`, `/is/reyting`, `/is/mustentiq` | açıq |
+| `/devetname`, `/kabinet`, `/r/{nömrə}`, `/api/catalog` | **404** |
+| `/api/packs`, ödəniş, giriş yolları | açıq (kredit hər iki məhsulda işlənir) |
+
+Bölmələri sonradan **`/admin/parametrler`** səhifəsindən açıb-bağlaya
+bilərsiniz; oradakı seçim `.env`-dən də, ilkin dəyərdən də üstündür. Panel
+həm də vəziyyətin mənbəyini yazır (saxlanmış seçim, yoxsa mühitin ilkin
+dəyəri) və «seçimi sil» düyməsi ilə ilkin dəyərə qaytarır.
+
+> **Zarafat bölməsini açmazdan əvvəl bilin:** o bağlı olduqda `/r/{nömrə}` də
+> bağlıdır, yəni dərc olunmuş sənədlərin QR ünvanları 404 verir.
 
 ### Təhlükəsizlik yoxlama siyahısı
 
@@ -274,6 +304,8 @@ ADMIN_PASSWORD=uzun-ve-tesadufi-parol
 | `ADMIN_PASSWORD` dəyişdirilsin | `admin12345` istehsalatda seeder tərəfindən rədd edilir; boş buraxsanız təsadüfi parol yaradılır. |
 | `php artisan migrate --force` | `cache` cədvəli olmadan bütün `throttle:*` limitləri (brute-force qoruması) səssizcə işləmir. |
 | `APP_DEBUG=false` | Xəta səhifələri konfiqurasiyanı və yolları açır. |
+| `.env.production.example`-dən başlayın | Əl ilə yığılan `.env`-də ən çox `CACHE_STORE` və `ALLOW_SIMULATED_PAYMENTS` unudulur. |
+| `settings` cədvəlində `bolme_*` sətri olmasın | Varsa, o, `APP_ENV`-dən üstündür — yerli bazanı köçürmüsünüzsə bölmələr açıq qalxa bilər. Paneldəki «seçimi sil» düyməsi onu təmizləyir. |
 
 Quraşdırmadan sonra davranışı yoxlayın:
 

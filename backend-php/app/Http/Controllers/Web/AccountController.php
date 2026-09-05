@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AccountService;
+use App\Services\OAuthService;
 use App\Services\PaymentService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -23,6 +24,7 @@ class AccountController extends Controller
     public function __construct(
         private readonly AccountService $accounts,
         private readonly PaymentService $payments,
+        private readonly OAuthService $oauth,
     ) {
     }
 
@@ -68,7 +70,12 @@ class AccountController extends Controller
 
     public function showAuth(Request $request): View
     {
-        return view('account.auth', ['user' => $request->visitor()]);
+        return view('account.auth', [
+            'user' => $request->visitor(),
+            /* Açar yoxdursa düymə ÜMUMİYYƏTLƏ render olunmur — işləməyən
+               düymə göstərmək istifadəçini yalnız çaşdırır. */
+            'google' => $this->oauth->hazir(),
+        ]);
     }
 
     public function register(Request $request): RedirectResponse

@@ -481,6 +481,23 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .qv-sec{text-decoration:underline;cursor:pointer}
 .qv-yukle-hal{font:400 12px var(--mono,monospace);color:#8792A6;margin-top:6px;min-height:1em}
 
+/* Hovuzdan götürmə — kart hissəsi `.qv-sekil`-in özüdür, amma <button>
+   olduğu üçün brauzer şrifti və genişliyi sıfırlanır; alt yazı figcaption
+   deyil, <span>-dır. Forma şəbəkə xanasının özüdür ki, kartlar düz düzülsün. */
+.qv-sekil-f{margin:0}
+.qv-sekil-f .qv-sekil{appearance:none;width:100%;text-align:left;display:block}
+.qv-sekil-f .qv-sekil span{display:block;font:400 10.5px var(--mono,monospace);
+  color:#5A6478;margin-top:4px;overflow-wrap:anywhere}
+/* Hovuz siyahısı — sətirdəki sahələr tam eni tutmasın: `.input` qlobal
+   100% enlidir və sətri şaquli yığına çevirirdi. */
+.qv-hovuz .qv-sekil-sətir .input-sm{width:auto;flex:1 1 150px;min-width:120px}
+.qv-hovuz .qv-sekil-sətir select.input-sm{flex:0 1 210px}
+
+/* Hovuz səhifəsinin yükləmə forması. */
+.qv-hovuz-forma{margin:0 0 26px}
+.qv-hovuz-forma .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+@media (max-width:760px){.qv-hovuz-forma .grid-2{grid-template-columns:1fr}}
+
 .qv-sekil-redakte{margin:0 0 24px}
 .qv-sekil-redakte summary{cursor:pointer;font-size:13px;padding:6px 0}
 .qv-sekil-sətir{display:flex;gap:6px;align-items:center;flex-wrap:wrap;
@@ -598,3 +615,72 @@ table.tbl .acts { display: flex; gap: 6px; justify-content: flex-end; }
 .qv-ai-problem{margin:10px 0 0}
 .qv-ai-problem div{padding:7px 11px;border-left:3px solid #8A6A2A;background:#FBF6E9;
   color:#6E5520;font-size:13px;line-height:1.6;margin-bottom:4px}
+/* İşin sonluğu — yalnız həlldən sonra açılan vərəq. Nümunə nişanının
+   qardaşıdır, amma əks mənada: biri hamıya açıqdır, digəri hamıdan gizli. */
+.qv-sonluq{font:600 11px var(--mono,monospace);color:#8A2A2A;
+  border:1px solid currentColor;border-radius:3px;padding:0 4px}
+
+/* ---------------------------------------------------------------------
+   GİRİŞ EKRANI — Google düyməsi və «və ya» ayırıcısı
+   --------------------------------------------------------------------- */
+
+/* Google-un öz təlimatı ağ fon, boz haşiyə və rəngli «G» tələb edir; ona
+   görə bu düymə saytın mavi `.btn`-indən fərqlənir və fərqlənməlidir —
+   tanınan düymə tanınmayandan daha çox basılır. */
+.btn-google{background:#fff;color:#3c4043;border-color:#dadce0;
+  font:600 14px/1 var(--sans);letter-spacing:0}
+.btn-google:hover{background:#f7f8f8;border-color:#c9ccd1}
+.btn-google .g-nisan{flex:0 0 18px}
+
+/* «və ya» — iki bərabər yol arasındakı sərhəd. Xətt psevdo-elementlə
+   çəkilir ki, mətnin uzunluğundan asılı olmasın. */
+.ayirici{display:flex;align-items:center;gap:14px;max-width:760px;margin:18px 0}
+.ayirici::before,.ayirici::after{content:'';flex:1;height:1px;background:var(--rule)}
+.ayirici span{font:500 11px/1 var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------------------------------------------------------------------
+   BÖLMƏLƏR — hansı məhsulun canlı olduğu
+   --------------------------------------------------------------------- */
+
+.bolme-siyahi{display:grid;gap:10px}
+.bolme{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;
+  border:1px solid var(--rule);border-radius:3px;background:var(--sheet);cursor:pointer}
+.bolme:hover{border-color:var(--rule-hard)}
+/* Bağlı bölmə solğun görünür, amma OXUNAQLI qalır — admin onu oxuyub
+   yenidən açmalıdır, gizlətmək lazım deyil. */
+.bolme-bagli{background:transparent;border-style:dashed}
+.bolme-bagli .bolme-ad,.bolme-bagli .bolme-izah{opacity:.72}
+.bolme input[type=checkbox]{margin-top:3px;flex:0 0 auto}
+.bolme-govde{display:grid;gap:3px;min-width:0}
+.bolme-ad{font:600 14px/1.3 var(--sans);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bolme-izah{font-size:12.8px;color:var(--ink-2);line-height:1.5}
+.bolme-yollar{font-size:11.5px;color:var(--ink-3);word-break:break-word}
+
+.bolme-ana{display:grid;gap:8px;margin-top:8px}
+.bolme-ana-s{display:flex;gap:10px;align-items:baseline;font-size:13.5px}
+.bolme-ana-s .mono{font-size:12px;color:var(--ink-3)}
+
+/* ---------- üz qabığı seçimi ---------- */
+
+.qv-ipucu{margin:4px 0 10px;font-size:12.5px;line-height:1.55;color:var(--ink-2)}
+
+/* Şəkil seçimi GÖZLƏ edilir: əvvəl `<select>` idi və orada yalnız slug
+   görünürdü — admin hansı şəkli seçdiyini yalnız yadda saxlamaqla bilirdi. */
+.qv-qabiqlar{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.qv-qabiq{position:relative;display:block;border:1px solid var(--rule);border-radius:3px;
+  overflow:hidden;cursor:pointer;background:var(--sheet)}
+.qv-qabiq:hover{border-color:var(--rule-hard)}
+/* Radio DOM-da qalır — klaviatura və ekran oxuyucusu üçün lazımdır;
+   `display:none` onu fokusdan da çıxarardı. */
+.qv-qabiq input{position:absolute;opacity:0;width:1px;height:1px}
+.qv-qabiq img{display:block;width:100%;aspect-ratio:21/9;object-fit:cover;background:#E8EBF0}
+.qv-qabiq-k{display:block;padding:6px 8px;font:400 11px/1.4 var(--mono);color:var(--ink-3);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Seçilmiş şəkil qalın haşiyə ilə: rəng tək başına kifayət etmir. */
+.qv-qabiq:has(input:checked){border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
+.qv-qabiq:has(input:checked) .qv-qabiq-k{color:var(--ink);font-weight:600}
+.qv-qabiq:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+/* «Yoxdur» xanası şəkilsizdir — hündürlüyü qonşuları ilə eyni olmalıdır. */
+.qv-qabiq-yox{display:flex;align-items:center;justify-content:center;min-height:78px}
+.qv-qabiq-yox .qv-qabiq-k{color:var(--ink-2)}

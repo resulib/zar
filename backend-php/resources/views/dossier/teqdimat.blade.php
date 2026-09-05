@@ -25,16 +25,37 @@
 @section('content')
 @include('dossier.partials.ust')
 
-<section class="teq">
+<section class="teq sbas">
+  @include('dossier.partials.lovhe')
   <div class="sayt-en teq-in">
 
     <div class="teq-sol">
-      <p class="teq-no">İŞ № {{ $dossier->no }}</p>
+      <p class="teq-no">
+        @if($solved)
+          <span class="nisan-q bitib">BAĞLANIB</span>
+        @elseif($access)
+          <span class="nisan-q">SİZDƏ AÇIQDIR</span>
+        @else
+          <span class="nisan-q">AÇIQ İŞ</span>
+        @endif
+        İŞ № {{ $dossier->no }}
+      </p>
       <h1 class="teq-ad">{{ $dossier->title }}</h1>
       <p class="teq-yer">
         @if($dossier->place !== ''){{ $dossier->place }}@endif
         @if($dossier->period !== '') · {{ $dossier->period }}@endif
       </p>
+
+      @if($dossier->cover_image_id !== null)
+        {{-- Üz qabığı — qovluğun şəkli. Lövhəyə sancılıb, bölmənin
+             bütün materialları kimi. --}}
+        <div class="teq-qabiq">
+          <span class="hero-skoc hero-skoc-sol"></span>
+          <span class="hero-skoc hero-skoc-sag"></span>
+          <img src="{{ route('dossier.qabiq', [$dossier->slug, 'orta']) }}"
+               alt="{{ $dossier->title }}" loading="lazy" decoding="async">
+        </div>
+      @endif
 
       <p class="teq-giris">{{ $dossier->intro !== '' ? $dossier->intro : $dossier->blurb }}</p>
 
@@ -42,6 +63,9 @@
         <div><dt>Sənəd</dt><dd>{{ $docs->count() }} vərəq</dd></div>
         <div><dt>Vaxt</dt><dd>təxminən {{ $dossier->read_minutes }} dəqiqə</dd></div>
         <div><dt>Çətinlik</dt><dd>{{ config('dossier.difficulty_labels')[$dossier->difficulty] ?? $dossier->difficulty }}</dd></div>
+        @if($dossier->views_count > 0)
+          <div><dt>Baxılıb</dt><dd>{{ $dossier->views_count }} dəfə</dd></div>
+        @endif
         @if($stats['show'] && $stats['plays'] > 0)
           <div><dt>Oynayıb</dt><dd>{{ $stats['plays'] }} nəfər</dd></div>
           @if($stats['firstTry'] !== null)
@@ -63,7 +87,7 @@
     </div>
 
     <div class="teq-sag">
-      <h2 class="teq-bas">Qovluqdakı materiallar</h2>
+      <h2 class="teq-bas bolme-bas">Qovluqdakı materiallar</h2>
       <p class="teq-l">Adları göstərilir, məzmunu qovluq açılandan sonra oxunur.</p>
       <ol class="teq-siyahi">
         @foreach($docs as $d)

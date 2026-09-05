@@ -16,6 +16,7 @@ use App\Support\Dossier\Byuro;
 use App\Support\Moderation;
 use App\Support\Sanitizer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
 /**
@@ -63,12 +64,30 @@ class DossierAiService
         $say = max(QovluqBrief::SENED_MIN, min(QovluqBrief::SENED_MAX, (int) ($input['count'] ?? 20)));
         $cetinlik = Sanitizer::pick($input['difficulty'] ?? '', (array) config('dossier.difficulties'), 'orta');
 
+        Log::info('qovluq-ai: skelet başladı', [
+            'say' => $say, 'cetinlik' => $cetinlik, 'model' => $this->ai->model(),
+        ]);
+
         $res = $this->cagir(
             QovluqBrief::skeletUser($brief, $say, $cetinlik),
             QovluqBrief::skeletSchema($say),
+            /* Skelet ƏN AĞIR çağırışdır: hekayə + bütün vərəqlərin planı bir
+               cavabdadır. Ölçülüb — 8 vərəq ≈ 4100 token və 45 saniyə, yəni
+               40 vərəqdə həm 6000 tokenlik defolt hədd, həm də 90 saniyəlik
+               timeout aşılardı və cavab YARIMÇIQ JSON kimi gələrdi. */
+            max((int) config('ai.max_output_tokens'), 2000 + $say * 320),
+            max((int) config('ai.timeout'), 40 + $say * 6),
         );
 
         ['skelet' => $s, 'problems' => $problem] = QovluqBrief::normalizeSkelet($res['raw'], $say);
+
+        Log::info('qovluq-ai: skelet hazırdır', [
+            'ad'       => $s['title'],
+            'senedler' => count($s['documents']),
+            'subheli'  => count($s['suspects']),
+            'kilid'    => $s['lock'] !== null,
+            'problem'  => $problem,
+        ] + $res['stat']);
 
         $this->moderasiya($s);
 
@@ -83,7 +102,12 @@ class DossierAiService
     public function partiya(Dossier $dossier): array
     {
         $hamisi = $dossier->documents()->get();
-        $qalan = $hamisi->filter(static fn (DossierDocument $d): bool => trim((string) $d->body) === '');
+        /* «Hələ yazılmayıb» ölçüsü `ai_brief` açarıdır, `body` deyil:
+           vərəqlər BLOK rejimindədir və `body` həmişə boş qalır. Açar
+           tapşırıqdır; yerinə yetiriləndə silinir. */
+        $qalan = $hamisi->filter(
+            static fn (DossierDocument $d): bool => isset(((array) $d->content)['ai_brief'])
+        );
 
         if ($qalan->isEmpty()) {
             return ['done' => $hamisi->count(), 'total' => $hamisi->count(), 'model' => ''];
@@ -92,14 +116,22 @@ class DossierAiService
         $partiya = $qalan->take(QovluqBrief::PARTIYA);
         $plan = [];
 
+        $reqemler = $this->kilidReqemleri($dossier);
+
         foreach ($partiya as $d) {
-            $plan[] = [
+            $sətir = [
                 'no'        => (int) $d->sort,
                 'name'      => (string) $d->name,
                 'kind'      => (string) $d->kind,
                 'blank_nov' => (string) $d->blank_nov,
                 'brief'     => (string) (((array) $d->content)['ai_brief'] ?? ''),
             ];
+
+            if (isset($reqemler[(int) $d->sort])) {
+                $sətir['kilid_reqemi'] = $reqemler[(int) $d->sort];
+            }
+
+            $plan[] = $sətir;
         }
 
         /* İkinci mərhələyə hekayənin özü kontekst kimi gedir: modelin
@@ -119,23 +151,45 @@ class DossierAiService
         $metnler = QovluqBrief::normalizeSenedler($res['raw']);
         $this->moderasiya($metnler);
 
+        Log::info('qovluq-ai: partiya yazıldı', [
+            'qovluq'   => $dossier->slug,
+            'isteneni' => $partiya->pluck('sort')->all(),
+            'geleni'   => array_keys($metnler),
+        ] + $res['stat']);
+
         foreach ($partiya as $d) {
             $m = $metnler[(int) $d->sort] ?? null;
 
-            if ($m === null || $m['body'] === '') {
-                /* Model bu vərəqi buraxıb. Boş qalsa, növbəti partiya onu
-                   yenidən istəyər və dövrə bağlanardı — ona görə bir sətir
-                   yazılır və idarəçi onu redaktorda görür. */
-                $d->forceFill(['body' => '[[Mətn qurulmadı — bu vərəqi əl ilə yazın.]]'])->save();
-
-                continue;
+            /* Model bu vərəqi buraxıb. Tapşırıq qalsa, növbəti partiya onu
+               yenidən istəyər və dövrə bağlanardı — ona görə tapşırıq silinir
+               və vərəqə bir sətir yazılır ki, idarəçi redaktorda görsün. */
+            if ($m === null) {
+                $m = ['meta_line' => '', 'body' => '[[Mətn qurulmadı — bu vərəqi əl ilə yazın.]]'];
             }
 
-            $d->forceFill(['meta_line' => $m['meta_line'], 'body' => $m['body']])->save();
+            $content = QovluqBrief::bloklar(
+                $m,
+                (string) $d->name,
+                (string) $d->blank_nov,
+                (int) $d->sort,
+                (string) $dossier->nomre(),
+                (string) $d->doc_type,
+            );
+
+            /* Kilidli vərəqin klaviatura ekranı üçün başlıq. */
+            if ($d->is_locked) {
+                $content['lockTitle'] = mb_substr((string) $d->name, 0, 60);
+                $content['lockSub'] = 'Dörd rəqəmli kod';
+            }
+
+            $d->forceFill([
+                'meta_line' => $m['meta_line'],
+                'content'   => $content,
+            ])->save();
         }
 
         $bitmis = $dossier->documents()->get()
-            ->filter(static fn (DossierDocument $d): bool => trim((string) $d->body) !== '')
+            ->filter(static fn (DossierDocument $d): bool => ! isset(((array) $d->content)['ai_brief']))
             ->count();
 
         /* Bütün vərəqlər yazılandan SONRA kodun mənbələri dəqiqləşdirilir:
@@ -147,6 +201,43 @@ class DossierAiService
         }
 
         return ['done' => $bitmis, 'total' => $hamisi->count(), 'model' => $res['model']];
+    }
+
+    /**
+     * Kodun rəqəmləri hansı vərəqə düşür.
+     *
+     * Skelet mərhələsi mənbə vərəqləri təyin edir; rəqəmlər onların arasında
+     * NÖVBƏ İLƏ paylanır. Bu olmadan model rəqəmləri heç yerə qoymur və kilid
+     * həll edilə bilmir — ipucu «rəqəmlər vərəqlərdə görünür» deyir, amma
+     * görünmür.
+     *
+     * @return array<int,string>  vərəq sırası → rəqəm
+     */
+    protected function kilidReqemleri(Dossier $dossier): array
+    {
+        $kod = $dossier->codes()->first();
+
+        if ($kod === null) {
+            return [];
+        }
+
+        $menbe = $dossier->documents()->whereKey($kod->sourceIds())->pluck('sort')->all();
+        $reqem = preg_split('//u', (string) $kod->code, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        if ($menbe === [] || $reqem === []) {
+            return [];
+        }
+
+        sort($menbe);
+        $out = [];
+
+        foreach ($reqem as $i => $r) {
+            $sort = (int) $menbe[$i % count($menbe)];
+            /* Bir vərəqə bir neçə rəqəm düşərsə, onlar birləşdirilir. */
+            $out[$sort] = ($out[$sort] ?? '') . $r;
+        }
+
+        return $out;
     }
 
     /**
@@ -176,12 +267,20 @@ class DossierAiService
             foreach ($senedler as $d) {
                 /* Kodun ÖZ vərəqi mənbə ola bilməz: rəqəmlər başqa yerdə
                    gizlənməlidir, yoxsa kilid mənasını itirir. */
-                if ((int) $d->unlock_code_id === (int) $kod->id) {
+                /* SONLUQ VƏRƏQLƏRİ də mənbə ola bilməz: onlar yalnız iş həll
+                   olunandan sonra açılır, yəni kodu tapmaq üçün əvvəlcə kodu
+                   tapmaq lazım gələrdi. */
+                if ((int) $d->unlock_code_id === (int) $kod->id || $d->is_spoiler) {
                     continue;
                 }
 
+                $metn = self::senedMetni($d);
+
+                /* DAİRƏYƏ ALINMIŞ rəqəmə üstünlük verilir. Adi rəqəm 24
+                   vərəqin hamısında var (tarix, saat, nömrə) — belə mənbə
+                   siyahısı «hər yerdə» deməkdir və ipucunu mənasız edir. */
                 foreach ($reqemler as $r) {
-                    if (mb_strpos((string) $d->body, $r) !== false) {
+                    if (mb_strpos($metn, '%%' . $r . '%%') !== false) {
                         $menbe[] = (int) $d->id;
 
                         break;
@@ -194,7 +293,7 @@ class DossierAiService
             $govde = '';
 
             foreach ($senedler->whereIn('id', $menbe) as $d) {
-                $govde .= "\n" . $d->body;
+                $govde .= "\n" . self::senedMetni($d);
             }
 
             foreach ($reqemler as $r) {
@@ -209,16 +308,40 @@ class DossierAiService
         }
     }
 
+    /**
+     * Vərəqin axtarıla bilən mətni.
+     *
+     * `QovluqYoxlayici::senedMetni()` ilə EYNİ olmalıdır: yalnız `body` və
+     * `content.bloklar`. Möhür qatı və kağız effektləri də rəqəm daşıyır —
+     * onları saymaq mənbə siyahısını YALAN edərdi, çünki yoxlayıcı onlara
+     * baxmır və eyni rəqəmi orada tapa bilməzdi.
+     */
+    protected static function senedMetni(DossierDocument $d): string
+    {
+        $metn = (string) $d->body;
+        $bloklar = (array) (((array) $d->content)['bloklar'] ?? []);
+
+        array_walk_recursive($bloklar, static function ($v) use (&$metn): void {
+            if (is_scalar($v)) {
+                $metn .= "\n" . $v;
+            }
+        });
+
+        return $metn;
+    }
+
     /* ----------------------------------------------------------------
      | Daxili
      |---------------------------------------------------------------- */
 
     /**
      * @param array<string,mixed> $schema
-     * @return array{raw:array<string,mixed>,model:string}
+     * @return array{raw:array<string,mixed>,model:string,stat:array<string,mixed>}
      */
-    protected function cagir(string $user, array $schema): array
+    protected function cagir(string $user, array $schema, ?int $token = null, ?int $timeout = null): array
     {
+        $basladi = microtime(true);
+
         if (! $this->enabled()) {
             throw new RuntimeException('AI köməkçisi bağlıdır: `.env` faylına OPENAI_API_KEY yazın.');
         }
@@ -228,7 +351,7 @@ class DossierAiService
         $client = $this->client ?? new OpenAiClient(
             (string) config('ai.key'),
             (string) config('ai.endpoint'),
-            (int) config('ai.timeout'),
+            $timeout ?? (int) config('ai.timeout'),
         );
 
         $res = $client->chat([
@@ -236,7 +359,7 @@ class DossierAiService
             ['role' => 'user',   'content' => $user],
         ], [
             'model'                 => $model,
-            'max_completion_tokens' => (int) config('ai.max_output_tokens'),
+            'max_completion_tokens' => $token ?? (int) config('ai.max_output_tokens'),
             'temperature'           => config('ai.temperature'),
             'response_format'       => ['type' => 'json_schema', 'json_schema' => $schema],
         ]);
@@ -244,6 +367,16 @@ class DossierAiService
         return [
             'raw'   => $this->decode($res['text']),
             'model' => $res['model'] !== '' ? $res['model'] : $model,
+            /* Loga düşən ölçülər: hansı model, neçə token, neçə saniyə.
+               Qurma bir neçə dəqiqə çəkir və brauzerdə yalnız göstərici var —
+               nəyin nə qədər çəkdiyini yalnız log deyir. */
+            'stat'  => [
+                'model'   => $res['model'] !== '' ? $res['model'] : $model,
+                'saniye'  => round(microtime(true) - $basladi, 1),
+                'token_in'  => (int) ($res['usage']['prompt_tokens'] ?? 0),
+                'token_out' => (int) ($res['usage']['completion_tokens'] ?? 0),
+                'atilan'  => $res['dropped'],
+            ],
         ];
     }
 
@@ -394,6 +527,8 @@ class DossierAiService
             $xerite[$d['no']] = (int) $sened->id;
         }
 
+        $this->sonluqVereqleri($dossier, $s, count($s['documents']));
+
         /* Mənbə vərəqlər indi id-lərlə bağlanır. */
         if ($kodId !== null && $s['lock']['sources'] !== []) {
             DossierCode::query()->whereKey($kodId)->update([
@@ -416,6 +551,69 @@ class DossierAiService
         $dossier->setAttribute('ai_problems', $problem);
 
         return $dossier;
+    }
+
+    /**
+     * İşin sonluğu — qatilin dindirilməsi və məhkəmə qərarı.
+     *
+     * Bunlar skelet sxemində SORUŞULMUR. Səbəb: `skeletSchema()`-dakı
+     * `documents` massivinin `minItems` və `maxItems` dəyəri istənilən vərəq
+     * sayına bərabərdir — modelə «24 istəyirəm, 26 ver» demək olmaz. Halbuki
+     * bu iki vərəqin TAPŞIRIĞI onsuz da bizdədir: qatil, motiv və sübut
+     * skeletdə artıq var. Ona görə sətirlər burada qurulur, mətnini isə
+     * `partiya()` qalan vərəqlər kimi doldurur — ayrıca axın yoxdur.
+     *
+     * `kilid_reqemi` onlara HEÇ VAXT verilmir (`kilidReqemleri()` yalnız
+     * kodun mənbə vərəqlərinə baxır) və `kodMenbeleri()` onları atlayır.
+     *
+     * @param array<string,mixed> $s
+     */
+    protected function sonluqVereqleri(Dossier $dossier, array $s, int $say): void
+    {
+        $qatil = (string) ($s['suspects'][$s['culprit']]['name'] ?? '');
+        $motiv = (string) ($s['questions'][1]['options'][0] ?? '');
+        $subut = (string) ($s['questions'][2]['options'][0] ?? '');
+
+        $vereqler = [
+            [
+                'name'      => 'Təqsirləndirilən şəxsin dindirilmə protokolu',
+                'kind'      => 'Protokol',
+                'doc_type'  => 'testimony',
+                'blank_nov' => 'protokol',
+                'brief'     => 'Qatilin — ' . $qatil . ' — etirafı. Sual-cavab formasında:'
+                    . ' cinayəti necə hazırladığı, həmin gecə nə etdiyi, sonra izləri necə'
+                    . ' gizlətməyə çalışdığı. Motiv: ' . $motiv . '. Onu ifşa edən sübut: '
+                    . $subut . '. Ən azı beş sual-cavab cütü.',
+            ],
+            [
+                'name'      => 'Məhkəmə qərarı',
+                'kind'      => 'Qərar',
+                'doc_type'  => 'protocol',
+                'blank_nov' => 'mehkeme',
+                'brief'     => $qatil . ' təqsirli bilinir. Əməlin təsviri, məhkəmənin'
+                    . ' gəldiyi nəticə və AZADLIQDAN MƏHRUMETMƏ MÜDDƏTİ İLLƏRLƏ.'
+                    . ' Digər şübhəlilər barəsində iş xitam edilir.',
+            ],
+        ];
+
+        foreach ($vereqler as $i => $v) {
+            $no = $say + $i + 1;
+
+            /* `brief` sütun deyil — tapşırıq `content`-də yaşayır və
+               `partiya()` onu oradan oxuyur. */
+            $tapsiriq = $v['brief'];
+            unset($v['brief']);
+
+            DossierDocument::query()->create($v + [
+                'dossier_id' => $dossier->id,
+                'sort'       => $no,
+                'page'       => (string) $no,
+                'is_spoiler' => true,
+                'lock_kind'  => 'reqem',
+                'content'    => ['ai_brief' => $tapsiriq],
+                'body'       => '',
+            ]);
+        }
     }
 
     /**

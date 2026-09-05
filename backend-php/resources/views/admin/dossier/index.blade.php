@@ -121,5 +121,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/panel-qovluq.js') }}"></script>
+<script src="{{ asset('assets/panel-qovluq.js') }}?v={{ (int) @filemtime(public_path('assets/panel-qovluq.js')) }}"></script>
 @endpush

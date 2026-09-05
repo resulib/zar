@@ -39,7 +39,10 @@ class DossierController extends Controller
     /** Ana səhifə. Kataloq onun bir bölməsidir. */
     public function index(Request $request): Response
     {
-        $list = Dossier::published()->withCount('documents')
+        /* Kataloqdakı sənəd sayı OYUNÇUNUN oxuyacağı vərəqlərdir — işin
+           sonluğu ora daxil deyil, yoxsa kart 28 əvəzinə 30 yazardı. */
+        $list = Dossier::published()
+            ->withCount(['documents' => static fn ($q) => $q->where('is_spoiler', false)])
             ->orderBy('sort')->orderBy('id')->get();
 
         $showcase = $list->firstWhere('is_showcase', true) ?? $list->first();
@@ -68,6 +71,16 @@ class DossierController extends Controller
                münasibəti onsuz da `sort ASC` tətbiq edir və `orderByDesc`
                ona yalnız ikinci açar kimi əlavə olunardı. */
             'sual'     => $showcase?->questions()->reorder('sort', 'desc')->first(),
+            /* İŞ LENTİ — başlığın altındakı sətir. Rəqəmlər HESABLANIR,
+               yazılmır: yeni iş əlavə olunanda lent özü dəyişir, əks halda
+               «84 sənəd» ilk səhvdə donub qalardı. Şübhəli sayı ADLARI
+               açmır — yalnız neçə nəfər olduğunu deyir. */
+            'lent'     => [
+                'is'      => $list->count(),
+                'sened'   => (int) $list->sum('documents_count'),
+                'subheli' => (int) $list->sum(static fn ($d): int => count($d->suspectList())),
+                'deqiqe'  => (int) $list->sum('read_minutes'),
+            ],
         ]);
     }
 
@@ -89,7 +102,7 @@ class DossierController extends Controller
 
         return response()->view('dossier.teqdimat', [
             'dossier' => $dossier,
-            'docs'    => $dossier->documents,
+            'docs'    => $dossier->documents->where('is_spoiler', false),
             'stats'   => $dossier->stats(),
             'access'  => $p?->hasAccess() === true,
             'solved'  => $p?->solved === true,
@@ -109,6 +122,8 @@ class DossierController extends Controller
 
         $user = $this->viewer($request);
         $p = $user === null ? null : $this->dossiers->progress($user, $dossier);
+        $this->bax($request, $dossier);
+
         $access = $p?->hasAccess() === true;
 
         /* Ödəniş olmayana yalnız üz qabığı, təsvir və sənəd ADLARI gedir.
@@ -123,7 +138,7 @@ class DossierController extends Controller
             'cover'  => (array) $dossier->cover,
             'axis'   => $dossier->axisLabels(),
             'access' => $access,
-            'docs'   => $dossier->documents->map(
+            'docs'   => $dossier->documents->where('is_spoiler', false)->map(
                 fn ($d) => $d->toListArray($p !== null && $this->dossiers->isUnlocked($p, $d))
             )->all(),
         ];
@@ -139,6 +154,11 @@ class DossierController extends Controller
                seçimdən sonra, `/sonluq` cavabında gəlir. */
             $data['endings'] = $this->dossiers->endingSuspectIds($dossier);
             $data['state'] = $p->toStateArray();
+            /* İşin sonluğu — `solution` ilə EYNİ qapı: səhifə yenidən
+               yüklənəndə nəticə ekranı düymələri təzədən çəkməlidir. */
+            $data['spoilers'] = ($p->solved || $p->revealed)
+                ? $this->dossiers->spoilerDocs($dossier)
+                : [];
             $data['solution'] = ($p->solved || $p->revealed)
                 ? array_values(array_map('strval', (array) $dossier->solution))
                 : null;
@@ -280,6 +300,65 @@ class DossierController extends Controller
             'Cache-Control'          => 'private, max-age=600',
             'X-Robots-Tag'           => 'noindex',
         ]);
+    }
+
+    /**
+     * Üz qabığı şəkli — SATIŞ şəkli.
+     *
+     * `image()`-dən fərqli olaraq açıqdır və `noindex` DEYİL: kataloq
+     * kartında və təqdimat səhifəsində görünür, yəni tapılmalıdır. Keş də
+     * `public`-dir — şəkil hər ziyarətçi üçün eynidir.
+     */
+    public function cover(string $slug, string $olcu): Response|BinaryFileResponse
+    {
+        $dossier = $this->dossiers->find($slug);
+
+        if ($dossier === null) {
+            return response('', 404);
+        }
+
+        $path = $this->dossiers->coverPath($dossier, $olcu);
+
+        if ($path === null) {
+            return response('', 404);
+        }
+
+        return response()->file($path, [
+            'Content-Type'           => 'image/jpeg',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control'          => 'public, max-age=86400',
+        ]);
+    }
+
+    /**
+     * Baxış sayğacı — SESSİYA BAŞINA BİR DƏFƏ.
+     *
+     * Hər sorğuda artırsaydı, səhifəni yeniləmək rəqəmi qaldırardı və
+     * «142 baxış» heç nə demək olmazdı. Sessiya açarı ucuzdur və yalan
+     * danışmır: eyni adam eyni gəlişində bir dəfə sayılır.
+     *
+     * ADMİN SAYILMIR: qovluğu redaktə edən adam öz işinə onlarla dəfə
+     * baxır və rəqəmi özü şişirdərdi.
+     */
+    protected function bax(Request $request, Dossier $dossier): void
+    {
+        $user = $this->viewer($request);
+
+        if ($user !== null && (bool) $user->is_admin) {
+            return;
+        }
+
+        $acar = 'baxildi.' . $dossier->id;
+
+        if ($request->session()->has($acar)) {
+            return;
+        }
+
+        $request->session()->put($acar, true);
+
+        /* `increment()` — oxu-yaz yarışı olmadan: iki ziyarətçi eyni anda
+           gəlsə, `$dossier->views_count + 1` biri digərini itirərdi. */
+        Dossier::query()->whereKey($dossier->id)->increment('views_count');
     }
 
     /* ----------------------------------------------------------------

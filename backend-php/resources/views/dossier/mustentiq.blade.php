@@ -20,9 +20,10 @@
     @if($qonaq)
       {{-- QONAQ: vəsiqə yoxdur və bu, qəsdəndir. Kartın qazanılan bir şey
            olması qeydiyyat üçün ən güclü arqumentdir. --}}
-      <div class="pr-qonaq">
+      <div class="pr-qonaq sbas">
+        @include('dossier.partials.lovhe')
         <div class="pr-qonaq-in">
-          <span class="pr-etiket">Təyinat verilməyib</span>
+          <span class="nisan-q">TƏYİNAT VERİLMƏYİB</span>
           <h1>Müstəntiq vəsiqəniz hazır deyil</h1>
           @if($profile && $profile->cases_solved > 0)
             <p>Siz artıq <b>{{ $profile->cases_solved }}</b> iş bağlamısınız və
@@ -47,6 +48,9 @@
         <h1>Xidməti vəsiqə</h1>
         <a class="pr-link" href="{{ route('dossier.profil.ayarlar') }}">Ayarlar</a>
       </div>
+      {{-- Başlıq buradadır, ortaq `bas` partial-ında yox: qonaq və hesablı
+           ziyarətçi tamam fərqli birinci ekran görür (biri çağırış, digəri
+           vəsiqə), ona görə ikisi bir başlığı bölüşə bilməz. --}}
 
       <div class="pr-tor">
 
