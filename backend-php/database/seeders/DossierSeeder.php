@@ -10,6 +10,7 @@ use App\Models\DossierDocument;
 use App\Models\DossierQuestion;
 use App\Models\DossierSuspect;
 use App\Support\Dossier\BlokSxemi;
+use App\Support\Dossier\SekilYuvalari;
 use App\Support\Sanitizer;
 use Illuminate\Database\Seeder;
 
@@ -174,7 +175,7 @@ class DossierSeeder extends Seeder
                 'lock_kind' => Sanitizer::pick($kilid['nov'] ?? 'reqem', BlokSxemi::KILID_NOV, 'reqem'),
                 'lock_code' => (string) ($kilid['kod'] ?? ''),
                 'lock_hint' => (string) ($kilid['ipucu'] ?? ''),
-                'content'   => (array) ($row['content'] ?? []),
+                'content'   => SekilYuvalari::sekilleriSaxla((array) ($row['content'] ?? []), (array) $doc->content),
                 'unlock_code_id' => $this->kod($dossier, $kilid, (string) ($row['name'] ?? ''), $sort),
             ])->save();
 

@@ -701,6 +701,18 @@
                         ]
                     },
                     {
+                        "tip": "foto",
+                        "izah": "Meyitin ümumi vəziyyəti — dəhlizin generator otağına yaxın hissəsi, üzü aşağı",
+                        "no": 1,
+                        "nisbet": "4:3"
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Baş nahiyəsinin sağ təpə hissəsindəki 7×4 sm ölçülü yara, miqyas xətkeşi ilə",
+                        "no": 2,
+                        "nisbet": "4:3"
+                    },
+                    {
                         "tip": "imza",
                         "vezife": "AFİB tibbi eksperti",
                         "ad": "F.Rzayeva",
@@ -776,6 +788,12 @@
                             "[[Müstəntiqin qeydi:]] dəqiqləşdirilmiş aralıq telefon detallaşdırması ilə birlikdə oxunmalıdır — zərərçəkən 00:44-də danışıq aparıb."
                         ],
                         "cerceve": true
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Kəllə sümüyünün sınığı — daxili müayinə zamanı, miqyas xətkeşi ilə",
+                        "no": 1,
+                        "nisbet": "4:3"
                     },
                     {
                         "tip": "imza",
@@ -962,6 +980,18 @@
                         ]
                     },
                     {
+                        "tip": "foto",
+                        "izah": "Mərmər lövhənin səthi — bir istiqamətli silinmə izləri, yan işıqda",
+                        "no": 1,
+                        "nisbet": "4:3"
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Arxa qapının dəstəyindən götürülmüş qismən iz, papilyar xətlər",
+                        "no": 2,
+                        "nisbet": "4:3"
+                    },
+                    {
                         "tip": "imza",
                         "vezife": "Ekspertizanı aparan, AFİB eksperti",
                         "ad": "M.Bağırov",
@@ -1025,6 +1055,18 @@
                             "Lövhənin qan izi olan küncündə həmçinin tünd rəngli sintetik lif qalığı aşkar edilmişdir — parça ilə tutulma və ya silinmə nəticəsində düşə bilər.",
                             "Lövhənin çəkisi və ölçüsü onu bir əllə tutub zərbə vurmağa imkan verir. Zərbə üçün xüsusi fiziki güc tələb olunmur."
                         ]
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Mərmər lövhənin künc hissəsi — həndəsə və ölçü, miqyas xətkeşi ilə",
+                        "no": 1,
+                        "nisbet": "4:3"
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Yaranın kənarındakı mikroçatlar və mərmər tozu, böyüdülmüş kadr",
+                        "no": 2,
+                        "nisbet": "4:3"
                     },
                     {
                         "tip": "imza",
@@ -1112,6 +1154,18 @@
                             "Ucluq arxa çıxışın qarşısındakı betonun üzərində, qapıdan 1 m 20 sm məsafədə tapılmışdır. Oksidləşmənin olmaması onun hadisə gecəsindən əvvəl orada qala bilmədiyini göstərir.",
                             "[[Qeyd:]] müqayisə üçün ayaqqabı təqdim edilmədiyindən identifikasiya aparılmamışdır. Ucluq saxlanılır."
                         ]
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Qadın ayaqqabısının dabanına məxsus metal ucluq, miqyas xətkeşi ilə",
+                        "no": 1,
+                        "nisbet": "4:3"
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Ucluğun tapıldığı yer — arxa çıxışın qarşısındakı beton, qapıdan 1 m 20 sm",
+                        "no": 2,
+                        "nisbet": "4:3"
                     },
                     {
                         "tip": "imza",
@@ -1304,6 +1358,18 @@
                             "Kamera «Sədəf»in ön girişini deyil, küçəni çəkir. Obyektin arxa hissəsi kadra yalnız küçəyə çıxdıqdan sonra düşür.",
                             "Qeydin keyfiyyəti gecə rejimində aşağıdır: geyimin rəngi və boy təxmin edilə bilər, üz cizgiləri seçilmir. Addımın qeyri-bərabərliyi ayaqqabı qüsuru ilə izah oluna bilər."
                         ]
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Kamera kadrı 00:37 — küçəyə çıxan şəxs, gecə rejimi",
+                        "no": 1,
+                        "nisbet": "4:3"
+                    },
+                    {
+                        "tip": "foto",
+                        "izah": "Eyni kadrın böyüdülmüş hissəsi — geyimin rəngi seçilir, üz cizgiləri seçilmir",
+                        "no": 2,
+                        "nisbet": "4:3"
                     }
                 ],
                 "mohurler": [

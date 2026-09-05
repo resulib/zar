@@ -110,6 +110,70 @@ final class SekilYuvalari
     }
 
     /**
+     * Seed məzmununu yazarkən İDARƏÇİNİN BAĞLADIĞI ŞƏKİLLƏRİ saxlayır.
+     *
+     * Şəkillər yalnız idarə panelindən yüklənir, yəni `foto` blokunun və
+     * maddi sübut kartlarının `sekil` açarı seed faylında HEÇ VAXT olmur —
+     * o, bazada yaranır. Məzmun olduğu kimi yazılsaydı, hər `db:seed`
+     * bütün bağlamaları silərdi: şəkillər kitabxanada qalar, vərəqlərdə isə
+     * çərçivələr boşalardı. Bu, `status`/`sort` qaydasının davamıdır —
+     * seed idarəçinin sahib olduğu sahəyə toxunmur.
+     *
+     * Bağlama BLOKUN YERİNƏ görə köçürülür: bloklar sıralı siyahıdır və
+     * seed faylı onların sırasının sahibidir. Blok növü dəyişibsə (məsələn
+     * `foto` yerinə `cedvel` gəlibsə) köhnə bağlama ATILIR — yanlış yerə
+     * yapışdırmaqdansa boş çərçivə dürüstdür.
+     *
+     * @param  array<string,mixed>  $yeni   seed faylındakı məzmun
+     * @param  array<string,mixed>  $kohne  bazadakı məzmun
+     * @return array<string,mixed>
+     */
+    public static function sekilleriSaxla(array $yeni, array $kohne): array
+    {
+        $k = (array) ($kohne['bloklar'] ?? []);
+
+        if ($k === []) {
+            return $yeni;
+        }
+
+        $y = (array) ($yeni['bloklar'] ?? []);
+
+        foreach ($y as $i => $b) {
+            $tip = $b['tip'] ?? '';
+
+            if (! isset($k[$i]) || ($k[$i]['tip'] ?? '') !== $tip) {
+                continue;
+            }
+
+            if ($tip === 'foto') {
+                $var = (string) ($k[$i]['sekil'] ?? '');
+
+                if ($var !== '' && ($b['sekil'] ?? '') === '') {
+                    $y[$i]['sekil'] = $var;
+                }
+
+                continue;
+            }
+
+            if ($tip !== 'kart') {
+                continue;
+            }
+
+            foreach ((array) ($b['kartlar'] ?? []) as $ki => $kart) {
+                $var = (string) ($k[$i]['kartlar'][$ki]['sekil'] ?? '');
+
+                if ($var !== '' && ($kart['sekil'] ?? '') === '') {
+                    $y[$i]['kartlar'][$ki]['sekil'] = $var;
+                }
+            }
+        }
+
+        $yeni['bloklar'] = $y;
+
+        return $yeni;
+    }
+
+    /**
      * Bir yuva sətri.
      *
      * BOŞ ÇƏRÇİVƏ DƏ YUVADIR. Əvvəl yalnız açarı olan yuvalar sayılırdı,

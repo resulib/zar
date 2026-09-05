@@ -1776,5 +1776,46 @@ $q3 = SekilYuvalari::qovluqda([
 ]);
 check('boş yuva siyahının əvvəlindədir', $q3[0]['acar'] === '', array_column($q3, 'acar'));
 
+/* --- Seed şəkil bağlamalarını silməməlidir ------------------------------ */
+
+/* ŞƏKİLLƏR YALNIZ İDARƏ PANELİNDƏN YÜKLƏNİR, yəni `sekil` açarı seed
+   faylında HEÇ VAXT olmur — o, bazada yaranır. Məzmun olduğu kimi
+   yazılsaydı, hər `db:seed` bütün bağlamaları silərdi: şəkillər
+   kitabxanada qalar, vərəqlərdə isə çərçivələr boşalardı. */
+$seed = ['bloklar' => [
+    ['tip' => 'basliq', 'ad' => 'A'],
+    ['tip' => 'foto', 'izah' => 'Portret'],
+    ['tip' => 'kart', 'kartlar' => [['ad' => 'Lövhə'], ['ad' => 'Qutu']]],
+]];
+$baza = ['bloklar' => [
+    ['tip' => 'basliq', 'ad' => 'A'],
+    ['tip' => 'foto', 'izah' => 'Portret', 'sekil' => 'portret-1'],
+    ['tip' => 'kart', 'kartlar' => [['ad' => 'Lövhə', 'sekil' => 'lovhe'], ['ad' => 'Qutu']]],
+]];
+
+$b = SekilYuvalari::sekilleriSaxla($seed, $baza);
+check('foto bağlaması saxlanılır', ($b['bloklar'][1]['sekil'] ?? '') === 'portret-1', $b['bloklar'][1]);
+check('kart bağlaması saxlanılır',
+    ($b['bloklar'][2]['kartlar'][0]['sekil'] ?? '') === 'lovhe', $b['bloklar'][2]['kartlar'][0]);
+check('bağlanmamış kart boş qalır', ! isset($b['bloklar'][2]['kartlar'][1]['sekil']));
+check('digər açarlar seed-dən gəlir', ($b['bloklar'][0]['ad'] ?? '') === 'A');
+
+/* Seed faylı AÇARIN SAHİBİDİRSƏ, o üstündür — məzmun müəllifi şəkli
+   qəsdən dəyişə bilər. */
+$seed2 = ['bloklar' => [['tip' => 'foto', 'izah' => 'P', 'sekil' => 'yeni']]];
+$b2 = SekilYuvalari::sekilleriSaxla($seed2, ['bloklar' => [['tip' => 'foto', 'sekil' => 'kohne']]]);
+check('seed-dəki açar üstündür', $b2['bloklar'][0]['sekil'] === 'yeni', $b2['bloklar'][0]);
+
+/* BLOK NÖVÜ DƏYİŞİBSƏ bağlama ATILIR: yanlış yerə yapışdırmaqdansa boş
+   çərçivə dürüstdür. */
+$b3 = SekilYuvalari::sekilleriSaxla(
+    ['bloklar' => [['tip' => 'cedvel', 'basliqlar' => ['A'], 'setirler' => [['1']]]]],
+    ['bloklar' => [['tip' => 'foto', 'sekil' => 'kohne']]]
+);
+check('növ dəyişəndə bağlama atılır', ! isset($b3['bloklar'][0]['sekil']), $b3['bloklar'][0]);
+
+/* Bazada məzmun yoxdursa (yeni sənəd) seed olduğu kimi qalır. */
+check('boş bazada seed dəyişmir', SekilYuvalari::sekilleriSaxla($seed, []) === $seed);
+
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);
