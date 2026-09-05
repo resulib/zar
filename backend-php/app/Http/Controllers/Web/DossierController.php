@@ -71,6 +71,16 @@ class DossierController extends Controller
                münasibəti onsuz da `sort ASC` tətbiq edir və `orderByDesc`
                ona yalnız ikinci açar kimi əlavə olunardı. */
             'sual'     => $showcase?->questions()->reorder('sort', 'desc')->first(),
+            /* İŞ LENTİ — başlığın altındakı sətir. Rəqəmlər HESABLANIR,
+               yazılmır: yeni iş əlavə olunanda lent özü dəyişir, əks halda
+               «84 sənəd» ilk səhvdə donub qalardı. Şübhəli sayı ADLARI
+               açmır — yalnız neçə nəfər olduğunu deyir. */
+            'lent'     => [
+                'is'      => $list->count(),
+                'sened'   => (int) $list->sum('documents_count'),
+                'subheli' => (int) $list->sum(static fn ($d): int => count($d->suspectList())),
+                'deqiqe'  => (int) $list->sum('read_minutes'),
+            ],
         ]);
     }
 

@@ -39,8 +39,14 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;height:100%}
-body{background:#0E100F;font-family:var(--sans);color:var(--paper);
-  display:flex;align-items:center;justify-content:center}
+body{background:#0E100F;font-family:var(--sans);color:var(--paper)}
+
+/* MƏRKƏZLƏŞDİRMƏ YALNIZ OYUN ÇƏRÇİVƏSİNƏ AİDDİR. `.frame` sabit ölçülüdür
+   (412×880) və ekranın ortasında dayanmalıdır. Satış səhifələri isə uzun
+   sənəddir: `align-items:center` onları şaquli mərkəzləşdirir, yəni
+   sənədin YUXARISI ekranın üstünə çıxır və ora sürüşmək mümkün olmur —
+   telefonda başlıq və birinci ekran ümumiyyətlə görünmürdü. */
+body.qab-frame{display:flex;align-items:center;justify-content:center}
 
 /* Oyun qabığı. Telefonda ekranı tam tutur, kompüterdə açılır (ÖLÇÜLƏR).
    Əvvəllər burada telefon maketi vardı — yumru künc və böyük kölgə;
@@ -804,8 +810,13 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .sayt-nav a{color:var(--ink3);text-decoration:none;font:500 12.5px var(--sans);white-space:nowrap}
 .sayt-nav a:hover{color:var(--paper2)}
 
-.bolme-bas{font:600 12px var(--mono);letter-spacing:.16em;color:var(--ink3);
+.bolme-bas{display:flex;align-items:center;gap:12px;
+  font:600 12px var(--mono);letter-spacing:.16em;color:var(--ink3);
   margin:0 0 18px;text-transform:uppercase}
+.bolme-bas::before{content:"";flex:0 0 auto;width:9px;height:9px;
+  background:var(--red);filter:brightness(1.35);
+  clip-path:polygon(50% 0,100% 100%,0 100%)}
+.bolme-bas::after{content:"";flex:1 1 auto;height:1px;background:var(--line)}
 .bolme-l{font:400 13px/1.8 var(--mono);color:var(--ink3);margin:-8px 0 22px;max-width:60ch}
 
 .duyme{display:inline-block;padding:15px 26px;background:var(--buff);color:#241C08;
@@ -813,20 +824,113 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .duyme:hover{background:#D0B378}
 
 /* ---------- 1. birinci ekran ---------- */
-.hero{border-bottom:1px solid var(--line);overflow:hidden}
-.hero-in{padding:44px 20px 0;display:flex;flex-direction:column;gap:30px}
-.hero-ust{font:500 11px var(--mono);letter-spacing:.2em;color:var(--buff2);margin:0 0 14px}
+/* ---------- 0. iş lenti ---------- */
+
+/* Büronun vəziyyət sətri. Rəqəmlər bazadan gəlir; burada yalnız onların
+   necə göründüyü var. Nöqtə YANIB-SÖNÜR — iş açıqdır, yəni sətir statik
+   bir başlıq deyil, işləyən bir sistemin göstəricisidir. */
+.lent{background:#14170F;border-bottom:1px solid var(--line);overflow:hidden}
+.lent-in{display:flex;align-items:center;gap:14px;padding:9px 20px;
+  font:500 11px var(--mono);letter-spacing:.06em;color:var(--ink3);
+  white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.lent-in::-webkit-scrollbar{display:none}
+.lent-b{color:var(--buff2);letter-spacing:.14em}
+.lent-d b{color:var(--paper2);font-weight:600}
+.lent-son{color:var(--red);letter-spacing:.14em;margin-left:auto;
+  padding-left:14px;filter:brightness(1.55)}
+.lent-gizle{display:none}
+
+.lent-nq{width:7px;height:7px;border-radius:50%;background:var(--red);
+  filter:brightness(1.6);flex:0 0 auto;animation:lent-nb 2.4s ease-in-out infinite}
+@keyframes lent-nb{0%,100%{opacity:1}50%{opacity:.25}}
+/* Hərəkəti azaltma istəyi HÖRMƏTLƏ QARŞILANIR: yanıb-sönən nöqtə bəzi
+   adamlarda baş ağrısı və ya diqqət pozğunluğu yaradır. */
+@media (prefers-reduced-motion:reduce){ .lent-nq{animation:none} }
+
+/* ---------- 1. hero — istintaq lövhəsi ---------- */
+
+.hero{position:relative;border-bottom:1px solid var(--line);overflow:hidden;
+  background:
+    /* Ölçü şəbəkəsi: kriminalistik foto miqyası. Çox zəifdir — fon
+       oxunmağa mane olmamalıdır, yalnız səthə toxum verməlidir. */
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/100% 92px,
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/92px 100%,
+    radial-gradient(120% 90% at 78% 0%,#23271F 0%,var(--desk) 62%)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 0%,transparent 40%,rgba(0,0,0,.55) 100%)}
+
+.hero-lovhe{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* Barmaq izi — bölmənin ən tanınan nişanı. Uydurma naxışdır: konkret
+   adamın izi deyil. Opaklıq qəsdən çox aşağıdır (0.055) — nişan
+   hiss olunmalıdır, oxunmamalı. */
+.hero-iz{position:absolute;left:-14px;bottom:-56px;width:min(46vw,300px);height:auto;
+  fill:none;stroke:var(--buff);stroke-width:1.1;opacity:.075;
+  transform:rotate(-14deg)}
+
+/* Qırmızı sap — lövhədə sənədləri birləşdirən ip. İki incə xətt kifayətdir;
+   çox olsa lövhə deyil, cızma-qara olur. */
+.hero-sap{position:absolute;height:1px;background:var(--red);
+  filter:brightness(1.5);opacity:.38;transform-origin:0 0}
+.hero-sap::before,.hero-sap::after{content:"";position:absolute;top:-3px;
+  width:7px;height:7px;border-radius:50%;background:var(--red);
+  filter:brightness(1.35);box-shadow:0 1px 3px rgba(0,0,0,.55)}
+.hero-sap::before{left:-3px}
+.hero-sap::after{right:-3px}
+.hero-sap-1{left:4%;top:80%;width:44%;transform:rotate(-13deg)}
+.hero-sap-2{left:9%;top:94%;width:38%;transform:rotate(-27deg)}
+
+.hero-in{position:relative;padding:40px 20px 0;display:flex;flex-direction:column;gap:30px}
+.hero-ust{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font:500 11px var(--mono);letter-spacing:.2em;color:var(--buff2);margin:0 0 14px}
+/* «İŞ AÇIQDIR» — qırmızı damğa. Səhifədə yeganə qırmızı ləkədir (lent və
+   sap istisna), ona görə gözü məhz ora çəkir. */
+.hero-ust-x{padding:3px 7px;border:1px solid var(--red);border-radius:2px;
+  color:var(--red);filter:brightness(1.5);letter-spacing:.12em}
 .hero-metn h1{font:600 27px/1.28 var(--sans);margin:0 0 16px;max-width:16ch}
+
+/* Mətn HƏMİŞƏ DOM-dadır — örtük yalnız rəngdir, yəni ekran oxuyucusu və
+   axtarış sistemi tam cümləni görür. */
+/* ÖRTÜK ÖZÜ AÇILIR — hover gözləmir. Toxunma ekranında hover yoxdur, yəni
+   hover-lə açılan örtük telefonda başlığı HƏMİŞƏLİK oxunmaz qoyardı; bu isə
+   bəzəkdən qat-qat pis bir şeydir. Zolaq bir dəfə göstərilib silinir:
+   diqqəti tutur, sonra öz yerini mətnə verir. */
+.ortuk{position:relative;display:inline-block;isolation:isolate}
+.ortuk > span{position:relative;z-index:1;color:transparent;
+  animation:ortuk-soz .01s linear 1.28s forwards}
+.ortuk::after{content:"";position:absolute;inset:.1em -.16em .16em;z-index:0;
+  background:#07080B;border:1px solid rgba(255,255,255,.16);border-radius:1px;
+  transform-origin:100% 50%;box-shadow:0 1px 0 rgba(0,0,0,.6);
+  animation:ortuk-ac .42s cubic-bezier(.4,0,.2,1) 1.2s forwards}
+@keyframes ortuk-soz{to{color:inherit}}
+@keyframes ortuk-ac{to{transform:scaleX(0);opacity:0}}
+
+/* Hərəkəti azaltma istəyi: zolaq ümumiyyətlə çəkilmir, söz elə oxunur.
+   Animasiyanı «dayandırmaq» kifayət etmir — dayandırılmış zolaq sözü
+   örtülü saxlayardı. */
+@media (prefers-reduced-motion:reduce){
+  .ortuk > span{color:inherit;animation:none}
+  .ortuk::after{display:none}
+}
+
 .hero-l{font:400 14.5px/1.85 var(--sans);color:var(--paper2);margin:0 0 24px;max-width:46ch}
 .hero-alt{font:400 12px var(--mono);color:var(--ink3);margin:14px 0 0}
-.hero-fiktiv{font:400 11px/1.7 var(--mono);color:var(--ink3);margin:10px 0 0;
-  padding:0 20px 18px;text-align:center}
+.hero-fiktiv{position:relative;font:400 11px/1.7 var(--mono);color:var(--ink3);
+  margin:10px 0 0;padding:0 20px 18px;text-align:center}
 
 /* Vərəq aşağıdan kəsilir: davamı olduğu bilinsin deyə. Maska yox, sadə
-   kəsim — kölgə və solğunlaşma bu məhsulun dili deyil. */
-.hero-sened{max-height:340px;overflow:hidden;position:relative;
+   kəsim — kölgə və solğunlaşma bu məhsulun dili deyil.
+
+   LÖVHƏYƏ SANCILIB: əyilmə SABİTDİR, təsadüfi deyil — səhifə hər açılışda
+   eyni görünməlidir (`Imza::yol()`-un qaydası: yeri dəyişən möhür sənədin
+   saxta olduğunu elan edir). */
+.hero-sened{position:relative;max-height:340px;overflow:hidden;
   margin:0 -20px;border-top:1px solid var(--line)}
 .hero-sened .paper{min-height:0;padding-bottom:0}
+
+/* İynə, lent və grif telefonda GÖRÜNMÜR: orada vərəq ekranın eninə
+   yapışır və bəzək onu sıxardı. Masaüstündə açılır. */
+.hero-iyne,.hero-skoc,.hero-grif{display:none}
 
 /* ---------- 2. necə işləyir ---------- */
 .addimlar{padding:44px 0;border-bottom:1px solid var(--line)}
@@ -867,11 +971,34 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .kataloq-list{display:grid;gap:14px}
 .kataloq-bos{font:400 13px var(--mono);color:var(--ink3);padding:26px 0}
 
-/* Kart = qovluğun üz qabığı. Karton sarısı fon, maşınyazısı ilə nömrə, möhür. */
+/* Kart = qovluğun üz qabığı. Karton sarısı fon, maşınyazısı ilə nömrə, möhür.
+   Sol kənarda TİKİŞ ZOLAĞI və iki DƏLİK var: qovluq qovluqdur, düz künc
+   deyil — onu bağlandığı yerdən tanıyırsan. */
 .kart{position:relative;display:flex;flex-direction:column;text-decoration:none;
-  color:#3A2E14;padding:20px 18px 16px;overflow:hidden;
+  color:#3A2E14;padding:20px 18px 16px 28px;overflow:hidden;
   background:linear-gradient(160deg,#D0B378 0%,var(--buff) 55%,var(--buff2) 100%)}
 .kart:hover{background:linear-gradient(160deg,#D8BC82 0%,#C9AC72 55%,#B2935A 100%)}
+
+/* Tikiş zolağı — kartonun qatlandığı yer. */
+.kart::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;
+  background:linear-gradient(90deg,rgba(90,70,26,.30),rgba(90,70,26,.06) 62%,transparent);
+  border-right:1px solid rgba(90,70,26,.22)}
+
+/* İki dəlik — sənəd qovluğu məhz belə bağlanır. Kölgəsiz dairə dəlik deyil,
+   ləkə kimi oxunur, ona görə `radial-gradient` ilə. */
+.kart::after{content:"";position:absolute;left:2px;top:0;bottom:0;width:9px;
+  background:
+    radial-gradient(circle 4px at 4.5px 34px,rgba(40,30,10,.55) 62%,transparent 64%),
+    radial-gradient(circle 4px at 4.5px calc(100% - 34px),rgba(40,30,10,.55) 62%,transparent 64%);
+  pointer-events:none}
+
+/* Çətinlik zolağı kartın YUXARI kənarında. Rəng çətinliyi bildirir, künc
+   lenti isə nişanı — ikisi fərqli məlumatdır və üst-üstə düşməməlidir. */
+.kart[data-cetinlik]{border-top:3px solid rgba(90,70,26,.35)}
+.kart[data-cetinlik="asan"]{border-top-color:#5C7A4A}
+.kart[data-cetinlik="orta"]{border-top-color:#8A6F3C}
+.kart[data-cetinlik="cetin"]{border-top-color:#9A5A28}
+.kart[data-cetinlik="kabus"]{border-top-color:var(--red)}
 .kart-no{font:600 11px var(--mono);letter-spacing:.16em;color:#5C4A1E}
 .kart-ad{font:600 18px/1.3 var(--sans);color:#2E2410;margin:8px 0 4px;max-width:20ch}
 .kart-yer{font:400 12px var(--mono);color:#6B5525;padding-right:88px}
@@ -1012,7 +1139,7 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   :root{--paper-w:620px;--paper-x:34px}
 
   /* Telefon çərçivəsi bitir: qovluq bütün pəncərəni tutur. */
-  body{display:block}
+  body.qab-frame{display:block}
   .frame{max-width:none;max-height:none;height:100dvh;margin:0}
 
   /* Masaüstündə vərəq bitdiyi yerdə bitir — altında yazı masası qalır. */
@@ -1031,6 +1158,40 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   .hero-metn{flex:1 1 46%;padding-bottom:56px}
   .hero-metn h1{font-size:32px}
   .hero-sened{flex:1 1 54%;margin:0;max-height:520px;border:1px solid var(--line);border-bottom:0}
+
+  /* SANCILMIŞ VƏRƏQ — yalnız masaüstündə. Telefonda vərəq ekranın eninə
+     yapışır və əyilmə onu kəsərdi. */
+  .hero-sened{transform:rotate(-1.15deg);transform-origin:50% 0;
+    box-shadow:0 26px 60px rgba(0,0,0,.5),0 2px 0 rgba(255,255,255,.03) inset}
+  .hero-iyne,.hero-skoc,.hero-grif{display:block;position:absolute;z-index:3}
+
+  /* İynə vərəqin yuxarı ortasında — sancılmış kağız məhz oradan tutulur. */
+  .hero-iyne{top:-9px;left:50%;width:18px;height:18px;margin-left:-9px;
+    border-radius:50%;background:radial-gradient(circle at 32% 30%,#E86B62,#8A2A2A 62%,#5A1A1A);
+    box-shadow:0 3px 7px rgba(0,0,0,.6)}
+  .hero-iyne::after{content:"";position:absolute;left:50%;top:14px;width:2px;height:9px;
+    margin-left:-1px;background:linear-gradient(#B9BCC2,#6E7278)}
+
+  /* Lent yuxarı künclərdə. `mix-blend-mode` İŞLƏDİLMİR: skoç kağızın
+     ÜSTÜNDƏ duran fiziki cisimdir, mürəkkəb kimi içinə hopmur — bu qayda
+     maddi sübut şəkillərində də belədir. */
+  .hero-skoc{top:-12px;width:78px;height:24px;
+    background:linear-gradient(105deg,rgba(255,255,255,.16),rgba(255,255,255,.07));
+    border-left:1px solid rgba(255,255,255,.12);border-right:1px solid rgba(255,255,255,.12);
+    box-shadow:0 1px 3px rgba(0,0,0,.35)}
+  .hero-skoc-sol{left:-16px;transform:rotate(-38deg)}
+  .hero-skoc-sag{right:-16px;transform:rotate(38deg)}
+
+  /* Grif — məxfilik damğası. Qırmızıdır və vərəqin öz mor möhürləri ilə
+     qarışmır: möhür sənədi QEYDƏ ALIR, grif onun necə saxlanacağını deyir. */
+  .hero-grif{top:30px;right:18px;padding:5px 12px;
+    font:600 11px var(--mono);letter-spacing:.2em;color:var(--red);
+    border:2px solid var(--red);border-radius:2px;background:rgba(247,248,251,.86);
+    transform:rotate(9deg);opacity:.86;filter:brightness(1.12)}
+
+  /* Lentdə gizlədilən sütun geniş ekranda qayıdır. */
+  .lent-gizle{display:inline}
+  .lent-in{padding:9px 32px}
 
   .addim{flex-direction:row;align-items:center;gap:28px}
   .addim-metn{flex:1 1 52%}

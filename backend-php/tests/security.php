@@ -100,6 +100,23 @@ function usersCount(): int
 
 echo "\nHədəf: {$base}\n";
 
+/* BÖLMƏLƏR AÇIQ OLMALIDIR. Bu dəst bütün məhsulların ünvanlarını gəzir;
+   bağlı bölmə 404 verir və nəticə otuzdan çox «sirli uğursuzluq» olur —
+   səbəbini tapmaq isə yarım saat aparır. Ona görə vəziyyət ƏVVƏLCƏ
+   yoxlanılır və problem öz adı ilə deyilir. */
+$saglamliq = json_decode(req($base . '/api/health')['body'] ?: '{}', true);
+$bagliBolme = array_keys(array_filter(
+    (array) ($saglamliq['bolmeler'] ?? []),
+    static fn ($v): bool => $v === false
+));
+
+if ($bagliBolme !== []) {
+    echo "\n\033[31mDAYANDI:\033[0m bağlı bölmə var — " . implode(', ', $bagliBolme) . ".\n";
+    echo "  Bu dəst bütün bölmələrin ünvanlarını yoxlayır; bağlı bölmə 404 verir.\n";
+    echo "  /admin/parametrler → «Seçimi sil» (və ya hamısını açın), sonra təkrarlayın.\n\n";
+    exit(2);
+}
+
 echo "\n1. Giriş üçün brute-force limiti\n";
 $s     = session($base . '/admin/giris');
 $codes = [];

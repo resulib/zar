@@ -18,7 +18,12 @@
 <link rel="stylesheet" href="{{ asset('assets/dossier.css') }}">
 @stack('head')
 </head>
-<body>
+{{-- Gövdə HANSI QABIĞI daşıdığını bildirir. `body{display:flex;align-items:center}`
+     yalnız OYUN çərçivəsi (`.frame`, sabit 412×880) üçün doğrudur; satış
+     səhifələri isə uzun sənəddir və mərkəzləşdiriləndə YUXARISI ekranın
+     üstünə çıxır — ora sürüşmək mümkün olmur, yəni telefonda başlıq və
+     birinci ekran ümumiyyətlə görünmür. --}}
+<body class="qab-@yield('wrap', 'frame')">
 {{-- Sarğı seçilir: oyun telefon çərçivəsində qalır (`frame`), satış
      səhifələri isə tam eni tutur (`sayt`). --}}
 <div class="@yield('wrap', 'frame')">

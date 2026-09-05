@@ -1738,6 +1738,44 @@ else's badge number. On a collision the **higher-XP** row survives, mirroring
 controllers, and the merge — and deliberately **not** from `DossierService::open()`: a
 visitor who pays for a case and never finishes should not create a profile row.
 
+### The landing page is an investigation board
+
+`/is` used to read as a calm product page. It is now a **board**: the sample sheet is *pinned* to
+it rather than sitting in a panel. Everything is CSS and inline SVG — this section ships no image
+files and must not start (the sheet has to stay sharp at every size, and its text selectable).
+
+- **The pinned sheet** carries a pushpin, two tape strips, a red `İSTİNTAQ MATERİALI` grif and a
+  fixed **−1.15°** tilt. Fixed, never random: a page that looks different on every load is the same
+  mistake as a seal that moves (`Imza::yol()`'s rule). Tape uses no `mix-blend-mode` — it is an
+  object lying *on* the paper, not ink soaked into it, the same call the evidence photos made.
+- **The red thread has a pin at each end.** A red line with bare ends reads as a scratch; a thread
+  *connects* things, so both ends need an anchor. It also lives strictly in the empty lower-left —
+  a thread crossing the headline is noise, not atmosphere.
+- **The fingerprint is invented**, drawn from nine nested ellipses at 0.075 opacity. It is not and
+  cannot be anyone's print, and it must stay *felt* rather than read.
+- **`İŞ AÇIQDIR` is the only red badge above the fold**, which is what makes it work. The evidence
+  grid behind it sits at 0.022 alpha; at `var(--line)` it competed with the text.
+- **The status ticker's numbers are computed**, never written. A hard-coded «84 sənəd» would be
+  wrong the day a fourth case ships — and sentences like that stay wrong longest, because nobody
+  re-reads them.
+- **Catalogue cards are folders**: a stitched spine, two punched holes and a difficulty-coloured
+  top edge. The corner ribbon carries the *badge*; the edge carries the *difficulty* — two
+  different facts that must not share one channel.
+
+> **The redaction bar reveals itself; it does not wait for hover.** Touch screens have no hover, so
+> a hover-revealed bar would leave the `h1` permanently unreadable on a phone — far worse than no
+> effect at all. The bar wipes away 1.2 s after load. The word is always in the DOM (the bar is only
+> paint), so screen readers and crawlers see the whole sentence, and `prefers-reduced-motion`
+> removes the bar entirely rather than freezing it — a frozen bar would hide the word forever.
+
+> **`body{display:flex;align-items:center}` belonged to the game frame only, and it hid the top of
+> every sales page.** `.frame` is a fixed 412×880 box that should sit centred; a sales page is a
+> long document, and centring one taller than the viewport pushes its head *above* the origin,
+> where nothing can scroll to it. On a phone `/is`, `/is/qaydalar` and `/is/hesab` opened in their
+> own middle with the masthead and hero unreachable. The rule is now `body.qab-frame`, set from
+> `@yield('wrap')`. This is the same trap CLAUDE.md already records for the admin preview iframe —
+> it had simply also been live on the phone the whole time.
+
 ### The case-file section's sales face
 
 The section has three faces and each earns its keep:
