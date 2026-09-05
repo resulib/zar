@@ -10,6 +10,7 @@
   <div class="p-qebul-s">
     <div>Çıxış № <b>{{ $dossier->kod() }}-{{ $dossier->nomre() }}</b></div>
     <div>Vərəq <b>{{ $doc->page }}</b></div>
+    <div>{{ \App\Support\Dossier\Tarix::qisa($dossier->vereqTarixi($doc)) }}</div>
   </div>
   <div class="p-damga" aria-hidden="true">
     <span class="p-damga-u">{{ \App\Support\Dossier\Byuro::QISA }} · İSTİNTAQ BÖLMƏSİ</span>

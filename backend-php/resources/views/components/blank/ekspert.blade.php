@@ -11,5 +11,7 @@
   <div class="p-xeber-b">EKSPERTİN XƏBƏRDARLIĞI</div>
   <div>Rəy iş üzrə təyinat əsasında verilir. Ekspert bilərəkdən yalan rəy
     verməyin nəticələri barədə xəbərdar edilmiş və bu barədə imza etmişdir.</div>
-  <div class="p-xeber-i">imza ______________ · {{ $dossier->kod() }}-{{ $dossier->nomre() }}</div>
+  {{-- İmza xətti BOŞ QALIR (kağızda əl ilə atılır), tarix isə sənədin
+       məlumatıdır və doldurulur. --}}
+  <div class="p-xeber-i">imza ______________ · {{ \App\Support\Dossier\Tarix::qisa($dossier->vereqTarixi($doc)) }} · {{ $dossier->kod() }}-{{ $dossier->nomre() }}</div>
 </div>

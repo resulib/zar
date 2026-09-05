@@ -42,6 +42,7 @@ require __DIR__ . '/../app/Support/Dossier/QovluqYoxlayici.php';
 require __DIR__ . '/../app/Support/Ai/QovluqBrief.php';
 require __DIR__ . '/../app/Support/Dossier/Xp.php';
 require __DIR__ . '/../app/Support/Dossier/VesiqeNo.php';
+require __DIR__ . '/../app/Support/Dossier/Tarix.php';
 require __DIR__ . '/../app/Support/Auth/Google.php';
 require __DIR__ . '/../app/Support/Bolmeler.php';
 
@@ -56,6 +57,7 @@ use App\Support\Dossier\Metn;
 use App\Support\Dossier\Rey;
 use App\Support\Dossier\Xp;
 use App\Support\Dossier\VesiqeNo;
+use App\Support\Dossier\Tarix;
 use App\Support\Dossier\Sxem;
 use App\Support\Auth\Google;
 use App\Support\Bolmeler;
@@ -1641,6 +1643,61 @@ check('naməlum seçim də açıq olana keçir',
    404 yox: ünvan var, məzmun müvəqqəti yoxdur. */
 check('hamısı bağlıdırsa null',
     Bolmeler::anaSehife(['is' => false, 'zarafat' => false, 'devet' => false], 'is') === null);
+
+/* ==================================================================
+   Sənəd tarixi — blank şablonundakı boş sətrin əvəzi
+   ================================================================== */
+echo "\nSənəd tarixi\n";
+
+/* Cümlə SƏRBƏSTDİR: üz qabığının mətni dəyişəndə oxuma sınmamalıdır. */
+check('tarix sərbəst cümlədən oxunur',
+    Tarix::oxu('Başlanıb: 16.08.2026, saat 08:05') === [16, 8, 2026]);
+check('tarixsiz mətn null verir', Tarix::oxu('Başlanıb: bilinmir') === null);
+check('boş dəyər null verir', Tarix::oxu(null) === null);
+/* 31 fevral təqvimdə yoxdur — `checkdate` onu rədd edir. */
+check('mövcud olmayan gün rədd edilir', Tarix::oxu('31.02.2026') === null);
+
+/* Ay və il keçidi `mktime` ilə: əl ilə yazılsaydı unudulardı. */
+check('ay keçidi düzgündür', Tarix::artir([30, 8, 2026], 5) === [4, 9, 2026]);
+check('il keçidi düzgündür', Tarix::artir([28, 12, 2026], 7) === [4, 1, 2027]);
+check('uzun ay keçidi', Tarix::artir([16, 8, 2026], 45) === [30, 9, 2026]);
+
+/* Vərəq tarixi: gündə dörd sənəd. Birinci vərəq işin açıldığı gündür —
+   qərar sənədi işi DOĞURUR, ona görə ondan əvvəl tarixlənə bilməz. */
+$bas = [16, 8, 2026];
+check('birinci vərəq işin başlandığı gündür', Tarix::vereq($bas, 0) === [16, 8, 2026]);
+check('dördüncü vərəq hələ eyni gündür', Tarix::vereq($bas, 3) === [16, 8, 2026]);
+check('beşinci vərəq növbəti gündür', Tarix::vereq($bas, 4) === [17, 8, 2026]);
+check('sıra artdıqca tarix də artır', Tarix::vereq($bas, 43) === [26, 8, 2026]);
+/* Mənfi sıra qəza deyil, sadəcə sıfır kimi oxunur. */
+check('mənfi sıra başlanğıca düşür', Tarix::vereq($bas, -5) === [16, 8, 2026]);
+
+/* SONLUQ VƏRƏQLƏRİ ƏSAS MATERİALIN SONUNDAN SAYILIR. Başlanğıcdan
+   sayılsaydı, dindirilmə protokolu son ekspertiza rəyindən ƏVVƏL
+   tarixlənərdi — qovluq özü ilə ziddiyyətə düşərdi. */
+$sonEsas = Tarix::vereq($bas, 43);                 // 26.08.2026
+$dindirme = Tarix::sonluq($bas, 43, 0);
+$mehkeme  = Tarix::sonluq($bas, 43, 1);
+
+/* Massivləri BİRBAŞA müqayisə etmək olmaz: PHP onları element-element
+   tutuşdurur, yəni [26,8,2026] > [2,9,2026] «doğru» çıxır. Sıralana bilən
+   dəyərə çevrilir. */
+$sira = static fn (array $t): string => sprintf('%04d%02d%02d', $t[2], $t[1], $t[0]);
+check('dindirilmə əsas materialdan sonradır', $sira($dindirme) > $sira($sonEsas), [$sonEsas, $dindirme]);
+check('məhkəmə dindirilmədən sonradır', $sira($mehkeme) > $sira($dindirme), [$dindirme, $mehkeme]);
+check('dindirilmə 7 gün sonradır', $dindirme === Tarix::artir($sonEsas, 7), $dindirme);
+check('məhkəmə 45 gün sonradır', $mehkeme === Tarix::artir($sonEsas, 45), $mehkeme);
+
+/* Format: blank şablonunun öz forması. */
+check('tarix blank formatında yazılır',
+    Tarix::yaz([5, 9, 2026]) === '«05» sentyabr 2026-cı il', Tarix::yaz([5, 9, 2026]));
+check('iki rəqəmli gün sıfırsızdır',
+    Tarix::yaz([16, 8, 2026]) === '«16» avqust 2026-cı il', Tarix::yaz([16, 8, 2026]));
+/* Tarix bilinmirsə UYDURULMUR: doldurulmamış sətir yalan tarixdən dürüstdür. */
+check('tarixsiz halda boş forma qalır',
+    Tarix::yaz(null) === '«____» ____________ 2026-cı il', Tarix::yaz(null));
+check('qısa forma sıfırla doldurulur', Tarix::qisa([5, 9, 2026]) === '05.09.2026');
+check('on iki ay adı var', count(Tarix::AYLAR) === 12);
 
 echo "\n{$pass} keçdi, {$fail} uğursuz\n";
 exit($fail > 0 ? 1 : 0);

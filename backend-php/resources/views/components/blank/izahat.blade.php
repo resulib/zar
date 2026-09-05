@@ -10,5 +10,5 @@
 <div class="p-huquq">
   İzahat verən şəxsə öz dilində danışmaq, izahat verməkdən imtina etmək və
   yazılanı oxuyub düzəliş tələb etmək hüququ izah edilmişdir.
-  <span>vərəq {{ $doc->page }} · iş № {{ $dossier->no }}</span>
+  <span>vərəq {{ $doc->page }} · iş № {{ $dossier->no }} · {{ \App\Support\Dossier\Tarix::qisa($dossier->vereqTarixi($doc)) }}</span>
 </div>

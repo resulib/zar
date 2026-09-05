@@ -151,6 +151,52 @@ class Dossier extends Model
      * (14 simvol × 46 × 0.6 ≈ 386px) 412px çərçivəyə sığmır. Qalan hər yerdə
      * tam `no` işlənir.
      */
+    /**
+     * İşin başlanma tarixi — üz qabığındakı «Başlanıb: …» sətrindən.
+     *
+     * Ayrıca sütun AÇILMIR: tarix onsuz da üz qabığında var və iki yerdə
+     * saxlanılsaydı, biri digərindən sürüşərdi. Cümlə sərbəstdir —
+     * `Tarix::oxu()` yalnız `gg.aa.iiii` naxışını axtarır.
+     *
+     * @return array{0:int,1:int,2:int}|null
+     */
+    public function basTarixi(): ?array
+    {
+        $cover = (array) $this->cover;
+
+        return \App\Support\Dossier\Tarix::oxu((string) ($cover['opened'] ?? ''));
+    }
+
+    /**
+     * Verilmiş vərəqin tarixi. Sıra `sort`-dan gəlir, ona görə vərəq
+     * qovluğun ortasına əlavə olunanda qalanların tarixi də özü sürüşür.
+     *
+     * @return array{0:int,1:int,2:int}|null
+     */
+    public function vereqTarixi(\App\Models\DossierDocument $doc): ?array
+    {
+        $bas = $this->basTarixi();
+
+        if ($bas === null) {
+            return null;
+        }
+
+        if (! $doc->is_spoiler) {
+            return \App\Support\Dossier\Tarix::vereq($bas, (int) $doc->sort);
+        }
+
+        /* Sonluq vərəqləri əsas materialın SONUNDAN sayılır — ittiham
+           istintaq bitəndən sonra irəli sürülür. */
+        $esasSon = (int) $this->documents()->where('is_spoiler', false)->max('sort');
+
+        /* Sonluq vərəqləri arasındakı sıra: birincisi dindirilmə, ikincisi
+           məhkəmə. `sort` mütləq deyil — nisbi sıra lazımdır. */
+        $sira = $this->documents()->where('is_spoiler', true)
+            ->orderBy('sort')->pluck('id')->search($doc->id);
+
+        return \App\Support\Dossier\Tarix::sonluq($bas, $esasSon, $sira === false ? 0 : (int) $sira);
+    }
+
     public function kod(): string
     {
         $at = mb_strpos((string) $this->no, '-');

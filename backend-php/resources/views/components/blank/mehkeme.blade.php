@@ -19,4 +19,6 @@
 <div class="p-hokm">
   <span>AZƏRBAYCAN FİKTİV MƏHKƏMƏ KOLLEGİYASININ ADINDAN</span>
   <span>İş № {{ $dossier->no }} · {{ $dossier->place }}</span>
+  {{-- Tarixsiz hökm hökm deyil: qərarın qüvvəyə minmə anı ondan sayılır. --}}
+  <span>{{ \App\Support\Dossier\Tarix::yaz($dossier->vereqTarixi($doc)) }}</span>
 </div>

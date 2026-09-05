@@ -7,7 +7,9 @@
   <div class="p-qrif-b">TƏSDİQ EDİRƏM</div>
   <div>{{ \App\Support\Dossier\Byuro::QISA }} bölmə rəisi</div>
   <div class="p-qrif-x"></div>
-  <div class="p-qrif-t">«____» ____________ 2026-cı il</div>
+  {{-- Tarix işin başlanma tarixindən və vərəqin sırasından törəyir
+       (`Dossier::vereqTarixi()`) — boş forma sətri deyil. --}}
+  <div class="p-qrif-t">{{ \App\Support\Dossier\Tarix::yaz($dossier->vereqTarixi($doc)) }}</div>
 </div>
 <div class="p-blank p-blank-qerar">
   <x-blank.ust :head="$head" :olcu="86" qeyd=""/>

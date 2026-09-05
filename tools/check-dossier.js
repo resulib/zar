@@ -155,6 +155,60 @@ for (const q of qovluqlar) {
 }
 
 /* --- 3b. Satış üzü: nişan, nümunə, açar sənəd ------------------------- */
+/* --- 3a. Vərəq nömrələri ---------------------------------------------- */
+bas('3a. Vərəq nömrələri');
+
+/* NİYƏ AYRICA YOXLAMA: sonluq vərəqləri əvvəlcə 29–30 idi, çünki işlərdə
+   28 vərəq vardı. Sonra ortaya «Tərcümeyi-hal» vərəqləri əlavə olundu,
+   ardıcıllıq 44–50-yə qədər uzandı, sonluq vərəqləri isə YERİNDƏ QALDI —
+   yəni üç işin hər birində 29 və 30 nömrəsi İKİ dəfə işlənirdi.
+
+   `QovluqYoxlayici` təkrarı tutur, amma o, yalnız DƏRC ANINDA işləyir:
+   seed ilə gələn iş ondan keçmir. Ona görə yoxlama burada, statik
+   qatdadır — səhv üç iş boyunca səssizcə yaşamışdı. */
+const acPage = (p) => {
+  const t = String(p == null ? '' : p).trim();
+  const m = t.match(/^(\d+)\s*[–—-]\s*(\d+)$/);
+  if (m) {
+    const a = Number(m[1]), b = Number(m[2]);
+    return b >= a ? Array.from({ length: b - a + 1 }, (_, i) => a + i) : null;
+  }
+  return /^\d+$/.test(t) ? [Number(t)] : null;
+};
+
+for (const q of qovluqlar) {
+  const ad = q.slug;
+  const docs = q.documents || [];
+
+  const pis = docs.filter(d => acPage(d.page) === null).map(d => d.page);
+  check(ad + ' — bütün vərəq nömrələri oxunur', pis.length === 0, pis);
+
+  const esas = [], spoyler = [];
+  for (const d of docs) {
+    const n = acPage(d.page) || [];
+    (d.spoiler ? spoyler : esas).push(...n);
+  }
+
+  /* Təkrar — İKİ SƏNƏD EYNİ NÖMRƏNİ DAŞIYA BİLMƏZ. Oyunçu «v. 29» deyəndə
+     hansı vərəqi nəzərdə tutduğu bilinməlidir. */
+  const hamsi = esas.concat(spoyler);
+  const tekrar = [...new Set(hamsi.filter((x, i) => hamsi.indexOf(x) !== i))];
+  check(ad + ' — vərəq nömrəsi təkrarlanmır', tekrar.length === 0, tekrar);
+
+  /* Əsas ardıcıllıq 1-dən başlayır və BOŞLUQSUZDUR: qovluq fiziki
+     sənəddir, aradan vərəq düşsə oxucu onu itmiş sayar. */
+  const enBoyuk = Math.max(...esas);
+  const boslug = [];
+  for (let i = 1; i <= enBoyuk; i++) { if (esas.indexOf(i) < 0) boslug.push(i); }
+  check(ad + ' — əsas ardıcıllıqda boşluq yoxdur', boslug.length === 0, boslug);
+
+  /* Sonluq vərəqləri əsas ardıcıllıqdan SONRA gəlir — onlar qovluğun
+     sonuna əlavə olunur, ortasına deyil. */
+  check(ad + ' — sonluq vərəqləri sonda gəlir',
+    spoyler.every(n => n > enBoyuk), { esasSon: enBoyuk, sonluq: spoyler });
+}
+
+/* --- 3b. Satış üzü ----------------------------------------------------- */
 bas('3b. Satış üzü');
 
 const BADGES = (cfg.match(/'badges'\s*=>\s*\[([\s\S]*?)\]/) || [, ''])[1]

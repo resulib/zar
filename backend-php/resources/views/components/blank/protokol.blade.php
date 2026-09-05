@@ -9,6 +9,9 @@
 <div class="p-rule"></div>
 <div class="p-tertib">
   <span><em>Tərtib olundu:</em> {{ $dossier->place }}</span>
+  {{-- Tarix protokolun ən vacib rekvizitidir: sənədin hüquqi dəyəri
+       hərəkətin NƏ VAXT edildiyindən asılıdır. --}}
+  <span><em>Tarix:</em> {{ \App\Support\Dossier\Tarix::qisa($dossier->vereqTarixi($doc)) ?: '—' }}</span>
   <span><em>İş №</em> {{ $dossier->no }}</span>
   <span><em>Vərəq</em> {{ $doc->page }}</span>
 </div>

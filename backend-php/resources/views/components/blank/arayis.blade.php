@@ -8,7 +8,7 @@
     <x-blank.ust :head="$head" :olcu="52" qeyd=""/>
     <div class="p-arayis-no">
       <div>№ <b>{{ $dossier->kod() }}-{{ $dossier->nomre() }}</b></div>
-      <div>«____» ____________ 2026-cı il</div>
+      <div>{{ \App\Support\Dossier\Tarix::yaz($dossier->vereqTarixi($doc)) }}</div>
     </div>
   </div>
   <div class="p-arayis-sag">
