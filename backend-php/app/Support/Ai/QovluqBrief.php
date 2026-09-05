@@ -56,7 +56,7 @@ final class QovluqBrief
     /** Sənəd növləri — `config('dossier.sened_novleri')` güzgüsü. */
     public const NOV = [
         'testimony', 'expertise', 'camera', 'chat', 'log',
-        'receipt', 'plan', 'protocol', 'other',
+        'receipt', 'plan', 'protocol', 'biography', 'other',
     ];
 
     /* ----------------------------------------------------------------
@@ -106,6 +106,13 @@ final class QovluqBrief
         kamera və texniki arayışlar, sonda yekun sənədlər.
 
         İki vərəq bir-birini TƏKZİB ETSİN — həlli sübut edən ziddiyyət odur.
+
+        Hər dindirilən şəxs (ifadə və ya izahat verən) və zərərçəkən üçün BİR
+        «Tərcümeyi-hal» vərəqi planlaşdır (`doc_type: biography`, blank: resmi):
+        zərərçəkəninki işin əvvəlində, meyit müayinəsindən əvvəl; hər şəxsinki
+        öz ifadəsindən dərhal əvvəl. Vərəqdə qısa ümumi məlumat olur — doğum
+        ili, ünvan, iş yeri, ailə vəziyyəti — və o, qatili ELƏ VERMƏMƏLİDİR:
+        hamısı eyni quru, neytral dildə yazılır.
 
         `culprit` qatilin TAM ADIDIR və şübhəlilər siyahısındakı adlardan biri
         ilə HƏRFİ-HƏRFİNƏ eyni olmalıdır. `motive` və `proof` mətnləri məhz
@@ -583,7 +590,7 @@ final class QovluqBrief
      * @param array<string,mixed> $d
      * @return array<string,mixed>  `content` sütununun dəyəri
      */
-    public static function bloklar(array $d, string $ad, string $blankNov, int $no, string $isNo): array
+    public static function bloklar(array $d, string $ad, string $blankNov, int $no, string $isNo, string $docType = ''): array
     {
         $bloklar = [];
 
@@ -599,6 +606,15 @@ final class QovluqBrief
         }
 
         $bloklar[] = $basliq;
+
+        /* Tərcümeyi-hal: portret foto çərçivəsi başlıqdan dərhal sonra durur —
+           şəkil sonra yüklənir, yeri isə rekvizitlərin üstündədir. Sondakı
+           ümumi 4:3 çərçivələr bu növdə buraxılır ki, bir vərəqdə iki cür
+           boş çərçivə olmasın. */
+        if ($docType === 'biography') {
+            $bloklar[] = ['tip' => 'foto', 'nisbet' => '3:4', 'izah' => '3×4 sm fotoşəkil — vərəqəyə əlavə olunur'];
+            unset($d['foto']);
+        }
 
         /* 3. Rekvizit sətirləri — «Kimdən … Vəzifə … Alınma vaxtı». */
         $sahe = self::saheler($d['sahe'] ?? null);

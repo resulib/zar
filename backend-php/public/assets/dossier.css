@@ -581,6 +581,8 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .p-foto-cer{border:1px solid var(--ink3);background:var(--paper2);padding:7px;
   display:flex;align-items:center;justify-content:center;aspect-ratio:4/3}
 .p-foto-4-3{--nis:4/3}
+/* 3:4 — şəxsi vərəqə fotosu: pasport şəkli ölçüsündə qalır, ölçüyə çəkilmir. */
+.p-foto-3-4{max-width:250px}
 .p-foto-3-4 .p-foto-cer{aspect-ratio:3/4}
 .p-foto-1-1 .p-foto-cer{aspect-ratio:1/1}
 .p-foto-cer img{width:100%;height:100%;object-fit:cover}

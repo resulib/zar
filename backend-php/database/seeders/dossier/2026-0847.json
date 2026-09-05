@@ -2,14 +2,14 @@
     "slug": "2026-0847",
     "no": "AFİB-2026/0847",
     "title": "«Sədəf» şadlıq sarayı",
-    "blurb": "Toy gecəsi işıq kəsilir, generator dəhlizində meyit tapılır. 37 vərəq material, dörd dindirilən, bir kodla bağlı metal qutu.",
+    "blurb": "Toy gecəsi işıq kəsilir, generator dəhlizində meyit tapılır. 44 vərəq material, dörd dindirilən, bir kodla bağlı metal qutu.",
     "place": "«Sədəf» şadlıq sarayı, Xırdalan",
     "period": "Avqust 2026",
     "intro": "Toy gecəsi saat yarımda rayonda işıq kəsilir. Kamera qeydi bir saat susur, generator işə düşür, səhər saat 07:40-da texniki dəhlizdə şadlıq sarayının qonağı — 58 yaşlı kişi — meyit halında tapılır. Masada sayılan qırx bir min manat yerindədir, cibindəki borc qəbzi toxunulmayıb. Dörd nəfər dindirilir və hər dördünün gecəyə dair öz izahı var. Materialların içində bir ziddiyyət var: iki sənəd eyni saat haqqında fərqli şey deyir. Onu tapmaq sənin işindir.",
     "badge": "en-cox",
     "showcase": true,
     "difficulty": "orta",
-    "readMinutes": 55,
+    "readMinutes": 65,
     "priceCredits": 0,
     "sort": 1,
     "status": "published",
@@ -60,7 +60,7 @@
         ],
         [
             "Vərəq sayı",
-            "37"
+            "44"
         ]
     ],
     "suspects": [
@@ -564,7 +564,100 @@
             }
         },
         {
-            "page": "8–9",
+            "page": "8",
+            "name": "Tərcümeyi-hal: Mehdiyev Tofiq Zahid oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 1"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Mehdiyev Tofiq Zahid oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1968, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta ixtisas"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "sahibkar, fərdi qaydada ticarət fəaliyyəti"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "evli — həyat yoldaşı G.Mehdiyeva; bir oğlu var"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "zərərçəkən"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1968-ci ildə anadan olub. Uzun illər ticarət sahəsində fərdi qaydada fəaliyyət göstərib; Novxanı qəsəbəsində torpaq sahəsi var. Evlidir, oğlu Mehdiyev Nicat Tofiq oğludur.",
+                            "Qohumları arasında hesablı, dəqiq adam kimi tanınır; borc münasibətlərini yazılı qeyd etdiyi müəyyən olunub. Barəsində heç bir material qeydə alınmayıb.",
+                            "Vərəqə iş üzrə toplanmış sənədlər əsasında tərtib edilib."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 62,
+                        "y": 76,
+                        "olcu": 118,
+                        "bucaq": -3
+                    }
+                ]
+            }
+        },
+        {
+            "page": "9–10",
             "name": "Meyitin xarici müayinə aktı",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -636,7 +729,7 @@
             "sample": false
         },
         {
-            "page": "10–11",
+            "page": "11–12",
             "name": "Meyitin daxili müayinəsi — yekun rəy",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -713,7 +806,7 @@
             }
         },
         {
-            "page": "12–14",
+            "page": "13–15",
             "name": "Maddi sübutların siyahısı",
             "kind": "Siyahı",
             "locked": false,
@@ -753,7 +846,7 @@
                             },
                             {
                                 "ad": "Kod kilidli metal qutu",
-                                "metn": "Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 37]]."
+                                "metn": "Zərərçəkənin «Hyundai» markalı avtomobilinin baqajından götürülüb. Dördrəqəmli kodla bağlanır. Açılmamışdır — [[bax: vərəq 44]]."
                             }
                         ]
                     },
@@ -785,7 +878,7 @@
             "sample": true
         },
         {
-            "page": "15",
+            "page": "16",
             "name": "Barmaq izləri üzrə ekspertiza rəyi",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -896,7 +989,7 @@
             }
         },
         {
-            "page": "16",
+            "page": "17",
             "name": "Mərmər lövhə üzrə trasoloji rəy",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -961,7 +1054,7 @@
             }
         },
         {
-            "page": "17",
+            "page": "18",
             "name": "Ayaqqabı ucluğu üzrə ekspertiza rəyi",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -1048,7 +1141,7 @@
             }
         },
         {
-            "page": "18",
+            "page": "19",
             "name": "Videomüşahidə qeydlərindən çıxarış",
             "kind": "Arayış",
             "locked": false,
@@ -1122,7 +1215,7 @@
                         "tip": "metn",
                         "cerceve": true,
                         "abzaslar": [
-                            "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 19.]]"
+                            "Arxa çıxışda və mətbəx qapısında kamera quraşdırılmayıb. [[00:37-də R.Nəbiyevin çıxışı yalnız qonşu obyektin kamerasında var — bax: vərəq 20.]]"
                         ]
                     }
                 ],
@@ -1152,7 +1245,7 @@
             "sample": false
         },
         {
-            "page": "19",
+            "page": "20",
             "name": "Qonşu obyektin videomüşahidə arayışı",
             "kind": "Arayış",
             "locked": false,
@@ -1232,7 +1325,7 @@
             }
         },
         {
-            "page": "20",
+            "page": "21",
             "name": "Generator qurğusunun istismar jurnalı",
             "kind": "Sənəd",
             "locked": false,
@@ -1332,7 +1425,7 @@
             "key": true
         },
         {
-            "page": "21",
+            "page": "22",
             "name": "Obyektin işçi növbə cədvəli",
             "kind": "Sənəd",
             "locked": false,
@@ -1418,7 +1511,7 @@
             }
         },
         {
-            "page": "22",
+            "page": "23",
             "name": "Mətbəx inventarizasiyası aktı",
             "kind": "Akt",
             "locked": false,
@@ -1522,7 +1615,7 @@
             }
         },
         {
-            "page": "23",
+            "page": "24",
             "name": "Telefon danışıqlarının detallaşdırılması",
             "kind": "Arayış",
             "locked": false,
@@ -1620,7 +1713,7 @@
             "sample": false
         },
         {
-            "page": "24–25",
+            "page": "25–26",
             "name": "Yazışma çıxarışı: R.Nəbiyev — T.Mehdiyev",
             "kind": "Ekran görüntüsü",
             "locked": false,
@@ -1713,7 +1806,7 @@
             "sample": true
         },
         {
-            "page": "26",
+            "page": "27",
             "name": "Yazışma çıxarışı: S.Hüseynova — həyat yoldaşı",
             "kind": "Ekran görüntüsü",
             "locked": false,
@@ -1829,7 +1922,7 @@
             "sample": false
         },
         {
-            "page": "27",
+            "page": "28",
             "name": "Taksi sifarişi üzrə arayış",
             "kind": "Sənəd",
             "locked": false,
@@ -1924,7 +2017,99 @@
             }
         },
         {
-            "page": "28–29",
+            "page": "29",
+            "name": "Tərcümeyi-hal: Hüseynova Səbinə Zahid qızı",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 2"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Hüseynova Səbinə Zahid qızı"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1988, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "ali"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "evdardır"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "ərdədir"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1988-ci ildə anadan olub, zərərçəkənin qardaşı qızıdır. Atası 2019-cu ildə vəfat edib; ailənin Novxanı qəsəbəsindəki torpaq sahəsi ilə bağlı sənədləşmə məsələsi həmin vaxtdan yarımçıq qalıb.",
+                            "Ərdədir, bacısı və onun uşaqları ilə yaxın münasibətdədir. Barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 65,
+                        "y": 78,
+                        "olcu": 118,
+                        "bucaq": -4
+                    }
+                ]
+            }
+        },
+        {
+            "page": "30–31",
             "name": "İzahat: Hüseynova Səbinə Zahid qızı",
             "kind": "İzahat",
             "locked": false,
@@ -2007,7 +2192,99 @@
             "key": true
         },
         {
-            "page": "30",
+            "page": "32",
+            "name": "Tərcümeyi-hal: Qasımov Elxan Rəşid oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 3"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Qasımov Elxan Rəşid oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1980, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta ixtisas"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "«Sədəf» şadlıq sarayının sahibi"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                ""
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1980-ci ildə anadan olub. «Sədəf» şadlıq sarayının sahibidir; obyektdə ikinci mərtəbənin tikintisi gedir. Zərərçəkənlə on beş ilə yaxın dostluq münasibəti olub.",
+                            "İşçilər arasında nüfuzu normal xarakterizə olunur, obyektin təsərrüfat sənədləri qaydasındadır. Barəsində əvvəllər material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 68,
+                        "y": 80,
+                        "olcu": 118,
+                        "bucaq": -5
+                    }
+                ]
+            }
+        },
+        {
+            "page": "33",
             "name": "İzahat: Qasımov Elxan Rəşid oğlu",
             "kind": "İzahat",
             "locked": false,
@@ -2072,7 +2349,99 @@
             "sample": false
         },
         {
-            "page": "31",
+            "page": "34",
+            "name": "Tərcümeyi-hal: Nəsirov Kamran Vaqif oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 4"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Nəsirov Kamran Vaqif oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1995, Bakı şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Bakı ş., Binəqədi rayonu"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "sabit iş yeri qeydə alınmayıb"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "subaydır"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1995-ci ildə anadan olub, zərərçəkənin bacısı oğludur. Binəqədi rayonunda yaşayır, şəxsi avtomobili var; sabit iş yeri qeydə alınmayıb.",
+                            "Dayısı ilə münasibətində borc məsələsi olduğu ailə üzvlərinə məlum idi. Barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 62,
+                        "y": 77,
+                        "olcu": 118,
+                        "bucaq": -6
+                    }
+                ]
+            }
+        },
+        {
+            "page": "35",
             "name": "İzahat: Nəsirov Kamran Vaqif oğlu",
             "kind": "İzahat",
             "locked": false,
@@ -2143,7 +2512,99 @@
             "sample": false
         },
         {
-            "page": "32",
+            "page": "36",
+            "name": "Tərcümeyi-hal: Nəbiyev Ramil Əli oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 5"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Nəbiyev Ramil Əli oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1997, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "video operator, sərbəst fəaliyyət"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                ""
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1997-ci ildə anadan olub. Toy və mərasim çəkilişləri üzrə sərbəst fəaliyyət göstərir; «Sədəf» şadlıq sarayında mütəmadi işləyir, çəkiliş avadanlığı özünündür.",
+                            "Sifarişçilərlə münasibətində əvvəllər mübahisə qeydə alınmayıb. Barəsində heç bir material yoxdur."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 65,
+                        "y": 79,
+                        "olcu": 118,
+                        "bucaq": -3
+                    }
+                ]
+            }
+        },
+        {
+            "page": "37",
             "name": "İzahat: Nəbiyev Ramil Əli oğlu",
             "kind": "İzahat",
             "locked": false,
@@ -2208,7 +2669,99 @@
             "sample": false
         },
         {
-            "page": "33",
+            "page": "38",
+            "name": "Tərcümeyi-hal: Musayeva Əsmər Qulu qızı",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 6"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Musayeva Əsmər Qulu qızı"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1979, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "«Sədəf» şadlıq sarayı, mətbəx işçisi"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "ərdədir"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1979-cu ildə anadan olub. İki ilə yaxındır «Sədəf» şadlıq sarayının mətbəxində işləyir, axşam növbələrində çalışır.",
+                            "İş yoldaşları tərəfindən müsbət xarakterizə olunur. Barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "16.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 68,
+                        "y": 76,
+                        "olcu": 118,
+                        "bucaq": -4
+                    }
+                ]
+            }
+        },
+        {
+            "page": "39",
             "name": "İzahat: Musayeva Əsmər Qulu qızı",
             "kind": "İzahat",
             "locked": false,
@@ -2283,7 +2836,99 @@
             }
         },
         {
-            "page": "34",
+            "page": "40",
+            "name": "Tərcümeyi-hal: Mehdiyev Nicat Tofiq oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 7"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Mehdiyev Nicat Tofiq oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1999, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "ali"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                ""
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "yeni evlidir"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1999-cu ildə anadan olub, zərərçəkənin oğludur. Hadisə onun toy gecəsində baş verib.",
+                            "Atası ilə münasibəti yaxın xarakterizə olunur; ailə məsələlərində atasının qərarlarına etiraz etdiyi müəyyən edilməyib. Barəsində heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "N.Abbasov",
+                        "tarix": "17.08.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 62,
+                        "y": 78,
+                        "olcu": 118,
+                        "bucaq": -5
+                    }
+                ]
+            }
+        },
+        {
+            "page": "41",
             "name": "İzahat: Mehdiyev Nicat Tofiq oğlu",
             "kind": "İzahat",
             "locked": false,
@@ -2350,7 +2995,7 @@
             }
         },
         {
-            "page": "35",
+            "page": "42",
             "name": "Nəmərin sayılması üzrə vərəqə",
             "kind": "Sənəd",
             "locked": false,
@@ -2462,7 +3107,7 @@
             "sample": false
         },
         {
-            "page": "36",
+            "page": "43",
             "name": "Zərərçəkənin bank hesabı üzrə çıxarış",
             "kind": "Sənəd",
             "locked": false,
@@ -2546,7 +3191,7 @@
             }
         },
         {
-            "page": "37",
+            "page": "44",
             "name": "Avtomobildən götürülmüş metal qutu",
             "kind": "Kodla bağlıdır",
             "locked": true,

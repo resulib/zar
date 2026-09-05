@@ -775,9 +775,16 @@ insert — the `CatalogSeeder` discipline, so an admin's toggle is never undone.
 three shipped cases are defined, and the two paths coexist: the seeder never writes a column the
 admin owns (`status`, `sort`, a code's `label`/`hint_note`).
 
-There are three cases, **28 documents each**: `2026-0847` («Sədəf» şadlıq sarayı, free, **the one
-`showcase`**), `2026-0912` («Şimal» parkı) and `2026-0412` («Xırdalanda sükut», **two lock-coded
-files**, difficulty `kabus`). Exactly one case may carry `showcase: true` — the home page's hero and sample
+There are three cases: `2026-0847` («Sədəf» şadlıq sarayı, free, **the one
+`showcase`**, 35 player-visible documents), `2026-0912` («Şimal» parkı, 35) and `2026-0412`
+(«Xırdalanda sükut», **two lock-coded files**, difficulty `kabus`, 34). Every interrogated person
+and the victim carries an official **«Tərcümeyi-hal» sheet** (blank + heading + an empty 3:4
+portrait `foto` frame + `sahe` rows + short neutral prose + signature), placed **before that
+person's first statement** (the victim's before the external examination act) — the photo is
+uploaded later from the admin; the frame reads «foto əlavə edilməyib» until then. The AI case
+builder plans the same sheets via `doc_type: biography` (`QovluqBrief::NOV` ↔
+`config('dossier.sened_novleri')`), and `bloklar()` puts the portrait frame right after the
+heading for that type. Exactly one case may carry `showcase: true` — the home page's hero and sample
 strip come from it, so moving that flag also moves what `tools/check-dossier-flow.js` counts.
 
 > **The 0412 case is where the block system is actually exercised.** It is the only case that uses
@@ -1089,8 +1096,8 @@ lock only.
 
 **The name never leaks either.** Spoiler sheets are filtered out of `docs` in four places —
 `play()` · `open()` · `unlock()` · `show()` (the presentation page's `.teq-siyahi`) — and out of
-the catalog card's document count, which is why the shipped cases still read «28 sənəd» while the
-seed files now hold 30.
+the catalog card's document count, which is why the shipped cases read two fewer documents than
+their seed files hold (0847: «35 sənəd», file holds 37).
 
 `neticeArray()`, `chooseSuspect()` and `play()` return a `spoilers` list under the same
 `solved || revealed` condition as `solution`. The sheet itself comes from the existing

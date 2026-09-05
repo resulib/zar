@@ -173,6 +173,7 @@ class DossierAiService
                 (string) $d->blank_nov,
                 (int) $d->sort,
                 (string) $dossier->nomre(),
+                (string) $d->doc_type,
             );
 
             /* Kilidli vərəqin klaviatura ekranı üçün başlıq. */

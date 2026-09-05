@@ -184,11 +184,12 @@ return [
     */
     'sened_novleri' => [
         'testimony', 'expertise', 'camera', 'chat', 'log',
-        'receipt', 'plan', 'protocol', 'other',
+        'receipt', 'plan', 'protocol', 'biography', 'other',
     ],
 
     'sened_labels' => [
         'testimony' => 'İfadə · izahat',
+        'biography' => 'Tərcümeyi-hal',
         'expertise' => 'Ekspertiza rəyi',
         'camera'    => 'Kamera çıxarışı',
         'chat'      => 'Yazışma',

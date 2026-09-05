@@ -2,14 +2,14 @@
     "slug": "2026-0412",
     "no": "AFİB-2026/0412",
     "title": "Xırdalanda sükut",
-    "blurb": "Yanvar gecəsi dörd mərtəbəli binanın 38-ci mənzilində gənc qadın mətbəxdə ölü tapılır. Qapı sındırılmayıb, qızıl yerindədir, televizor sonadək açıqdır. 44 vərəq material, dörd dindirilən, iki kodla bağlı fayl — və onlardan biri qəsdən yalan danışır.",
+    "blurb": "Yanvar gecəsi dörd mərtəbəli binanın 38-ci mənzilində gənc qadın mətbəxdə ölü tapılır. Qapı sındırılmayıb, qızıl yerindədir, televizor sonadək açıqdır. 50 vərəq material, dörd dindirilən, iki kodla bağlı fayl — və onlardan biri qəsdən yalan danışır.",
     "place": "M.Ə.Rəsulzadə küç. 14, Xırdalan",
     "period": "Yanvar 2026",
     "intro": "Saat 23:40-da növbə xidmətinə zəng gəlir: 38-ci mənzildə həyat yoldaşı hərəkətsiz vəziyyətdədir. Əməliyyat qrupu 23:52-də içəri girir və heç nə oğurlanmadığını görür — pul kisəsində 240 manat, zinət əşyaları yerində. Boyunda boğulma zolağı var, amma nə kəndir, nə kəmər izi. Qapıda sındırılma yoxdur, deməli qapını içəridən açıblar. Bina camaatı üç aydır bir dedi-qodu danışır və o dedi-qodu işin bütün istiqamətini müəyyən edir. Bu qovluqda iki şifrəli fayl var. Birincisi asan tapılır və oxunanda hər şey aydınlaşır — məhz ona görə ehtiyatlı olun.",
     "badge": "kabus",
     "showcase": false,
     "difficulty": "kabus",
-    "readMinutes": 55,
+    "readMinutes": 65,
     "priceCredits": 5,
     "sort": 3,
     "status": "published",
@@ -60,7 +60,7 @@
         ],
         [
             "Vərəq sayı",
-            "44"
+            "50"
         ]
     ],
     "axis": [
@@ -448,7 +448,100 @@
             }
         },
         {
-            "page": "6–7",
+            "page": "6",
+            "name": "Tərcümeyi-hal: Qasımova Nərgiz Elçin qızı",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 1"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Qasımova Nərgiz Elçin qızı"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1998, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan ş., M.Ə.Rəsulzadə küç. 14, mənzil 38"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "rəsmi iş yeri qeydə alınmayıb"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "ərdə — Qasımov Fərid Vasif oğlu ilə nikahda"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "zərərçəkən"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1998-ci ildə Xırdalan şəhərində anadan olub, orta məktəbi burada bitirib. Qasımov Fərid Vasif oğlu ilə nikahdadır; son illər M.Ə.Rəsulzadə küçəsi 14 saylı binanın 38-ci mənzilində yaşayıb.",
+                            "Qonşular tərəfindən müsbət xarakterizə olunur, davranışı barədə şikayət qeydə alınmayıb. Barəsində inzibati və cinayət qaydasında heç bir material yoxdur.",
+                            "Vərəqə iş üzrə toplanmış sənədlər əsasında tərtib edilib."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "15.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 62,
+                        "y": 76,
+                        "olcu": 118,
+                        "bucaq": -3
+                    }
+                ]
+            }
+        },
+        {
+            "page": "7–8",
             "name": "Meyitin xarici müayinə aktı",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -522,7 +615,99 @@
             }
         },
         {
-            "page": "8–9",
+            "page": "9",
+            "name": "Tərcümeyi-hal: Qasımov Fərid Vasif oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 2"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Qasımov Fərid Vasif oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1994, Sumqayıt şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan ş., M.Ə.Rəsulzadə küç. 14, mənzil 38"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "taksi sürücüsü, «Volt» sifariş xidməti"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "evli — zərərçəkənin həyat yoldaşı"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1994-cü ildə Sumqayıt şəhərində anadan olub; anası Qasımova Elmira Həsən qızı Sumqayıtda yaşayır. Bir neçə ildir «Volt» sifariş xidmətində taksi sürücüsü işləyir, sifarişlər tətbiq üzərindən qeydə alınır, iş qrafiki sərbəstdir.",
+                            "Nikahdadır, uşağı yoxdur. İş yerindən mənfi məlumat daxil olmayıb; barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "15.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 65,
+                        "y": 78,
+                        "olcu": 118,
+                        "bucaq": -4
+                    }
+                ]
+            }
+        },
+        {
+            "page": "10–11",
             "name": "Fərid Qasımovun ifadəsi",
             "kind": "İzahat",
             "locked": false,
@@ -603,7 +788,7 @@
             }
         },
         {
-            "page": "10–11",
+            "page": "12–13",
             "name": "Fərid Qasımovun telefonundan çıxarış — anonim mesajlar",
             "kind": "Ekran görüntüsü",
             "locked": false,
@@ -712,7 +897,7 @@
             }
         },
         {
-            "page": "12",
+            "page": "14",
             "name": "Taksi GPS loqu və yanacaq qəbzi",
             "kind": "Sənəd",
             "locked": false,
@@ -803,7 +988,99 @@
             }
         },
         {
-            "page": "13–14",
+            "page": "15",
+            "name": "Tərcümeyi-hal: Rüstəmov Elşən Kamil oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 3"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Rüstəmov Elşən Kamil oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1982, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan ş., M.Ə.Rəsulzadə küç. 14, mənzil 12"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta ixtisas"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "M.Ə.Rəsulzadə küç. 14 saylı binanın komendantı"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                ""
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1982-ci ildə anadan olub. Orta ixtisas təhsillidir, santexnika işləri üzrə təcrübəsi var. Bir neçə ildir binanın komendantıdır; təsərrüfat işlərinə və ehtiyat açarların saxlanmasına cavabdehdir.",
+                            "12-ci mənzildə yaşayır, sakinlərlə gündəlik təmasdadır. Barəsində əvvəllər şikayət qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "15.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 68,
+                        "y": 80,
+                        "olcu": 118,
+                        "bucaq": -5
+                    }
+                ]
+            }
+        },
+        {
+            "page": "16–17",
             "name": "Komendant Elşən Rüstəmovun ifadəsi",
             "kind": "İzahat",
             "locked": false,
@@ -885,7 +1162,7 @@
             }
         },
         {
-            "page": "15",
+            "page": "18",
             "name": "Zərərçəkən və komendantın yazışması",
             "kind": "Ekran görüntüsü",
             "locked": false,
@@ -988,7 +1265,7 @@
             }
         },
         {
-            "page": "16",
+            "page": "19",
             "name": "Bina istismar sahəsinin qəza jurnalından çıxarış",
             "kind": "Arayış",
             "locked": false,
@@ -1079,7 +1356,7 @@
             }
         },
         {
-            "page": "17",
+            "page": "20",
             "name": "Komendantın mənzilindən axtarış protokolu",
             "kind": "Protokol",
             "locked": false,
@@ -1139,7 +1416,7 @@
                         "kartlar": [
                             {
                                 "ad": "Qanlı kətan parça",
-                                "metn": "Ölçü 10×14 sm. Zibil qutusundan götürülüb. Ekspertizaya göndərilir ([[bax: vərəq 18]])."
+                                "metn": "Ölçü 10×14 sm. Zibil qutusundan götürülüb. Ekspertizaya göndərilir ([[bax: vərəq 21]])."
                             },
                             {
                                 "ad": "38-ci mənzilə aid ehtiyat açar",
@@ -1171,7 +1448,7 @@
             }
         },
         {
-            "page": "18",
+            "page": "21",
             "name": "Qan ləkəsi üzrə ekspertiza rəyi",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -1196,7 +1473,7 @@
                             ],
                             [
                                 "Mənbə",
-                                "mənzil 12 üzrə axtarış (vərəq 17)"
+                                "mənzil 12 üzrə axtarış (vərəq 20)"
                             ],
                             [
                                 "Ekspert",
@@ -1247,7 +1524,99 @@
             }
         },
         {
-            "page": "19–20",
+            "page": "22",
+            "name": "Tərcümeyi-hal: Qasımova Elmira Həsən qızı",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 4"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Qasımova Elmira Həsən qızı"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1961, Sumqayıt şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Sumqayıt şəhəri"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "təqaüdçü"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "bir oğlu var — F.Qasımov"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1961-ci ildə anadan olub, Sumqayıt şəhərində yaşayır, təqaüdçüdür. Oğlu Qasımov Fərid Vasif oğlu Xırdalanda ailəsi ilə yaşayır.",
+                            "Səhhətində xroniki təzyiq problemi olduğunu bildirir, yaşayış yerinə yaxın aptekdən mütəmadi dərman alır. Barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "15.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 62,
+                        "y": 77,
+                        "olcu": 118,
+                        "bucaq": -6
+                    }
+                ]
+            }
+        },
+        {
+            "page": "23–24",
             "name": "Qayınana Elmira Qasımovanın ifadəsi",
             "kind": "İzahat",
             "locked": false,
@@ -1329,7 +1698,7 @@
             }
         },
         {
-            "page": "21",
+            "page": "25",
             "name": "Aptek çeki və məhsul kartoçkası",
             "kind": "Sənəd",
             "locked": false,
@@ -1404,7 +1773,7 @@
                     {
                         "tip": "metn",
                         "abzaslar": [
-                            "Çek 17:40-da kəsilib. Ödəniş şəxsi ada bağlı təqaüd kartı ilə aparıldığı üçün alıcının kimliyi mübahisəsizdir. Şarfın tərkibi [[mal kartoçkası ilə təsdiqlənir]] və lif müqayisəsi üçün əsas götürülür (bax: vərəq 31)."
+                            "Çek 17:40-da kəsilib. Ödəniş şəxsi ada bağlı təqaüd kartı ilə aparıldığı üçün alıcının kimliyi mübahisəsizdir. Şarfın tərkibi [[mal kartoçkası ilə təsdiqlənir]] və lif müqayisəsi üçün əsas götürülür (bax: vərəq 36)."
                         ]
                     }
                 ],
@@ -1427,7 +1796,7 @@
             }
         },
         {
-            "page": "22",
+            "page": "26",
             "name": "Nəqliyyat kartı bazasından çıxarış",
             "kind": "Arayış",
             "locked": false,
@@ -1504,7 +1873,7 @@
             }
         },
         {
-            "page": "23",
+            "page": "27",
             "name": "Qasımova Elmiranın evindən müsadirə aktı",
             "kind": "Akt",
             "locked": false,
@@ -1545,7 +1914,7 @@
                             },
                             {
                                 "ad": "Tünd boz yun şarf",
-                                "metn": "Etiketi üzərindədir, mal № 8841. Aptek çeki ilə uyğun gəlir ([[bax: vərəq 21]])."
+                                "metn": "Etiketi üzərindədir, mal № 8841. Aptek çeki ilə uyğun gəlir ([[bax: vərəq 25]])."
                             },
                             {
                                 "ad": "Bisoprolol 5mq",
@@ -1575,7 +1944,7 @@
             }
         },
         {
-            "page": "24–25",
+            "page": "28–29",
             "name": "AFİB ekspert rəyi — yekun",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -1654,7 +2023,7 @@
             }
         },
         {
-            "page": "26",
+            "page": "30",
             "name": "Məhlə içi marketin kamera görüntüləri",
             "kind": "Arayış",
             "locked": false,
@@ -1742,7 +2111,7 @@
             }
         },
         {
-            "page": "27",
+            "page": "31",
             "name": "Marketin satış qeydiyyatı",
             "kind": "Sənəd",
             "locked": false,
@@ -1838,7 +2207,99 @@
             }
         },
         {
-            "page": "28–29",
+            "page": "32",
+            "name": "Tərcümeyi-hal: Əliyeva Səidə Rəşad qızı",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 5"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Əliyeva Səidə Rəşad qızı"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1990, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan ş., M.Ə.Rəsulzadə küç. 14, mənzil 34"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "evdardır"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "ərdə — Əliyev Rauf Nizami oğlu ilə nikahda, bir uşağı var"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1990-cı ildə anadan olub. Əliyev Rauf Nizami oğlu ilə nikahdadır, bir azyaşlı uşaqları var; ailə 34-cü mənzildə — zərərçəkənin mənzilinin bilavasitə alt mərtəbəsində yaşayır.",
+                            "Qonşularla münasibəti normal xarakterizə olunur, zərərçəkənlə gündəlik ünsiyyətdə olub. Barəsində əvvəllər material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "15.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 65,
+                        "y": 79,
+                        "olcu": 118,
+                        "bucaq": -3
+                    }
+                ]
+            }
+        },
+        {
+            "page": "33–34",
             "name": "Qonşu Səidə Əliyevanın ifadəsi (mənzil 34)",
             "kind": "İzahat",
             "locked": false,
@@ -1929,7 +2390,7 @@
             }
         },
         {
-            "page": "30",
+            "page": "35",
             "name": "Mərtəbə planı və akustik arayış",
             "kind": "Arayış",
             "locked": false,
@@ -2017,7 +2478,7 @@
             }
         },
         {
-            "page": "31",
+            "page": "36",
             "name": "Lif müqayisə ekspertizası",
             "kind": "Ekspert rəyi",
             "locked": false,
@@ -2042,7 +2503,7 @@
                             ],
                             [
                                 "Obyekt B",
-                                "müsadirə olunan şarf, mal № 8841 (vərəq 23)"
+                                "müsadirə olunan şarf, mal № 8841 (vərəq 27)"
                             ],
                             [
                                 "Metod",
@@ -2135,7 +2596,7 @@
             }
         },
         {
-            "page": "32",
+            "page": "37",
             "name": "Kabel televiziya abunəçi aktivlik loqu",
             "kind": "Sənəd",
             "locked": false,
@@ -2243,7 +2704,7 @@
             }
         },
         {
-            "page": "33",
+            "page": "38",
             "name": "İnternet təchizatçısının abunə siyahısı",
             "kind": "Sənəd",
             "locked": false,
@@ -2343,7 +2804,99 @@
             }
         },
         {
-            "page": "34–35",
+            "page": "39",
+            "name": "Tərcümeyi-hal: Əliyev Rauf Nizami oğlu",
+            "kind": "Tərcümeyi-hal",
+            "locked": false,
+            "sample": false,
+            "content": {
+                "bloklar": [
+                    {
+                        "tip": "blank",
+                        "nov": "resmi"
+                    },
+                    {
+                        "tip": "basliq",
+                        "ad": "TƏRCÜMEYİ-HAL VƏRƏQƏSİ",
+                        "alt": "şəxsi vərəqə № 6"
+                    },
+                    {
+                        "tip": "foto",
+                        "nisbet": "3:4",
+                        "izah": "3×4 sm fotoşəkil — vərəqəyə əlavə olunur"
+                    },
+                    {
+                        "tip": "sahe",
+                        "setirler": [
+                            [
+                                "Soyadı, adı, atasının adı",
+                                "Əliyev Rauf Nizami oğlu"
+                            ],
+                            [
+                                "Doğum tarixi və yeri",
+                                "1987, Xırdalan şəhəri"
+                            ],
+                            [
+                                "Yaşayış ünvanı",
+                                "Xırdalan ş., M.Ə.Rəsulzadə küç. 14, mənzil 34"
+                            ],
+                            [
+                                "Təhsili",
+                                "orta ixtisas"
+                            ],
+                            [
+                                "İş yeri və vəzifəsi",
+                                "anbar müdiri"
+                            ],
+                            [
+                                "Ailə vəziyyəti",
+                                "evli — Ə.Səidə ilə nikahda, bir uşağı var"
+                            ],
+                            [
+                                "Məhkumluğu",
+                                "yoxdur"
+                            ],
+                            [
+                                "İş üzrə statusu",
+                                "şahid qismində dindirilib"
+                            ]
+                        ]
+                    },
+                    {
+                        "tip": "metn",
+                        "duz": false,
+                        "abzaslar": [
+                            "1987-ci ildə anadan olub. Anbar müdiri vəzifəsində işləyir; iş yerində uçot jurnalı aparılır, qrafikə axşam növbələri və dövri inventarizasiya daxildir.",
+                            "Əliyeva Səidə Rəşad qızı ilə nikahdadır, 34-cü mənzildə yaşayırlar. Barəsində əvvəllər heç bir material qeydə alınmayıb."
+                        ]
+                    },
+                    {
+                        "tip": "imza",
+                        "vezife": "Tərtib etdi, AFİB müstəntiqi",
+                        "ad": "K.Nəbiyev",
+                        "tarix": "16.01.2026"
+                    }
+                ],
+                "mohurler": [
+                    {
+                        "forma": "duzbucaq",
+                        "reng": "mavi",
+                        "seffaflik": 0.44,
+                        "metn": [
+                            "AFİB",
+                            "QEYDƏ",
+                            "ALINIB"
+                        ],
+                        "x": 68,
+                        "y": 76,
+                        "olcu": 118,
+                        "bucaq": -4
+                    }
+                ]
+            }
+        },
+        {
+            "page": "40–41",
             "name": "Rauf Əliyevin ifadəsi (mənzil 34)",
             "kind": "İzahat",
             "locked": false,
@@ -2425,7 +2978,7 @@
             }
         },
         {
-            "page": "36",
+            "page": "42",
             "name": "Zərərçəkənin çağrı loqu (son 3 həftə)",
             "kind": "Arayış",
             "locked": false,
@@ -2516,7 +3069,7 @@
             }
         },
         {
-            "page": "37–38",
+            "page": "43–44",
             "name": "Zərərçəkənin telefonundakı şifrələnmiş qeyd",
             "kind": "Kodla bağlıdır",
             "locked": true,
@@ -2524,7 +3077,7 @@
             "kilid": {
                 "nov": "reqem",
                 "kod": "6819",
-                "ipucu": "Üç mənbədən yığılır: mətbəx masasındakı lak şüşəsinin rəng kodu (vərəq 2–5), komendantdan götürülən açarlığın markası (vərəq 17), sonra su sayğacının göstəricisinin son iki rəqəmi (vərəq 2–5). Bu sıra ilə."
+                "ipucu": "Üç mənbədən yığılır: mətbəx masasındakı lak şüşəsinin rəng kodu (vərəq 2–5), komendantdan götürülən açarlığın markası (vərəq 20), sonra su sayğacının göstəricisinin son iki rəqəmi (vərəq 2–5). Bu sıra ilə."
             },
             "content": {
                 "lockTitle": "ZƏRƏRÇƏKƏNİN TELEFONU",
@@ -2591,7 +3144,7 @@
             }
         },
         {
-            "page": "39–40",
+            "page": "45–46",
             "name": "Mobil operator baza sorğusunun cavabı",
             "kind": "Sənəd",
             "locked": false,
@@ -2611,7 +3164,7 @@
                         "setirler": [
                             [
                                 "Sorğu obyekti",
-                                "+994 XX XXX-XX-17 (anonim nömrə, vərəq 10–11)"
+                                "+994 XX XXX-XX-17 (anonim nömrə, vərəq 12–13)"
                             ],
                             [
                                 "Abunəçi",
@@ -2640,7 +3193,7 @@
                         "abzaslar": [
                             "Abunəçi yetkinlik yaşına çatmamışdır — 2014-cü il təvəllüdlüdür. On bir yaşlı uşağın adına rəsmiləşdirilmiş nömrə üç ay ərzində yaşlı bir kişiyə arvadı barədə mesaj göndərə bilməz. Nömrədən [[faktiki olaraq başqası istifadə edib]].",
                             "**Baza qeydi.** Nömrənin yerləşmə tarixçəsi 14 yanvar 2026 tarixində gün boyu eyni bazaya — Xırdalan-3 bazasına bağlı olduğunu göstərir. Yəni nömrə həmin gün rayondan çıxmayıb.",
-                            "Uşağın valideynləri: Əliyev Rauf Nizami oğlu və Əliyeva Səidə Rəşad qızı. Hər ikisi bu iş üzrə dindirilib (vərəq 28–29 və 34–35)."
+                            "Uşağın valideynləri: Əliyev Rauf Nizami oğlu və Əliyeva Səidə Rəşad qızı. Hər ikisi bu iş üzrə dindirilib (vərəq 33–34 və 40–41)."
                         ]
                     },
                     {
@@ -2669,7 +3222,7 @@
             }
         },
         {
-            "page": "41–44",
+            "page": "47–50",
             "name": "Ehtiyat telefonun mesaj arxivi",
             "kind": "Kodla bağlıdır",
             "locked": true,
@@ -2677,7 +3230,7 @@
             "kilid": {
                 "nov": "reqem",
                 "kod": "4734",
-                "ipucu": "İki mənbədən yığılır: mənzil 38 üzrə sonuncu kanal dəyişməsinin dəqiqəsi (vərəq 32), ardınca mənzil 34-ün internet şəbəkəsinin adındakı nömrə (vərəq 33). Bu sıra ilə."
+                "ipucu": "İki mənbədən yığılır: mənzil 38 üzrə sonuncu kanal dəyişməsinin dəqiqəsi (vərəq 37), ardınca mənzil 34-ün internet şəbəkəsinin adındakı nömrə (vərəq 38). Bu sıra ilə."
             },
             "content": {
                 "lockTitle": "EHTİYAT TELEFON",
@@ -2720,7 +3273,7 @@
                         "tip": "yazisma",
                         "sohbet": "Qasımov F.V. — göndərilən",
                         "gorulme": "12 oktyabr – 9 yanvar arası 23 mesaj",
-                        "izah": "Şəkil 1 — mesajların mətni vərəq 10–11-dəki çıxarışla eynidir.",
+                        "izah": "Şəkil 1 — mesajların mətni vərəq 12–13-dəki çıxarışla eynidir.",
                         "gunler": [
                             {
                                 "tarix": "arxivdən seçmə",
@@ -2816,7 +3369,7 @@
                         "cerceve": true,
                         "abzaslar": [
                             "[[Yekun.]] Cihaz aylarla ərə anonim mesaj göndərib qısqanclıq yaradıb — yəni hadisədən əvvəl **hazır günahkar** düzəldilib. Hadisə günü saat 17:05-də isə qayınana çağırılıb: ikinci günahkar da elə həmin gün mənzilə gətirilib.",
-                            "Qaralamalar motivi açır: cihazın sahibi zərərçəkəni **öz ərinin sevgilisi** sanırdı. Bu, səhv idi — gecə zəngləri sevgi deyil, təkid edilən bir tələb idi (vərəq 36)."
+                            "Qaralamalar motivi açır: cihazın sahibi zərərçəkəni **öz ərinin sevgilisi** sanırdı. Bu, səhv idi — gecə zəngləri sevgi deyil, təkid edilən bir tələb idi (vərəq 42)."
                         ]
                     }
                 ]
