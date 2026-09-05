@@ -69,6 +69,12 @@
 
         <label class="chk"><input type="checkbox" name="is_sample" value="1" @checked(old('is_sample', $doc->is_sample))>
           <span>Pulsuz nümunə — ana səhifədə ödənişsiz göstərilir</span></label>
+
+        {{-- İŞİN SONLUĞU. Bu vərəq materiallar siyahısında GÖRÜNMÜR — adı
+             belə oyunçuya getmir. Qatilin dindirilməsi və məhkəmə qərarı
+             üçündür: onlar qovluğun bir hissəsidir, amma hekayəni açır. --}}
+        <label class="chk"><input type="checkbox" name="is_spoiler" value="1" @checked(old('is_spoiler', $doc->is_spoiler))>
+          <span>İşin sonluğu — yalnız oyunçu işi bağladıqdan sonra açılır</span></label>
       </fieldset>
 
       <fieldset class="qv-qrup">
@@ -425,5 +431,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/panel-qovluq.js') }}"></script>
+<script src="{{ asset('assets/panel-qovluq.js') }}?v={{ (int) @filemtime(public_path('assets/panel-qovluq.js')) }}"></script>
 @endpush

@@ -274,3 +274,27 @@
 .sur-qeyd { margin:12px 0 0; font:400 13.5px var(--sans) }
 .sur-qeyd a { color:var(--buff); text-decoration:none }
 .sur-qeyd a:hover { color:var(--buff2) }
+
+/* ---------- Giriş yolları: Google, parol, qonaq ---------- */
+
+/* Google-un öz təlimatı ağ fon və rəngli «G» tələb edir. Bölmənin tünd
+   palitrasında bu düymə qəsdən seçilir — tanınan düymə tanınmayandan daha
+   çox basılır, və ən sürətli yol ən görünən olmalıdır. */
+.pr-google { text-align:center }
+.pr-btn-google { display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; margin-top:0; background:#fff; color:#3c4043; font:600 14px var(--sans) }
+.pr-btn-google:hover { background:#f1f2f3 }
+.pr-btn-google .g-nisan { flex:0 0 18px }
+
+/* «və ya» — iki bərabər yol arasındakı sərhəd. Xətt psevdo-elementlədir
+   ki, mətnin uzunluğundan asılı olmasın. */
+.pr-ayirici { display:flex; align-items:center; gap:14px; margin:0 0 16px }
+.pr-ayirici::before,.pr-ayirici::after { content:''; flex:1; height:1px; background:var(--line) }
+.pr-ayirici span { font:600 11px/1 var(--mono,monospace); letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink3) }
+
+/* Qonaq seçimi. `.pr-qonaq` İŞLƏDİLMİR — o, profil səhifəsindəki mərkəzi
+   çağırış blokudur və `h1` üçün qurulub; burada blok sıravi seçimdir. */
+.pr-secim .pr-btn-bos { margin-top:16px; background:transparent; color:var(--buff);
+  border:1px solid var(--buff3) }
+.pr-secim .pr-btn-bos:hover { background:rgba(194,164,104,.12) }

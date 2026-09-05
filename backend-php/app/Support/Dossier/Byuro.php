@@ -25,6 +25,20 @@ final class Byuro
     public const AD = 'AZƏRBAYCAN FİKTİV İSTİNTAQ BÜROSU';
     public const QISA = 'AFİB';
     public const BOLME = 'İSTİNTAQ BÖLMƏSİ';
+    /**
+     * Hökmü çıxaran uydurma orqan.
+     *
+     * İşin sonluğunda məhkəmə qərarı var və onu büro çıxara bilməz — istintaq
+     * ittiham irəli sürür, cəzanı isə məhkəmə verir. Ad SİNİF SABİTİDİR,
+     * config deyil: hüquqi qalxanın mətni idarə panelindən dəyişdirilə
+     * bilməməlidir.
+     *
+     * «Azərbaycan Respublikası» ifadəsi BURADA OLA BİLMƏZ — `org_ban`
+     * siyahısındadır. «Fiktiv» sözü isə adın içindədir, yəni ekranda
+     * göründüyü hər yerdə uydurma olduğunu özü deyir.
+     */
+    public const MEHKEME = 'AFİB FİKTİV MƏHKƏMƏ KOLLEGİYASI';
+
     public const ARXIV = 'OYUN MATERİALLARI ARXİVİ';
 
     /** Hər render olunan sənədin üzərindəki məcburi qeyd. Mətn hərfidir. */

@@ -63,7 +63,8 @@ class DossierController extends Controller
                sonu DevTools açan hər kəsə çatardı. */
             'endings'    => $this->dossiers->endingSuspectIds($dossier),
             'questions'  => $dossier->questions->map->toListArray()->all(),
-            'docs'       => $dossier->documents->map(
+            /* SONLUQ VƏRƏQLƏRİ SİYAHIDA YOXDUR — adı belə sızmamalıdır. */
+            'docs'       => $dossier->documents->where('is_spoiler', false)->map(
                 fn ($d) => $d->toListArray($this->dossiers->isUnlocked($p, $d))
             )->all(),
         ]);
@@ -98,6 +99,7 @@ class DossierController extends Controller
             'name'   => (string) $doc->name,
             'page'   => (string) $doc->page,
             'locked' => ! $this->dossiers->isUnlocked($p, $doc),
+            'spoiler' => (bool) $doc->is_spoiler,
             'pinned' => $p->marked('pinned_ids', (int) $doc->id),
             'html'   => $this->dossiers->renderDocument($dossier, $doc, $p),
         ]);
@@ -152,7 +154,7 @@ class DossierController extends Controller
         return response()->json([
             'ok'   => true,
             'html' => $this->dossiers->renderDocument($dossier, $doc, $p),
-            'docs' => $dossier->documents->map(
+            'docs' => $dossier->documents->where('is_spoiler', false)->map(
                 fn (DossierDocument $d) => $d->toListArray($this->dossiers->isUnlocked($p, $d))
             )->all(),
         ]);

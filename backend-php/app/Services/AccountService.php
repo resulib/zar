@@ -30,15 +30,39 @@ class AccountService
     ) {
     }
 
+    /**
+     * Qonağı AVTOMATİK qeydə alır — ziyarətçi heç nə etmir.
+     *
+     * Sətir onsuz da yaranırdı; yeni olan odur ki, ona dərhal ad da verilir
+     * («Qonaq-0148»). Səbəb: iş qovluğu bölməsində müstəntiqin adı vərəqlərə
+     * yazılır və reytinqdə görünür, adsız sətir isə orada «—» kimi çıxırdı.
+     * Ad `auto_name` ilə işarələnir, ona görə qeydiyyat zamanı istifadəçinin
+     * yazdığı ad onu sual vermədən əvəz edir.
+     */
     public function newGuest(?string $ip = null): User
     {
-        return User::create([
+        $user = User::create([
             'uuid'         => (string) Str::uuid(),
             'guest_token'  => $this->newToken(),
             'credits'      => 0,
             'last_ip'      => $ip,
             'last_seen_at' => Carbon::now(),
         ]);
+
+        /* Ad id-dən qurulur, təsadüfi rəqəmdən yox: belədə iki qonaq eyni adı
+           daşımır və ad sətrin özü ilə birlikdə sabit qalır. */
+        $user->forceFill([
+            'name'      => self::qonaqAdi($user->id),
+            'auto_name' => true,
+        ])->save();
+
+        return $user;
+    }
+
+    /** «Qonaq-0148» — avtomatik qeydiyyatın verdiyi ad. */
+    public static function qonaqAdi(int $id): string
+    {
+        return 'Qonaq-' . str_pad((string) $id, 4, '0', STR_PAD_LEFT);
     }
 
     public function findByGuestToken(string $token): ?User
@@ -63,12 +87,76 @@ class AccountService
     public function register(User $guest, string $name, string $email, string $password): User
     {
         $guest->forceFill([
-            'name'     => $name,
-            'email'    => $email,
-            'password' => $password,          // model `hashed` cast ilə özü hash-layır
+            'name'          => $name,
+            'email'         => $email,
+            'password'      => $password,     // model `hashed` cast ilə özü hash-layır
+            'auth_provider' => 'parol',
+            'auto_name'     => false,
         ])->save();
 
         return $guest->refresh();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Google ilə giriş                                                   */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Google kimliyini hesaba çevirir və ya mövcud hesaba bağlayır.
+     *
+     * ÜÇ HAL, BU SIRA İLƏ — sıra təhlükəsizlik məsələsidir:
+     *
+     *   1. `google_id` ilə hesab tapılır → odur. Bağlama e-poçtla yox, `sub`
+     *      ilə gedir, çünki adam Google-da e-poçtunu dəyişsə də `sub` qalır.
+     *   2. E-poçt ilə hesab tapılır → `google_id` ona bağlanır. Bu, parolla
+     *      açılmış köhnə hesabın sahibinin Google düyməsinə basması halıdır;
+     *      `Google::kimlik()` e-poçtun TƏSDİQLƏNMİŞ olmasını tələb etdiyi
+     *      üçün bu yolla başqasının hesabı ələ keçirilə bilməz.
+     *   3. Heç nə yoxdur → CARİ QONAQ SƏTRİ YERİNDƏ hesaba çevrilir, elə
+     *      `register()` kimi. Ona görə krediti, sənədləri, XP-si və bağladığı
+     *      işlər olduğu yerdə qalır — köçürmə yoxdur, köçürüləcək bir şey yoxdur.
+     *
+     * @param  array{sub:string,email:string,name:string}  $kimlik
+     * @return array{user:User,yeni:bool,birlesdi:array{moved_documents:int,moved_credits:int}}
+     */
+    public function googleIle(User $ziyaretci, array $kimlik): array
+    {
+        $bos = ['moved_documents' => 0, 'moved_credits' => 0];
+
+        $hesab = User::query()->where('google_id', $kimlik['sub'])->first()
+            ?? User::query()->whereRaw('lower(email) = ?', [$kimlik['email']])->first();
+
+        if ($hesab === null) {
+            /* Ziyarətçi artıq hesabdadırsa (parolla girib) — Google həmin
+               hesaba BAĞLANIR, yeni hesab açılmır. */
+            $ziyaretci->forceFill([
+                'name'          => $ziyaretci->auto_name || ! $ziyaretci->name
+                                    ? ($kimlik['name'] !== '' ? $kimlik['name'] : $ziyaretci->name)
+                                    : $ziyaretci->name,
+                'email'         => $ziyaretci->email ?? $kimlik['email'],
+                'google_id'     => $kimlik['sub'],
+                'auth_provider' => $ziyaretci->hasPassword() ? $ziyaretci->auth_provider : 'google',
+                'auto_name'     => false,
+            ])->save();
+
+            return ['user' => $ziyaretci->refresh(), 'yeni' => true, 'birlesdi' => $bos];
+        }
+
+        if (! $hesab->hasGoogle()) {
+            $hesab->forceFill(['google_id' => $kimlik['sub']])->save();
+        }
+
+        /* Adı yalnız avtomatik olduqda əvəz edirik — insan öz adını
+           yazıbsa, Google-un yazdığı ad onu üstələməməlidir. */
+        if ($hesab->auto_name && $kimlik['name'] !== '') {
+            $hesab->forceFill(['name' => $kimlik['name'], 'auto_name' => false])->save();
+        }
+
+        $birlesdi = $ziyaretci->isGuest() && $ziyaretci->id !== $hesab->id
+            ? $this->mergeGuestInto($ziyaretci, $hesab)
+            : $bos;
+
+        return ['user' => $hesab->refresh(), 'yeni' => false, 'birlesdi' => $birlesdi];
     }
 
     /**

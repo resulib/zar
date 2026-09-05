@@ -765,6 +765,7 @@ class DossierController extends Controller
 
         $data['is_locked'] = $request->boolean('is_locked');
         $data['is_sample'] = $request->boolean('is_sample');
+        $data['is_spoiler'] = $request->boolean('is_spoiler');
 
         $kod = $data['is_locked'] ? $this->oznunKodu($dossier, $request->input('unlock_code_id')) : null;
         $data['unlock_code_id'] = $kod?->id;

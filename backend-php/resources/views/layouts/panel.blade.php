@@ -7,9 +7,15 @@
 <title>@yield('title', 'Panel') — Zarafat Notariat Palatası</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="{{ asset('assets/favicon.svg') }}">
-<link rel="stylesheet" href="{{ asset('assets/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/site.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/panel.css') }}">
+{{-- KEŞ DAMĞASI. `public/assets/*` build çıxışıdır və `npm run build:laravel`
+     onları üzərinə yazır, amma faylın ADI dəyişmir — brauzer köhnə nüsxəni
+     saxlayır və panel «yenilənmir». `spa.blade.php` bunu build vaxtı sha1 ilə
+     həll edir; bu layout əl ilə yazıldığı üçün burada faylın dəyişmə vaxtı
+     işlədilir — nəticə eynidir, addım azdır. --}}
+@php($v = static fn (string $p): string => asset($p) . '?v=' . (string) (@filemtime(public_path($p)) ?: 0))
+<link rel="stylesheet" href="{{ $v('assets/fonts.css') }}">
+<link rel="stylesheet" href="{{ $v('assets/site.css') }}">
+<link rel="stylesheet" href="{{ $v('assets/panel.css') }}">
   {{-- Səhifəyə xas üslub: iş qovluğu redaktorunun önizləməsi oyunun öz
        `dossier.css` faylını tələb edir. Panelin qalan səhifələri buraya
        heç nə yazmır. --}}

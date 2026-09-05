@@ -138,6 +138,13 @@ class DossierService
      */
     public function reachable(Dossier $dossier, DossierDocument $doc, DossierProgress $p): bool
     {
+        /* İŞİN SONLUĞU. Bu qapı AÇIQ yazılmalıdır: aşağıdakı döngə sənədi
+           sırada tapmasa `true` qaytarır, yəni spoiler vərəqi sıradan
+           çıxarmaq onu hamıya AÇARDI. */
+        if ($doc->is_spoiler) {
+            return (bool) $p->solved || (bool) $p->revealed;
+        }
+
         $read = $p->ids('read_ids');
 
         foreach ($this->orderedIds($dossier) as $id) {
@@ -182,7 +189,13 @@ class DossierService
         $k = (int) $dossier->id;
 
         if (! isset($this->sira[$k])) {
-            $this->sira[$k] = array_map('intval', $dossier->documents()->pluck('id')->all());
+            /* SPOILER VƏRƏQLƏR SIRAYA DÜŞMÜR və bu, məcburidir: `allRead()`
+               bütün sıranın oxunmasını tələb edir, `/rey` və `/sonluq` isə
+               `allRead()` qapısındadır. Onlar sıraya düşsəydi, oyunçu həmin
+               vərəqləri oxumadan rəy verə bilməzdi — onlar isə yalnız rəydən
+               SONRA açılır. Oyun dayanardı. */
+            $this->sira[$k] = array_map('intval', $dossier->documents()
+                ->where('is_spoiler', false)->pluck('id')->all());
         }
 
         return $this->sira[$k];
@@ -315,6 +328,13 @@ class DossierService
                 ? null
                 : $this->document($dossier, (int) $sekil->owner_document_id);
 
+            /* Sonluq vərəqinin şəkli də sonluqla birlikdə açılır — yoxsa
+               girişi olan hər kəs onu id sırası ilə görə bilərdi. */
+            if ($owner !== null && $owner->is_spoiler
+                && ! ((bool) $p?->solved || (bool) $p?->revealed)) {
+                return null;
+            }
+
             $numune = $owner !== null && $owner->is_sample && ! $owner->is_locked;
 
             if (! $numune) {
@@ -385,7 +405,8 @@ class DossierService
      */
     public function renderPublic(Dossier $dossier, DossierDocument $doc): string
     {
-        if (! $doc->is_sample || $doc->is_locked || (int) $doc->dossier_id !== (int) $dossier->id) {
+        if (! $doc->is_sample || $doc->is_locked || $doc->is_spoiler
+            || (int) $doc->dossier_id !== (int) $dossier->id) {
             return '';
         }
 
@@ -574,6 +595,9 @@ class DossierService
             'reveal'    => $ending->is_true_ending ? (string) $ending->reveal_text : null,
             'minutes'   => $p->solved ? Kod::deqiqe($p->duration_seconds) : null,
             'certToken' => $p->solved ? (string) $p->cert_token : null,
+            /* Sonluq rejimində `revealed` heç vaxt qoyulmur (cəhd limiti
+               yoxdur), ona görə şərt yalnız `solved`-dır. */
+            'spoilers'  => $p->solved ? $this->spoilerDocs($dossier) : [],
             'state'     => $p->toStateArray(),
         ];
     }
@@ -613,6 +637,22 @@ class DossierService
         return array_values(array_map('intval', $dossier->endings()->pluck('suspect_id')->all()));
     }
 
+    /**
+     * İşin sonluğu — yalnız həll olunandan (və ya cəhdlər bitəndən) sonra.
+     *
+     * Siyahı `toListArray()` şəklindədir ki, qabıq onları materiallar
+     * sətirləri kimi çəkə bilsin; sənədin ÖZÜ isə mövcud uc nöqtədən gəlir
+     * (`GET /api/is/{slug}/sened/{id}`) və `reachable()` qapısından keçir.
+     *
+     * @return list<array<string,mixed>>
+     */
+    public function spoilerDocs(Dossier $dossier): array
+    {
+        return $dossier->documents()->where('is_spoiler', true)->get()
+            ->map(static fn (DossierDocument $d): array => $d->toListArray(true))
+            ->all();
+    }
+
     protected function neticeArray(DossierProgress $p, Dossier $dossier, bool $ok, bool $tam): array
     {
         $acildi = $p->solved || $p->revealed;
@@ -628,6 +668,7 @@ class DossierService
             'pinned'    => count($p->ids('pinned_ids')),
             'certToken' => $p->solved ? (string) $p->cert_token : null,
             'solution'  => $acildi ? array_values(array_map('strval', (array) $dossier->solution)) : null,
+            'spoilers'  => $acildi ? $this->spoilerDocs($dossier) : [],
         ];
     }
 

@@ -146,5 +146,25 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(3)->by('ip:' . $r->ip()),
             Limit::perDay(20)->by('ip:' . $r->ip()),
         ]);
+
+        /* Google girişi. `login` LİMİTİ İŞLƏMİR: o, açarı e-poçt sahəsindən
+           qurur, OAuth-da isə belə sahə yoxdur — bütün ziyarətçilər eyni
+           «boş e-poçt» səbətinə düşür və dəqiqədə 5 sorğuda qıfıllanır.
+           Üstəlik bir cəhd İKİ sorğudur (getmə + qayıtma), yəni real hədd
+           dəqiqədə iki cəhd olardı. Parol yoxlaması burada olmur — parolu
+           Google yoxlayır — ona görə səxavətli, amma limitsiz deyil. */
+        RateLimiter::for('oauth', fn (Request $r) => [
+            Limit::perMinute(40)->by('ip:' . $r->ip()),
+            Limit::perDay(400)->by('ip:' . $r->ip()),
+        ]);
+
+        /* «Qonaq kimi davam et». Sətir onsuz da avtomatik yaranır; bu marşrut
+           yalnız cookie verir və yönləndirir. `register` limiti burada
+           yanlış olardı — gündəlik 20 hesab həddini qonaq düyməsi ilə
+           yandırmaq real qeydiyyatı bağlayardı. */
+        RateLimiter::for('qonaq', fn (Request $r) => [
+            Limit::perMinute(10)->by('ip:' . $r->ip()),
+            Limit::perDay(60)->by('ip:' . $r->ip()),
+        ]);
     }
 }

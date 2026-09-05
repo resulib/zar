@@ -11,7 +11,7 @@ class DossierDocument extends Model
 {
     protected $fillable = [
         'dossier_id', 'page', 'name', 'kind', 'doc_type', 'meta_line', 'sort',
-        'is_locked', 'is_sample', 'lock_kind', 'lock_code', 'lock_hint', 'unlock_code_id',
+        'is_locked', 'is_sample', 'is_spoiler', 'lock_kind', 'lock_code', 'lock_hint', 'unlock_code_id',
         'content', 'body', 'draft_body', 'blank_nov',
     ];
 
@@ -35,6 +35,7 @@ class DossierDocument extends Model
             'content'   => 'array',
             'is_locked' => 'boolean',
             'is_sample' => 'boolean',
+            'is_spoiler' => 'boolean',
             'sort'      => 'integer',
         ];
     }

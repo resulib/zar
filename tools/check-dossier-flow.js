@@ -225,6 +225,10 @@ const ac = async (ctx, ad) => {
   await p1.waitForSelector('#s-result.on', { timeout: 8000 });
   check('üç səhvdən sonra izah açılır', (await p1.locator('.expl p').count()) === 4);
   check('sertifikat verilmir', (await p1.locator('#cert').count()) === 0);
+  /* İŞİN SONLUĞU cəhdlər bitəndə də açılır — uduzan oyunçu hekayənin sonunu
+     bilmədən qalmasın. Blok `.expl`-dən KƏNARDADIR, ona görə yuxarıdakı
+     «izah dörd abzasdır» yoxlaması pozulmur. */
+  check('sonluq vərəqləri açılır', (await p1.locator('.son-list .son-row').count()) === 2);
   check('rədd mətni görünür', (await p1.locator('.verdict.no').count()) === 1);
 
   /* --- 8. Düzgün rəy və sertifikat ------------------------------------ */
@@ -258,6 +262,44 @@ const ac = async (ctx, ad) => {
     const b = await window.DCERT.storyPng({ no: '2026/0847', title: 'T', name: 'Ad', minutes: 5, pinned: 2 });
     return b.size;
   });
+  bas('8b. İşin sonluğu');
+  /* Materiallar siyahısında GÖRÜNMÜR, nəticə ekranında görünür. */
+  check('siyahıda hələ də 28 vərəq var', (await p2.locator('#list .docrow').count()) === 28);
+  check('nəticədə iki sonluq vərəqi var', (await p2.locator('.son-list .son-row').count()) === 2);
+
+  const sonAd = await p2.locator('.son-row .son-ad').first().innerText();
+  await p2.locator('.son-row').first().click();
+  await gozle(p2);
+  check('sonluq vərəqi açılır', (await p2.locator('#ttl').innerText()) === sonAd, sonAd);
+  check('vərəqdə fiktivlik zolağı var', (await p2.locator('.p-fiktiv').count()) === 1);
+  check('vərəqdə möhür var', (await p2.locator('.p-mohur').count()) >= 1);
+  check('dindirilmə sual-cavabdır', (await p2.locator('#docbody').innerText()).includes('Sual:'));
+  check('«Nəticəyə qayıt» düyməsi var', (await p2.locator('#geriNetice').count()) === 1);
+
+  await p2.click('#geriNetice');
+  check('nəticə ekranına qayıdır', (await p2.locator('#s-result.on').count()) === 1);
+
+  await p2.locator('.son-row').nth(1).click();
+  await gozle(p2);
+  const hokm = await p2.locator('#docbody').innerText();
+  check('məhkəmə qərarı açılır', hokm.includes('MƏHKƏMƏ'), hokm.slice(0, 80));
+  check('həbs müddəti yazılıb', /\d+\s*\([^)]+\)\s*il/u.test(hokm), hokm.slice(0, 200));
+  await p2.click('#geriNetice');
+
+  bas('8c. Sonluq həll olunmadan bağlıdır');
+  const c3 = await browser.newContext({ viewport: { width: 412, height: 880 } });
+  const bagli = await ac(c3, 'Kənar Adam');
+  const xam2 = await bagli.content();
+  check('sonluq vərəqinin adı HTML-də yoxdur', xam2.indexOf('dindirilmə protokolu') < 0);
+  check('məhkəmə qərarı HTML-də yoxdur', xam2.indexOf('Məhkəmə qərarı') < 0);
+  const spoilerId = await p2.locator('.son-row').first().getAttribute('data-i');
+  const cavab = await bagli.evaluate(async (id) => {
+    const r = await fetch('/api/is/2026-0847/sened/' + id);
+    return r.status;
+  }, spoilerId);
+  check('həll olunmadan sonluq 403 verir', cavab === 403, cavab);
+  await c3.close();
+
   check('story şəkli (1080×1920) çəkilir', story > 5000, story);
 
   /* --- 9. İrəliləyiş yenidən yüklənəndə qalır -------------------------- */

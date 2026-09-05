@@ -143,7 +143,7 @@ return [
     | dəyişmir. `resources/views/components/blank/<nov>.blade.php` mövcud
     | olmalıdır; tools/check-dossier.js siyahı ilə faylları tutuşdurur.
     */
-    'blank_novleri' => ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat'],
+    'blank_novleri' => ['resmi', 'qerar', 'arayis', 'protokol', 'ekspert', 'izahat', 'mehkeme'],
 
     'blank_labels' => [
         'resmi'    => 'Rəsmi blank — standart',
@@ -152,6 +152,7 @@ return [
         'protokol' => 'Protokol — «Tərtib olundu» sətri',
         'ekspert'  => 'Ekspert rəyi — xəbərdarlıq qutusu',
         'izahat'   => 'İzahat — hüquq bildirişi',
+        'mehkeme'  => 'Məhkəmə qərarı — hökm blankı',
     ],
 
     /*

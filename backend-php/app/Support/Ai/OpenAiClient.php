@@ -54,6 +54,17 @@ final class OpenAiClient
      */
     public function chat(array $messages, array $options): array
     {
+        /* İCRA VAXTI UZADILIR.
+
+           `max_execution_time` adətən 30 saniyədir; model isə uzun cavabı
+           40-90 saniyəyə yazır. Hədd aşılanda PHP prosesi FATAL ERROR ilə
+           dayanır və brauzer BOŞ CAVAB alır — nə xəta mesajı, nə log sətri,
+           nə də səbəb. Ölçülüb: 8 vərəqlik skelet 45 saniyə çəkir.
+
+           Hədd cURL timeout-u ilə uzlaşdırılır: sorğunu dayandıran o
+           olmalıdır, PHP-nin sayğacı yox — o zaman xəta anlaşılan olur. */
+        @set_time_limit($this->timeout + 30);
+
         $payload = array_merge(['messages' => $messages], array_filter(
             $options,
             static fn ($v): bool => $v !== null,
@@ -173,7 +184,8 @@ final class OpenAiClient
         $body   = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $err    = curl_error($ch);
-        curl_close($ch);
+        /* `curl_close()` ÇAĞIRILMIR: PHP 8.0-dan bəri təsirsizdir və 8.5-də
+           deprecated-dir — `PublicProvider` ilə eyni qayda. */
 
         if ($body === false) {
             throw new RuntimeException('OpenAI ilə əlaqə qurulmadı: ' . $err);

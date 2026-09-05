@@ -20,6 +20,7 @@
     "test:sosial": "node tools/check-sosial.js",
     "test:sosial-flow": "node tools/check-sosial-flow.js",
     "test:dossier": "node tools/check-dossier.js",
+    "test:oauth": "node tools/check-oauth.js",
     "test:dossier-ai": "node tools/check-dossier-ai.js",
     "test:dossier-admin": "node tools/check-dossier-admin.js",
     "test:dossier-flow": "node tools/check-dossier-flow.js",

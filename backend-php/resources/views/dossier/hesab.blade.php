@@ -8,7 +8,7 @@
 
 {{-- Bölmənin ÖZ hesab ekranı. Saytın digər məhsulunun kabinetinə link
      verilmir — iki bölmə bir-birini tanımır. Autentifikasiya məntiqi
-     təkrarlanmır: eyni `AccountService` çağırılır. --}}
+     təkrarlanmır: eyni `AccountService` və eyni `OAuthService` çağırılır. --}}
 @section('content')
 @include('dossier.partials.ust')
 
@@ -28,6 +28,19 @@
            Bağladığınız işlər hesabınıza yazılır.</p>
       @endif
     </div>
+
+    @if($google)
+      {{-- Ən sürətli yol yuxarıda dayanır: dörd sahə doldurmaqla bir düyməni
+           yan-yana qoymaq birincini seçdirir. --}}
+      <div class="pr-blok pr-google">
+        <a class="pr-btn pr-btn-google" href="{{ route('oauth.google', ['davam' => 'is']) }}">
+          @include('partials.google-g') <span>Google ilə davam et</span>
+        </a>
+        <p class="pr-qeyd">Parol düşünmək lazım deyil. Bu cihazdakı nəticələr
+           hesaba köçürülür.</p>
+      </div>
+      <div class="pr-ayirici"><span>və ya</span></div>
+    @endif
 
     <div class="pr-hesab">
 
@@ -69,6 +82,26 @@
       </div>
 
     </div>
+
+    {{-- QONAQ REJİMİ AÇIQ YAZILIR: iş qovluqları qeydiyyatsız da tam
+         oxunur və həll olunur. Qeydiyyatın verdiyi şey vəsiqə nömrəsi və
+         reytinqdə yerdir — bunu gizlətmək əvəzinə açıq demək daha
+         dürüstdür və oyunçunu qapıda saxlamır. --}}
+    <div class="pr-blok pr-secim">
+      <h2>Qonaq kimi davam et</h2>
+      <p class="pr-qeyd">
+        Siz <b>{{ $ad }}</b> adı ilə avtomatik qeydə alınmısınız. İşləri
+        indi də oxuya, kodları aça və qatili ada bilərsiniz — nəticələr bu
+        brauzerdə saxlanılır. Vəsiqə nömrəsi və reytinqdə yer isə yalnız
+        hesabla verilir.
+      </p>
+      <form method="POST" action="{{ route('oauth.guest') }}">
+        @csrf
+        <input type="hidden" name="davam" value="is">
+        <button type="submit" class="pr-btn pr-btn-bos">Qonaq kimi davam et</button>
+      </form>
+    </div>
+
   </div>
 </section>
 

@@ -128,6 +128,7 @@
       növbətini aça bilmir. Sətirləri sürüşdürərək sıranı dəyişin — dərhal yadda saxlanılır.</p>
     <p class="muted qv-komek"><span class="qv-kilid">🔒</span> kodla açılır ·
       <span class="qv-numune">N</span> ana səhifədə pulsuz göstərilir ·
+      <span class="qv-sonluq">S</span> işin sonluğu, yalnız həlldən sonra ·
       <span class="qv-qaralama">●</span> dərc olunmamış qaralama var</p>
     <ol class="qv-list" id="qvSenedler" data-url="{{ route('admin.dossier.reorder', $dossier) }}">
       @foreach($docs as $d)
@@ -139,6 +140,7 @@
           <span class="qv-nov">{{ $d->doc_type }}</span>
           @if($d->is_locked)<span class="qv-kilid" title="kilidli">🔒</span>@endif
           @if($d->is_sample)<span class="qv-numune" title="pulsuz nümunə">N</span>@endif
+          @if($d->is_spoiler)<span class="qv-sonluq" title="işin sonluğu — yalnız həlldən sonra">S</span>@endif
           @if($d->hasDraft())<span class="qv-qaralama" title="dərc olunmamış qaralama">●</span>@endif
         </li>
       @endforeach
@@ -391,5 +393,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/panel-qovluq.js') }}"></script>
+<script src="{{ asset('assets/panel-qovluq.js') }}?v={{ (int) @filemtime(public_path('assets/panel-qovluq.js')) }}"></script>
 @endpush

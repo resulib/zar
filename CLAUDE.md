@@ -42,6 +42,9 @@ npm run test:copy        # copy quality: style rules (§9) + option-list schema 
 npm run test:title       # longest catalog titles across 12 layouts + story card, in a real browser
 npm run test:templates   # 216 templates: unique ids, tone/category match, fields schema, text budgets
 npm run test:replies     # 71 reply templates: intent coverage, replyCats, prefixes, orgs, render
+npm run test:oauth       # giriş yolları uçdan-uca: Google OAuth (öz saxta Google-u :8094-də
+                         #   qaldırır), avtomatik qonaq qeydiyyatı, hesab birləşdirmə, açıq
+                         #   yönləndirmə — backend GOOGLE_TOKEN_URL ilə :8093-də (fayl başlığına bax)
 npm run test:sosial      # 6 sosial kimlik kartı: ağ siyahılar ↔ config/sosial.php, hüquqi qalxan, render
 npm run test:sosial-flow # sosial kart redaktoru uçdan-uca (php artisan serve --port=8099 lazımdır)
 npm run test:dossier     # iş qovluğu: seed sxemi, 9 sənəd növü ↔ Blade, sirr və brend sızması
@@ -1061,6 +1064,66 @@ only be uploaded from the admin, so evidence cannot live in the seed file alone.
 > comparison that decides whether to show the warning uses the same corrupted value, so the warning
 > behaves plausibly while the pasted tag is garbage. Build it with `Isare::yaz('blok', $acar)`.
 
+### The case's ending — interrogation and verdict
+
+Every case ends with two sheets the player sees **only after closing it**: the culprit's
+interrogation protocol (how the crime was planned and carried out) and the court's decision (the
+sentence, in years). They are real sheets — same blank, same seal, same fiction band — so they
+live in `dossier_documents` behind a flag rather than in a separate table.
+
+**`is_spoiler` is a different axis from `is_locked`.** The lock reads `unlocked_ids`; this reads
+`solved || revealed`. One sheet could carry both. `renderDocument()`'s `$bagli` argument is the
+lock only.
+
+**Five gates, and none of them is optional:**
+
+| gate | why |
+|---|---|
+| `orderedIds()` excludes spoilers | `allRead()` demands the whole sequence and `/rey` + `/sonluq` sit behind it. A spoiler in the sequence means the player cannot submit a verdict without reading sheets that only open *after* the verdict. **Deadlock.** |
+| `reachable()` gates explicitly at the top | the loop's closing `return true` fires for any document not in the sequence — removing them from `orderedIds()` alone would open them to everyone |
+| `renderPublic()` refuses them | the free-sample path |
+| `imagePath()` refuses their images | otherwise anyone with access could walk the id sequence |
+| `DossierAiService::kodMenbeleri()` skips them | a code digit hidden on a post-solve sheet would require solving the case to find the code that helps solve the case |
+
+**The name never leaks either.** Spoiler sheets are filtered out of `docs` in four places —
+`play()` · `open()` · `unlock()` · `show()` (the presentation page's `.teq-siyahi`) — and out of
+the catalog card's document count, which is why the shipped cases still read «28 sənəd» while the
+seed files now hold 30.
+
+`neticeArray()`, `chooseSuspect()` and `play()` return a `spoilers` list under the same
+`solved || revealed` condition as `solution`. The sheet itself comes from the existing
+`GET /api/is/{slug}/sened/{id}` — no new route, `reachable()` is the gate.
+
+> **The block must sit OUTSIDE `.expl`.** `check-dossier-flow.js` asserts `.expl p` is exactly
+> four (0847's solution has four paragraphs) in two places. The ending list is a sibling section.
+
+> **`tap()` searches both arrays.** Spoiler sheets are deliberately absent from `S.docs` — the
+> materials list, the cascade gate and `hamsiKecilib()` all read it — but `ac()` bails on its first
+> line if `tap()` returns null. And `altliq()` swaps «Davam et →» for «Nəticəyə qayıt»: a sheet
+> outside the sequence has no next, and the existing `data-go` branch clicks the *answer* tab,
+> which the player has already left behind.
+
+**The court is a second fictional body.** `Byuro::MEHKEME` = `AFİB FİKTİV MƏHKƏMƏ KOLLEGİYASI` —
+a class constant, not config, for the same reason as `Byuro::QEYD`. It cannot contain «Azərbaycan
+Respublikası» (`org_ban`); plain «məhkəmə» is fine, only `mehkeme-tibb ekspertizasi` is banned.
+
+**`mehkeme` is a seventh blank type**, not a reuse of `qerar`: that one's grif reads «AFİB bölmə
+rəisi», i.e. the *investigation* approves the document. An investigation cannot pass sentence — it
+brings the charge, the court sets the penalty. Adding it touches four synchronised lists
+(`config` `blank_novleri` + `blank_labels` · `BlokSxemi::BLANK_NOV` · `QovluqBrief::BLANK` · the
+component file); `check-dossier.js` §2 compares them **including order**.
+
+**No new block type.** The interrogation is a `metn` block written as `**Sual:**` / `**Cavab:**`
+(the shipped 0847 solution already uses that shape); the verdict is `metn` + `imza`. The 13-type
+count stays 13.
+
+**AI builds them without a schema change.** `skeletSchema()` pins `documents` to
+`minItems === maxItems === $say`, so the model cannot be asked for two extra. It does not need to
+be: the culprit, motive and proof are already in the skeleton, so `sonluqVereqleri()` creates the
+two rows server-side with a brief assembled from those values, and `partiya()` fills them like any
+other sheet. The three shipped cases were generated once through the same path and written into
+their seed JSON as `"spoiler": true`.
+
 ### Building a case with AI
 
 `/admin/qovluqlar` carries an **«AI ilə yeni iş qur»** panel: a brief, a **document count** and a
@@ -1106,13 +1169,74 @@ the next `QovluqBrief::PARTIYA` (4) sheets, repeatedly, with a progress bar. Bot
 > bodies; if the digits are not all there it leaves the list **empty**, which is a note rather than
 > an error, and the admin either hides the digits or changes the code.
 
+> **`max_execution_time` kills the request before cURL does, and the failure is silent.** PHP's
+> default is 30 s; a skeleton call measures **45 s for 8 sheets**. When the limit hits, the process
+> dies with a fatal error mid-request — the browser gets `ERR_EMPTY_RESPONSE`, nothing reaches the
+> `catch`, and **nothing is logged**, so the panel just says "alınmadı" with no reason. This is why
+> `OpenAiClient::chat()` calls `set_time_limit($this->timeout + 30)`: the cURL timeout must be the
+> thing that stops the request, because only it produces a readable error. It sits in the client,
+> not in the dossier service, because every AI call in the repo goes through it — the template
+> assistant had the same latent failure.
+
+> **The skeleton call raises its own limits.** `max_output_tokens` defaults to 6000 and 8 sheets
+> already cost 4131 output tokens, so a 40-sheet plan would be truncated into invalid JSON. The
+> skeleton therefore asks for `2000 + say × 320` tokens and `40 + say × 6` seconds; the batches keep
+> the defaults, since four sheets are always small.
+
+> **Progress must be visible or the page reads as frozen.** Generation is minutes long: the panel
+> shows the stage, an elapsed-seconds counter that ticks every second, and a bar. Failures print the
+> full reason plus the log path — the one-line status field is not enough to act on. The service
+> logs each stage to `laravel.log` with model, token counts and duration (`qovluq-ai:` prefix).
+
 > **A skipped sheet is written, not left blank.** If the model omits one, the next batch would ask
 > for it again and the loop would never end — so it gets a single `[[Mətn qurulmadı…]]` line that
 > the admin sees in the editor.
 
-**Documents are generated in text mode**, never as blocks. `body` exists precisely for this: asking
-a model to emit valid 13-type block JSON is asking for a schema it will get wrong, while prose with
-inline markers is what it is good at. Hand-authored cases keep the block system.
+**Documents are generated as BLOCKS, but the model never writes a block.** The first version
+produced text-mode sheets only, and the result was exactly what you would expect: a WhatsApp
+export, a call log and a decision all rendered as prose on the same blank, with no stamps, no
+signatures and no photo frames. Text mode alone cannot carry this product.
+
+The split that fixes it: **the model supplies data, `QovluqBrief::bloklar()` assembles the blocks.**
+Asking a model for 13-type block JSON means asking it to memorise a key table where an unknown key
+is a hard error; asking it for `{basliqlar, setirler}` or a list of messages is asking for something
+it is reliably good at. Every sheet comes out as
+`blank → basliq → sahe? → metn → <structure> → imza`, plus a stamp layer, paper wear and a
+hologram on authorising blanks.
+
+| document kind | what the model fills | how it renders |
+|---|---|---|
+| ifadə · izahat | `body` + `sahe` + `imza` | prose with requisite rows and a signature |
+| qərar · protokol · ekspertiza | `body` + `imza` | its own letterhead (`blank_nov`), no requisite rows |
+| yazışma | `yazisma` | a chat screenshot inside the sheet |
+| zəng detallaşdırması | `zeng` | a call list |
+| jurnal · qəbz · cədvəl | `cedvel` | a real table |
+| maddi sübutlar | `kart` | evidence cards, each with a taped photo slot |
+| baxış · kamera | `foto` | captioned photo frames |
+
+- **Cells are padded to the header count.** `BlokSxemi` treats a short row as an error and the
+  model drops a cell often enough to matter.
+- **`saat` is forced to `HH:MM`.** The model likes to put a date there, and a date printed under a
+  chat bubble makes the screenshot contradict itself.
+- **`yon` falls back to `gelen`**, unknown message kinds are dropped, nameless evidence and
+  timeless calls are dropped — the block must validate, not merely exist.
+- **The stamp's position and angle derive from the sheet number**, never `rand()`: a seal that
+  moves when the sheet is reopened announces the document as fake. Heavy paper effects
+  (`leke`, `cirilma`, `kseroks`) are **not** used — their placement is an authoring decision, and
+  applied uniformly they read as a template rather than as wear.
+- `tests/logic.php` builds a sheet from deliberately broken model output and runs the result
+  through **`BlokSxemi::yoxla()`** — that assertion is what keeps this honest.
+
+> **`content.ai_brief` marks "not written yet", not an empty `body`.** In block mode `body` stays
+> empty forever, so the batch loop would never terminate if it looked there. The key is the work
+> order; fulfilling it removes the key.
+
+> **The validator reads block text too.** `QovluqYoxlayici::senedMetni()` originally looked only at
+> `body`, so the lock-code digits could never be found on a block-mode sheet — which is every
+> seeded sheet and every AI sheet. It now flattens `content.bloklar` as well, and
+> `DossierAiService::senedMetni()` flattens **exactly the same fields**: if the writer scanned more
+> (stamp text and paper numbers carry digits too) it would record sources the validator cannot
+> confirm.
 
 ### The ending layer (şübhəli seçimi)
 
@@ -1798,6 +1922,75 @@ Note from `QURASDIRMA.md`: the Laravel code was written in an environment where 
 impossible, so it has been verified statically (`tests/audit.php`) rather than booted. Expect the
 occasional runtime wrinkle on first run.
 
+### Signing in — guest · password · Google
+
+Three ways in, and they all land on **the same `users` row**. That is the whole design: a guest is
+not a lesser object waiting to be replaced, it is the account before it has an email.
+
+**Guests are auto-registered.** `AccountService::newGuest()` now also writes a name —
+`Qonaq-0148`, derived from the row's own id so two guests never collide and the name is stable.
+`auto_name` marks it as machine-given, which is what lets a later registration overwrite it
+without asking. `isGuest()` still keys on **`email === null`**, never on `name` (now always set)
+and never on `password` (a Google account has none).
+
+> The row itself was always created lazily by `$request->visitor()`, and still is — a cookie-less
+> loop of plain GETs must not fill the table. What changed is that the visitor now has an identity
+> worth showing: the investigator name is printed on case-file sheets and in the leaderboard, and
+> an unnamed row rendered there as «—».
+
+**Guest mode is now written on the screen.** Both auth screens carry a «Qonaq kimi davam et» block
+naming the auto-assigned identity. `POST /qonaq` only issues the cookie and redirects — the site
+already worked this way, but the option appeared nowhere, so visitors read the registration form as
+a wall.
+
+**Google is hand-rolled, no Socialite.** `App\Support\Auth\Google` is framework-free with an
+injectable `callable` for HTTP — the `EpointProvider` / `PublicProvider` shape — so `tests/logic.php`
+covers PKCE and every claim check without booting Laravel. `App\Services\OAuthService` holds the
+config, the session and the return target; `Web\OAuthController` is **one controller for all three
+sections**, because the sections are physically separate but the auth logic must not be triplicated
+(the rule `DossierAccountController` already wrote down).
+
+- **PKCE (S256) is mandatory, not advisory.** The `code` travels through the browser's address bar
+  and can land in a server log, a `Referer`, or a shared device's history. The verifier lives only
+  in the session, so a stolen code is worthless on its own. `check-oauth.js` asserts the verifier
+  itself never appears in the consent URL — only its digest.
+- **The `id_token` signature is not verified, and that is correct — under one condition.** The token
+  is fetched by a direct server-to-server TLS call to Google's token endpoint, which is exactly the
+  case OIDC Core §3.1.3.7 exempts. `Google::kimlik()` says so in a docblock, because calling it with
+  a token from anywhere else would let anyone write themselves any email. What *is* checked:
+  `iss` ∈ `ISSUERS`, `aud` `hash_equals` the client id (without it, a token minted for **another
+  site** would work here — confused deputy), `exp` with 120 s leeway, and **`email_verified`** —
+  account linking goes by email, so an unverified address would be a takeover path.
+- **Resolution order is a security property**: `google_id` → `email` → convert the current guest row
+  **in place**. `sub` first because a Google account's email can change; email second so the person
+  who already has a password account gets it *linked*, not duplicated; in-place last because that is
+  what preserves credits, documents, XP and closed cases with no migration at all — the same trick
+  `register()` uses. A human-typed name is never overwritten by Google's; an `auto_name` one always is.
+- **`?davam=` is a whitelist key, not a route name.** `config('oauth.qayidis')` maps `kabinet` ·
+  `is` · `devet` to route names and anything else falls back to the default. A free-form return
+  target is the most-exploited open-redirect surface there is; `check-oauth.js` §8 and
+  `tests/security.php` §15 both push hostile values at it.
+- **`redirect_uri` is compared literally by Google**, so it is one fixed URL and the return target
+  rides in the **session** instead. `OAuthService::qayidisUnvani()` builds it from `url()` — the
+  current request host, deliberately *not* `APP_URL` — because a `localhost` ↔ `127.0.0.1` slip
+  between the consent call and the token exchange is `redirect_uri_mismatch`. Register **both** in
+  the Google console for development. `GOOGLE_REDIRECT` overrides it for production.
+- **The keys live in `.env` only**, never in the database — the `OPENAI_API_KEY` rule, for the same
+  reason (a DB backup and «Kataloqu ixrac et» would carry them). Empty key ⇒ the button is not
+  rendered at all.
+- **`throttle:oauth`, not `throttle:login`.** The login limiter keys on the `email` input, which
+  OAuth has none of, so every visitor would share one «empty email» bucket and lock at 5/min — and
+  one sign-in is *two* requests. `throttle:qonaq` is separate for the same kind of reason: burning
+  the registration limiter's 20/day on a guest button would block real sign-ups.
+- **`GOOGLE_TOKEN_URL` exists for tests only** — the `OPENAI_ENDPOINT` precedent. `npm run test:oauth`
+  starts its own fake Google on `:8094` and drives the real callback with the real `state`; the
+  consent page is not simulated because nothing of ours happens there.
+
+> **A `: Response` return type on a method that can redirect is a 500.** `Illuminate\Http\Response`
+> is *not* an ancestor of `RedirectResponse` — the common parent is Symfony's. Two methods carried
+> this latent bug (`DossierAccountController::show()`, `DossierProfileController::settings()`) and
+> only fired once an account could actually reach those URLs.
+
 ## Values duplicated across files — keep in sync
 
 - **Credit packs** `p1/p3/p10`: `frontend/app.js` `PACKS`, `backend-php/config/zarafat.php` `'packs'`
@@ -1811,6 +2004,11 @@ occasional runtime wrinkle on first run.
 - **Field types**: `TemplateSchema::TYPES` ↔ `app.js` `FIELD_TYPES` ↔ `tools/check-templates.js` `F_TYPES`.
 - **Registry verdict copy**: `app.js` `doSearch()` ↔ `viewer.js` `showNotFound()`/`showDoc()` —
   the stern not-found sentence is asserted identical by `tools/check-viewer.js`.
+- **Admin asset cache-busting**: `layouts/panel.blade.php` stamps `?v=<filemtime>` onto
+  `fonts.css` / `site.css` / `panel.css`, and the dossier views do the same for
+  `panel-qovluq.js`. `public/assets/*` is a build artefact whose filename never changes, so
+  without the stamp an admin keeps running yesterday's JS after `npm run build:laravel` and
+  the panel appears broken. `spa.blade.php` solves this at build time with a sha1.
 - **Viewer palette**: `viewer.css` `:root` redeclares the few tokens it needs from `site.css`.
 - **Clause order**: `app.js` `togglePower()` ↔ `Sanitizer::pickList()` — both must emit in the
   admin's option order, never in click order.
@@ -1854,7 +2052,8 @@ occasional runtime wrinkle on first run.
 - **Crest / seal geometry**: `frontend/doc.js` `crest()` + `seal()` ↔ `App\Support\Nisan`
   (`gerb()` / `mohur()`), and **signature**: `doc.js` `signature()` ↔ `App\Support\Dossier\Imza`
   — the last pair is asserted identical by producing the same path string for the same seed.
-- **Blank types**: `config/dossier.php` `blank_novleri` ↔ `BlokSxemi::BLANK_NOV` ↔ the components
+- **Blank types**: `config/dossier.php` `blank_novleri` ↔ `blank_labels` ↔
+  `BlokSxemi::BLANK_NOV` ↔ `QovluqBrief::BLANK` ↔ the components
   in `resources/views/components/blank/` — `tools/check-dossier.js` compares all three and also
   checks every `nov` used in a seed.
 - **Case-file block types**: `config/dossier.php` `bloklar` ↔ the Blade files in
@@ -1929,6 +2128,10 @@ occasional runtime wrinkle on first run.
 - **Badge number format**: `App\Support\Dossier\VesiqeNo::NIZAM` ↔ the sequential read in
   `ProfileService::issueBadge()`, which silently depends on zero-padding making
   lexicographic order equal numeric order (asserted in `tests/logic.php`).
+- **Auth entry points**: `config('oauth.qayidis')` keys ↔ the `davam` values in
+  `account/auth.blade.php`, `dossier/hesab.blade.php` and `OAuthController` ↔ the route names
+  they map to. A key with no route name 500s at redirect time; a `davam` value with no key
+  silently falls back to `kabinet`.
 - **OG image size (1200×630)**: `invite.js` `OG` ↔ `config/devet.php` `og` ↔ the
   `og:image:width/height` tags in `tools/build-laravel.js`.
 

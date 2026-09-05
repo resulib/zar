@@ -1147,3 +1147,25 @@ main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
    mətn onsuz da cavabla gəlib: server heç nə saxlamır. */
 .sting{margin:16px 0;padding:12px 14px;border-left:3px solid var(--red);
   background:#FBEDED;color:var(--red);font:500 14px/1.6 var(--sans)}
+
+/* ---------- işin sonluğu ----------
+   Nəticə ekranındakı iki vərəq: qatilin dindirilməsi və məhkəmə qərarı.
+   Materiallar sətirlərinin (`.docrow`) qardaşıdır, amma `#res` içindədir və
+   sıra qapısına tabe deyil — bura yalnız iş bağlandıqdan sonra çatılır. */
+.son-list{display:grid;gap:8px;margin:0 0 18px}
+.son-row{display:block;width:100%;text-align:left;cursor:pointer;
+  background:var(--paper);border:1px solid var(--paper3);
+  border-left:3px solid var(--red);padding:11px 13px;color:var(--ink);font:inherit}
+.son-row:hover{border-left-color:var(--stamp)}
+.son-ad{display:block;font:500 14.5px/1.35 var(--sans)}
+.son-nov{display:block;font:400 11.5px var(--mono);color:var(--ink3);margin-top:4px}
+
+/* Məhkəmə blankı — hökmün «kimin adından» sətri. Real hökmün ən tanınan
+   cizgisi budur və qəbul sətrinin yerini tutur: hökm qeydə alınan material
+   deyil, işi bağlayan sənəddir. */
+.p-hokm{text-align:center;margin:10px 0 16px}
+.p-hokm span{display:block;font:600 10.5px var(--mono);letter-spacing:.12em;
+  color:var(--ink2)}
+.p-hokm span + span{margin-top:4px;font-weight:400;letter-spacing:.04em;
+  color:var(--ink3)}
+.p-blank-mehkeme .p-qurum3{color:var(--red);letter-spacing:.14em}

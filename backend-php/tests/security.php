@@ -70,7 +70,7 @@ function req(string $url, string $method = 'GET', array $form = [], string $cook
         $out[] = $k . '=' . $v;
     }
 
-    return ['status' => $status, 'body' => substr($raw, $hlen), 'cookies' => implode('; ', $out)];
+    return ['status' => $status, 'head' => $head, 'body' => substr($raw, $hlen), 'cookies' => implode('; ', $out)];
 }
 
 /** Səhifədən CSRF tokenini və sessiya cookie-lərini götürür. */
@@ -472,6 +472,11 @@ check('kilidin kodu HTML-də yoxdur', ! str_contains($govde, '0903'));
 check('sənəd məzmunu HTML-də yoxdur', ! str_contains($govde, 'mərmər lövhə'));
 check('şübhəlilər HTML-də yoxdur', ! str_contains($govde, 'Səbinə Hüseynova'));
 check('izah HTML-də yoxdur', ! str_contains($govde, 'Generator 00:32-də'));
+/* İŞİN SONLUĞU — dindirilmə protokolu və məhkəmə qərarı. Onlar qovluğun
+   vərəqləridir, amma yalnız iş bağlandıqdan sonra açılır: adı belə
+   sızsaydı, oyunçu materiallar siyahısında qatilin etirafını görərdi. */
+check('sonluq vərəqinin adı HTML-də yoxdur', ! str_contains($govde, 'dindirilmə protokolu'));
+check('məhkəmə qərarı HTML-də yoxdur', ! str_contains($govde, 'Məhkəmə qərarı'));
 check('oyun səhifəsi noindex-dir', str_contains(strtolower($govde), 'noindex'));
 
 /* SATIŞ ÜZÜ. Ana səhifə HƏQİQİ sənəd göstərir (hero və nümunə vərəqlər),
@@ -486,6 +491,7 @@ check('ana səhifə indekslənir', str_contains($ana, 'index, follow'));
 
 $teq = req($base . '/is/' . $SLUG)['body'];
 check('təqdimatda sənəd məzmunu yoxdur', ! str_contains($teq, 'mərmər lövhə'));
+check('təqdimatda sonluq vərəqi yoxdur', ! str_contains($teq, 'Məhkəmə qərarı'));
 check('təqdimatda şübhəlilər yoxdur', ! str_contains($teq, 'Səbinə Hüseynova'));
 check('təqdimat indekslənir', str_contains($teq, 'index, follow'));
 
@@ -651,6 +657,61 @@ foreach (['/admin/avatarlar'] as $yol) {
     check('giriş olmadan ' . $yol . ' bağlıdır', in_array($r['status'], [302, 403], true), $r['status']);
 }
 
+
+/* ==================================================================
+   15. Giriş yolları — Google OAuth və avtomatik qonaq qeydiyyatı
+   ================================================================== */
+echo "\n15. Giriş yolları\n";
+
+/* AÇIQ YÖNLƏNDİRMƏ OLMAMALIDIR. `?davam=` marşrut adı deyil, ağ siyahı
+   açarıdır; kənar ünvan verilsə default-a düşməlidir. Bu, bölmənin ən
+   çox səhv edilən yeridir: «girişdən sonra hara qayıdaq» parametri
+   dünyada ən çox istismar olunan açıq yönləndirmə səthidir. */
+foreach (['https://evil.example/', '//evil.example', '/admin', 'http://evil'] as $pis) {
+    $r = req($base . '/giris/google?davam=' . rawurlencode($pis));
+    $yer = '';
+    if (preg_match('/^Location:\s*(.+)$/mi', (string) $r['head'], $m)) { $yer = trim($m[1]); }
+    /* Açar tanınmırsa ya konfiqurasiya yoxdur (kabinetə qayıdış), ya da
+       Google-a gedir — hər iki halda `evil.example` görünməməlidir. */
+    check('«' . $pis . '» yönləndirməsi qəbul edilmir',
+        stripos($yer, 'evil') === false && stripos($yer, '/admin') !== 0, $yer);
+}
+
+/* Cavab ucu — `state` uyğun gəlmədikdə giriş baş tutmamalıdır. Sessiyada
+   heç nə yoxdursa da eyni cavab: 302 + xəta, heç vaxt giriş. */
+$r = req($base . '/giris/google/cavab?code=OGURLANMIS&state=YALAN');
+check('yad state ilə giriş olmur', $r['status'] === 302, $r['status']);
+check('yad state sessiya açmır', stripos($r['cookies'], 'remember_web') === false, $r['cookies']);
+
+/* Avtomatik qonaq qeydiyyatı: sətir YARANIR və ADI OLUR. Adsız sətir
+   iş qovluğu bölməsində reytinqdə «—» kimi çıxırdı. */
+$evvel = usersCount();
+$sn = session($base . '/is/hesab');   // səhifənin özü qonaq sətrini yaradır
+$r  = req($base . '/qonaq', 'POST', ['_token' => $sn['token'], 'davam' => 'is'], $sn['cookies']);
+check('qonaq kimi davam 302 verir', $r['status'] === 302, $r['status']);
+check('qonaq sətri avtomatik yaranıb', usersCount() > $evvel, usersCount() . ' / ' . $evvel);
+
+$db = new PDO('sqlite:' . __DIR__ . '/../database/database.sqlite');
+$son = $db->query('SELECT name, email, auto_name FROM users ORDER BY id DESC LIMIT 1')->fetch(PDO::FETCH_ASSOC);
+check('qonağın avtomatik adı var', (bool) preg_match('/^Qonaq-\d{4,}$/', (string) ($son['name'] ?? '')), $son['name'] ?? '');
+check('qonaq e-poçtsuz qalır', ($son['email'] ?? null) === null, $son['email'] ?? 'NULL');
+check('avtomatik ad işarələnib', (int) ($son['auto_name'] ?? 0) === 1, $son['auto_name'] ?? '');
+
+/* CSRF olmadan qonaq marşrutu da bağlıdır — yazma yoludur. */
+$r = req($base . '/qonaq', 'POST', ['davam' => 'is'], $sn['cookies']);
+check('tokensiz qonaq marşrutu bağlıdır', $r['status'] === 419, $r['status']);
+
+/* AÇARLAR SƏHİFƏYƏ SIZMIR. `client_secret` heç bir halda HTML-də
+   görünməməlidir; `client_id` isə Google-un ünvanında onsuz da açıqdır,
+   amma sirr olan digəri ilə bir yerdə yoxlanılır. */
+$env = @file_get_contents(__DIR__ . '/../.env');
+$sirr = '';
+if (is_string($env) && preg_match('/^GOOGLE_CLIENT_SECRET=(.+)$/m', $env, $m)) { $sirr = trim($m[1]); }
+foreach (['/is/hesab', '/kabinet/hesab'] as $yol) {
+    $r = req($base . $yol);
+    check($yol . ' sirri sızdırmır',
+        $sirr === '' || stripos($r['body'], $sirr) === false);
+}
 
 echo "\n" . $pass . ' keçdi, ' . $fail . " uğursuz\n";
 exit($fail > 0 ? 1 : 0);

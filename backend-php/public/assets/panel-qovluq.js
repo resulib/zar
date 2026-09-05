@@ -534,8 +534,29 @@
     var aiCubuq = $('qvAiCubuq');
     var aiProblem = $('qvAiProblem');
     var aiIsleyir = false;
+    var aiBasladi = 0;
+    var aiSaat = null;
+    var aiSonMetn = '';
 
-    function aiGoster(metn) { aiHal.textContent = metn; }
+    /* Keçən vaxt SANİYƏ-SANİYƏ yenilənir. Qurma bir neçə dəqiqə çəkir və
+       donmuş yazı ilə işləyən proses fərqlənmir — sayğac hərəkət etdiyi
+       müddətdə istifadəçi gözləməyin davam etdiyini bilir. */
+    function aiGoster(metn) {
+      aiSonMetn = metn;
+      aiHal.textContent = metn + (aiBasladi ? ' · ' + Math.round((Date.now() - aiBasladi) / 1000) + ' san' : '');
+    }
+
+    function aiSaatBasla() {
+      aiBasladi = Date.now();
+      clearInterval(aiSaat);
+      aiSaat = setInterval(function () { aiGoster(aiSonMetn); }, 1000);
+    }
+
+    function aiSaatDayan() {
+      clearInterval(aiSaat);
+      aiSaat = null;
+      aiBasladi = 0;
+    }
 
     function aiGedis(bitmis, hamisi) {
       aiCubuq.hidden = false;
@@ -598,7 +619,8 @@
       aiIsleyir = true;
       aiBasla.disabled = true;
       aiProblem.hidden = true;
-      aiGoster('hekayə qurulur…');
+      aiSaatBasla();
+      aiGoster('hekayə qurulur — bu addım ən uzunudur');
       aiGedis(0, 1);
 
       var url = aiQutu.getAttribute('data-url');
@@ -614,16 +636,25 @@
 
         return aiPartiya(j.id, 0, j.total);
       }).then(function () {
+        aiSaatDayan();
         aiGoster('hazırdır — redaktora keçilir…');
         window.location.href = hedef.url;
       }).catch(function (e) {
+        aiSaatDayan();
         /* Skelet artıq yaradılıbsa, işi itirmirik: qaralama bazadadır və
            idarəçi onu redaktorda açıb davam edə bilər. */
-        aiGoster(e.message || 'alınmadı');
+        aiGoster('alınmadı');
+
+        /* Xəta KİÇİK sətirdə qalmır: səbəb uzun olur (model, limit, açar) və
+           istifadəçi onu oxumadan nə edəcəyini bilmir. */
+        var setirler = [e.message || 'Naməlum xəta.'];
 
         if (hedef) {
-          aiProblemler(['Qaralama yaradılıb: «' + hedef.title + '». Redaktorda açıb davam edin.']);
+          setirler.push('Qaralama yaradılıb: «' + hedef.title + '». Redaktorda açıb davam edin: ' + hedef.url);
         }
+
+        setirler.push('Ətraflı: backend-php/storage/logs/laravel.log');
+        aiProblemler(setirler);
 
         aiIsleyir = false;
         aiBasla.disabled = false;

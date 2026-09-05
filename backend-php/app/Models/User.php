@@ -17,16 +17,18 @@ class User extends Authenticatable
 
     protected $fillable = [
         'uuid', 'guest_token', 'name', 'email', 'password',
+        'google_id', 'auth_provider', 'auto_name',
         'credits', 'is_admin', 'is_blocked', 'last_ip', 'last_seen_at',
     ];
 
-    protected $hidden = ['password', 'remember_token', 'guest_token'];
+    protected $hidden = ['password', 'remember_token', 'guest_token', 'google_id'];
 
     protected function casts(): array
     {
         return [
             'password'          => 'hashed',
             'is_admin'          => 'boolean',
+            'auto_name'         => 'boolean',
             'is_blocked'        => 'boolean',
             'credits'           => 'integer',
             'email_verified_at' => 'datetime',
@@ -69,10 +71,28 @@ class User extends Authenticatable
         return $this->hasOne(InvestigatorProfile::class);
     }
 
-    /** Qeydiyyatdan keçməmiş sessiya. */
+    /**
+     * Qeydiyyatdan keçməmiş sessiya.
+     *
+     * ÖLÇÜ E-POÇTDUR, `name` DEYİL: avtomatik qonaq qeydiyyatı hər ziyarətçiyə
+     * ad verir («Qonaq-4821»), ona görə adın dolu olması artıq hesab demək
+     * deyil. Parol da ölçü ola bilməz — Google ilə açılmış hesabda parol yoxdur.
+     */
     public function isGuest(): bool
     {
         return $this->email === null;
+    }
+
+    /** Google ilə açılmış və ya bağlanmış hesab. */
+    public function hasGoogle(): bool
+    {
+        return $this->google_id !== null && $this->google_id !== '';
+    }
+
+    /** Parolu var? Yalnız Google ilə açılmış hesabda yoxdur. */
+    public function hasPassword(): bool
+    {
+        return $this->password !== null && $this->password !== '';
     }
 
     public function displayName(): string

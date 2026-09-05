@@ -18,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * Müstəntiq profili — vəsiqə, rütbə nərdivanı, ayarlar.
@@ -68,7 +69,9 @@ class DossierProfileController extends Controller
         ]));
     }
 
-    public function settings(Request $request): Response
+    /* Görünüş və ya yönləndirmə — ortaq ata Symfony Response-dur
+       (`DossierAccountController::show()` ilə eyni tələ). */
+    public function settings(Request $request): SymfonyResponse
     {
         $user = $request->visitor();
 

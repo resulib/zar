@@ -39,7 +39,10 @@ class DossierController extends Controller
     /** Ana səhifə. Kataloq onun bir bölməsidir. */
     public function index(Request $request): Response
     {
-        $list = Dossier::published()->withCount('documents')
+        /* Kataloqdakı sənəd sayı OYUNÇUNUN oxuyacağı vərəqlərdir — işin
+           sonluğu ora daxil deyil, yoxsa kart 28 əvəzinə 30 yazardı. */
+        $list = Dossier::published()
+            ->withCount(['documents' => static fn ($q) => $q->where('is_spoiler', false)])
             ->orderBy('sort')->orderBy('id')->get();
 
         $showcase = $list->firstWhere('is_showcase', true) ?? $list->first();
@@ -89,7 +92,7 @@ class DossierController extends Controller
 
         return response()->view('dossier.teqdimat', [
             'dossier' => $dossier,
-            'docs'    => $dossier->documents,
+            'docs'    => $dossier->documents->where('is_spoiler', false),
             'stats'   => $dossier->stats(),
             'access'  => $p?->hasAccess() === true,
             'solved'  => $p?->solved === true,
@@ -123,7 +126,7 @@ class DossierController extends Controller
             'cover'  => (array) $dossier->cover,
             'axis'   => $dossier->axisLabels(),
             'access' => $access,
-            'docs'   => $dossier->documents->map(
+            'docs'   => $dossier->documents->where('is_spoiler', false)->map(
                 fn ($d) => $d->toListArray($p !== null && $this->dossiers->isUnlocked($p, $d))
             )->all(),
         ];
@@ -139,6 +142,11 @@ class DossierController extends Controller
                seçimdən sonra, `/sonluq` cavabında gəlir. */
             $data['endings'] = $this->dossiers->endingSuspectIds($dossier);
             $data['state'] = $p->toStateArray();
+            /* İşin sonluğu — `solution` ilə EYNİ qapı: səhifə yenidən
+               yüklənəndə nəticə ekranı düymələri təzədən çəkməlidir. */
+            $data['spoilers'] = ($p->solved || $p->revealed)
+                ? $this->dossiers->spoilerDocs($dossier)
+                : [];
             $data['solution'] = ($p->solved || $p->revealed)
                 ? array_values(array_map('strval', (array) $dossier->solution))
                 : null;

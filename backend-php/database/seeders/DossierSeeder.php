@@ -169,6 +169,8 @@ class DossierSeeder extends Seeder
                 'kind'      => (string) ($row['kind'] ?? ''),
                 'is_locked' => (bool) ($row['locked'] ?? false),
                 'is_sample' => (bool) ($row['sample'] ?? false),
+                /* İşin sonluğu — yalnız həll olunandan sonra açılır. */
+                'is_spoiler' => (bool) ($row['spoiler'] ?? false),
                 'lock_kind' => Sanitizer::pick($kilid['nov'] ?? 'reqem', BlokSxemi::KILID_NOV, 'reqem'),
                 'lock_code' => (string) ($kilid['kod'] ?? ''),
                 'lock_hint' => (string) ($kilid['ipucu'] ?? ''),

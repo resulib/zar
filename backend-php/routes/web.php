@@ -225,6 +225,21 @@ Route::prefix('api')->group(function (): void {
 
 /*
 |--------------------------------------------------------------------------
+| Giriş yolları — hər üç bölmə üçün ortaq
+|--------------------------------------------------------------------------
+| Google-un `redirect_uri`-si HƏRFİ müqayisə olunur, ona görə cavab ünvanı
+| tək və sabitdir; ziyarətçinin hara qayıdacağı sessiyadadır (`?davam=`,
+| ağ siyahı — `config('oauth.qayidis')`).
+*/
+Route::get('/giris/google', [Web\OAuthController::class, 'start'])
+    ->middleware('throttle:oauth')->name('oauth.google');
+Route::get('/giris/google/cavab', [Web\OAuthController::class, 'callback'])
+    ->middleware('throttle:oauth')->name('oauth.google.callback');
+Route::post('/qonaq', [Web\OAuthController::class, 'guest'])
+    ->middleware('throttle:qonaq')->name('oauth.guest');
+
+/*
+|--------------------------------------------------------------------------
 | Kabinet — qonaq üçün də açıqdır
 |--------------------------------------------------------------------------
 */
