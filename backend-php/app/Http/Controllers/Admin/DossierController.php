@@ -452,6 +452,8 @@ class DossierController extends Controller
             'kodlar'   => $dossier->codes()->get(),
             'sekiller' => $dossier->images()->get(),
             'kartlar'  => self::kartBloklari($document),
+            'fotolar'  => self::fotoBloklari($document),
+            'hovuz'    => \App\Models\DossierPoolImage::query()->orderByDesc('id')->get(),
             'novler'   => (array) config('dossier.sened_novleri'),
             'blanklar' => BlokSxemi::BLANK_NOV,
         ]);
@@ -484,6 +486,7 @@ class DossierController extends Controller
 
         $document->fill($data)->save();
         $this->kartlariYaz($document, $request);
+        $this->fotolariYaz($document, $request);
 
         if ($request->boolean('kart_blok')) {
             $this->kartBlokuElaveEt($document);
@@ -561,9 +564,12 @@ class DossierController extends Controller
 
         $document->fill($this->senedData($request, $dossier));
         $document->body = (string) ($request->input('body') ?? '');
-        /* Kartlar da formadan oxunur — YADDA SAXLANMADAN: idarəçi şəkli
-           seçən kimi vərəqdə görməlidir. */
-        $document->content = self::kartlariBirlesdir((array) $document->content, $request->input('kartlar'));
+        /* Kartlar və foto bağlamaları da formadan oxunur — YADDA SAXLANMADAN:
+           idarəçi şəkli seçən kimi vərəqdə görməlidir. */
+        $document->content = self::fotolariBirlesdir(
+            self::kartlariBirlesdir((array) $document->content, $request->input('kartlar')),
+            $request->input('fotolar'),
+        );
 
         /* Kilid vəziyyəti önizləmədə heç vaxt qapalı olmur: idarəçi mətni
            görmək üçün öz koduna klaviatura döyməməlidir. */
@@ -847,6 +853,83 @@ class DossierController extends Controller
         if ($yeni !== (array) $doc->content) {
             $doc->forceFill(['content' => $yeni])->save();
         }
+    }
+
+    /**
+     * Sənəddəki foto blokları — idarə formasının şəkil bağlama siyahısı.
+     *
+     * Kart naxşının eynisidir: blok redaktoru bütövlükdə yoxdur, amma şəkil
+     * yalnız idarə panelindən yüklənə bildiyi üçün foto çərçivəsi istisnadır —
+     * tərcümeyi-hal vərəqlərinin portret yeri məhz budur. İzah və nisbət
+     * yalnız GÖSTƏRİLİR, redaktə olunmur: onlar vərəqin məzmunudur.
+     *
+     * @return list<array{i:int, sekil:string, izah:string, nisbet:string}>
+     */
+    public static function fotoBloklari(DossierDocument $doc): array
+    {
+        $out = [];
+
+        foreach ((array) (((array) $doc->content)['bloklar'] ?? []) as $i => $b) {
+            if (is_array($b) && ($b['tip'] ?? '') === 'foto') {
+                $out[] = [
+                    'i'      => (int) $i,
+                    'sekil'  => (string) ($b['sekil'] ?? ''),
+                    'izah'   => (string) ($b['izah'] ?? ''),
+                    'nisbet' => (string) ($b['nisbet'] ?? '4:3'),
+                ];
+            }
+        }
+
+        return $out;
+    }
+
+    /** Formadan gələn foto bağlamalarını sənədin `content`-inə yazır. */
+    protected function fotolariYaz(DossierDocument $doc, Request $request): void
+    {
+        $yeni = self::fotolariBirlesdir((array) $doc->content, $request->input('fotolar'));
+
+        if ($yeni !== (array) $doc->content) {
+            $doc->forceFill(['content' => $yeni])->save();
+        }
+    }
+
+    /**
+     * Formadan gələn foto bağlamalarını mövcud `content` ilə birləşdirir.
+     *
+     * Yalnız `foto` bloklarının `sekil` açarına toxunur — izah, nömrə və
+     * nisbət olduğu kimi qalır. Boş seçim açarı SİLİR: çərçivə «foto əlavə
+     * edilməyib» halına qayıdır.
+     */
+    protected static function fotolariBirlesdir(array $content, mixed $gelen): array
+    {
+        if (! is_array($gelen) || $gelen === []) {
+            return $content;
+        }
+
+        $bloklar = (array) ($content['bloklar'] ?? []);
+
+        foreach ($gelen as $i => $f) {
+            $i = (int) $i;
+
+            if (! isset($bloklar[$i]) || ! is_array($bloklar[$i]) || ($bloklar[$i]['tip'] ?? '') !== 'foto') {
+                continue;
+            }
+
+            /* Açar ağ siyahıdan keçmir — kitabxanada olmayan açar render
+               zamanı boş çərçivəyə düşür, yəni zərərsizdir. Forması isə
+               yoxlanılır: kənar dəyər `BlokSxemi`-ni sındırardı. */
+            $sekil = trim((string) (is_array($f) ? ($f['sekil'] ?? '') : ''));
+
+            if ($sekil !== '' && BlokSxemi::acarDuzgun($sekil)) {
+                $bloklar[$i]['sekil'] = $sekil;
+            } else {
+                unset($bloklar[$i]['sekil']);
+            }
+        }
+
+        $content['bloklar'] = array_values($bloklar);
+
+        return $content;
     }
 
     /**

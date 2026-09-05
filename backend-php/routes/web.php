@@ -161,6 +161,17 @@ Route::get('/is/{slug}/hesabat/{token}', [Web\DossierController::class, 'certifi
 /* Mətndaxili şəkil. `/is/{slug}` marşrutundan ƏVVƏL, çünki üç seqmentdir
    və geniş yol axırda gəlməlidir. Ölçü ağ siyahıdır: `where` şərtindən
    keçməyən dəyər fayl adı quraşdırmağa ümumiyyətlə çatmır. */
+/* Üz qabığı — SATIŞ şəkli, açıqdır (kataloq kartı və təqdimat səhifəsi).
+   Oyun materialı olan `sekil` marşrutundan ayrıdır: onun üç qapısı var,
+   bunun isə bir — şəkil qovluğun öz `cover_image_id`-si olmalıdır. */
+Route::get('/is/{slug}/qabiq/{olcu}', [Web\DossierController::class, 'cover'])
+    ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'olcu' => 'tam|orta|kicik'])
+    /* `dossier-foto` DEYİL: o, avatar YÜKLƏMƏSİNİN limitidir (4/dəq,
+       30/gün). Kataloqda bir səhifə açılışı hər qovluq üçün bir qabıq
+       istəyir, yəni üç kartla ikinci yükləmədə 429 alınırdı. Qabıq
+       oxuma yoludur və `sekil` marşrutu ilə eyni limitdə olmalıdır. */
+    ->middleware('throttle:dossier-read')->name('dossier.qabiq');
+
 Route::get('/is/{slug}/sekil/{id}/{olcu}', [Web\DossierController::class, 'image'])
     ->where(['slug' => '[0-9]{4}-[0-9]{4}', 'id' => '[0-9]+', 'olcu' => 'tam|orta|kicik'])
     ->middleware('throttle:dossier-read')
@@ -421,6 +432,17 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('/qovluqlar/{dossier}/sekil',                  [Admin\DossierImageController::class, 'store'])->name('dossier.image.store');
         Route::post('/qovluqlar/{dossier}/sekil/{image}',          [Admin\DossierImageController::class, 'update'])->name('dossier.image.update');
         Route::post('/qovluqlar/{dossier}/sekil/{image}/sil',      [Admin\DossierImageController::class, 'destroy'])->name('dossier.image.delete');
+
+        /* Ümumi şəkil hovuzu — işlərdən asılı olmayan kitabxana. `hovuzdan`
+           marşrutu şəkli seçilmiş işə KÖÇÜRÜR (istinad yox — oyunçu yolunun
+           qapıları dəyişməsin deyə). */
+        Route::get('/sekil-hovuzu',                    [Admin\DossierPoolController::class, 'index'])->name('hovuz');
+        Route::post('/sekil-hovuzu',                   [Admin\DossierPoolController::class, 'store'])->name('hovuz.store');
+        Route::get('/sekil-hovuzu/{image}/{olcu}',     [Admin\DossierPoolController::class, 'show'])
+            ->where('olcu', 'tam|orta|kicik')->name('hovuz.image');
+        Route::post('/sekil-hovuzu/{image}',           [Admin\DossierPoolController::class, 'update'])->name('hovuz.update');
+        Route::post('/sekil-hovuzu/{image}/sil',       [Admin\DossierPoolController::class, 'destroy'])->name('hovuz.delete');
+        Route::post('/qovluqlar/{dossier}/hovuzdan/{image}', [Admin\DossierPoolController::class, 'copy'])->name('hovuz.copy');
 
         Route::get('/parametrler',  [Admin\SettingController::class, 'edit'])->name('settings');
         Route::post('/parametrler', [Admin\SettingController::class, 'update'])->name('settings.update');

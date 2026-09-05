@@ -27,30 +27,19 @@
   @php($acar = (string) ($k['sekil'] ?? ''))
   @php($sekil = $acar !== '' ? ($sekiller[$acar] ?? null) : null)
   {{-- Əyilik indeksdən törəyir: iki foto yan-yana eyni bucaqda dayansaydı,
-       onlar əl ilə yapışdırılmış deyil, şablon görünərdi. --}}
-  <div class="ev-foto @if($sekil !== null) ev-foto-var @endif"
-       style="--ev-bucaq:{{ number_format((($i * 37) % 9 - 4) * 0.4, 2, '.', '') }}deg">
-    <div class="ev-foto-k">
-      @if($sekil !== null)
-        <img src="{{ $sekil->url($slug ?? '', 'orta') }}" alt="{{ $k['ad'] ?? '' }}" loading="lazy">
-      @else
-        <span class="ev-foto-bos">foto əlavə edilməyib</span>
-      @endif
-    </div>
-
+       onlar əl ilə yapışdırılmış deyil, şablon görünərdi. Yapışdırma görkəmi
+       (haşiyə, skoç, möhür) ortaq komponentdədir — <x-yapisiq>. --}}
+  <x-yapisiq :bos="$sekil === null"
+             :bucaq="(($i * 37) % 9 - 4) * 0.4"
+             :mid="'ev-' . $evUid . '-' . $i"
+             ust="{{ \App\Support\Dossier\Byuro::QISA }} · MADDİ SÜBUT"
+             orta="ƏŞYA" no="№ {{ $i + 1 }}">
     @if($sekil !== null)
-      {{-- İki lent YUXARI künclərdə: şəkil belə vurulur. Aşağı sağ künc
-           möhürə qalır. --}}
-      <span class="ev-skoc ev-skoc-u" aria-hidden="true"></span>
-      <span class="ev-skoc ev-skoc-a" aria-hidden="true"></span>
-      <span class="ev-foto-m" aria-hidden="true">
-        <x-mohur :id="'ev-' . $evUid . '-' . $i"
-                 ust="{{ \App\Support\Dossier\Byuro::QISA }} · MADDİ SÜBUT"
-                 orta="ƏŞYA" no="№ {{ $i + 1 }}" etiket="FİKTİV"
-                 alt="QEYDƏ ALINIB" :olcu="84"/>
-      </span>
+      <img src="{{ $sekil->url($slug ?? '', 'orta') }}" alt="{{ $k['ad'] ?? '' }}" loading="lazy">
+    @else
+      <span class="ev-foto-bos">foto əlavə edilməyib</span>
     @endif
-  </div>
+  </x-yapisiq>
 
   <div class="ev-d @if(! empty($k['elyazma'])) ev-el @endif">{!! \App\Support\Dossier\Metn::inline($k['metn'] ?? '', $vals) !!}</div>
 </div>

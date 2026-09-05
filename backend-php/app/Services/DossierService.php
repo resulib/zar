@@ -312,6 +312,38 @@ class DossierService
      * əks halda id-ləri sırayla yoxlayan adam bütün kitabxananı ödənişsiz
      * görərdi.
      */
+    /**
+     * ÜZ QABIĞININ yolu — satış şəkli, oyun materialı deyil.
+     *
+     * `imagePath()`-in üç qapısı BURADA TƏTBİQ OLUNMUR və olmamalıdır: o,
+     * qovluğun İÇİNDƏKİ şəkilləri qoruyur (ödəniş, kilid, sonluq), bu isə
+     * kataloq kartında və təqdimat səhifəsində görünür — məqsədi elə
+     * göstərilməkdir.
+     *
+     * ƏVƏZİNƏ BİR QAPI VAR VƏ O, DAHA DARDIR: şəkil məhz bu qovluğun
+     * `cover_image_id`-si olmalıdır. Açıq olan şəkil qovluq başına birdir
+     * və onu admin özü seçir — id sırası ilə kitabxananı gəzmək mümkün deyil.
+     */
+    public function coverPath(Dossier $dossier, string $olcu): ?string
+    {
+        $id = $dossier->cover_image_id;
+
+        if ($id === null) {
+            return null;
+        }
+
+        $sekil = DossierImage::query()->find($id);
+
+        if ($sekil === null || (int) $sekil->dossier_id !== (int) $dossier->id) {
+            return null;
+        }
+
+        /* Fayl yolu `sekilFayli()` ilə qurulur: format yoxlaması və
+           traversal qoruması orada bir yerdədir — burada təkrarlansaydı,
+           ikisi vaxtla bir-birindən sürüşərdi. */
+        return $this->sekilFayli($sekil, $olcu);
+    }
+
     public function imagePath(
         Dossier $dossier,
         DossierImage $sekil,

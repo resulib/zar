@@ -6,6 +6,7 @@
 <a href="{{ route('admin.catalog.templates') }}" @if(request()->routeIs('admin.catalog.templates*')) aria-current="page" @endif>Şablonlar</a>
 <a href="{{ route('admin.catalog.categories') }}" @if(request()->routeIs('admin.catalog.categories*')) aria-current="page" @endif>Kateqoriyalar</a>
 <a href="{{ route('admin.dossier') }}" @if(request()->routeIs('admin.dossier*')) aria-current="page" @endif>İş qovluqları</a>
+<a href="{{ route('admin.hovuz') }}" @if(request()->routeIs('admin.hovuz*')) aria-current="page" @endif>Şəkil hovuzu</a>
 <a href="{{ route('admin.payments') }}" @if(request()->routeIs('admin.payments')) aria-current="page" @endif>Ödənişlər</a>
 <a href="{{ route('admin.transactions') }}" @if(request()->routeIs('admin.transactions')) aria-current="page" @endif>Əməliyyatlar</a>
 <a href="{{ route('admin.users') }}" @if(request()->routeIs('admin.users*')) aria-current="page" @endif>İstifadəçilər</a>

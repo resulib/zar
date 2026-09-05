@@ -276,6 +276,51 @@
             <span>Saxlayanda maddi sübut siyahısı əlavə et</span></label>
         </fieldset>
       @endif
+
+      @if($fotolar !== [])
+        {{-- FOTO ÇƏRÇİVƏLƏRİ. `foto` bloku məzmunu seed və ya AI verir,
+             şəkli isə yalnız idarə paneli bağlaya bilər — tərcümeyi-hal
+             vərəqinin portret yeri məhz budur. Sətirlər sübut naxşının
+             siniflərini daşıyır (`qv-sub…`), ona görə «Yüklə» düyməsi,
+             önizləmə və yeni yüklənən şəklin seçimlərə düşməsi əlavə
+             skript olmadan işləyir. --}}
+        <fieldset class="qv-qrup">
+          <legend>Foto çərçivələri</legend>
+          <p class="muted qv-komek">Vərəqdəki hər foto çərçivəsinə kitabxanadan şəkil
+            bağlanır; «Yüklə» şəkli kitabxanaya əlavə edir və dərhal çərçivəyə qoyur.
+            Boş seçim çərçivəni «foto əlavə edilməyib» halına qaytarır.</p>
+
+          <div class="qv-subler">
+            @foreach($fotolar as $fi => $f)
+              <div class="qv-sub">
+                <div class="qv-sub-no">{{ $fi + 1 }}</div>
+                <div class="qv-sub-g">
+                  <p class="muted qv-komek">{{ $f['izah'] !== '' ? $f['izah'] : 'foto çərçivəsi' }} · {{ $f['nisbet'] }}</p>
+                  <div class="qv-sub-s">
+                    <select class="input input-sm qv-sub-sek" name="fotolar[{{ $f['i'] }}][sekil]">
+                      <option value="">— foto yoxdur —</option>
+                      @foreach($sekiller as $sk)
+                        <option value="{{ $sk->slug }}" @selected($f['sekil'] === $sk->slug)>{{ $sk->slug }}</option>
+                      @endforeach
+                    </select>
+                    <label class="btn btn-ghost btn-sm qv-sub-yukle">Yüklə
+                      <input type="file" accept="image/jpeg,image/png,image/webp" hidden>
+                    </label>
+                  </div>
+                </div>
+                <div class="qv-sub-on">
+                  @php($sk = collect($sekiller)->firstWhere('slug', $f['sekil'] !== '' ? $f['sekil'] : '~'))
+                  @if($sk)
+                    <img src="{{ route('admin.dossier.image', [$sk, 'kicik']) }}" alt="">
+                  @else
+                    <span>foto yoxdur</span>
+                  @endif
+                </div>
+              </div>
+            @endforeach
+          </div>
+        </fieldset>
+      @endif
       <fieldset class="qv-qrup">
         <legend>Kilid</legend>
 
@@ -360,6 +405,32 @@
 <div class="qv-yukle" id="qvYukle">
   <p>Şəkli bura sürüşdürüb atın və ya <label class="qv-sec">seçin<input type="file" id="qvFayl" accept="image/jpeg,image/png,image/webp" hidden></label></p>
 </div>
+
+@if($hovuz->isNotEmpty())
+  {{-- ÜMUMİ HOVUZDAN GÖTÜRMƏ. Hovuz işlərdən asılı olmayan kitabxanadır
+       (/admin/sekil-hovuzu); buradan seçmək şəkli BU işin kitabxanasına
+       köçürür — fayl surətlənir, adi `dossier_images` sətri yaranır və
+       yenidən yükləmiş kimi hər yerdə (kart · foto çərçivəsi · nişan)
+       istifadəyə açılır. `sahibi` redaktə olunan sənəddir: kilidli vərəqin
+       şəkli avtomatik spoiler qorumasına düşür — yükləmə formasının qaydası. --}}
+  <details class="qv-sekil-redakte">
+    <summary>Ümumi hovuzdan götür ({{ $hovuz->count() }} şəkil)</summary>
+    <p class="muted qv-komek">Şəkil bu işin kitabxanasına köçürülür və seçimlərdə görünür.
+      Hovuzu <a href="{{ route('admin.hovuz') }}">buradan</a> idarə edin.</p>
+    <div class="qv-kitabxana">
+      @foreach($hovuz as $h)
+        <form method="POST" action="{{ route('admin.hovuz.copy', [$dossier, $h]) }}" class="qv-sekil-f">
+          @csrf
+          @if($doc->exists)<input type="hidden" name="sahibi" value="{{ $doc->id }}">@endif
+          <button type="submit" class="qv-sekil" title="Bu işə köçür">
+            <img src="{{ route('admin.hovuz.image', [$h, 'kicik']) }}" alt="{{ $h->slug }}" loading="lazy">
+            <span>{{ $h->slug }}</span>
+          </button>
+        </form>
+      @endforeach
+    </div>
+  </details>
+@endif
 
 {{-- YÜKLƏMƏ FORMASI — brauzer dialoqu DEYİL.
 

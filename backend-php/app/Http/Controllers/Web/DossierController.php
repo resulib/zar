@@ -122,6 +122,8 @@ class DossierController extends Controller
 
         $user = $this->viewer($request);
         $p = $user === null ? null : $this->dossiers->progress($user, $dossier);
+        $this->bax($request, $dossier);
+
         $access = $p?->hasAccess() === true;
 
         /* Ödəniş olmayana yalnız üz qabığı, təsvir və sənəd ADLARI gedir.
@@ -298,6 +300,65 @@ class DossierController extends Controller
             'Cache-Control'          => 'private, max-age=600',
             'X-Robots-Tag'           => 'noindex',
         ]);
+    }
+
+    /**
+     * Üz qabığı şəkli — SATIŞ şəkli.
+     *
+     * `image()`-dən fərqli olaraq açıqdır və `noindex` DEYİL: kataloq
+     * kartında və təqdimat səhifəsində görünür, yəni tapılmalıdır. Keş də
+     * `public`-dir — şəkil hər ziyarətçi üçün eynidir.
+     */
+    public function cover(string $slug, string $olcu): Response|BinaryFileResponse
+    {
+        $dossier = $this->dossiers->find($slug);
+
+        if ($dossier === null) {
+            return response('', 404);
+        }
+
+        $path = $this->dossiers->coverPath($dossier, $olcu);
+
+        if ($path === null) {
+            return response('', 404);
+        }
+
+        return response()->file($path, [
+            'Content-Type'           => 'image/jpeg',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control'          => 'public, max-age=86400',
+        ]);
+    }
+
+    /**
+     * Baxış sayğacı — SESSİYA BAŞINA BİR DƏFƏ.
+     *
+     * Hər sorğuda artırsaydı, səhifəni yeniləmək rəqəmi qaldırardı və
+     * «142 baxış» heç nə demək olmazdı. Sessiya açarı ucuzdur və yalan
+     * danışmır: eyni adam eyni gəlişində bir dəfə sayılır.
+     *
+     * ADMİN SAYILMIR: qovluğu redaktə edən adam öz işinə onlarla dəfə
+     * baxır və rəqəmi özü şişirdərdi.
+     */
+    protected function bax(Request $request, Dossier $dossier): void
+    {
+        $user = $this->viewer($request);
+
+        if ($user !== null && (bool) $user->is_admin) {
+            return;
+        }
+
+        $acar = 'baxildi.' . $dossier->id;
+
+        if ($request->session()->has($acar)) {
+            return;
+        }
+
+        $request->session()->put($acar, true);
+
+        /* `increment()` — oxu-yaz yarışı olmadan: iki ziyarətçi eyni anda
+           gəlsə, `$dossier->views_count + 1` biri digərini itirərdi. */
+        Dossier::query()->whereKey($dossier->id)->increment('views_count');
     }
 
     /* ----------------------------------------------------------------

@@ -91,14 +91,38 @@
           @endforeach
         </select>
       </label>
-      <label class="fld"><span>Üz qabığı şəkli</span>
-        <select class="input" name="cover_image_id">
-          <option value="">— yoxdur —</option>
-          @foreach($sekiller as $s)
-            <option value="{{ $s->id }}" @selected((int) old('cover_image_id', $dossier->cover_image_id) === (int) $s->id)>{{ $s->slug }}</option>
-          @endforeach
-        </select>
-      </label>
+      {{-- ÜZ QABIĞI ŞƏKİLLƏ SEÇİLİR, adla yox. Əvvəl `<select>` idi və
+           orada yalnız slug görünürdü — admin hansı şəkli seçdiyini
+           yalnız yadda saxlamaqla bilirdi. Şəkil seçimi gözlə edilir.
+
+           Radio düymələri gizlidir, amma DOM-dadır: klaviatura ilə gəzmək
+           və ekran oxuyucusu işləməlidir. --}}
+      <div class="fld">
+        <span>Üz qabığı şəkli</span>
+        <p class="qv-ipucu">Kataloq kartında və təqdimat səhifəsində görünür.
+          Kadr 21:9 kəsilir — geniş şəkil seçin.</p>
+
+        @if($sekiller->isEmpty())
+          <p class="qv-ipucu">Kitabxanada şəkil yoxdur. Aşağıdakı «Şəkillər»
+            bölməsindən yükləyin — yükləndikdən sonra burada görünəcək.</p>
+        @else
+          <div class="qv-qabiqlar">
+            <label class="qv-qabiq qv-qabiq-yox">
+              <input type="radio" name="cover_image_id" value=""
+                     @checked((int) old('cover_image_id', $dossier->cover_image_id) === 0)>
+              <span class="qv-qabiq-k">yoxdur</span>
+            </label>
+            @foreach($sekiller as $s)
+              <label class="qv-qabiq">
+                <input type="radio" name="cover_image_id" value="{{ $s->id }}"
+                       @checked((int) old('cover_image_id', $dossier->cover_image_id) === (int) $s->id)>
+                <img src="{{ route('admin.dossier.image', [$s->id, 'kicik']) }}" alt="{{ $s->slug }}" loading="lazy">
+                <span class="qv-qabiq-k">{{ $s->slug }}</span>
+              </label>
+            @endforeach
+          </div>
+        @endif
+      </div>
       <label class="fld"><span>Oxu vaxtı (dəq)</span>
         <input class="input" type="number" name="read_minutes" min="1" max="600" value="{{ old('read_minutes', $dossier->read_minutes ?: 30) }}">
       </label>

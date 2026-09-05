@@ -147,6 +147,9 @@
 @endif
 
 {{-- ══ 3. İşlərin siyahısı ═════════════════════════════════════════════ --}}
+{{-- Lent sərhəddir: buradan o tərəfə iş qovluqları başlayır. --}}
+<div class="skoc-eyri">@include('dossier.partials.skoc')</div>
+
 <section class="kataloq" id="isler">
   <div class="sayt-en">
     <h2 class="bolme-bas">İş qovluqları</h2>
