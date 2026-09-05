@@ -1672,15 +1672,22 @@ and keeps the card in the same family as the seals. The pattern is emitted per-c
 the caller's `$id` prefix, never into a shared `defs()` (the `doc.js` lesson).
 
 **The badge carries a red seal and a hologram, and each sits where its meaning puts it.**
-The seal **straddles the photograph's bottom edge** — half on the portrait, half on the card —
-for the same reason the evidence seal does on a case sheet: it certifies that *this* photograph
-belongs to *this* card, so the picture cannot be swapped without breaking the impression. It is
-**red** (`CardRenderer::QIRMIZI` = `dossier.css` `--red`) because the sheet's own purple seals
-*register a document* while this one *certifies a person* — different acts, the same palette.
-It is drawn **only when a badge number exists**: an unissued card has not been issued, and the
-seal is the issuing. The hologram is unconditional and sits **bottom-right**, opposite the
-signature — the sheet's «foil below-left» rule inverted only because the barcode owns that
-corner here. Foil is the card's own material; a stamp is an act performed on it.
+
+The **hologram straddles the photograph's bottom-right corner**, a quarter of it over the portrait. That is where a
+real ID puts its foil: the picture cannot be lifted or swapped without destroying the patch, so
+the protection sits on the thing being protected. On a case sheet the foil is in the corner
+because what is protected there is *text*; here it is a *face*. It stays translucent
+(`opaklik` 0.40 under a 0.78 group) — foil you cannot read through is a stain, not a security
+feature. It is **unconditional**: foil is the card's own material, not an act performed on it,
+so a card still awaiting assignment carries it.
+
+The **seal sits bottom-right, opposite the signature** — the sheet's own rule («signature left,
+seal right, nothing overlapping»), unchanged. A seal is pressed into a document's *empty* area;
+over the signature it would bury the one thing it authenticates and leave white space beside it.
+It is **red** (`CardRenderer::QIRMIZI` = `dossier.css` `--red`) because the sheet's own purple
+seals *register a document* while this one *certifies a person* — different acts, the same
+palette. And it is drawn **only when a badge number exists**: an unissued card has not been
+issued, and the seal is the issuing.
 
 > **Label and value share one baseline.** The value used to be drawn at `y + 30` — *below* the
 > dotted rule — while rows are 44 apart, so «Cinayət Axtarışı» landed nearer the **next** label

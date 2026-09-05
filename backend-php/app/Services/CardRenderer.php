@@ -152,20 +152,25 @@ class CardRenderer
         // Rütbə nişanı — imzanın sağında, boş sahədə
         $o .= '<g transform="translate(400 556)">' . $this->nisan($nisan, $reng) . '</g>';
 
-        /* HOLOQRAM — folqa yaması. Sol aşağı deyil, SAĞ AŞAĞIDADIR, çünki
-           bu kartda sol aşağını barkod tutur; qayda dəyişmir — imza solda,
-           folqa onun əksində, heç nə üst-üstə düşmür. Vərəqdə holoqram
-           yalnız təsdiqedici sənədlərdədir; vəsiqə məhz belədir, ona görə
-           təyinat gözləyəndə də çəkilir: folqa kartın öz materialıdır,
-           möhür isə vurulan akt. */
-        $o .= '<g transform="translate(408 676)" opacity="0.95">'
-            . Nisan::holoqram($id . '-hl', ['reng' => self::MUREKKEB2, 'opaklik' => 0.72]) . '</g>';
+        /* HOLOQRAM — ŞƏKLİN SAĞ AŞAĞI KÜNCÜNDƏ, dördə bir hissəsi fotonun
+           üstündə, qalanı kartın özündə.
+           Real vəsiqədə folqa məhz portretin üzərinə basılır: onu qaldırmadan
+           şəkli dəyişdirmək mümkün olmur, yəni qoruma məhz qorunası şeyin
+           üstündədir. Vərəqdə folqa sənədin küncündədir, çünki orada
+           qorunan şey mətndir; burada isə üzdür.
 
-        /* MÖHÜR — şəklin aşağı kənarını KƏSİR: yarısı fotonun üstündə,
-           yarısı kartın özündə. Real möhür məhz oraya vurulur, çünki o,
-           bu şəklin bu vəsiqəyə aid olduğunu təsdiqləyir — şəkli
-           dəyişdirmək möhürü qırmadan mümkün olmur (vərəqdəki maddi sübut
-           şəkilləri ilə eyni qayda).
+           ŞƏFFAFDIR VƏ ŞƏFFAF QALMALIDIR: folqa altındakı sifət oxunmasa,
+           yama qorumanı deyil, ləkəni göstərir.
+
+           ŞƏRTSİZDİR — folqa kartın öz materialıdır, vurulan akt deyil,
+           ona görə təyinat gözləyən kartda da var. */
+        $o .= '<g transform="translate(159 303) scale(0.90)" opacity="0.78">'
+            . Nisan::holoqram($id . '-hl', ['reng' => self::MUREKKEB2, 'opaklik' => 0.40]) . '</g>';
+
+        /* MÖHÜR — SAĞ AŞAĞIDA, imzanın əksində. Vərəqin qaydası dəyişmir:
+           imza solda, möhür sağda, heç nə üst-üstə düşmür. Möhür sənədin
+           BOŞ sahəsinə vurulur — imzanın üstünə düşsəydi, təsdiqlədiyi
+           yeganə şeyi basdırıb yanında ağ yer qoyardı.
 
            QIRMIZIDIR: vərəqin öz möhürləri mordur (`--stamp`) və sənədi
            QEYDƏ ALIR; bu isə şəxsi təsdiqləyən ayrı bir akdır.
@@ -173,7 +178,7 @@ class CardRenderer
            YALNIZ VƏSİQƏ VERİLİBSƏ: nömrəsi olmayan kart hələ verilməyib,
            möhür isə verilmə faktının özüdür. */
         if ($verilb) {
-            $o .= '<g transform="translate(64 292) rotate(-7 50 50)" opacity="0.82">'
+            $o .= '<g transform="translate(382 664) scale(1.22) rotate(-7 50 50)" opacity="0.82">'
                 . Nisan::mohur($id . '-m', [
                     'ust'    => Byuro::QISA . ' · KADR ŞÖBƏSİ',
                     'orta'   => 'VƏSİQƏ',
