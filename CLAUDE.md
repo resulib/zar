@@ -1671,6 +1671,22 @@ The card uses a real six-line inline `<pattern>` for the field **plus** one larg
 and keeps the card in the same family as the seals. The pattern is emitted per-card under
 the caller's `$id` prefix, never into a shared `defs()` (the `doc.js` lesson).
 
+**The badge carries a red seal and a hologram, and each sits where its meaning puts it.**
+The seal **straddles the photograph's bottom edge** — half on the portrait, half on the card —
+for the same reason the evidence seal does on a case sheet: it certifies that *this* photograph
+belongs to *this* card, so the picture cannot be swapped without breaking the impression. It is
+**red** (`CardRenderer::QIRMIZI` = `dossier.css` `--red`) because the sheet's own purple seals
+*register a document* while this one *certifies a person* — different acts, the same palette.
+It is drawn **only when a badge number exists**: an unissued card has not been issued, and the
+seal is the issuing. The hologram is unconditional and sits **bottom-right**, opposite the
+signature — the sheet's «foil below-left» rule inverted only because the barcode owns that
+corner here. Foil is the card's own material; a stamp is an act performed on it.
+
+> **Label and value share one baseline.** The value used to be drawn at `y + 30` — *below* the
+> dotted rule — while rows are 44 apart, so «Cinayət Axtarışı» landed nearer the **next** label
+> than its own and the card read as «department empty, number is the department». The dotted
+> line is now a separator under the row, not a divider through it.
+
 **The badge is the fifth share artefact**, so `Byuro::QEYD_QISA` is on the card itself and
 `check-dossier.js` §3c asserts it — the same argument as the certificate, the story PNG and
 the two OG images. `CardRenderer.php` is also in `QURUM_SCAN`: it prints institution text
@@ -2121,6 +2137,9 @@ sections**, because the sections are physically separate but the auth logic must
   `App\Models\InvestigatorProfile::departmentLabel()` ↔ `check-mustentiq.js` §2 — which
   also folds every label against `config('dossier.org_ban')`, the rule that keeps
   «Məhkəmə-Tibb Ekspertizası» out.
+- **Seal red**: `App\Services\CardRenderer::QIRMIZI` ↔ `frontend/dossier.css` `--red` —
+  `check-mustentiq.js` §8 compares them, the same rule as the rank colours and for the same
+  reason: `var(--red)` does not resolve on the canvas.
 - **Code-39 table**: `frontend/doc.js` `C39` ↔ `App\Services\CardRenderer::C39` — the third
   geometry pair after crest/seal (`Nisan`) and signature (`Imza`).
 - **Microtext**: `frontend/doc.js` `microtext()` ↔ `CardRenderer::mikro()` (single-line

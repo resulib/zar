@@ -275,5 +275,42 @@ const profilBlade = oxu(VIEWS, 'dossier', 'mustentiq.blade.php');
 check('qonaq üçün kart render olunmur', /\$qonaq\b/.test(profilBlade));
 check('qonağa qeydiyyat çağırışı göstərilir', profilBlade.indexOf('dossier.hesab') >= 0);
 
+/* --- 8. Möhür və holoqram ---------------------------------------------- */
+bas('8. Möhür və holoqram');
+
+/* Vəsiqə də vərəq kimi qorunma nişanı daşıyır — ortaq komponentlərdən,
+   ayrıca çəkilmiş nüsxədən yox. */
+check('möhür ortaq komponentdən gəlir', /Nisan::mohur\(/.test(kart));
+check('holoqram ortaq komponentdən gəlir', /Nisan::holoqram\(/.test(kart));
+
+/* `Nisan::mohur()` və `holoqram()` `url(#id-…)` ilə bağlanır: eyni səhifədə
+   iki eyni id qövsü və qradiyenti üst-üstə salır (reytinq bir səhifədə
+   onlarla kart çəkir). Ona görə ikisi də çağıranın `$id` prefiksini almalıdır. */
+check('möhürün id-si prefiksdən törəyir', /Nisan::mohur\(\$id \. '-\w+'/.test(kart));
+check('holoqramın id-si prefiksdən törəyir', /Nisan::holoqram\(\$id \. '-\w+'/.test(kart));
+
+/* Möhür QIRMIZIDIR və rəng hərfi hex-dir — kətanda `var(--red)` həll olunmur. */
+const QIRMIZI = (kart.match(/QIRMIZI\s*=\s*'(#[0-9A-Fa-f]{6})'/) || [])[1];
+check('qırmızı sabit elan olunub', QIRMIZI !== undefined, QIRMIZI);
+const cssRed = (css.match(/--red:(#[0-9A-Fa-f]{6})/) || [])[1];
+check('qırmızı dossier.css --red ilə eynidir',
+  QIRMIZI && cssRed && QIRMIZI.toLowerCase() === cssRed.toLowerCase(), [QIRMIZI, cssRed]);
+check('möhür qırmızı sabitlə çağırılır', /'reng'\s*=>\s*self::QIRMIZI/.test(kart));
+
+/* MÖHÜR YALNIZ VƏSİQƏ VERİLƏNDƏ vurulur: nömrəsi olmayan kart hələ
+   verilməyib, möhür isə verilmə faktının özüdür. Holoqram isə həmişədir —
+   folqa kartın materialıdır, vurulan akt deyil. */
+const mohurBlok = kart.slice(kart.indexOf('Nisan::holoqram('), kart.indexOf('// Barkod'));
+check('möhür `$verilb` şərtinin içindədir', /if \(\$verilb\) \{[\s\S]*Nisan::mohur\(/.test(mohurBlok));
+check('holoqram şərtsizdir', mohurBlok.indexOf('Nisan::holoqram(') < mohurBlok.indexOf('if ($verilb)'));
+
+/* SAHƏ SƏTRİ: etiket və dəyər EYNİ xətt üzərindədir. Dəyər aşağı sürüşsə
+   (`$y + 30` idi) öz etiketindən uzaq, növbəti etiketə yaxın düşür —
+   «şöbə boşdur, nömrə şöbədir» kimi oxunur. */
+const saheBlok = (kart.match(/protected function sahe\([\s\S]*?\n    \}/) || [''])[0];
+const saheY = [...saheBlok.matchAll(/\$this->t\([^;]*?,\s*(?:36|self::EN - 36),\s*\$y([^,)]*)/g)]
+  .map(m => m[1].trim());
+check('etiket və dəyər eyni y-dədir', saheY.length === 2 && saheY.every(v => v === ''), saheY);
+check('nöqtəli xətt sətrin ALTINDADIR', /M36 ' \. \(\$y \+ 1[0-9]\)/.test(saheBlok));
 console.log('\n' + pass + ' keçdi, ' + fail + ' uğursuz');
 process.exit(fail ? 1 : 0);

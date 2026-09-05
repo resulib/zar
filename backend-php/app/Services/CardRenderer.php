@@ -53,6 +53,15 @@ class CardRenderer
     private const MUREKKEB2 = '#4A5568';
     private const MUREKKEB3 = '#8792A6';
 
+    /**
+     * Möhürün qırmızısı — `dossier.css` `--red`.
+     *
+     * HƏRFİ HEX-DİR, `var(--red)` DEYİL: kart <img> ilə kətana çəkilir və
+     * orada CSS dəyişəni həll olunmur (bu faylın 2-ci qaydası). Dəyər
+     * `check-mustentiq.js` tərəfindən `dossier.css` ilə tutuşdurulur.
+     */
+    public const QIRMIZI = '#8A2A2A';
+
     /** Ad sütununun eni — avtomatik kiçilmənin həddi. */
     private const AD_EN = 276;
 
@@ -142,6 +151,38 @@ class CardRenderer
 
         // Rütbə nişanı — imzanın sağında, boş sahədə
         $o .= '<g transform="translate(400 556)">' . $this->nisan($nisan, $reng) . '</g>';
+
+        /* HOLOQRAM — folqa yaması. Sol aşağı deyil, SAĞ AŞAĞIDADIR, çünki
+           bu kartda sol aşağını barkod tutur; qayda dəyişmir — imza solda,
+           folqa onun əksində, heç nə üst-üstə düşmür. Vərəqdə holoqram
+           yalnız təsdiqedici sənədlərdədir; vəsiqə məhz belədir, ona görə
+           təyinat gözləyəndə də çəkilir: folqa kartın öz materialıdır,
+           möhür isə vurulan akt. */
+        $o .= '<g transform="translate(408 676)" opacity="0.95">'
+            . Nisan::holoqram($id . '-hl', ['reng' => self::MUREKKEB2, 'opaklik' => 0.72]) . '</g>';
+
+        /* MÖHÜR — şəklin aşağı kənarını KƏSİR: yarısı fotonun üstündə,
+           yarısı kartın özündə. Real möhür məhz oraya vurulur, çünki o,
+           bu şəklin bu vəsiqəyə aid olduğunu təsdiqləyir — şəkli
+           dəyişdirmək möhürü qırmadan mümkün olmur (vərəqdəki maddi sübut
+           şəkilləri ilə eyni qayda).
+
+           QIRMIZIDIR: vərəqin öz möhürləri mordur (`--stamp`) və sənədi
+           QEYDƏ ALIR; bu isə şəxsi təsdiqləyən ayrı bir akdır.
+
+           YALNIZ VƏSİQƏ VERİLİBSƏ: nömrəsi olmayan kart hələ verilməyib,
+           möhür isə verilmə faktının özüdür. */
+        if ($verilb) {
+            $o .= '<g transform="translate(64 292) rotate(-7 50 50)" opacity="0.82">'
+                . Nisan::mohur($id . '-m', [
+                    'ust'    => Byuro::QISA . ' · KADR ŞÖBƏSİ',
+                    'orta'   => 'VƏSİQƏ',
+                    'no'     => (string) $p->badge_number,
+                    'etiket' => 'FİKTİV',
+                    'alt'    => 'QEYDƏ ALINIB',
+                    'reng'   => self::QIRMIZI,
+                ]) . '</g>';
+        }
 
         // Barkod — nişan nömrəsini kodlayır
         if ($verilb) {
@@ -291,14 +332,22 @@ class CardRenderer
         return 'data:image/jpeg;base64,' . base64_encode((string) file_get_contents($yol));
     }
 
-    /** Etiket solda, dəyər sağda, arada nöqtəli xətt — vərəqin `sahe` bloku. */
+    /**
+     * Bir sahə sətri: etiket solda, dəyər sağda, altında ayırıcı.
+     *
+     * ETİKET VƏ DƏYƏR EYNİ XƏTT ÜZƏRİNDƏDİR. Əvvəl dəyər `y + 30`-da idi,
+     * yəni nöqtəli xəttin ALTINDA, sətirlər arası məsafə isə 44 — belədə
+     * «Cinayət Axtarışı» öz etiketindən uzaq, NÖVBƏTİ etiketə yaxın düşür
+     * və vəsiqə «şöbə boşdur, nömrə şöbədir» kimi oxunurdu. İndi nöqtəli
+     * xətt sətrin ALTINDA, ayırıcı rolunda durur.
+     */
     protected function sahe(string $etiket, string $deyer, float $y): string
     {
         $o  = $this->t($etiket, 36, $y, ['size' => 13, 'fill' => self::MUREKKEB3, 'ls' => 2]);
-        $o .= '<path d="M36 ' . ($y + 10) . 'H' . (self::EN - 36) . '" stroke="' . self::MUREKKEB3
-            . '" stroke-width="0.9" stroke-dasharray="2 3.5" opacity="0.65"/>';
-        $o .= $this->t($this->sigdir($deyer, 300, 17, 12), self::EN - 36, $y + 30,
+        $o .= $this->t($this->sigdir($deyer, 268, 17, 12), self::EN - 36, $y,
             ['size' => 17, 'anchor' => 'end', 'weight' => 600]);
+        $o .= '<path d="M36 ' . ($y + 14) . 'H' . (self::EN - 36) . '" stroke="' . self::MUREKKEB3
+            . '" stroke-width="0.9" stroke-dasharray="2 3.5" opacity="0.55"/>';
 
         return $o;
     }
